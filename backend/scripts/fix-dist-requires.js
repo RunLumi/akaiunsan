@@ -8,6 +8,12 @@ if (!fs.existsSync(distDir)) {
   fs.mkdirSync(distDir, { recursive: true });
 }
 
+const sourceVersionPath = path.join(__dirname, '..', 'version.json');
+let sourceVersion = {};
+try {
+  sourceVersion = JSON.parse(fs.readFileSync(sourceVersionPath, 'utf8'));
+} catch (e) {}
+
 (function walk(dir) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);
@@ -34,17 +40,25 @@ try {
     if (!branch) branch = execSync('git rev-parse --abbrev-ref HEAD', { cwd: path.join(__dirname, '..') }).toString().trim();
   } catch (e) {}
 
+  // The production image does not contain git. The deploy script writes the
+  // source version file before building, so preserve that metadata as the
+  // fallback when git is unavailable in the builder.
+  commit = commit || sourceVersion.commit;
+  branch = branch || sourceVersion.branch;
+
   let version = '1.0.0';
   try {
     const pkg = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'package.json'), 'utf8'));
     version = pkg.version || '1.0.0';
   } catch (e) {}
 
+  const buildTime = sourceVersion.buildTime || new Date().toISOString();
+
   const versionData = {
     version,
     commit: commit || 'unknown',
     branch: branch || 'unknown',
-    buildTime: new Date().toISOString()
+    buildTime
   };
 
   fs.writeFileSync(path.join(__dirname, '..', 'dist', 'version.json'), JSON.stringify(versionData, null, 2));

@@ -1,11 +1,13 @@
 # AGENTS.md — Guidance for AI Agents
 
-This repository ("akaiunsan") is the Ayasan platform: a home-services marketplace with two main code areas.
-
+This repository ("akaiunsan") is the Ayasan platform: a home-services marketplace.
 ```
 akaiunsan/
-├── backend/   # "ayasan-admin-api" — Express + Sequelize (MySQL/MariaDB) REST API
-└── apps/      # "mobile-app" — React Native 0.64 (Expo SDK 43 bare workflow) customer app, TypeScript + Redux Saga
+├── backend/   # "ayasan-admin-api" — Express 5 + Sequelize REST API (Node 22, TypeScript)
+├── admin/     # "shadcn-admin" — React 19 + Vite 8 + TanStack Router + Tailwind v4 admin portal
+├── frontend/  # customer web portal
+├── apps/      # "mobile-app" — React Native (iOS & Android) customer app
+└── deploy/    # Master Docker Compose + Caddy VPS deployment & backups
 ```
 
 ## Documentation index

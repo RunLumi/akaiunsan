@@ -1,6 +1,68 @@
 # Deployment
 
-## Backend
+## Master VPS Deployment (Docker Compose + Caddy — 2026)
+
+The platform is deployed to a single VPS using Docker Compose and Caddy for automatic TLS/SSL ingress, reverse proxying, and container isolation.
+
+### Service Stack Overview
+
+| Service | Technology | Port (Internal) | Public Route (via Caddy) |
+|---|---|---|---|
+| **`caddy`** | Caddy 2 Alpine | 80, 443 | Entry point (Let's Encrypt / HTTP/3) |
+| **`backend`** | Node 22 slim / Express 5 | 5000 | `api.ayasan.vn` (20MB upload limit) |
+| **`admin`** | shadcn-admin / Vite SPA | 80 | `admin.ayasan.vn` |
+| **`frontend`** | Customer Web Portal | 80 | `ayasan.vn`, `www.ayasan.vn` |
+| **`mariadb`** | MariaDB 10.9.6 | 3306 | Internal only (`db_net`) |
+
+### Deployment Directory Layout
+
+```
+deploy/
+├── docker-compose.yml       # Master compose orchestrating all containers
+├── Caddyfile                # Ingress routing rules & security headers
+├── .env.example             # Template for domains, database credentials, secrets
+├── README.md                # Comprehensive operational runbook
+└── scripts/
+    └── backup-db.sh         # Automated, compressed daily database backup script
+```
+
+### Initial Deployment on VPS
+
+1. **Allocate swap** (prevent OOM kills on 2GB–4GB VPS):
+   ```bash
+   sudo fallocate -l 4G /swapfile && sudo chmod 600 /swapfile
+   sudo mkswap /swapfile && sudo swapon /swapfile
+   echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+   ```
+2. **Install Docker & Compose**:
+   ```bash
+   curl -fsSL https://get.docker.com | sudo sh
+   sudo usermod -aG docker $USER
+   ```
+3. **Configure & start**:
+   ```bash
+   cd /opt/akaiunsan/deploy
+   cp .env.example .env && chmod 600 .env
+   # Edit .env with production passwords and domains
+   docker compose up -d --build
+   ```
+4. **Schedule nightly database backups**:
+   ```bash
+   0 2 * * * /opt/akaiunsan/deploy/scripts/backup-db.sh >> /var/log/db-backup.log 2>&1
+   ```
+
+### CI/CD Workflow (`.github/workflows/deploy.yml`)
+
+1. Triggered on push to `main`.
+2. Runs backend tests and build validation.
+3. Builds multi-stage Docker images (`backend`, `admin`, `frontend`) using GitHub layer caching.
+4. Pushes tagged images to GitHub Container Registry (`ghcr.io`).
+5. Executes an SSH deployment step to the VPS:
+   `docker compose pull && docker compose up -d --remove-orphans && docker image prune -f`.
+
+---
+
+## Legacy Backend (PM2)
 
 **Development** (automated): `.gitlab-ci.yml` — on push to `develop`, a gitlab-runner tagged `dev-api.ayasan.vn`:
 1. rsyncs the repo to `/home/dev-api.ayasan.vn`
@@ -35,9 +97,14 @@ ENVFILE=.env.dev         ./gradlew app:assembleRelease
 Use `apps/scripts/deploy-stores.sh` to build the production Android AAB and iOS IPA, then upload them through the Google Play and App Store Connect APIs. The script does not submit an iOS build for App Review, and defaults Google Play to the `internal` track.
 
 ```bash
-export GOOGLE_PLAY_SERVICE_ACCOUNT_JSON=/secure/path/play-service-account.json
-export ASC_API_KEY_JSON=/secure/path/app-store-connect-api-key.json
-export APPLE_TEAM_ID=7MBXZKYSY4
+# Reuse the ignored Lumi release env files without copying their credentials.
+set -a
+source /Volumes/SSD/imc/lcn-lumi/lumi/android/keystore.env
+source /Volumes/SSD/imc/lcn-lumi/lumi/ios/scripts/release.env
+set +a
+
+export PLAY_UPLOADER=/Volumes/SSD/imc/lcn-lumi/lumi/android/scripts/play_upload.sh
+export APPLE_TEAM_ID="$TEAM_ID"
 
 # Build and validate only.
 ./apps/scripts/deploy-stores.sh

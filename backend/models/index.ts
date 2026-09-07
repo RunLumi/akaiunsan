@@ -20,10 +20,9 @@ if (NODE_ENV == 'production') {
       acquire: 1000000,
       idle: 200000
     },
-    dialectOptions: {
-      socketPath: "/var/run/mysqld/mysqld.sock"
-    },
-    logging: false
+    ...(config["db-connection"].socketPath ? { dialectOptions: { socketPath: config["db-connection"].socketPath } } : {}),
+    logging: false,
+    port: config["db-connection"].port || 3306,
   }
 } else {
   sequelize_config = {

@@ -46,8 +46,12 @@ COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/mail-template ./mail-template
 COPY --from=builder /app/config ./config
 
-# Create persistent storage directories for uploads and generated exports
-RUN mkdir -p uploads exports && chown -R node:node /app
+# Copy container entrypoint
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+# Create persistent storage directories for uploads and generated exports, ensuring node user ownership
+RUN mkdir -p uploads exports config && chown -R node:node /app
 
 USER node
 
@@ -56,4 +60,5 @@ EXPOSE 5000
 HEALTHCHECK --interval=20s --timeout=5s --start-period=15s --retries=3 \
   CMD curl -f http://localhost:5000/health || exit 1
 
+ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["node", "dist/app.js"]

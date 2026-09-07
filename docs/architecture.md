@@ -2,14 +2,13 @@
 
 ## System at a glance
 
-Ayasan is a home-services marketplace (cleaning, maid/driver helpers, supplies) operating mainly in Thailand/Vietnam. The repo contains two deployables:
+Ayasan is a home-services marketplace (cleaning, maid/driver helpers, supplies) operating mainly in Thailand/Vietnam. The monorepo contains:
 
-1. **backend/** — `ayasan-admin-api`: a single Express server serving
-   - the customer mobile app (client routes),
-   - an admin back office (backoffice routes),
-   - an agency data source sync (agency routes, reading a separate legacy DB),
-   - a chat bot API (bot routes).
-2. **apps/** — `mobile-app`: the customer-facing React Native app (booking, payments, subscriptions, promotions).
+1. **backend/** — `ayasan-admin-api`: Express 5 REST API (Node 22 LTS / TypeScript) serving customer mobile & web apps, back-office administration, agency data sync, and bots.
+2. **admin/** — `shadcn-admin`: modern back-office web application built with React 19, TypeScript, Vite 8, TanStack Router, and Tailwind CSS v4.
+3. **frontend/** — customer web portal.
+4. **apps/** — `mobile-app`: customer-facing React Native app (iOS/Android).
+5. **deploy/** — Master Docker Compose + Caddy infrastructure for VPS deployment.
 
 ## Data flow
 

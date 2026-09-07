@@ -24,7 +24,8 @@ const config = require('../config/test.json');
   for (const name of names) {
     const [[row]] = await conn.query(`SHOW CREATE TABLE \`${name}\``);
     const ddlKey = Object.keys(row).find((k) => k !== 'Table');
-    creates.push({ name, ddl: row[ddlKey] });
+    const ddl = row[ddlKey].replace(/utf8mb4_uca1400_ai_ci/g, 'utf8mb4_unicode_ci'); // MariaDB 10.9-compatible collation
+    creates.push({ name, ddl });
   }
   await conn.end();
 

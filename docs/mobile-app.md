@@ -1,6 +1,6 @@
-# Mobile App (`apps/` — mobile-app)
+# Mobile App (`apps/` — Akaiunsan customer app)
 
-Customer-facing React Native app for Ayasan. React Native 0.64 + Expo SDK 43 (bare workflow), TypeScript 4.3, React 17.
+Customer-facing React Native app for Akaiunsan. React Native 0.64 + Expo SDK 43 (bare workflow), TypeScript 4.3, React 17.
 
 ## Commands
 
@@ -18,8 +18,8 @@ yarn android:staging       yarn android:staging-release
 yarn android:prod          yarn android:prod-release
 
 # iOS schemes
-yarn ios:staging       # scheme 'AysanStaging'
-yarn ios:prod          # scheme 'AyasanProduction'
+yarn ios:staging       # scheme 'AkaiunsanStaging'
+yarn ios:prod          # scheme 'AkaiunsanProduction'
 
 # Release APK builds (from apps/README.md)
 cd android && ENVFILE=.env.staging  && ./gradlew app:assembleRelease
@@ -45,7 +45,7 @@ src/
   shared/            # Colors, Constants, Enum, Layout, Styles, Utils, Geocoding, I18n/
   hooks/             # useCachedResources, updateSource
   assets/
-ios/                 # Xcode project "Ayasan" (schemes: AyasanProduction, AysanStaging), CocoaPods
+ios/                 # Xcode project "Akaiunsan" (schemes: AkaiunsanProduction, AkaiunsanStaging), CocoaPods
 android/             # gradle project with dev/staging/production variants
 ```
 
@@ -53,6 +53,8 @@ android/             # gradle project with dev/staging/production variants
 
 - `.env`, `.env.dev`, `.env.staging`, `.env.production` are read at build time by `react-native-config` (API base URL, keys).
 - Firebase: `google-services.json` (Android), `GoogleService-Info.plist` (iOS) — Analytics, Crashlytics, Messaging.
+- **Sentry**: `@sentry/react-native@^8` (v8.25.0, Expo 57 / RN 0.86). Initialized in `instrument.ts`, imported first in `index.js`, root component wrapped with `Sentry.wrap()`; route tracking via `Sentry.reactNavigationIntegration()` registered on the `NavigationContainer` in `src/navigation/index.tsx`. DSN comes from `EXPO_PUBLIC_SENTRY_DSN` in `apps/.env` (inlined by Expo CLI at bundle time; `react-native-config` keys are a fallback) — empty means disabled. `EXPO_PUBLIC_SENTRY_ENV` (`development`/`staging`/`production`) tags the environment.
+- **Sentry release uploads**: `"@sentry/react-native/plugin"` is registered in `app.json` `plugins` — it wires Android source-map uploads and the iOS dSYM upload build phase during `expo prebuild`. Uploads authenticate with `SENTRY_AUTH_TOKEN` (env var) or `apps/sentry.properties` (copy from `sentry.properties.example`, add an API token; gitignored).
 - i18n via `i18n-js` with translations under `src/shared/I18n` (en/th); language is kept in redux (`reducers/language.ts`).
 
 ## Patterns to follow
@@ -63,8 +65,8 @@ android/             # gradle project with dev/staging/production variants
 - Use `src/shared/{Colors,Styles,Layout,Constants}` for theming — don't hardcode colors/sizes inline.
 - Navigation from outside components: `src/navigation/root.ts` exposes `NavigationRoot.{navigate,push,replace,pop}` via a navigation ref.
 - i18n via `i18n-js`; translations in `src/shared/I18n/{en,th}.ts`; current language in redux (`reducers/language.ts`).
-- Push notifications: channel `com.ayasan.yoda.android` created in `App.tsx`; foreground handling in `src/components/Notifications.tsx`.
+- Push notifications: channel `com.akaiunsan.yoda.android` created in `App.tsx`; foreground handling in `src/components/Notifications.tsx`.
 
 ## Signing / release notes (from apps/README.md)
 
-Android release keystore (`grabtasker.keystore` / `grabtasker.jks`) and iOS certs/provisioning profiles are present in the repo root of `apps/` — see docs/security.md. iOS bundles are named after "Ayasan"; the historical "grabtasker" naming also appears in signing assets. Release builds are manual (no CI for the app).
+Android release keystore (`grabtasker.keystore` / `grabtasker.jks`) and iOS certs/provisioning profiles are present in the repo root of `apps/` — see docs/security.md. iOS bundles are named after "Akaiunsan"; the historical "grabtasker" naming also appears in signing assets. Release builds are manual (no CI for the app).

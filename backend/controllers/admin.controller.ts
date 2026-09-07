@@ -1,3 +1,4 @@
+import fs from 'fs';
 import { Admin, Role, ErrorLog } from '../models/index.ts';
 import { genTxt, getAdminData } from '../helpers/util.ts';
 import { encryptPassword } from '../helpers/security.ts';
@@ -179,7 +180,7 @@ async function count (req, res) {
     return res.status(200).json(count);
   } catch (error) {
     // console.log(error);
-    err.message ? error_message = err.message : error_message;
+    error.message ? error_message = error.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
     await ErrorLog.create({ location: 'admin.controller.count', message: error_message });
     return res.status(error_status).json({ message: error_message });

@@ -47,18 +47,15 @@ import i18n from "../shared/I18n";
 import { useDispatch, useSelector } from "react-redux";
 import { TYPES } from "../redux/actions";
 import { isEmpty } from "lodash";
+import { linkingConfig, deepLinkRoute, gateForToken } from "./contracts";
+import { reactNavigationIntegration } from "../../instrument";
 
 const { width } = Dimensions.get("window");
 
+export { linkingConfig, deepLinkRoute, gateForToken } from "./contracts";
+
 export default function Navigation() {
-  const linking = {
-    prefixes: ["akaiunsan://"],
-    config: {
-      screens: {
-        "Auth/Login": "com.akaiunsan.customer",
-      },
-    },
-  };
+  const linking = linkingConfig;
 
   // Get active route name
   function getActiveRouteName(state: any): any {
@@ -80,6 +77,9 @@ export default function Navigation() {
       onStateChange={(state: any) => {
         const currentRouteName = getActiveRouteName(state);
         console.log(`====== NAVIGATING to > ${currentRouteName}`);
+      }}
+      onReady={() => {
+        reactNavigationIntegration.registerNavigationContainer(navigationRef);
       }}
       linking={linking}
       ref={navigationRef}
@@ -152,48 +152,49 @@ function RootNavigator() {
 
   useEffect(() => {
     messaging().onNotificationOpenedApp(async (remoteMessage: any) => {
-      console.log("open from background state:", remoteMessage);
-      const screenName = () => {
-        switch (remoteMessage.data.type) {
-          case "0":
-            setinitialParams({
-              item: {
-                orderId: remoteMessage.data.id,
-                notificationId: remoteMessage.data.notificationId,
-              },
-            });
-            return Constants.SCREENS.BOOKING.DETAIL;
-          case "1":
-            setinitialParams({
-              data: { promotionId: remoteMessage.data.id },
-            });
-            return Constants.SCREENS.PROMOTIOM.DETAIL;
-          case "2":
-            setinitialParams({
-              data: {
-                newsId: remoteMessage.data.id,
-                id: remoteMessage.data.id,
-              },
-            });
-            return Constants.SCREENS.PROMOTIOM.DETAIL;
-          case "3":
-            setinitialParams({ id: remoteMessage.data.id });
-            return Constants.SCREENS.OTHER.INBOXDETAIL;
-          case "4":
-            setinitialParams({ id: remoteMessage.data.id });
-            return Constants.SCREENS.OTHER.INBOXDETAIL;
-          default:
-            return "";
-        }
-      };
-      !isEmpty(screenName()) &&
-        NavigationRoot.navigate(screenName(), initialParams);
+      const { data } = remoteMessage;
+      // Preserved side-effects: each type pre-loads its initialParams state
+      // (note: navigation below reads the *stale* render-closure value).
+      switch (data && data.type) {
+        case "0":
+          setinitialParams({
+            item: {
+              orderId: data.id,
+              notificationId: data.notificationId,
+            },
+          });
+          break;
+        case "1":
+          setinitialParams({
+            data: { promotionId: data.id },
+          });
+          break;
+        case "2":
+          setinitialParams({
+            data: {
+              newsId: data.id,
+              id: data.id,
+            },
+          });
+          break;
+        case "3":
+          setinitialParams({ id: data.id });
+          break;
+        case "4":
+          setinitialParams({ id: data.id });
+          break;
+        default:
+          break;
+      }
+      const screenName = deepLinkRoute(data);
+      !isEmpty(screenName) &&
+        NavigationRoot.navigate(screenName, initialParams);
     });
   }, []);
 
   return (
     <NavStack.Navigator screenOptions={{ headerShown: false }}>
-      {!token ? (
+      {gateForToken(token) === "auth" ? (
         <NavStack.Group>
           <NavStack.Screen
             name={Constants.SCREENS.AUTH.LOGIN}

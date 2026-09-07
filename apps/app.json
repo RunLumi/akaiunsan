@@ -23,9 +23,6 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": false,
-      "config": {
-        "googleMapsApiKey": "AIzaSyD6rt8Bo6w4maFl8LBeX7zYczkEJfulwco"
-      },
       "googleServicesFile": "./GoogleService-Info.plist",
       "bundleIdentifier": "com.akaiunsan.customer",
       "buildNumber": "5",
@@ -53,7 +50,15 @@
         }
       },
       "googleServicesFile": "./google-services.json",
-      "useNextNotificationsApi": true,
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.POST_NOTIFICATIONS",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.READ_EXTERNAL_STORAGE"
+      ],
       "intentFilters": [
         {
           "action": "VIEW",
@@ -69,10 +74,50 @@
       ]
     },
     "plugins": [
+      "./plugins/withFirebaseDisableSpm",
       "@react-native-firebase/app",
       "@react-native-firebase/crashlytics",
-      "@notifee/react-native",
-      "@react-native-google-signin/google-signin"
+      "@react-native-google-signin/google-signin",
+      "@sentry/react-native",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./src/assets/images/Splash-screen.png",
+          "imageWidth": 200,
+          "resizeMode": "cover",
+          "backgroundColor": "#F48120"
+        }
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./src/assets/fonts/OpenSans-Bold.ttf",
+            "./src/assets/fonts/OpenSans-Light.ttf",
+            "./src/assets/fonts/OpenSans-Regular.ttf",
+            "./src/assets/fonts/OpenSans-SemiBold.ttf",
+            "./src/assets/fonts/SukhumvitSet-Bold.ttf",
+            "./src/assets/fonts/SukhumvitSet-Light.ttf",
+            "./src/assets/fonts/SukhumvitSet-SemiBold.ttf",
+            "./src/assets/fonts/SukhumvitSet-Text.ttf"
+          ]
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Akaiunsan would like to access the photo library to save photos or upload profile image.",
+          "cameraPermission": "Akaiunsan would like to access the camera to take a picture for the profile image or scan a QR code when you need it.",
+          "microphonePermission": "Akaiunsan would like to access the microphone to record videos of your comments about the quality of our services for sharing its with others."
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Akaiunsan would like to access the location for updating nearby friends and give you suitable suggestions"
+        }
+      ],
+      "expo-notifications"
     ],
     "web": {
       "favicon": "./src/assets/images/favicon.png"

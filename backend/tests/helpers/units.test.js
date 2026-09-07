@@ -35,8 +35,9 @@ afterAll(() => {
 });
 
 import * as security from '../../helpers/security.ts';
-const adminHelper = require('../../helpers/admin.ts');
-const validatorHelper = require('../../helpers/validator.ts');
+import * as subscriptionModule from '../../helpers/subscription.ts';
+import * as adminHelper from '../../helpers/admin.ts';
+import * as validatorHelper from '../../helpers/validator.ts';
 
 describe('helpers/security', () => {
   it('hashes and verifies passwords', async () => {
@@ -108,7 +109,7 @@ describe('helpers/validator', () => {
 
 describe('helpers/subscription', () => {
   it('creates subscriptions with sensible defaults and transactions', async () => {
-    const subscriptionHelper = require('../../helpers/subscription.ts');
+    const subscriptionHelper = subscriptionModule;
     const customer = await createCustomer({ email: 'subunit@test.local' });
 
     const found1 = await subscriptionHelper.findSubscriptionByCustomerId(customer.id);

@@ -1,3 +1,4 @@
+import path from 'path';
 import fs from 'fs';
 import { Supporter, ErrorLog } from '../models/index.ts';
 import mysql from 'mysql';
@@ -769,6 +770,7 @@ async function getDriverProfile (driver_id) {
       if (!imageResponse.ok)
         return reject({ message: 'driver profile picture not found' });
 
+      fs.mkdirSync('uploads/supporters', { recursive: true });
       const stream = fs.createWriteStream(new_driver_uri);
       const buffer = Buffer.from(await imageResponse.arrayBuffer());
       stream.end(buffer, () => resolve(`driver_${driver_id}.jpg`));

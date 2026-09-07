@@ -25,6 +25,16 @@ jest.mock("@react-navigation/native", () => ({
 import ServiceScreenService from "../ServiceScreen/Service";
 import EditAndReOrderService from "../EditAndReOrderServiceScreen/EditAndReOrderService";
 import Constants from "../../shared/Constants";
+// Home mounts <Swiper autoplay>; its scrollBy timers fire after the suite
+// ends and keep the CI worker alive past the coverage step — stub statically.
+vi.mock("react-native-swiper", () => ({
+  __esModule: true,
+  default: ({ children, ...props }) => {
+    const React = require("react");
+    return React.createElement("View", props, children);
+  },
+}));
+
 
 // Per-endpoint response shaping: the wizard callbacks read specific fields
 // (JSON-stringified extra services, config-price model, language list) that

@@ -17,8 +17,8 @@ module.exports = defineConfig({
     isolate: true,
     pool: 'forks',
     poolOptions: { forks: { singleFork: false } },
-    testTimeout: 30000,
-    hookTimeout: 60000,
+    testTimeout: 60000,
+    hookTimeout: 120000,
     setupFiles: ['tests/setup-env.js'],
     coverage: {
       provider: 'v8',

@@ -139,8 +139,8 @@ async function create (req, res) {
     }
 
     let { skill_array = [], experience_array = [] } = req.body;
-    let { skill_list = [], language_list = [] } = await pairSkill(skill_array, supporter_id);
-    let experience_list = await pairExperience(experience_array, supporter_id);
+    let { skill_list = [], language_list = [] }: { skill_list: any[]; language_list: any[] } = await pairSkill(skill_array, supporter_id);
+    let experience_list: any[] = await pairExperience(experience_array, supporter_id);
     await SupporterSkill.bulkCreate(skill_list, { transaction: t });
     await SupporterLanguage.bulkCreate(language_list, { transaction: t });
     await SupporterExperience.bulkCreate(experience_list, { transaction: t });
@@ -209,8 +209,8 @@ async function update (req, res) {
     }
 
     let { skill_array = [], experience_array = [] } = req.body;
-    let { skill_list = [], language_list = [] } = await pairSkill(skill_array, supporter_id);
-    let experience_list = await pairExperience(experience_array, supporter_id);
+    let { skill_list = [], language_list = [] }: { skill_list: any[]; language_list: any[] } = await pairSkill(skill_array, supporter_id);
+    let experience_list: any[] = await pairExperience(experience_array, supporter_id);
     await SupporterSkill.bulkCreate(skill_list, { transaction: t });
     await SupporterLanguage.bulkCreate(language_list, { transaction: t });
     await SupporterExperience.bulkCreate(experience_list, { transaction: t });

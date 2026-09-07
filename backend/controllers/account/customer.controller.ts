@@ -16,7 +16,7 @@ async function signup (req, res) {
   const t = await model.transaction();
   try {
     let data = req.body;
-    let { customer } = await getCustomerData(data);
+    let { customer }: { customer: any } = await getCustomerData(data);
     const exist_customer = await Customer.findOne({ where: { email: customer.email }});
     if (exist_customer)
       throw { message: 'This email is already registered.' }
@@ -106,7 +106,7 @@ async function update (req, res) {
   try {
     let customer_info = req.customer;
     let data = req.body;
-    let { customer } = await getCustomerData(data);
+    let { customer }: { customer: any } = await getCustomerData(data);
     await Customer.update(customer, { where: { id: customer_info.id }, transaction: t });
     await t.commit();
     return res.status(200).json(true);
@@ -235,13 +235,13 @@ async function resetPassword (req, res) {
   try {
     let { _forget_token, new_password, confirm_password } = req.body;
     const decoded = await verifyToken(_forget_token);
-    const customer = await Customer.findOne({ where: { email: decoded._user.username }})
+    const customer = await Customer.findOne({ where: { email: (decoded as any)._user.username }})
     if (!customer)
       throw { message: 'This account doesn\'t exist.' };
     if (new_password != confirm_password)
       throw { message: 'New password and confirm password are not matched.' };
     let encrypted_password = await encryptPassword(new_password);
-    await Customer.update({ password: encrypted_password }, { where: { email: decoded._user.username }, transaction: t });
+    await Customer.update({ password: encrypted_password }, { where: { email: (decoded as any)._user.username }, transaction: t });
     await t.commit();
     return res.status(200).json(true);
   } catch (err) {

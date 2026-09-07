@@ -13,7 +13,7 @@ async function create (req, res) {
   const t = await model.transaction();
   try {
     let data = req.body;
-    let { customer } = await getCustomerData(data);
+    let { customer }: { customer: any } = await getCustomerData(data);
     const exist_customer = await Customer.findOne({ where: { email: customer.email }});
     if (exist_customer)
       throw { message: 'This email is already registered.' }
@@ -43,7 +43,7 @@ async function update (req, res) {
   try {
     let { customer_id } = req.params;
     let data = req.body;
-    let { customer } = await getCustomerData(data);
+    let { customer }: { customer: any } = await getCustomerData(data);
     await Customer.update(customer, { where: { id: customer_id }, transaction: t });
     await t.commit();
     return res.status(200).json(true);

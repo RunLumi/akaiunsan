@@ -207,7 +207,7 @@ describe('POST /auth/forget-password → /auth/reset-password (customer)', () =>
   it('refuses reset-password with mismatched confirmation', async () => {
     const email = uniqueEmail();
     const customer = await createCustomer({ email });
-    const { requestForgetPasswordToken } = require('../../helpers/security');
+    const { requestForgetPasswordToken } = require('../../helpers/security.ts');
     const token = await requestForgetPasswordToken(email, 'test-host');
 
     const res = await request(app)

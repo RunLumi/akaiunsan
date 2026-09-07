@@ -1,4 +1,4 @@
-const db = require('../../models');
+const db = require('../../models/index.ts');
 
 /**
  * Truncate every application table between test files so suites start clean.

@@ -34,9 +34,9 @@ afterAll(() => {
   nodemailer.createTransport = originalCreateTransport;
 });
 
-const security = require('../../helpers/security');
-const adminHelper = require('../../helpers/admin');
-const validatorHelper = require('../../helpers/validator');
+const security = require('../../helpers/security.ts');
+const adminHelper = require('../../helpers/admin.ts');
+const validatorHelper = require('../../helpers/validator.ts');
 
 describe('helpers/security', () => {
   it('hashes and verifies passwords', async () => {
@@ -108,7 +108,7 @@ describe('helpers/validator', () => {
 
 describe('helpers/subscription', () => {
   it('creates subscriptions with sensible defaults and transactions', async () => {
-    const subscriptionHelper = require('../../helpers/subscription');
+    const subscriptionHelper = require('../../helpers/subscription.ts');
     const customer = await createCustomer({ email: 'subunit@test.local' });
 
     const found1 = await subscriptionHelper.findSubscriptionByCustomerId(customer.id);

@@ -186,7 +186,7 @@ describe('controllers/payment (unrouted; unit-driven)', () => {
     const { req, res } = stubReqRes({ user: customer.toJSON(), body: {} });
 
     // force a charge failure through the shared helper module object
-    const omiseHelperModule = require('../../helpers/omise');
+    const omiseHelperModule = require('../../helpers/omise.ts');
     const originalCharge = omiseHelperModule.chargeCustomerCardById;
     omiseHelperModule.chargeCustomerCardById = async () => {
       throw new Error('card declined');
@@ -226,7 +226,7 @@ describe('controllers/payment (unrouted; unit-driven)', () => {
 
 describe('helpers/subscription.processSubscriptionsPayment (cron)', () => {
   it('charges due subscriptions, resets hours and records recurring transactions', async () => {
-    const subscriptionHelper = require('../../helpers/subscription');
+    const subscriptionHelper = require('../../helpers/subscription.ts');
     const customer = await factories.createCustomer({
       email: 'cron@test.local',
       omise_customer_id: 'cust_cron',
@@ -259,7 +259,7 @@ describe('helpers/subscription.processSubscriptionsPayment (cron)', () => {
   });
 
   it('suspends subscriptions when the charge fails and retries next day', async () => {
-    const subscriptionHelper = require('../../helpers/subscription');
+    const subscriptionHelper = require('../../helpers/subscription.ts');
     const customer = await factories.createCustomer({
       email: 'cron-fail@test.local',
       omise_customer_id: 'cust_cronfail',

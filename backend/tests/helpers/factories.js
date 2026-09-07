@@ -1,5 +1,5 @@
-const db = require('../../models');
-const { encryptPassword, generateToken } = require('../../helpers/security');
+const db = require('../../models/index.ts');
+const { encryptPassword, generateToken } = require('../../helpers/security.ts');
 
 const ADMIN_PASSWORD = 'adminPassw0rd';
 const CUSTOMER_PASSWORD = 'customerPassw0rd';

@@ -360,7 +360,7 @@ describe('/back-office/jobs', () => {
     // omise interactions are exercised end-to-end in client.commerce tests via
     // module patching; here pin the DB effect using the cash path already
     // covered and the known 888 constant through a direct helper call.
-    const PaymentHelper = require('../../helpers/payment');
+    const PaymentHelper = require('../../helpers/payment.ts');
     const chargeCustomer = await createCustomer({ email: 'chargeholder@test.local' });
     const charge = await PaymentHelper.recordChargeDetail(
       'chrg_x', 100, 'credit_card', 'Job', 888, chargeCustomer.id, 'successful'

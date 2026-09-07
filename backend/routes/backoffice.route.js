@@ -65,9 +65,9 @@ const RoleController = require('../controllers/role.controller');
 const RequestController = require('../controllers/requesthelper/index.controller');
 
 module.exports = app => {
-  app.use('/back-office/*', headerValidator);
-  app.use('/back-office/*', backofficeValidator)
-  app.use('/back-office/*', recordHistory);
+  app.use('/back-office/*s', headerValidator);
+  app.use('/back-office/*s', backofficeValidator)
+  app.use('/back-office/*s', recordHistory);
 
   //verify token
   app.get('/back-office/verify-token', (req, res) => {
@@ -86,7 +86,7 @@ module.exports = app => {
   app.delete('/back-office/addresses/:address_id', AddressController.remove);
 
   //admin
-  app.use('/back-office/admins/*', checkPermission);
+  app.use('/back-office/admins/*s', checkPermission);
 
   app.get('/back-office/admins', AdminController.getList);
   app.get('/back-office/admins/count', AdminController.count);
@@ -112,7 +112,7 @@ module.exports = app => {
   app.delete('/back-office/user/profile-image/:profile_image', AccountController.admin.removeProfile);
 
   //banner
-  app.use('/back-office/banners/*', checkPermission);
+  app.use('/back-office/banners/*s', checkPermission);
 
   app.get('/back-office/banners', BannerController.getList);
 
@@ -165,7 +165,7 @@ module.exports = app => {
   app.delete('/back-office/customers/:customer_id', CustomerController.remove);
 
   //request helper
-  app.use('/back-office/request-helpers/*', checkPermission);
+  app.use('/back-office/request-helpers/*s', checkPermission);
 
   app.get('/back-office/request-helpers', RequestController.getList);
   app.get('/back-office/request-helpers/count', RequestController.getCount);
@@ -177,7 +177,7 @@ module.exports = app => {
   app.delete('/back-office/request-helpers/:request_helper_id', RequestController.remove);
 
   //request helper status
-  app.use('/back-office/request-helper-status/*', checkPermission);
+  app.use('/back-office/request-helper-status/*s', checkPermission);
 
   app.get('/back-office/request-helper-status', RequestController.status.getList);
   app.get('/back-office/request-helper-status/count', RequestController.status.getCount);
@@ -244,7 +244,7 @@ module.exports = app => {
   app.delete('/back-office/suppliers/:supplier_id', SupplierController.remove);
 
   //supporter
-  app.use('/back-office/supporters/*', checkPermission);
+  app.use('/back-office/supporters/*s', checkPermission);
 
   app.get('/back-office/supporters', SupporterController.getList);
   app.get('/back-office/supporters/count', SupporterController.count);
@@ -275,7 +275,7 @@ module.exports = app => {
   app.get('/back-office/subscriptions/:subscription_id', SubscriptionController.findSubscription);
 
   //role
-  app.use('/back-office/roles/*', checkPermission);
+  app.use('/back-office/roles/*s', checkPermission);
 
   app.get('/back-office/roles', RoleController.getList);
   app.get('/back-office/roles/count', RoleController.count);

@@ -29,7 +29,7 @@ module.exports = (app) => {
   app.get('/back/office/install', InstallController);
 
   // images and files access
-  app.get('/uploads/*', (req, res, next) => {
+  app.get('/uploads/*s', (req, res, next) => {
     res.sendFile(path.resolve(`${__dirname}/..${req.originalUrl}`));
   })
 

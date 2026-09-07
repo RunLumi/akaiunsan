@@ -1,5 +1,5 @@
 module.exports = (app, router) => {
-    app.use('/*', (req, res) => {
+    app.use('/*s', (req, res) => {
         return res.status(404).json({
             message: 'Invalid request'
         });

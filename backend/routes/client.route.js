@@ -23,8 +23,8 @@ const JobReviewController = require('../controllers/jobreview.controller');
 const SubscriptionController = require('./../controllers/subscription.controller');
 
 module.exports = app => {
-  app.use('/client/*', headerValidator);
-  app.use('/client/*', clientValidator)
+  app.use('/client/*s', headerValidator);
+  app.use('/client/*s', clientValidator)
 
   //verify token
   app.get('/client/verify-token', (req, res) => {

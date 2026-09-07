@@ -13,7 +13,7 @@ const AddressJsonController = require('./../controllers/address.json.controller'
 
 module.exports = app => {
   // authentication
-  app.use('/auth/*', headerValidator);
+  app.use('/auth/*s', headerValidator);
   app.post('/auth/admin/forget-password', AccountController.admin.requestForgetPassword);
   app.post('/auth/admin/reset-password', AccountController.admin.resetPassword);
   app.post('/auth/admin/signin', AccountController.admin.signin);
@@ -27,12 +27,12 @@ module.exports = app => {
   app.get('/banners/:lang_code', BannerController.getDisplay);
 
   //blog
-  app.use('/blog/*', headerValidator);
+  app.use('/blog/*s', headerValidator);
   app.post('/blog/content', BlogController.getContent);
   app.get('/blog/search', BlogController.getSearch);
   app.get('/blog', BlogController.getList);
 
-  app.use('/guest/*', headerValidator);
+  app.use('/guest/*s', headerValidator);
   //address json
   app.get('/guest/provinces', AddressJsonController.getProvinceList);
   app.get('/guest/provinces/:province_id/districts', AddressJsonController.getDistrictList);

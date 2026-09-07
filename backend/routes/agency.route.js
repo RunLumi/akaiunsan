@@ -3,7 +3,7 @@ const { headerValidator } = require('./../middlewares/validator');
 const AgencyController = require('../controllers/agency/index.controller');
 
 module.exports = app => {
-  app.use('/agency-back-office/*', headerValidator);
+  app.use('/agency-back-office/*s', headerValidator);
 
   //driver
   app.post('/agency-back-office/driver', AgencyController.driver.create);

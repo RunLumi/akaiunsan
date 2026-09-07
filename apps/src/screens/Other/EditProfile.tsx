@@ -300,7 +300,7 @@ export default function EditProfile(props: any) {
     }
     setGender({
       ...gender,
-      value: Enum.GENDER[user.gender].value,
+      value: Enum.GENDER[user.gender].value as any,
       label: i18n.t(Enum.GENDER[user.gender].label),
     });
   };

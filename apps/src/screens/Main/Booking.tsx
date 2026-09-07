@@ -97,7 +97,7 @@ export default function Booking(props: any) {
 
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
-  const _handleAppStateChange = (nextAppState) => {
+  const _handleAppStateChange = (nextAppState: any) => {
     if (
       appState.current.match(/inactive|background/) &&
       nextAppState === "active"
@@ -143,9 +143,12 @@ export default function Booking(props: any) {
         { orderStatus: Enum.OrderStatus.RECEIVED },
       ]),
     });
-    AppState.addEventListener("change", _handleAppStateChange);
+    const appStateSubscription = AppState.addEventListener(
+      "change",
+      _handleAppStateChange
+    );
     return () => {
-      AppState.removeEventListener("change", _handleAppStateChange);
+      appStateSubscription.remove();
     };
   }, []);
 
@@ -207,7 +210,7 @@ export default function Booking(props: any) {
         return require("../../assets/images/1e01.png");
     }
   };
-  const renderItem = ({ item, index }) => {
+  const renderItem = ({ item, index }: any) => {
     return (
       <TouchableOpacity
         style={s.jobItem}

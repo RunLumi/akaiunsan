@@ -29,7 +29,7 @@ import _, { isEmpty, isNil } from "lodash";
 import Config from "react-native-config";
 
 export default function EditAndReOrderService(props: any) {
-  const childRef = React.useRef();
+  const childRef = React.useRef<any>(null);
   const params = props.route.params || {};
   let valueDateTimeEdit = params.data?.bookingDetail?.bookingDate;
   let getDateEdit = moment(valueDateTimeEdit)
@@ -62,7 +62,7 @@ export default function EditAndReOrderService(props: any) {
   );
   const [numberKids, setNumberKids] = React.useState<{
     numberKids: number;
-    age: number;
+    age: any;
   }>({
     numberKids:
       (!isEmpty(params.data?.bookingDetail?.extraServices) &&
@@ -85,14 +85,14 @@ export default function EditAndReOrderService(props: any) {
   const [serviceDetail, setServiceDetail] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
-  const [extraService, setExtraService] = useState([]);
+  const [extraService, setExtraService] = useState<any[]>([]);
   const [pointApply, setPointApply] = useState(0);
   const [receivePoint, setReceivePoint] = useState(0);
   const [idPreferLanguge, setIdPreferLanguge] = useState({
     label: "",
     value: "",
   });
-  const [preferLanguge, setPreferLanguge] = useState([]);
+  const [preferLanguge, setPreferLanguge] = useState<any[]>([]);
   const [paymentMethodId, setPaymentMethodId] = useState("");
   const [promotionId, setPromotionId] = useState("");
   const [modalCreditCard, setModalCreditCard] = useState({
@@ -191,7 +191,7 @@ export default function EditAndReOrderService(props: any) {
     callback: ({ error, response }) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
-        let dataLanguage = response.items.map((x) => {
+        let dataLanguage = response.items.map((x: any) => {
           return {
             label: x.name,
             value: x.code,
@@ -211,7 +211,7 @@ export default function EditAndReOrderService(props: any) {
           let price = JSON.parse(response.items[0].pricesModel);
           if (response.items[0].serviceType === Enum.SERVICE_TYPE.MaidService) {
             if (!isEmpty(params.data?.bookingDetail.extraServices)) {
-              params.data?.bookingDetail.extraServices.map((i) => {
+              params.data?.bookingDetail.extraServices.map((i: any) => {
                 if (i.perHour > 0) {
                   if (valueShowHour < 3) {
                     setPrice(valueShowHour * (price.two + i.perHour));
@@ -261,7 +261,7 @@ export default function EditAndReOrderService(props: any) {
             response.items[0].serviceType === Enum.SERVICE_TYPE.ElderService
           ) {
             if (!isEmpty(params.data?.bookingDetail.extraServices)) {
-              params.data?.bookingDetail.extraServices.map((i) => {
+              params.data?.bookingDetail.extraServices.map((i: any) => {
                 if (i.perHour > 0) {
                   setPrice(valueShowHour * (price.twoPlus + i.perHour));
                 } else {
@@ -488,7 +488,7 @@ export default function EditAndReOrderService(props: any) {
       } else {
         if (params.data.serviceType === Enum.SERVICE_TYPE.MaidService) {
           if (!isEmpty(params.data?.bookingDetail.extraServices)) {
-            params.data?.bookingDetail.extraServices.map((i) => {
+            params.data?.bookingDetail.extraServices.map((i: any) => {
               if (i.perHour > 0) {
                 if (value < 3) {
                   setPrice(value * (two + i.perHour));
@@ -518,7 +518,7 @@ export default function EditAndReOrderService(props: any) {
           }
         } else if (params.data.serviceType === Enum.SERVICE_TYPE.ElderService) {
           if (!isEmpty(params.data?.bookingDetail.extraServices)) {
-            params.data?.bookingDetail.extraServices.map((i) => {
+            params.data?.bookingDetail.extraServices.map((i: any) => {
               if (i.perHour > 0) {
                 setPrice(value * (twoPlus + i.perHour));
               } else {
@@ -564,7 +564,7 @@ export default function EditAndReOrderService(props: any) {
       setDisableNext(true);
     }
   };
-  const handlePriceExtraService = (value, type) => {
+  const handlePriceExtraService = (value: any, type: any) => {
     if (value) {
       if (type === "plus") {
         setPrice(Number((price + value).toFixed(2)));
@@ -730,8 +730,8 @@ export default function EditAndReOrderService(props: any) {
   }, [currentStep]);
 
   const onNextStep = async () => {
-    const notUndefined = (anyValue) => typeof anyValue !== "undefined";
-    let paramOrder = {
+    const notUndefined = (anyValue: any) => typeof anyValue !== "undefined";
+    let paramOrder: any = {
       serviceId: idService,
       bookingDetail: {
         bookingDate: moment(startTime).toISOString(),
@@ -1261,7 +1261,7 @@ export default function EditAndReOrderService(props: any) {
             startInLoadingState
             injectedJavaScript={injectedToHtml()}
             originWhitelist={["*"]}
-            source={{ uri: Config.OMISELINK }}
+            source={{ uri: Config.OMISELINK as string }}
             allowFileAccess
             allowUniversalAccessFromFileURLs
             scalesPageToFit

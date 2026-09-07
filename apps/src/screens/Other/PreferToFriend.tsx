@@ -35,7 +35,7 @@ export default function PreferToFriend() {
   });
 
   const user = useSelector((state: any) => state.auth.user);
-  const renderItem = (item, idx) => (
+  const renderItem = (item: any, idx: any) => (
     <View key={idx} style={styles.borderBottom1}>
       <View style={{ marginHorizontal: 20, marginVertical: 10 }}>
         <Text>Name: {item.name}</Text>

@@ -61,7 +61,7 @@ export default function PromotionDetail(props: any) {
       }
       if (response.items && response.items.length) {
         let getSubscriptionPlanActive = response.items.find(
-          (x) => x.subscriptionStatus === Enum.SubscriptionStatus.ACTIVE
+          (x: any) => x.subscriptionStatus === Enum.SubscriptionStatus.ACTIVE
         );
         setSubscriptionPlanActive(getSubscriptionPlanActive);
       }

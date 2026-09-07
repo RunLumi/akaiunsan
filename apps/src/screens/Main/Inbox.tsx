@@ -37,12 +37,12 @@ export default function Inbox(props: any) {
   const [promotionTabActive, setPromotionTabActive] = useState(false);
   const [refreshNoti, setRefreshNoti] = useState(false);
   const [refreshPromo, setRefreshPromo] = useState(false);
-  const [arrNoti, setArrNoti] = useState([]);
-  const [valueNotiDelete, setValueNotiDelete] = useState([]);
-  const [arrPromo, setArrPromo] = useState([]);
+  const [arrNoti, setArrNoti] = useState<any[]>([]);
+  const [valueNotiDelete, setValueNotiDelete] = useState<any[]>([]);
+  const [arrPromo, setArrPromo] = useState<any[]>([]);
   const [pageNoti, setPageNoti] = useState(2);
   const [pagePromo, setPagePromo] = useState(2);
-  const [valuePromoDelete, setValuePromoDelete] = useState([]);
+  const [valuePromoDelete, setValuePromoDelete] = useState<any[]>([]);
   const [version, setVersion] = useState();
   const [modalVisible, setModalVisible] = useState(false);
   const [loadingVersion, requestGetVersion] = useApi({
@@ -99,7 +99,7 @@ export default function Inbox(props: any) {
           let data = [...arrNoti];
           let valueNoti = [];
           if (response.items && response.items.length) {
-            response.items.forEach((m) => {
+            response.items.forEach((m: any) => {
               let item = data.find((n) => n.id === m.id);
               if (item) {
                 return Object.assign(item, m);
@@ -132,7 +132,7 @@ export default function Inbox(props: any) {
               valuePromo.push(false);
             }
           }
-          let getPromotionId = response.items.map((x: any, index) => {
+          let getPromotionId = response.items.map((x: any, index: any) => {
             if (x.type === Enum.InboxType.NEWS) {
               return { ...x, newsId: JSON.parse(x.data).NotificationId };
             } else {
@@ -328,7 +328,7 @@ export default function Inbox(props: any) {
       setValuePromoDelete(valueDeleteAll);
     }
   };
-  const selectDeleteNoti = (newValue, index) => {
+  const selectDeleteNoti = (newValue: any, index: any) => {
     const value = [...valueNotiDelete] as any;
     const valueDelete = [...arrNoti] as any;
     valueDelete[index].isDeleted = newValue;
@@ -338,7 +338,7 @@ export default function Inbox(props: any) {
     let countValue = value.filter(Boolean).length;
     setCountItemDelete(countValue);
   };
-  const selectDeletePromo = (newValue, index) => {
+  const selectDeletePromo = (newValue: any, index: any) => {
     const value = [...valuePromoDelete] as any;
     const valueDelete = [...arrPromo] as any;
     valueDelete[index].isDeleted = newValue;
@@ -589,7 +589,7 @@ export default function Inbox(props: any) {
   };
   const appState = useRef(AppState.currentState);
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
-  const _handleAppStateChange = (nextAppState) => {
+  const _handleAppStateChange = (nextAppState: any) => {
     if (
       appState.current.match(/inactive|background/) &&
       nextAppState === "active"
@@ -622,9 +622,12 @@ export default function Inbox(props: any) {
     }
   }, [isFocused]);
   useEffect(() => {
-    AppState.addEventListener("change", _handleAppStateChange);
+    const appStateSubscription = AppState.addEventListener(
+      "change",
+      _handleAppStateChange
+    );
     return () => {
-      AppState.removeEventListener("change", _handleAppStateChange);
+      appStateSubscription.remove();
     };
   }, [])
   useEffect(() => {

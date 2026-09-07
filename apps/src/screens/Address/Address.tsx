@@ -11,7 +11,7 @@ import i18n from "../../shared/I18n";
 
 const AddressScreen = (props: any) => {
   const { navigation } = props;
-  const [listAddress, setListAddress] = useState([]);
+  const [listAddress, setListAddress] = useState<any[]>([]);
 
   const [loadingListAddress, requestListAddress] = useApi({
     method: "get",

@@ -38,7 +38,7 @@ const PickAddress = (props: any) => {
   const { params } = props.route;
   const navigation = useNavigation();
   const onGoBack = params?.onGoBack;
-  const addRef = useRef();
+  const addRef = useRef<any>(null);
   // const [isPlace, setIsPlace] = useState(false);
   const [placeName, setPlaceName] = useState("Bangkok, ThaiLand");
   const [loadMap, setLoadMap] = useState(false);
@@ -52,7 +52,7 @@ const PickAddress = (props: any) => {
       ])
     : null;
 
-  const mapView = useRef<MapView>();
+  const mapView = useRef<any>(null);
   const [location, setLocation] = useState<Location.LocationObject | null>();
   const [region, setRegion] = useState<any>({
     latitude: 13.7563309,
@@ -100,7 +100,7 @@ const PickAddress = (props: any) => {
       event.coordinate.longitude
     );
 
-    let longest = multiAddress.results.reduce(function (a, b) {
+    let longest = multiAddress.results.reduce(function (a: any, b: any) {
       return a.address_components.length > b.address_components.length ? a : b;
     });
     const listAddresses = await L2.googleAddressGeocodeAsync(
@@ -132,7 +132,7 @@ const PickAddress = (props: any) => {
         currentPosition.coords.longitude
       );
 
-      let longest = multiAddress.results.reduce(function (a, b) {
+      let longest = multiAddress.results.reduce(function (a: any, b: any) {
         return a.address_components.length > b.address_components.length
           ? a
           : b;
@@ -166,11 +166,9 @@ const PickAddress = (props: any) => {
     (async () => {
       try {
         setLocation(location);
-        Location.setGoogleApiKey(
-          Platform.OS === "ios"
-            ? Constants.GOOGLEMAPSAPIKEYIOS
-            : Constants.GOOGLEMAPSAPIKEYANDROIND
-        );
+        // Location.setGoogleApiKey was removed from expo-location (SDK 57);
+        // the app's own Geocoding wrapper (L2.setGoogleApiKey) still configures
+        // the Google key where needed.
         L2.setGoogleApiKey(
           Platform.OS === "ios"
             ? Constants.GOOGLEMAPSAPIKEYIOS
@@ -200,9 +198,7 @@ const PickAddress = (props: any) => {
         } else {
           if (!_.isEmpty(params?.placeName)) {
             setLoadMap(true);
-            const coords = await Location.geocodeAsync(params.placeName, {
-              useGoogleMaps: true,
-            });
+            const coords = await Location.geocodeAsync(params.placeName);
             if (coords.length > 0) {
               mapView.current.animateCamera({
                 center: {
@@ -217,7 +213,7 @@ const PickAddress = (props: any) => {
                 longitudeDelta: 1,
               });
 
-              setRegionMark(coords[0]);
+              setRegionMark(coords[0] as any);
             }
           
             const listAddresses = await L2.googleAddressGeocodeAsync(
@@ -295,14 +291,8 @@ const PickAddress = (props: any) => {
     data: GooglePlaceData,
     details: GooglePlaceDetail | null
   ) => {
-    Location.setGoogleApiKey(
-      Platform.OS === "ios"
-        ? Constants.GOOGLEMAPSAPIKEYIOS
-        : Constants.GOOGLEMAPSAPIKEYANDROIND
-    );
-    const coords = await Location.geocodeAsync(data.description, {
-      useGoogleMaps: true,
-    });
+    // Location.setGoogleApiKey was removed from expo-location (SDK 57).
+    const coords = await Location.geocodeAsync(data.description);
 
     if (coords.length > 0) {
       mapView.current.animateCamera({
@@ -312,7 +302,7 @@ const PickAddress = (props: any) => {
         },
         zoom: 100,
       });
-      setRegionMark(coords[0]);
+      setRegionMark(coords[0] as any);
     }
     // setIsPlace(true);
     L2.setGoogleApiKey(

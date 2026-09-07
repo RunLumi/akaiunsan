@@ -25,10 +25,10 @@ const { width } = Dimensions.get("screen");
 export default function PromotionDetail(props: any) {
   const params = props.route.params || {};
   const [dataDetail, setDataDetail] = useState<any>({});
-  const [content, setContent] = useState([]);
+  const [content, setContent] = useState<any>([]);
   const [isPromotion, setIsPromotion] = useState(false);
   const [isNotification, setIsNotification] = useState(false);
-  const [imageBanner, setImageBanner] = useState([]);
+  const [imageBanner, setImageBanner] = useState<any[]>([]);
   const [typePromotion, setTypePromotion] = useState(0);
   const [loadingPromotionDetail, requestPromotionDetail] = useApi({
     method: "get",
@@ -96,7 +96,7 @@ export default function PromotionDetail(props: any) {
   //   });
   // };
 
-  const renderItem = ({ item, index }) => {
+  const renderItem = ({ item, index }: any) => {
     return (
       <View key={index}>
         <FastImage

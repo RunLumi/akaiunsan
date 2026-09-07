@@ -26,7 +26,7 @@ export const SelectTimeModal = (props: any) => {
     [pickDate],
   );
   const data = _.range(getRangeHour(), 24, 1);
-  const renderItem = ({ item, index }) => {
+  const renderItem = ({ item, index }: any) => {
     const onPress = () => {
       if (props.onSelect) {
         props.onSelect(item);

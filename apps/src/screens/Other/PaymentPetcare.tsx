@@ -12,7 +12,7 @@ import { Payment } from "../ServiceScreen/component";
 
 export default function PaymentPetcare(props: any) {
   const { order } = props.route.params;
-  const childRef = React.useRef();
+  const childRef = React.useRef<any>(null);
   const [valueShowDateTime, setValueShowDateTime] = useState<string>();
   const [idCard, setIdCard] = useState('');
   const [isCreditCard, setIsCreditCard] = useState(false);
@@ -213,7 +213,7 @@ export default function PaymentPetcare(props: any) {
           startInLoadingState
           injectedJavaScript={injectedToHtml(order.totalPrice)}
           originWhitelist={["*"]}
-          source={{ uri: Config.OMISELINK }}
+          source={{ uri: Config.OMISELINK as string }}
           allowFileAccess
           allowUniversalAccessFromFileURLs
           scalesPageToFit

@@ -18,7 +18,7 @@ import { TYPES } from "../../redux/actions";
 export default function AllSubscriptionPlan() {
   const [listPlan, setListPlan] = useState<any>([]);
   const [dataPlan, setDataPlan] = useState<any>();
-  const [indexCancel, setIndexCancel] = useState();
+  const [indexCancel, setIndexCancel] = useState<any>(undefined);
   const [service, setService] = useState<any>();
   const [serviceCancel, setServiceCancel] = useState("");
   const [reason, setReason] = useState<any>({
@@ -143,7 +143,7 @@ export default function AllSubscriptionPlan() {
       setIndexCancel(undefined);
       setReason("");
     };
-    const toggleSwitch = (value) => {
+    const toggleSwitch = (value: any) => {
       requestToggleRenewFlexible({
         data: {
           orderId: item.id,
@@ -152,8 +152,8 @@ export default function AllSubscriptionPlan() {
       });
       item.isAutoRenew = value;
     };
-    const newData = item.bookDetail.sort(function (a, b) {
-      return new Date(b.bookingDate) - new Date(a.bookingDate);
+    const newData = item.bookDetail.sort(function (a: any, b: any) {
+      return new Date(b.bookingDate).getTime() - new Date(a.bookingDate).getTime();
     });
     const bookingTime =
       (!isEmpty(item.bookDetail) && item.bookDetail[0].bookingDate) || "";

@@ -17,7 +17,7 @@ import i18n from "../../shared/I18n";
 import { getStatus, paramArray } from "../../shared/Utils";
 
 export default function ListMyBooking(props: any) {
-  const [listBooking, setListBooking] = useState([]);
+  const [listBooking, setListBooking] = useState<any[]>([]);
   const [pageListBooking, setPageListBooking] = useState(1);
 
   const [loadingListBooking, requestListBooking] = useApi({

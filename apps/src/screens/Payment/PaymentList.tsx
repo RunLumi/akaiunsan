@@ -16,8 +16,8 @@ import i18n from "../../shared/I18n";
 import { FontAwesome } from "@expo/vector-icons";
 
 export default function PaymentList(props: any) {
-  const childRef = React.useRef();
-  const [listPayment, setListPayment] = useState([]);
+  const childRef = React.useRef<any>(null);
+  const [listPayment, setListPayment] = useState<any[]>([]);
   const [idDefaultCard, setIdDefaultCard] = useState("");
 
   const [loadingListCard, requestListCard] = useApi({

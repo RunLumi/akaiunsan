@@ -189,9 +189,12 @@ export default function Account(props: any) {
   }, [isFocused]);
 
   useEffect(() => {
-    AppState.addEventListener("change", _handleAppStateChange);
+    const appStateSubscription = AppState.addEventListener(
+      "change",
+      _handleAppStateChange
+    );
     return () => {
-      AppState.removeEventListener("change", _handleAppStateChange);
+      appStateSubscription.remove();
     };
   }, []);
   const logout = () => {

@@ -432,7 +432,7 @@ export default function DetailHistory(props: any) {
                           ).length > 0
                           ? JSON.parse(
                               currentDetail.serviceProvider.skillLanguage
-                            ).map((item) => {
+                            ).map((item: any) => {
                               if (
                                 JSON.parse(
                                   currentDetail.serviceProvider.skillLanguage

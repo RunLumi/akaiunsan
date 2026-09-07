@@ -43,10 +43,10 @@ export default function Home(props: any) {
   const token = useSelector((state: any) => state.auth.token);
 
   const [appStateVisible, setAppStateVisible] = useState(appState.current);
-  const [arrUpdate, setArrUpdate] = useState([]);
+  const [arrUpdate, setArrUpdate] = useState<any[]>([]);
   const [currentLanguage, setCurrentLanguage] = useState(language);
-  const [arrService, setArrService] = useState([]);
-  const [carouselItems, setCarouselItems] = useState([]);
+  const [arrService, setArrService] = useState<any[]>([]);
+  const [carouselItems, setCarouselItems] = useState<any[]>([]);
   const [listService, setListService] = useState<any>([]);
   const [subscriptionPlanActive, setSubscriptionPlanActive] = useState<any>({});
   const [modalVisible, setModalVisible] = useState(false);
@@ -285,7 +285,10 @@ export default function Home(props: any) {
   }, [user, token]);
 
   useEffect(() => {
-    AppState.addEventListener("change", _handleAppStateChange);
+    const appStateSubscription = AppState.addEventListener(
+      "change",
+      _handleAppStateChange
+    );
     setModalVisible(false);
     requestGetVersion();
     requestUserMe();
@@ -331,7 +334,7 @@ export default function Home(props: any) {
       });
     return () => {
       listen;
-      AppState.removeEventListener("change", _handleAppStateChange);
+      appStateSubscription.remove();
     };
   }, []);
 

@@ -13,6 +13,7 @@ declare module "@react-native-firebase/messaging" {
   const messaging: {
     (): {
       getToken: (opts?: unknown) => Promise<string>;
+      getInitialNotification: () => Promise<any>;
       onMessage: (listener: (message: any) => void) => () => void;
       onNotificationOpenedApp: (listener: (message: any) => void) => () => void;
       registerDeviceForRemoteMessages: () => Promise<void>;

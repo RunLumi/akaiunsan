@@ -11,7 +11,7 @@ import { Fontisto,MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function SubscriptionDetail(props: any) {
 
-  const [listBooking, setListBooking] = useState([]);
+  const [listBooking, setListBooking] = useState<any[]>([]);
   // const [loadingListBooking, requestListBooking] = useApi({
   //   method: "get",
   //   url: Constants.API.get_booking,

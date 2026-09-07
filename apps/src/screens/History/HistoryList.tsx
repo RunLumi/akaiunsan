@@ -36,7 +36,7 @@ export default function PromotionList(props: any) {
   const [showDate, setShowDate] = useState(false);
   const [callOnScrollEnd, setCallOnScrollEnd] = useState(false);
   const [page, setPage] = useState(2);
-  const [arrHistory, setArrHistory] = useState([]);
+  const [arrHistory, setArrHistory] = useState<any[]>([]);
   const [loadingListHistory, requestListHistory] = useApi({
     method: "get",
     url: Constants.API.booking_get,
@@ -47,7 +47,7 @@ export default function PromotionList(props: any) {
       } else {
         let data = [...arrHistory];
         if (response.items && response.items.length) {
-          response.items.forEach((m) => {
+          response.items.forEach((m: any) => {
             let item = data.find((n) => n.orderId === m.orderId);
             if (item) {
               return Object.assign(item, m);
@@ -70,10 +70,10 @@ export default function PromotionList(props: any) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
       } else {
-        let data = [];
+        let data: any = [];
         if (response.items && response.items.length) {
-          response.items.forEach((m) => {
-            let item = data.find((n) => n.orderId === m.orderId);
+          response.items.forEach((m: any) => {
+            let item = data.find((n: any) => n.orderId === m.orderId);
             if (item) {
               return Object.assign(item, m);
             }
@@ -128,7 +128,9 @@ export default function PromotionList(props: any) {
                 return cur;
               } else return pre;
             }, {});
-          setReview(newReview);
+          // newReview is passed as an updater function on purpose (legacy
+          // behavior — React invokes it with the previous state).
+          setReview(newReview as any);
         },
       },
     });
@@ -215,7 +217,7 @@ export default function PromotionList(props: any) {
     setShowDate(true);
   };
 
-  const handleValueDate = (event, selectedDate) => {
+  const handleValueDate = (event: any, selectedDate: any) => {
     if (Platform.OS === "android") {
       if (event.type === "set") {
         setShowDate(false);
@@ -278,13 +280,16 @@ export default function PromotionList(props: any) {
     });
   };
 
-  const renderItem = (item, idx) => {
+  const renderItem = (item: any, idx: any) => {
     return (
       <TouchableOpacity
         key={idx}
         style={s.jobItem}
         onPress={() =>
-          navigation.navigate(Constants.SCREENS.HISTORY.DETAIL, { item })
+          (navigation.navigate as any)(
+            Constants.SCREENS.HISTORY.DETAIL,
+            { item }
+          )
         }
       >
         <View style={s.jobItemHeader}>

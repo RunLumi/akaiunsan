@@ -264,7 +264,7 @@ const MonthlyCalendar = (props: any) => {
           size={22}
           color={Colors.grab_orange}
           onPress={() =>
-            setMonth((month) => moment(month).startOf('month').subtract(1, "month"))
+            setMonth((month: any) => moment(month).startOf('month').subtract(1, "month"))
           }
           style={{ padding: 12 }}
         />
@@ -283,12 +283,12 @@ const MonthlyCalendar = (props: any) => {
           name="chevron-forward-outline"
           size={22}
           color={Colors.grab_orange}
-          onPress={() => setMonth((month) => moment(month).startOf('month').add(1, "month"))}
+          onPress={() => setMonth((month: any) => moment(month).startOf('month').add(1, "month"))}
         />
       </View>
       <View style={{ flex: 1 }}>
         <View style={{ flexDirection: "row" }}>
-          {calendar[0].days.map((d, idx) => (
+          {calendar[0].days.map((d: any, idx: any) => (
             <View
               key={idx}
               style={{
@@ -310,14 +310,14 @@ const MonthlyCalendar = (props: any) => {
           ))}
         </View>
         <View style={{ flex: 1 }}>
-          {calendar.map((row) => (
+          {calendar.map((row: any) => (
             <View
               style={{
                 flex: 1,
                 flexDirection: "row",
               }}
             >
-              {row.days.map((col) => {
+              {row.days.map((col: any) => {
                 const j = getJob(col);
                 return (
                   <View

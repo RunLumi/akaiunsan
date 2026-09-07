@@ -1,4 +1,4 @@
-import { HeaderBackButton } from "@react-navigation/stack";
+import { HeaderBackButton } from "@react-navigation/elements";
 import _, { isEmpty } from "lodash";
 import moment from "moment";
 import React, { useEffect, useLayoutEffect, useState } from "react";
@@ -33,7 +33,7 @@ import Layout from "../../../shared/Layout";
 const { width } = Dimensions.get("window");
 
 export default function PickAddress(props: any) {
-  const childRef = React.useRef<any>();
+  const childRef = React.useRef<any>(null);
 
   const navigation = props.navigation;
   const { serviceId, serviceItemId, serviceType, serviceName } =
@@ -43,13 +43,13 @@ export default function PickAddress(props: any) {
   const [salePrice, setSalePrice] = useState(0);
   const [priceModel, setPriceModel] = useState<any>();
   const [salePriceModel, setSalePriceModel] = useState<any>();
-  const [extraService, setExtraService] = useState([]);
+  const [extraService, setExtraService] = useState<any[]>([]);
   const [idPreferLanguge, setIdPreferLanguge] = useState({
     label: "",
     value: "",
   });
-  const [times, setTimes] = useState([]);
-  const [preferLanguge, setPreferLanguge] = useState([]);
+  const [times, setTimes] = useState<any[]>([]);
+  const [preferLanguge, setPreferLanguge] = useState<any[]>([]);
   const [dataAddress, setDataAddress] = useState<any>();
   const [idSpecifyHelper, setIdSpecifyHelper] = useState<any>({});
   const [paymentMethodId, setPaymentMethodId] = useState("");

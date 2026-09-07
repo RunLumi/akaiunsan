@@ -17,7 +17,7 @@ import { Fontisto, AntDesign } from "@expo/vector-icons";
 export default function PromotionList(props: any) {
   const [refresh, setRefresh] = useState(false);
   const [page, setPage] = useState(2);
-  const [arrPromotion, setArrPromotion] = useState([]);
+  const [arrPromotion, setArrPromotion] = useState<any[]>([]);
   const [loadingListPromotionUsed, requestListPromotionUsed] = useApi({
     method: "get",
     url: Constants.API.promotion_used,
@@ -29,14 +29,14 @@ export default function PromotionList(props: any) {
       setRefresh(false);
       if (response.page === 1) {
         setPage(2);
-        let getPromotionId = response.items.map((x: any, idx) => {
+        let getPromotionId = response.items.map((x: any, idx: any) => {
           return { ...x, promotionId: x.id };
         });
         setArrPromotion(getPromotionId);
       } else {
         let data = [...arrPromotion];
         if (response.items && response.items.length) {
-          response.items.forEach((m) => {
+          response.items.forEach((m: any) => {
             let item = data.find((n) => n.id === m.id);
             if (item) {
               return Object.assign(item, m);
@@ -52,7 +52,7 @@ export default function PromotionList(props: any) {
     },
   });
 
-  const renderItem = (item, idx) => (
+  const renderItem = (item: any, idx: any) => (
     <View key={idx}>
       <TouchableOpacity
         onPress={() =>

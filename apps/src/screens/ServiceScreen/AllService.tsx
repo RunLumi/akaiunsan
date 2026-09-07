@@ -18,8 +18,8 @@ import { NavigationRoot } from "../../navigation/root";
 
 export default function AllService(props: any) {
   const { subscriptionPlanActive } = props.route.params || {};
-  const [carouselItems, setCarouselItems] = useState([]);
-  const [arrService, setArrService] = useState([]);
+  const [carouselItems, setCarouselItems] = useState<any[]>([]);
+  const [arrService, setArrService] = useState<any[]>([]);
   const [loadingBanner, requestGetBanner] = useApi({
     method: "get",
     url: Constants.API.get_banner,
@@ -42,7 +42,7 @@ export default function AllService(props: any) {
     },
   });
 
-  const _renderItem = ({ item, index }) => {
+  const _renderItem = ({ item, index }: any) => {
     return (
       <View key={index}>
         {item.listImage &&

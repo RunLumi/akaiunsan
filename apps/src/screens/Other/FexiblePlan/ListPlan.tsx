@@ -27,7 +27,7 @@ export default function ListPlan(props: any) {
 
   const [currentPlan, setCurrentPlan] = useState<any>();
   const [currentFixPlan, setCurrentFixPlan] = useState<any>();
-  const [listPlan, setListPlan] = useState([]);
+  const [listPlan, setListPlan] = useState<any[]>([]);
   const [autoRenew, setAutoRenew] = useState(false);
   const [autoRenewFixPlan, setAutoRenewFixPlan] = useState(false);
 

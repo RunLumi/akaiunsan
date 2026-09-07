@@ -17,8 +17,8 @@ import Constants from "../../../shared/Constants";
 export default function Address(props: any) {
   const user = useSelector((state: any) => state.auth.user);
 
-  const [listAddress, setListAddress] = React.useState([]);
-  const childRef = React.useRef();
+  const [listAddress, setListAddress] = React.useState<any[]>([]);
+  const childRef = React.useRef<any>(null);
 
   const [currentAddress, setCurrentAddress] = React.useState(null);
 
@@ -40,7 +40,7 @@ export default function Address(props: any) {
       }, 300);
     };
 
-  const getValueAddress = (value) => {
+  const getValueAddress = (value: any) => {
     setCurrentAddress(value.id);
     props.handleAddress(value);
   };
@@ -53,7 +53,7 @@ export default function Address(props: any) {
     }
   }, []);
 
-  const renderItem = ({ item, index }) => (
+  const renderItem = ({ item, index }: any) => (
     <TouchableOpacity
       onPress={() => getValueAddress(item)}
       disabled={props.nonEdit}

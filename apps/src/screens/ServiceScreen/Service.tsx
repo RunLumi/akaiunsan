@@ -30,7 +30,7 @@ import analytics from "@react-native-firebase/analytics";
 import Config from "react-native-config";
 
 export default function Service(props: any) {
-  const childRef = React.useRef();
+  const childRef = React.useRef<any>(null);
   const params = props.route.params || {};
   const apiOrder =
     params.data.serviceType === Enum.SERVICE_TYPE.MaidService
@@ -70,7 +70,7 @@ export default function Service(props: any) {
   const [twoPlus, setTwoPlus] = useState(0);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
-  const [extraService, setExtraService] = useState([]);
+  const [extraService, setExtraService] = useState<any[]>([]);
   const [pointApply, setPointApply] = useState(0);
   const [receivePoint, setReceivePoint] = useState(0);
 
@@ -456,7 +456,7 @@ export default function Service(props: any) {
     }
   };
 
-  const handlePriceExtraService = (value, type) => {
+  const handlePriceExtraService = (value: any, type: any) => {
     if (value) {
       if (type === "plus") {
         setPrice(price + value);
@@ -600,12 +600,12 @@ export default function Service(props: any) {
         setPrice(0);
       }
     }
-    BackHandler.addEventListener("hardwareBackPress", handleBackButtonClick);
+    const backHandlerSubscription = BackHandler.addEventListener(
+      "hardwareBackPress",
+      handleBackButtonClick
+    );
     return () => {
-      BackHandler.removeEventListener(
-        "hardwareBackPress",
-        handleBackButtonClick
-      );
+      backHandlerSubscription.remove();
     };
   }, [currentStep]);
   const handleBackButtonClick = () => {
@@ -618,8 +618,8 @@ export default function Service(props: any) {
   };
 
   const onNextStep = async () => {
-    const notUndefined = (anyValue) => typeof anyValue !== "undefined";
-    let paramOrder = {
+    const notUndefined = (anyValue: any) => typeof anyValue !== "undefined";
+    let paramOrder: any = {
       serviceId: fromThread === 'favorite-service-thread' ? params.data.serviceId : params.data.id,
       bookingDetail: {
         bookingDate: moment(startTime).toISOString(),
@@ -1121,7 +1121,7 @@ export default function Service(props: any) {
             containerStyle={{ alignItems: "center", justifyContent: "center" }}
             injectedJavaScript={injectedToHtml()}
             originWhitelist={["*"]}
-            source={{ uri: Config.OMISELINK }}
+            source={{ uri: Config.OMISELINK as string }}
             allowFileAccess
             allowUniversalAccessFromFileURLs
             scalesPageToFit

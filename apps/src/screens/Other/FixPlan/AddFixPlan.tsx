@@ -261,7 +261,7 @@ const CalendarComponent = (props: any) => {
       //     />
       //   )
       // }
-      dayComponent={({ date }) => (
+      dayComponent={({ date }: any) => (
         <TouchableOpacity
           style={[
             {

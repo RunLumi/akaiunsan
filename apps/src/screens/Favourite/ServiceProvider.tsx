@@ -14,7 +14,7 @@ export default function ServiceProvider(props: any) {
 
   const token = useSelector((state: any) => state.auth.token);
 
-  const [listServiceProvider, setListServiceProvider] = useState([]);
+  const [listServiceProvider, setListServiceProvider] = useState<any[]>([]);
 
   const [currentSelected, setCurrentSelected] = useState<String[]>([]);
   const [currentDelSelected, setCurrentDelSelected] = useState<String[]>([]);

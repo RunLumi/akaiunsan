@@ -34,7 +34,7 @@ export default function Option(props: any) {
   const numberKids = props.numberKids || { numberKids: 0, age: [0] };
   const numberPet = props.numberPet || 0;
   const extraServiceCleaning = props.extraServiceCleaning || [];
-  const [dataExtraService, setDataExtraService] = React.useState([]);
+  const [dataExtraService, setDataExtraService] = React.useState<any[]>([]);
   const [dataExtraServiceCleaning, setDataExtraServiceCleaning] =
     React.useState(extraServiceCleaning);
   const [nameHelper, setNameHelper] = React.useState(
@@ -57,7 +57,7 @@ export default function Option(props: any) {
     props.activitiesPetCare
   );
   const [priceSpecifyHelper, setPriceSpecifyHelper] = React.useState<any>({});
-  const [pricePreferLanguage, setPricePreferLanguage] = React.useState([]);
+  const [pricePreferLanguage, setPricePreferLanguage] = React.useState<any[]>([]);
   const dispatch = useDispatch();
   const [language, setLanguage] = React.useState<{
     label?: string;
@@ -72,9 +72,9 @@ export default function Option(props: any) {
         Alert.alert(i18n.t("auth.error"), error);
       } else {
         let getPriceSpecifyHelper = response.items.find(
-          (x) => x.code === Enum.PriceSpecialRequest.COSTSP
+          (x: any) => x.code === Enum.PriceSpecialRequest.COSTSP
         );
-        let getPricePreferLanguage = response.items.filter((y) => {
+        let getPricePreferLanguage = response.items.filter((y: any) => {
           if (y.code === Enum.PriceSpecialRequest.LANGUAGE) {
             return { ...y };
           }
@@ -84,7 +84,7 @@ export default function Option(props: any) {
       }
     },
   });
-  const childRef = React.useRef();
+  const childRef = React.useRef<any>(null);
   const onChooseHelper = () => {
     childRef.current.openModalHelper();
   };
@@ -167,7 +167,7 @@ export default function Option(props: any) {
     });
   };
 
-  const onCheckExtraService = (value, idx: any) => {
+  const onCheckExtraService = (value: any, idx: any) => {
     let data = [...dataExtraService];
     data[idx].isCheck = !value;
     if (value) {
@@ -223,7 +223,7 @@ export default function Option(props: any) {
   React.useEffect(() => {
     props.onSelectNumberKid(numberKids);
   }, [numberKids]);
-  const renderItem = ({ item, index }) => {
+  const renderItem = ({ item, index }: any) => {
     return (
       <View
         style={[
@@ -284,7 +284,7 @@ export default function Option(props: any) {
   };
 
   // ACCleaning
-  const renderItemACCleaning = (item, idx) => (
+  const renderItemACCleaning = (item: any, idx: any) => (
     <View
       key={idx}
       style={[
@@ -346,7 +346,7 @@ export default function Option(props: any) {
       </View>
     </View>
   );
-  const onCheckACCleaning = (value, idx: any) => {
+  const onCheckACCleaning = (value: any, idx: any) => {
     let data = [...dataExtraServiceCleaning];
     data[idx].isCheck = !value;
     if (value) {
@@ -357,7 +357,7 @@ export default function Option(props: any) {
     data[idx].count = 1;
     setDataExtraServiceCleaning(data);
   };
-  const minusCountACCleaning = (value, idx: any) => {
+  const minusCountACCleaning = (value: any, idx: any) => {
     if (props.isEdit) return
     if (value > 1) {
       let data = [...dataExtraServiceCleaning];
@@ -373,7 +373,7 @@ export default function Option(props: any) {
       setDataExtraServiceCleaning(data);
     }
   };
-  const plusCountACCleaning = (value, idx: any) => {
+  const plusCountACCleaning = (value: any, idx: any) => {
     if (props.isEdit) return
 
     let data = [...dataExtraServiceCleaning];
@@ -409,7 +409,7 @@ export default function Option(props: any) {
     setIsModalPetCare(false);
   };
 
-  const deletePetProfile = (idx) => {
+  const deletePetProfile = (idx: any) => {
     let data = [...dataPetcare];
     data.splice(idx, 1);
     setDataPetcare(data);
@@ -550,7 +550,7 @@ export default function Option(props: any) {
         <View style={{ flex: 1, paddingTop: 10 }}>
           <TextInput
             value={petCareActivities}
-            onChangeText={(value) => onchangePetCareActivities(value)}
+            onChangeText={(value: any) => onchangePetCareActivities(value)}
             multiline
             numberOfLines={5}
             textAlignVertical="top"
@@ -571,7 +571,7 @@ export default function Option(props: any) {
       </View>
     );
   };
-  const renderItemPetCare = (item, idx) => (
+  const renderItemPetCare = (item: any, idx: any) => (
     <View key={idx} style={[styles.borderExtraService, { padding: 10 }]}>
       <View
         style={{

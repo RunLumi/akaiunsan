@@ -452,7 +452,7 @@ export default function Payment(props: any) {
                 {props.times && (
                   <Text style={styles.textDesc}>
                     {_.map(
-                      props.times.sort(function (left, right) {
+                      props.times.sort(function (left: any, right: any) {
                         return moment
                           .utc(left.startAt)
                           .diff(moment.utc(right.startAt));

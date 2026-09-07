@@ -165,7 +165,7 @@ export default function Service(props: any) {
               maxDate={moment().add(1, "year").format("YYYY-MM-DD")}
               monthFormat={"MMMM - yyyy"}
               hideExtraDays={true}
-              dayComponent={({ date }) => (
+              dayComponent={({ date }: any) => (
                 <TouchableOpacity
                 disabled={props.isEdit}
                   style={{

@@ -14,7 +14,7 @@ import i18n from "../../../shared/I18n";
 import { Payment } from "../../ServiceScreen/component";
 
 export default function Detail(props: any) {
-  const childRef = React.useRef();
+  const childRef = React.useRef<any>(null);
   const { goBack } = props.navigation;
   const { plan, onGoBack } = props.route.params;
 

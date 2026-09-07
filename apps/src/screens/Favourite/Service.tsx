@@ -20,7 +20,7 @@ export default function Service(props: any) {
   const [currentDelSelected, setCurrentDelSelected] = useState<String[]>([]);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const [listService, setListService] = useState([]);
+  const [listService, setListService] = useState<any[]>([]);
 
   const [loadingListService, requestListService] = useApi({
     method: "get",

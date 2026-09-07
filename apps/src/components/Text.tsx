@@ -13,7 +13,8 @@ interface Props {
   style?: StyleProp<TextStyle>;
   children?: any;
   onPress?: (event: GestureResponderEvent) => void;
-  numberOfLines?: number
+  numberOfLines?: number;
+  [key: string]: any;
 }
 
 export const Text = ({ style, children, numberOfLines, onPress, ...props }: Props) => {

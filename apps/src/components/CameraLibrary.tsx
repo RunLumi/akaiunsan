@@ -12,7 +12,6 @@ import {
   
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import * as Permissions from "expo-permissions";
 import Layout from "../shared/Layout";
 import i18n from "../shared/I18n";
 import Constants from "../shared/Constants";
@@ -63,7 +62,7 @@ export const CameraLibrary = ({
       .finally(() => setLoadingImage(false));
   };
   const getImageLibrary = async () => {
-    const { status } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
       Alert.alert(i18n.t("auth.error"), i18n.t("home.permission_camera"));
     } else {
@@ -73,8 +72,8 @@ export const CameraLibrary = ({
         aspect: [4, 4],
         quality: 1,
       });
-      if (!result.cancelled) {
-        children(await postImage(result.uri));
+      if (!result.canceled && result.assets?.[0]?.uri) {
+        children(await postImage(result.assets[0].uri));
       }
     }
   };
@@ -90,8 +89,8 @@ export const CameraLibrary = ({
         quality: 1,
       });
 
-      if (!result.cancelled) {
-        children(await postImage(result.uri));
+      if (!result.canceled && result.assets?.[0]?.uri) {
+        children(await postImage(result.assets[0].uri));
       }
     }
   };

@@ -35,11 +35,11 @@ export default function Address(props: any) {
     },
   });
 
-  const handleValuePosition = () =>
-      setTimeout(() => {
-        requestListAddress();
-      }, 300);
-    };
+  const handleValuePosition = () => {
+    setTimeout(() => {
+      requestListAddress();
+    }, 300);
+  };
 
   const getValueAddress = (value) => {
     setCurrentAddress(value.id);

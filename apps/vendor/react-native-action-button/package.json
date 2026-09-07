@@ -1,0 +1,11 @@
+{
+  "name": "react-native-action-button",
+  "version": "2.9.0-vendored",
+  "description": "customizable multi-action-button component for react-native",
+  "main": "ActionButton.js",
+  "types": "index.d.ts",
+  "license": "MIT",
+  "peerDependencies": {
+    "react-native": ">=0.11"
+  }
+}

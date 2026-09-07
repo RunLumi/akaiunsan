@@ -26,7 +26,6 @@ import { paramArray } from "../../shared/Utils";
 import notifee from "@notifee/react-native";
 import Colors from "../../shared/Colors";
 import { TYPES } from "../../redux/actions";
-import PushNotification from "react-native-push-notification";
 import DeviceInfo from "react-native-device-info";
 import { ModalVersion } from "./components";
 import { useIsFocused } from "@react-navigation/native";
@@ -81,7 +80,6 @@ export default function Inbox(props: any) {
       else {
         setRefreshNoti(false);
         notifee.setBadgeCount(response.totalUnRead);
-        PushNotification.setApplicationIconBadgeNumber(response.totalUnRead)
 
         dispatch({
           type: TYPES.TOOLS.NOTIFICATION,
@@ -125,7 +123,6 @@ export default function Inbox(props: any) {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         notifee.setBadgeCount(response.totalUnRead);
-        PushNotification.setApplicationIconBadgeNumber(response.totalUnRead)
         setRefreshPromo(false);
         if (response.page === 1) {
           setPagePromo(2);
@@ -398,7 +395,6 @@ export default function Inbox(props: any) {
     if (!data[index].isRead) {
       data[index].isRead = true;
       notifee.setBadgeCount(tools - 1);
-      PushNotification.setApplicationIconBadgeNumber(tools - 1)
       dispatch({
         type: TYPES.TOOLS.NOTIFICATION,
         payload: tools - 1,
@@ -494,7 +490,6 @@ export default function Inbox(props: any) {
     if (!data2[index].isRead) {
       data2[index].isRead = true;
       notifee.setBadgeCount(tools - 1);
-      PushNotification.setApplicationIconBadgeNumber(tools - 1)
       setArrPromo(data2);
       dispatch({
         type: TYPES.TOOLS.NOTIFICATION,
@@ -609,7 +604,7 @@ export default function Inbox(props: any) {
     // dispatch({ type: success(TYPES.AUTH.LOG_OUT) });
     if (Platform.OS === "ios") {
       Linking.openURL(
-        "https://apps.apple.com/us/app/ayasan/id1025748222"
+        "https://apps.apple.com/us/app/akaiunsan/id6809336835"
       );
     }
     if (Platform.OS === "android") {

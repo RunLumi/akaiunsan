@@ -44,6 +44,8 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/mail-template ./mail-template
 COPY --from=builder /app/config ./config
+# migrations are applied at boot (app.ts runs migrate-up — sync() is gone)
+COPY migrations ./migrations
 
 # Copy container entrypoint
 COPY docker-entrypoint.sh /usr/local/bin/

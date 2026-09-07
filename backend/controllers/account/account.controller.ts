@@ -1,4 +1,7 @@
-import customer from './customer.controller.ts';
-import admin from './admin.controller.ts';
+const customer = require('./customer.controller.ts');
+const admin = require('./admin.controller.ts');
 
-export { customer, admin };
+module.exports = {
+  customer,
+  admin
+}

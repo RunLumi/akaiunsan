@@ -1,4 +1,4 @@
-export default (sequelize, DataTypes) =>{
+module.exports = (sequelize, DataTypes) =>{
   const AdminHistory = sequelize.define('AdminHistory', {
     id: {
       type: DataTypes.INTEGER,

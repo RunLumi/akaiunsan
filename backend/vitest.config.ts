@@ -1,5 +1,4 @@
-import { defineConfig } from 'vitest/config';
-
+const { defineConfig } = require('vitest/config');
 
 module.exports = defineConfig({
   resolve: {
@@ -17,7 +16,7 @@ module.exports = defineConfig({
     hookTimeout: 60000,
     setupFiles: ['tests/setup-env.js'],
     coverage: {
-      provider: 'istanbul',
+      provider: 'v8',
       include: [
         'app.ts',
         'controllers/**/*.ts',

@@ -1,17 +1,19 @@
-import { substring, and, or, not, eq, ne, gte, lte } from 'sequelize';
-import fs from 'fs';
-import imageDownloader from 'image-downloader';
-import { supporter_id } = req.params; let data = req.body; await supporter.update(supporter_id, data) return res.status(200).json(true); } catch (err) { err.message ? error_message = err.message : error_message; typeof err == 'string' ? error_message = err : error_message; await ErrorLog.create({ location: 'supporter.controller.update', message: error_message }); return res.status(error_status).json({ message: error_message }); } } async function getDetail (req, res) { try { let { supporter_id } = req.params; const supporter_result = await supporter.getDetail(supporter_id); return res.status(200).json(supporter_result); } catch (err) { err.message ? error_message = err.message : error_message; typeof err == 'string' ? error_message = err : error_message; await ErrorLog.create({ location: 'supporter.controller.getDetail', message: error_message }); return res.status(error_status).json({ message: error_message }); } } async function getPublicDetail (req, res) { try { let { supporter_id } = req.params; const supporter_result = await supporter.getPublicDetail(supporter_id); await supporter.increaseViewCount(supporter_id); return res.status(200).json(supporter_result); } catch (err) { err.message ? error_message = err.message : error_message; typeof err == 'string' ? error_message = err : error_message; await ErrorLog.create({ location: 'supporter.controller.getPublicDetail', message: error_message }); return res.status(error_status).json({ message: error_message }); } } async function getPublicList (req, res) { try { const list = await supporter.getPublicList(req.query); return res.status(200).json(list); } catch (err) { console.log(err); err.message ? error_message = err.message : error_message; typeof err == 'string' ? error_message = err : error_message; await ErrorLog.create({ location: 'supporter.controller.getPublicList', message: error_message }); return res.status(error_status).json({ message: error_message }); } } async function getList (req, res) { try { let { page = 0, limit = 10, sortby = 'id', ordering = 'ASC' } = req.query; let { filter, keyword } = req.query; const list = await supporter.getList(page, limit, sortby, ordering, filter, keyword); return res.status(200).json(list); } catch (err) { // console.log(err); err.message ? error_message = err.message : error_message; typeof err == 'string' ? error_message = err : error_message; await ErrorLog.create({ location: 'supporter.controller.getList', message: error_message }); return res.status(error_status).json({ message: error_message }); } } async function getPublicCount (req, res) { try { const count = await supporter.getPublicCount(req.query); return res.status(200).json(count); } catch (err) { // console.log(error); err.message ? error_message = err.message : error_message; typeof err == 'string' ? error_message = err : error_message; await ErrorLog.create({ location: 'supporter.controller.getPublicCount', message: error_message }); return res.status(error_status).json({ message: error_message }); } } async function count (req, res) { try { let { filter, keyword } = req.query; const count = await supporter.count(filter, keyword); return res.status(200).json(count); } catch (err) { // console.log(error); err.message ? error_message = err.message : error_message; typeof err == 'string' ? error_message = err : error_message; await ErrorLog.create({ location: 'supporter.controller.count', message: error_message }); return res.status(error_status).json({ message: error_message }); } } async function remove (req, res) { try { let { supporter_id } = req.params; await supporter.remove(supporter_id); return res.status(200).json(true); } catch (err) { err.message ? error_message = err.message : error_message; typeof err == 'string' ? error_message = err : error_message; await ErrorLog.create({ location: 'supporter.controller.remove', message: error_message }); return res.status(error_status).json({ message: error_message }); } } async function uploadProfile (req, res) { try { if (req.file) { const { imageSize } from 'image-size';
-import fs from 'fs';
-import sharp from 'sharp';
-import db from '../models/index.ts';
-const { Supporter, SupporterExperience, SupporterSkill, SupporterEducation, SupporterLanguage, ImportData, ErrorLog } = db;
-import supporter from '../helpers/supporter.helper.ts';
-import { json2csv, writeCsvFile } from '../helpers/util.ts';
-import { getSuppoterFromAgency, getSkillFromAgency, getExperienceFromAgency,getDriver, getDriverSkill, getDriverExperience } from '../helpers/agencyData.ts';
-.Op;
-
-
+const { Supporter, SupporterExperience, SupporterSkill, SupporterEducation, SupporterLanguage, ImportData, ErrorLog } = require('../models/index.ts');
+const supporter = require('../helpers/supporter.helper.ts');
+const { json2csv, writeCsvFile } = require('../helpers/util.ts');
+const { getSuppoterFromAgency, getSkillFromAgency, getExperienceFromAgency,getDriver, getDriverSkill, getDriverExperience } = require('../helpers/agencyData.ts');
+const {
+  substring,
+  and,
+  or,
+  not,
+  eq,
+  ne,
+  gte,
+  lte
+} = require('sequelize').Op;
+const fs = require('fs');
+const imageDownloader = require('image-downloader');
 
 let error_status = 500;
 let error_message = 'Unexpected error';
@@ -31,14 +33,124 @@ async function create (req, res) {
 
 async function update (req, res) {
   try {
-    
-      
+    let { supporter_id } = req.params;
+    let data = req.body;
+    await supporter.update(supporter_id, data)
+    return res.status(200).json(true);
+  } catch (err) {
+    err.message ? error_message = err.message : error_message;
+    typeof err == 'string' ? error_message = err : error_message;
+    await ErrorLog.create({ location: 'supporter.controller.update', message: error_message });
+    return res.status(error_status).json({ message: error_message });
+  }
+}
+
+async function getDetail (req, res) {
+  try {
+    let { supporter_id } = req.params;
+    const supporter_result = await supporter.getDetail(supporter_id);
+    return res.status(200).json(supporter_result);
+  } catch (err) {
+    err.message ? error_message = err.message : error_message;
+    typeof err == 'string' ? error_message = err : error_message;
+    await ErrorLog.create({ location: 'supporter.controller.getDetail', message: error_message });
+    return res.status(error_status).json({ message: error_message });
+  }
+}
+
+async function getPublicDetail (req, res) {
+  try {
+    let { supporter_id } = req.params;
+    const supporter_result = await supporter.getPublicDetail(supporter_id);
+    await supporter.increaseViewCount(supporter_id);
+    return res.status(200).json(supporter_result);
+  } catch (err) {
+    err.message ? error_message = err.message : error_message;
+    typeof err == 'string' ? error_message = err : error_message;
+    await ErrorLog.create({ location: 'supporter.controller.getPublicDetail', message: error_message });
+    return res.status(error_status).json({ message: error_message });
+  }
+}
+
+async function getPublicList (req, res) {
+  try {
+    const list = await supporter.getPublicList(req.query);
+    return res.status(200).json(list);
+  } catch (err) {
+    console.log(err);
+    err.message ? error_message = err.message : error_message;
+    typeof err == 'string' ? error_message = err : error_message;
+    await ErrorLog.create({ location: 'supporter.controller.getPublicList', message: error_message });
+    return res.status(error_status).json({ message: error_message });
+  }
+}
+
+async function getList (req, res) {
+  try {
+    let { page = 0, limit = 10, sortby = 'id', ordering = 'ASC' } = req.query;
+    let { filter, keyword } = req.query;
+    const list = await supporter.getList(page, limit, sortby, ordering, filter, keyword);
+    return res.status(200).json(list);
+  } catch (err) {
+    // console.log(err);
+    err.message ? error_message = err.message : error_message;
+    typeof err == 'string' ? error_message = err : error_message;
+    await ErrorLog.create({ location: 'supporter.controller.getList', message: error_message });
+    return res.status(error_status).json({ message: error_message });
+  }
+}
+
+async function getPublicCount (req, res) {
+  try {
+    const count = await supporter.getPublicCount(req.query);
+    return res.status(200).json(count);
+  } catch (err) {
+    // console.log(error);
+    err.message ? error_message = err.message : error_message;
+    typeof err == 'string' ? error_message = err : error_message;
+    await ErrorLog.create({ location: 'supporter.controller.getPublicCount', message: error_message });
+    return res.status(error_status).json({ message: error_message });
+  }
+}
+
+async function count (req, res) {
+  try {
+    let { filter, keyword } = req.query;
+    const count = await supporter.count(filter, keyword);
+    return res.status(200).json(count);
+  } catch (err) {
+    // console.log(error);
+    err.message ? error_message = err.message : error_message;
+    typeof err == 'string' ? error_message = err : error_message;
+    await ErrorLog.create({ location: 'supporter.controller.count', message: error_message });
+    return res.status(error_status).json({ message: error_message });
+  }
+}
+
+async function remove (req, res) {
+  try {
+    let { supporter_id } = req.params;
+    await supporter.remove(supporter_id);
+    return res.status(200).json(true);
+  } catch (err) {
+    err.message ? error_message = err.message : error_message;
+    typeof err == 'string' ? error_message = err : error_message;
+    await ErrorLog.create({ location: 'supporter.controller.remove', message: error_message });
+    return res.status(error_status).json({ message: error_message });
+  }
+}
+
+async function uploadProfile (req, res) {
+  try {
+    if (req.file) {
+      const { imageSize } = require('image-size');
+      const fs = require('fs');
       let image_file = `./uploads/supporters/${req.file.filename}`;
       var dimensions = imageSize(fs.readFileSync(image_file));
       let image_width = dimensions.width;
       let image_height = dimensions.height;
 
-      
+      const sharp = require('sharp');
 
       if (image_width == image_height) {
         return res.status(200).json({
@@ -332,4 +444,24 @@ async function matchDriverProfileImage (req, res) {
   }
 }
 
-export { getPublicDetail, getDetail, getPublicList, getList, create, update, remove, getPublicCount, count, uploadProfile, removeProfile, exportFile, getOldSupporterData, getOldDriverData, getOldDriverSkillData, getOldDriverExperienceData, matchDriverId, matchAgencyProfileImage, matchDriverProfileImage };
+module.exports = {
+  getPublicDetail,
+  getDetail,
+  getPublicList,
+  getList,
+  create,
+  update,
+  remove,
+  getPublicCount,
+  count,
+  uploadProfile,
+  removeProfile,
+  exportFile,
+  getOldSupporterData,
+  getOldDriverData,
+  getOldDriverSkillData,
+  getOldDriverExperienceData,
+  matchDriverId,
+  matchAgencyProfileImage,
+  matchDriverProfileImage
+}

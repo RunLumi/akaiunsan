@@ -1,4 +1,4 @@
-export default (sequelize, DataTypes) =>{
+module.exports = (sequelize, DataTypes) =>{
   const ErrorLog = sequelize.define('ErrorLog', {
     id: {
       type: DataTypes.INTEGER,

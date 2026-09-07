@@ -1,8 +1,6 @@
-import { substring, or, and } from 'sequelize';
-import db from '../models/index.ts';
-const { BizCustomer, ErrorLog } = db;
-import model from '../models/index.ts';.sequelize;
-.Op;
+const { BizCustomer, ErrorLog } = require('../models/index.ts');
+const model = require('../models/index.ts').sequelize;
+const { substring, or, and } = require('sequelize').Op;
 let error_status = 500;
 let error_message = 'Unexpected error';
 
@@ -163,4 +161,11 @@ async function remove (req, res) {
   }
 }
 
-export { getDetail as getDetail, getList as getList, create as create, update as update, remove as remove, count as count };
+module.exports = {
+  getDetail: getDetail,
+  getList: getList,
+  create: create,
+  update: update,
+  remove: remove,
+  count: count
+}

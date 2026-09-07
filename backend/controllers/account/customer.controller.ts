@@ -1,18 +1,15 @@
-import nodemailer from 'nodemailer';
-import fs from 'fs';
-import path from 'path';
-import db from '../../models/index.ts';
-const { Customer, ErrorLog } = db;
-import { genTxt, getCustomerData } from '../../helpers/util.ts';
-import securityModule from '../../helpers/security.ts';
-const { encryptPassword, comparePassword, generateToken, requestForgetPasswordToken, verifyToken } = securityModule;
-import model from '../../models/index.ts';.sequelize;
+const { Customer, ErrorLog } = require('../../models/index.ts');
+const { genTxt, getCustomerData } = require('../../helpers/util.ts');
+const { encryptPassword, comparePassword, generateToken,
+  requestForgetPasswordToken, verifyToken } = require('../../helpers/security.ts');
+const model = require('../../models/index.ts').sequelize;
 let error_status = 500;
 let error_message = 'Unexpected error';
-
+const nodemailer = require('nodemailer');
 const NODE_ENV = process.env.NODE_ENV || 'local';
-const key = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', '', 'config', `${NODE_ENV}.json`), 'utf8'));
-import { sendMail } from '../../helpers/mail.ts';
+const key = require(`../../config/${NODE_ENV}.json`);
+const fs = require('fs');
+const { sendMail } = require('../../helpers/mail.ts');
 
 async function signup (req, res) {
   const t = await model.transaction();
@@ -256,4 +253,14 @@ async function resetPassword (req, res) {
   }
 }
 
-export { update as update, updatePassword, uploadProfile as uploadProfile, removeProfile as removeProfile, signup as signup, signin as signin, getCustomerFromToken, requestForgetPassword, resetPassword };
+module.exports = {
+  update: update,
+  updatePassword,
+  uploadProfile: uploadProfile,
+  removeProfile: removeProfile,
+  signup: signup,
+  signin: signin,
+  getCustomerFromToken,
+  requestForgetPassword,
+  resetPassword
+}

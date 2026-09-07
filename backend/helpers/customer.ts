@@ -1,5 +1,4 @@
-import db from './../models/index.ts';
-const { Customer, CreditCard } = db;
+const { Customer, CreditCard } = require('./../models/index.ts');
 
 const findCustomerByEmail = async (email) => {
     const found = await Customer.findOne({ where: { email }});
@@ -48,4 +47,10 @@ const findCustomerCards = async (customerId) => {
 }
 
 
-export { findCustomerByEmail, findCustomerById, saveCustomerOmiseId, saveCustomerCards, findCustomerCards };
+module.exports = { 
+    findCustomerByEmail, 
+    findCustomerById, 
+    saveCustomerOmiseId, 
+    saveCustomerCards, 
+    findCustomerCards 
+}

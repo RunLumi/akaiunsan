@@ -1,5 +1,4 @@
-import db from './../models/index.ts';
-const { Charge } = db;
+const { Charge } = require('./../models/index.ts')
 
 const recordChargeDetail = async (
     omise_charge_id,
@@ -25,4 +24,6 @@ const recordChargeDetail = async (
     }
 }
 
-export { recordChargeDetail };
+module.exports = {
+    recordChargeDetail
+}

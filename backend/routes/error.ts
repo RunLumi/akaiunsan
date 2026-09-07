@@ -1,4 +1,4 @@
-export default (app, router) => {
+module.exports = (app, router) => {
     app.use('/*s', (req, res) => {
         return res.status(404).json({
             message: 'Invalid request'

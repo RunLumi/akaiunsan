@@ -1,16 +1,19 @@
-import { QueryTypes,Sequelize } from 'sequelize';
-import { substring, and, or, not, eq, ne, gte, lte } from "sequelize";
-import fs from 'fs';
-import path from 'path';
 declare var fields: any;
 declare var field_list: any;
-import { Supporter, SupporterExperience, SupporterSkill, SupporterEducation, SupporterLanguage, SupporterViewCount, } from "../models/index.ts";
-
-.Op;
+const {
+  Supporter,
+  SupporterExperience,
+  SupporterSkill,
+  SupporterEducation,
+  SupporterLanguage,
+  SupporterViewCount,
+} = require("../models/index.ts");
+const { QueryTypes,Sequelize } = require('sequelize');
+const { substring, and, or, not, eq, ne, gte, lte } = require("sequelize").Op;
 const NODE_ENV = process.env.NODE_ENV || "local";
-const key = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '', 'config', `${NODE_ENV}.json`), 'utf8'));
-const config = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'config', `${NODE_ENV}.json`), 'utf8'));
-import db from '../models/index.ts';
+const key = require(`../config/${NODE_ENV}.json`);
+const config = require(`../config/${NODE_ENV}.json`);
+const db = require('../models/index.ts');
 
 const IMAGE_BASE_URL = config.image_base_url;
 const DEFAULT_PROFILE_IMAGE_URL = config.default_image_url;
@@ -681,4 +684,15 @@ async function increaseViewCount(supporter_id) {
   }
 }
 
-export { create, update, getDetail, getList, count, getPublicDetail, getPublicList, getPublicCount, remove, increaseViewCount };
+module.exports = {
+  create,
+  update,
+  getDetail,
+  getList,
+  count,
+  getPublicDetail,
+  getPublicList,
+  getPublicCount,
+  remove,
+  increaseViewCount,
+};

@@ -1,18 +1,13 @@
-import nodemailer from 'nodemailer';
-import fs from 'fs';
-import path from 'path';
-import db from '../models/index.ts';
-const { Admin, Role, ErrorLog } = db;
-import model from '../models/index.ts';.sequelize;
-import { genTxt } from '../helpers/util.ts';
-import securityModule from '../helpers/security.ts';
-const { encryptPassword } = securityModule;
+const { Admin, Role, ErrorLog } = require('../models/index.ts');
+const model = require('../models/index.ts').sequelize;
+const { genTxt } = require('../helpers/util.ts');
+const { encryptPassword } = require('../helpers/security.ts');
 const NODE_ENV = process.env.NODE_ENV || 'local';
-const key = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '', 'config', `${NODE_ENV}.json`), 'utf8'));
+const key = require(`../config/${NODE_ENV}.json`);
 let error_message = 'Unexpected error';
+const nodemailer = require('nodemailer');
 
-
-export default async (req, res) => {
+module.exports = async (req, res) => {
   const t = await model.transaction();
   try {
     const count = await Admin.count();

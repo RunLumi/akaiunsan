@@ -1,4 +1,4 @@
-export default (sequelize, DataTypes) =>{
+module.exports = (sequelize, DataTypes) =>{
   const RequestMaid = sequelize.define('RequestMaid', {
     id: {
       type: DataTypes.INTEGER,

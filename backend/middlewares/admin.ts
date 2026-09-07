@@ -1,5 +1,4 @@
-import db from '../models/index.ts';
-const { AdminHistory, Role, ErrorLog } = db;
+const { AdminHistory, Role, ErrorLog } = require('../models/index.ts');
 let error_message = 'Unexpected error';
 
 async function recordHistory (req, res, next) {
@@ -48,4 +47,7 @@ async function checkPermission (req, res, next) {
   }
 }
 
-export { recordHistory, checkPermission };
+module.exports = {
+  recordHistory,
+  checkPermission
+}

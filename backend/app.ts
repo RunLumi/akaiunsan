@@ -1,22 +1,18 @@
-import registerRoutes from './routes/index.ts';
-import express from 'express';
-import cors from 'cors';
-import bodyParser from 'body-parser';
-
+const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-
+const cors = require('cors');
 app.use(cors());
 
-
+const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-import db from './models/index.ts';
+const db = require('./models/index.ts');
 db.sequelize.sync();
 
-registerRoutes(app);
+require('./routes/index.ts')(app);
 
 // Test harnesses (supertest) import the app without binding a port; pm2 and
 // local dev still run `node app.js` and expect it to listen.
@@ -40,4 +36,4 @@ if (require.main === module) {
   });
 }
 
-export default app;
+module.exports = app;

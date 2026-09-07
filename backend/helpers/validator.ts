@@ -1,4 +1,4 @@
-const validatorModule = {
+module.exports = {
     validateEmptyField: async (fields) => {
         let result = {};
         for (let prop in fields) {
@@ -7,7 +7,4 @@ const validatorModule = {
         }
         return result;
     }
-
-};
-
-export default validatorModule;
+}

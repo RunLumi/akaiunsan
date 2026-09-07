@@ -1,6 +1,5 @@
-import db from '../models/index.ts';
-const { ErrorLog } = db;
-import { sendMail } from '../helpers/mail.ts';
+const { ErrorLog } = require('../models/index.ts');
+const { sendMail } = require('../helpers/mail.ts');
 let error_status = 500;
 let error_message = 'Unexpected error';
 
@@ -115,4 +114,8 @@ async function employment (req, res) {
   }
 }
 
-export { contactUs, contactBiz, employment };
+module.exports = {
+  contactUs,
+  contactBiz,
+  employment
+}

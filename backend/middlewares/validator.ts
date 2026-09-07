@@ -1,16 +1,12 @@
-import fs from 'fs';
-import path from 'path';
-import securityModule from './../helpers/security.ts';
-const { verifyToken } = securityModule;
-import { findAdminByUsername } from './../helpers/admin.ts';
-import { findCustomerByEmail } from './../helpers/customer.ts';
-import db from '../models/index.ts';
-const { ErrorLog } = db;
+const { verifyToken } = require('./../helpers/security.ts');
+const { findAdminByUsername } = require('./../helpers/admin.ts');
+const { findCustomerByEmail } = require('./../helpers/customer.ts');
+const { ErrorLog } = require('../models/index.ts');
 const NODE_ENV = process.env.NODE_ENV || 'local';
-const key = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '', 'config', `${NODE_ENV}.json`), 'utf8'));
+const key = require(`../config/${NODE_ENV}.json`);
 let error_message = 'Unexpected error';
 
-const middlewareValidators = {
+module.exports = {
   clientValidator: async (req, res, next) => {
     let { authorization } = req.headers;
 
@@ -81,7 +77,4 @@ const middlewareValidators = {
       });
     }
   },
-
-};
-
-export default middlewareValidators;
+}

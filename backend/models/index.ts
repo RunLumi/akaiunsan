@@ -1,10 +1,8 @@
-import Sequelize from 'sequelize';
-import fs from 'fs';
-import path from 'path';
 const NODE_ENV = process.env.NODE_ENV || 'local';
-const config = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '', 'config', `${NODE_ENV}.json`), 'utf8'));
-
-import relations from './relations.ts';
+const config = require(`../config/${NODE_ENV}.json`);
+const Sequelize = require('sequelize');
+const fs = require('fs');
+const relations = require('./relations.ts');
 
 const db: any = {};
 
@@ -66,4 +64,4 @@ fs.readdirSync(__dirname)
 
   relations(db);
 
-export default db;
+module.exports = db;

@@ -1,4 +1,4 @@
-export default (sequelize, DataTypes) =>{
+module.exports = (sequelize, DataTypes) =>{
   const SupporterEducation = sequelize.define('SupporterEducation', {
     id: {
       type: DataTypes.INTEGER,

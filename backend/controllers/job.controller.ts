@@ -1,10 +1,10 @@
-import { substring, or, and } from 'sequelize';
-import db from '../models/index.ts';
-const { Job, JobDetail, Customer, ErrorLog, Subscription, SubscriptionTransaction, JobReview, Supporter } = db;
-import model from '../models/index.ts';.sequelize;
-.Op;
-import OmiseHelper from './../helpers/omise.ts';
-import PaymentHelper from './../helpers/payment.ts';
+const { Job, JobDetail, Customer, ErrorLog,
+  Subscription, SubscriptionTransaction,
+  JobReview, Supporter } = require('../models/index.ts');
+const model = require('../models/index.ts').sequelize;
+const { substring, or, and } = require('sequelize').Op;
+const OmiseHelper = require('./../helpers/omise.ts');
+const PaymentHelper = require('./../helpers/payment.ts');
 let error_status = 500;
 let error_message = 'Unexpected error';
 
@@ -331,4 +331,15 @@ async function getReviewDetail (req, res) {
   }
 }
 
-export { getDetail as getDetail, getList as getList, create as create, update as update, remove as remove, count as count, updateStatus, matchSupporter, createReview, getReviewDetail };
+module.exports = {
+  getDetail: getDetail,
+  getList: getList,
+  create: create,
+  update: update,
+  remove: remove,
+  count: count,
+  updateStatus,
+  matchSupporter,
+  createReview,
+  getReviewDetail
+}

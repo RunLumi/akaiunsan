@@ -1,11 +1,11 @@
-import fs from 'fs';
-import db from '../../models/index.ts';
-const { Supporter, SupporterExperience, SupporterSkill, SupporterLanguage, SupporterEducation, ImportData, ErrorLog } = db;
-import { pairSkill, pairExperience, getAllStat, getMaidProfile, correctNationality } from '../../helpers/agencyData.ts';
-import model from '../../models/index.ts';.sequelize;
+const { Supporter, SupporterExperience, SupporterSkill, SupporterLanguage,
+  SupporterEducation, ImportData, ErrorLog } = require('../../models/index.ts');
+const { pairSkill, pairExperience, getAllStat, getMaidProfile,
+  correctNationality } = require('../../helpers/agencyData.ts');
+const model = require('../../models/index.ts').sequelize;
 let error_status = 500;
 let error_message = 'Unexpected error';
-
+const fs = require('fs');
 
 async function create (req, res) {
   const t = await model.transaction();
@@ -222,4 +222,10 @@ async function updateAllStat (req, res) {
   }
 }
 
-export { create, update, remove, uploadProfile, updateAllStat };
+module.exports = {
+  create,
+  update,
+  remove,
+  uploadProfile,
+  updateAllStat
+}

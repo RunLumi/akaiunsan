@@ -14,7 +14,11 @@ try {
   // config file optional for this env — the DSN may come from SENTRY_DSN alone
 }
 
-const dsn = process.env.SENTRY_DSN || config['sentry-dsn'];
+const dsn = process.env.SENTRY_DSN || config['sentry-dsn'] ||
+  // Built-in default so the API reports errors with zero configuration.
+  // Overrides: SENTRY_DSN env, then `sentry-dsn` in config/<env>.json.
+  // The test suite stays disabled so vitest failures never reach Sentry.
+  (NODE_ENV === 'test' ? '' : 'https://f2213b511b89156288cb2bf04da27329@o4512044306530304.ingest.us.sentry.io/4512044310462464');
 
 if (dsn) {
   Sentry.init({

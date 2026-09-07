@@ -214,4 +214,14 @@ Total ≈ **30–47 focused days**. Recommended first milestone: Phases 0–2 (�
 
 | Date | Milestone | Evidence |
 |---|---|---|
-| — | — | — |
+| 2026-09-07 | Phase 0 — hygiene & tooling | `apps-ci.yml` (typecheck · lint · jest + coverage floors); `eslint.config.mjs` (ESLint 9, 0 errors / 536 warnings); Prettier config; `.nvmrc` 22 + `engines`; backup'd+removed dup `.babelrc` and `.eslintrc.json`; uninstalled `eslint-plugin-react-native`; jest wired (`jest.config.js`, `scripts.test = jest`, `setupFilesAfterEnv` global mocks). |
+| 2026-09-07 | Phase 1 — hooks/redux/shared characterization | hooks 100%, redux 92.3%, shared 97.5% line coverage (floors ≥80% met). Suites: `useApi`, `useCachedResources`, `updateSource`, `store`, `reducers`, `sagas`, i18n parity, `Utils`, `Geocoding`, `Layout`, `Constants.golden`, `design-tokens`, `BottomTab`. |
+| 2026-09-07 | Phase 1 — components (14 suites) | `src/test-utils/helpers.tsx` (act-wrapped create/createWithStore, `flush`, host-level `textNodes`/`textIncluding`/`pressableFrom`/`hostTouchables`/`pressText`, `toText`); 12 component test files rewritten on host-node finders; `jest.config.js` coveragePathIgnorePatterns fixed (`/src/.*/__tests__/` — prior `**` regex broke `--coverage`) + `cacheDirectory: ./.jest-cache` (boot volume at 99%, ENOSPC); global `FormData` stub in `jest.setup.js`; RN `Button` composite probe for CameraLibrary; RNGH touchable filtering for Header. |
+| 2026-09-07 | Phase 1 — suite fully green | `yarn jest --ci --coverage`: **26/26 suites, 146/146 tests, 6 snapshots**, no teardown noise. Overall line coverage **12.1%**; floors replicate: overall ≥10 ✓, shared 97.5 ✓, redux 92.3 ✓, hooks 100 ✓. Components 57.7%, navigation 24.7% (sample from full-table run). |
+| 2026-09-07 | Phase 1 — navigation contracts | New `src/navigation/contracts.ts` (linking prefixes `["akaiunsan://"]`, `Auth/Login → com.akaiunsan.customer`; FCM `data.type` 0–4 → BookingDetail / PromotionDetail / InboxDetail, else `""`; `gateForToken` auth/app). Extracted 1:1 from `navigation/index.tsx` (param pre-load side-effects and stale-closure navigate preserved); `src/navigation/__tests__/navigation.test.ts` (4 tests, contracts.ts 100% lines). Auth-gate + LOG_OUT saga + persist whitelist `["auth","language"]` were already pinned in store/sagas tests. |
+
+## Remaining work (not yet done)
+
+- Phase 1 remaining items (from the plan): the full-component screen navigation render test is not feasible under the current global mocks (`@react-navigation/core` is intentionally no-oped for `useFocusEffect`), so the navigation contract is pinned at the pure-contract layer instead. Maestro flows deferred to Phase 2.
+- `yarn typecheck` (`tsc --noEmit`) is intentionally red (~547 errors) — that is Phase 2/3 work, so the `typecheck` CI step will remain red until then (jest + lint are green).
+- Phase 2 replatform (Expo SDK 57 CNG) is the next milestone.

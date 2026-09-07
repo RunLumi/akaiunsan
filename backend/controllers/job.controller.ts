@@ -321,12 +321,9 @@ async function getReviewDetail (req, res) {
     const job_review = await JobReview.findOne({ where: where_clause });
     return res.status(200).json(job_review);
   } catch (err) {
-    // console.log(err)
-    if (t.finished != 'commit')
-      await t.rollback();
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
-    await ErrorLog.create({ location: 'job.controller.update', message: error_message });
+    await ErrorLog.create({ location: 'job.controller.getReviewDetail', message: error_message });
     return res.status(error_status).json({ message: error_message });
   }
 }

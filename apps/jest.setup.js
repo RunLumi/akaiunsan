@@ -67,6 +67,15 @@ jest.mock("react-native-stars", () => ({
   default: () => null,
 }));
 
+// google-places-autocomplete fires debounced XHR fetches on text change; there
+// is no XHR in the Node env, so provide a controlled TextInput stand-in.
+jest.mock("react-native-google-places-autocomplete", () => {
+  const React = require("react");
+  const GooglePlacesAutocomplete = (props) =>
+    React.createElement("TextInput", props);
+  return { __esModule: true, GooglePlacesAutocomplete };
+});
+
 // react-native-action-button reads its Stylesheet at import time in a way the
 // Node env chokes on; the smoke suite only needs a renderable stand-in.
 jest.mock("react-native-action-button", () => {

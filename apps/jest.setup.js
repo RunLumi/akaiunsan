@@ -16,12 +16,23 @@ console.error = (...args) => {
 
 jest.mock("react-native-gesture-handler", () => {
   const ReactNative = require("react-native");
+  const makeHandler = () => {
+    const React = require("react");
+    return ({ children, ...props }) =>
+      React.createElement(ReactNative.View, props, children);
+  };
   return {
     FlatList: ReactNative.FlatList,
     ScrollView: ReactNative.ScrollView,
     TouchableOpacity: ReactNative.TouchableOpacity,
     TouchableWithoutFeedback: ReactNative.TouchableWithoutFeedback,
     GestureHandlerRootView: ReactNative.View,
+    PanGestureHandler: makeHandler(),
+    NativeViewGestureHandler: makeHandler(),
+    RawButton: makeHandler(),
+    BaseButton: makeHandler(),
+    RectButton: makeHandler(),
+    State: { UNDETERMINED: 0, BEGAN: 1, ACTIVE: 2, END: 3, FAILED: 4 },
   };
 });
 
@@ -105,6 +116,17 @@ jest.mock("react-native-action-button", () => {
 
 // Same import-time issue as action-button (deprecated upstream, Phase 4 sweep
 // will replace it); carousel drives a ScrollView under the hood.
+// Home mounts <Swiper autoplay>; its scrollBy interval reads Platform and
+// keeps firing after tests end, hanging CI workers for 10+ minutes. Render
+// children statically suite-wide (same stand-in philosophy as above).
+jest.mock("react-native-swiper", () => {
+  const React = require("react");
+  const Swiper = ({ children, ...props }) =>
+    React.createElement("View", props, children);
+  Swiper.defaultProps = { autoplay: false, loop: false, showsPagination: false };
+  return { __esModule: true, default: Swiper };
+});
+
 jest.mock("react-native-snap-carousel", () => {
   const React = require("react");
   const Carousel = ({ children, renderItem, ...props }) =>
@@ -384,4 +406,19 @@ if (typeof globalThis.FormData === "undefined") {
     }
   }
   globalThis.FormData = FormDataStub;
+}
+
+// Platform.OS is read at render time by KeyboardAvoidingView wrappers across
+// the screens; jest-expo's Platform stands in everywhere EXCEPT inside
+// dynamically-imported ServiceScreen subtrees on CI, where it came through as
+// undefined. Pin it deterministically for the characterization suite.
+if (!globalThis.__platformPinned) {
+  const RN = require("react-native");
+  if (!RN.Platform || !RN.Platform.OS) {
+    Object.defineProperty(RN, "Platform", {
+      configurable: true,
+      value: { OS: "ios", select: (o) => (o && o.ios) || "ios", Version: 57 },
+    });
+  }
+  globalThis.__platformPinned = true;
 }

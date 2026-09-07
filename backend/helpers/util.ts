@@ -254,7 +254,7 @@ async function json2csv (header, data) {
 
 async function writeCsvFile(file_name, data){
   return new Promise(function(resolve, reject){
-
+    fs.mkdirSync('exports', { recursive: true });
     fs.writeFile(`./exports/${file_name}`, data,  function(err){
       if (err)
         reject(err);

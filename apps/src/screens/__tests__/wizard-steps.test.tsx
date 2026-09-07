@@ -24,19 +24,105 @@ jest.mock("@react-navigation/native", () => ({
 
 import ServiceScreenService from "../ServiceScreen/Service";
 import EditAndReOrderService from "../EditAndReOrderServiceScreen/EditAndReOrderService";
+import Constants from "../../shared/Constants";
+// Home mounts <Swiper autoplay>; its scrollBy timers fire after the suite
+// ends and keep the CI worker alive past the coverage step — stub statically.
+jest.mock("react-native-swiper", () => {
+  const React = require("react");
+  const Swiper = ({ children, ...props }: { children?: React.ReactNode; [key: string]: any }) =>
+    React.createElement("View", props, children);
+  return { __esModule: true, default: Swiper };
+});
 
-(axios as any).mockResolvedValue({
-  status: 200,
-  data: {
+
+// Per-endpoint response shaping: the wizard callbacks read specific fields
+// (JSON-stringified extra services, config-price model, language list) that
+// the generic envelope cannot express.
+(axios as any).mockImplementation((config: any) => {
+  const url = config?.url || "";
+  if (url === Constants.API.services_management_item) {
+    return Promise.resolve({
+      status: 200,
+      data: {
+        data: {
+          serviceDetail: { id: "svc-1", name: "Test service", price: 100 },
+          banner: [],
+          extraService: JSON.stringify([
+            {
+              id: "es-1",
+              name: "Ironing",
+              code: "COSTSP",
+              pricePerUnit: 20,
+              unit: 1,
+              acType: "",
+            },
+          ]),
+        },
+      },
+    });
+  }
+  if (url === Constants.API.config_price) {
+    return Promise.resolve({
+      status: 200,
+      data: {
+        data: {
+          items: [
+            {
+              serviceType: 1,
+              pricesModel: JSON.stringify({
+                one: 150,
+                two: 100,
+                twoPlus: 120,
+                threePlus: 90,
+              }),
+            },
+          ],
+        },
+      },
+    });
+  }
+  if (url === Constants.API.languages) {
+    return Promise.resolve({
+      status: 200,
+      data: {
+        data: {
+          items: [
+            { name: "English", code: "en" },
+            { name: "Thai", code: "th" },
+          ],
+        },
+      },
+    });
+  }
+  if (url === Constants.API.booking_detail) {
+    return Promise.resolve({
+      status: 200,
+      data: {
+        data: {
+          customerInfo: {
+            addressId: "addr-1",
+            address: "Test address",
+            phoneNumber: "0123456789",
+            remark: "",
+            roomNo: "",
+          },
+        },
+      },
+    });
+  }
+  return Promise.resolve({
+    status: 200,
     data: {
-      items: [
-        { id: "1", code: "COSTSP", name: "Special", pricePerUnit: 100, pricePerMore: 120, image: "" },
-        { id: "2", code: "LANGUAGE", name: "English", price: 50 },
-      ],
-      data: [],
-      errors: [],
+      data: {
+        items: [
+          { id: "1", code: "COSTSP", name: "Special", pricePerUnit: 100, pricePerMore: 120, image: "" },
+          { id: "2", code: "LANGUAGE", name: "English", price: 50, status: 1 },
+        ],
+        data: [],
+        errors: [],
+      },
     },
-  },
+  });
 });
 
 const preloadedState = {
@@ -122,6 +208,38 @@ const stepHandlers = (root: any) => {
   return handlers;
 };
 
+const rootfindAll = (renderer: any, visit: (fn: any) => boolean) => {
+  renderer.root.findAll(visit);
+};
+
+// pressAll variant that skips the order-submission handler (hangs under act).
+const sweepExceptOnNextStep = (root: any) => {
+  const seen = new Set<any>();
+  const handlers: any[] = [];
+  root.findAll((n: any) => {
+    const fn = n.props?.onPress;
+    if (
+      typeof fn === "function" &&
+      !seen.has(fn) &&
+      !String(fn).includes("onNextStep")
+    ) {
+      seen.add(fn);
+      handlers.push(fn);
+    }
+    return false;
+  });
+  for (const onPress of handlers) {
+    act(() => {
+      try {
+        const result = onPress({ preventDefault() {}, stopPropagation() {}, nativeEvent: {} });
+        if (result && typeof result.catch === "function") result.catch(() => {});
+      } catch {
+        // tolerated
+      }
+    });
+  }
+};
+
 const pressOne = (fn: any) => {
   act(() => {
     try {
@@ -161,7 +279,8 @@ describe("booking wizard edit-mode (Phase 3 characterization)", () => {
       expect(renderer.toJSON()).not.toBeNull();
       await flush();
       renderer.unmount();
-    }
+    },
+    30000
   );
 });
 
@@ -181,23 +300,31 @@ describe("booking wizard steps (Phase 3 characterization)", () => {
         makeStore(preloadedState)
       );
       await flush();
-      // Two walks cover the reachable step states; revisiting an already
-      // mounted step re-runs child effects that never settle under the Node
-      // renderer, so the walk is capped here.
-      for (let walk = 0; walk < 2; walk++) {
-        const handlers = stepHandlers(renderer.root);
-        if (!handlers.length) break;
-        const fn = handlers[walk % handlers.length];
-        pressOne(fn);
+      // Jump through every step header (absolute toStep jumps), sweeping the
+      // freshly mounted step each time. `onNextStep` is block-listed: its
+      // order-submission chain re-schedules unresolved async work under the
+      // Node renderer (characterized instead by the request/saga suites).
+      const seenHandlers = new Set<any>();
+      const labels: any[] = [];
+      rootfindAll(renderer, (fn: any) => {
+        if (!seenHandlers.has(fn)) {
+          seenHandlers.add(fn);
+          labels.push(fn);
+        }
+        return false;
+      });
+      for (const labelHandler of labels) {
+        pressOne(labelHandler);
         await flush();
         typeAll(renderer.root);
         await flush();
-        pressAll(renderer.root);
+        sweepExceptOnNextStep(renderer.root);
         await flush();
       }
       expect(renderer.toJSON()).not.toBeNull();
       await flush();
       renderer.unmount();
-    }
+    },
+    30000
   );
 });

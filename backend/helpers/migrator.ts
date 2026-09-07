@@ -16,10 +16,16 @@ export const umzug = new Umzug({
   logger: undefined,
 });
 
-/** Applies pending migrations. Idempotent — safe to call on every boot. */
-export async function runMigrations() {
-  await umzug.up();
-  return umzug.migrations().then((m) => m.length);
+let inFlight: Promise<number> | null = null;
+
+/** Applies pending migrations. Idempotent — safe to call on every boot.
+ *  Memoized: app.ts's boot call and the test harness's truncateAll share one
+ *  run, so concurrent callers can't both INSERT the same meta row. */
+export function runMigrations() {
+  if (!inFlight) {
+    inFlight = umzug.up().then(() => umzug.migrations().then((m) => m.length));
+  }
+  return inFlight;
 }
 
 /** Names of tables present in the database right now. */

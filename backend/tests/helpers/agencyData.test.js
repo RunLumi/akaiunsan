@@ -130,6 +130,7 @@ const jsonFixtures = {
 const originalFetch = global.fetch;
 
 beforeAll(async () => {
+  fs.mkdirSync('uploads/supporters', { recursive: true });
   patchModule('mysql', fakeMysql);
   patchModule('ssh2-sftp-client', FakeSftp);
   global.fetch = async (url) => ({ ok: true, status: 200, arrayBuffer: async () => new ArrayBuffer(8) });

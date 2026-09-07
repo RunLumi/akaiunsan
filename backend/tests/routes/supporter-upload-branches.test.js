@@ -2,6 +2,7 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import request from 'supertest';
 import fs from 'fs';
 import path from 'path';
+import sharp from 'sharp';
 import app from '../../app';
 import { truncateAll, APP_KEY, db } from '../helpers/db';
 import { createAdmin, adminToken } from '../helpers/factories';
@@ -12,6 +13,10 @@ beforeAll(async () => {
   await truncateAll();
   const admin = await createAdmin({ username: 'crop@test.local' });
   adminJwt = await adminToken(admin);
+
+  // tiny non-square PNG fixtures generated with sharp (same lib the route uses)
+  await sharp({ create: { width: 2, height: 4, channels: 3, background: 'red' } }).png().toFile('/tmp/tall.png');
+  await sharp({ create: { width: 4, height: 2, channels: 3, background: 'blue' } }).png().toFile('/tmp/wide.png');
 });
 
 afterAll(() => {

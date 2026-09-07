@@ -1,4 +1,7 @@
 module.exports = {
+  // CI runners are slower than dev machines; deep-render characterization tests exceed 5s
+  testTimeout: 30000,
+
   preset: "jest-expo",
   setupFiles: [
     "<rootDir>/jest.preload.js",

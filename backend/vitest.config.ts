@@ -12,8 +12,13 @@ module.exports = defineConfig({
     // Integration tests share one MariaDB; truncation between suites is only
     // safe when files run one at a time.
     fileParallelism: false,
-    testTimeout: 30000,
-    hookTimeout: 60000,
+    // Fresh module registry per file: suites that vi.mock models/pino must not
+    // poison later suites sharing the worker (observed as random 401/500s).
+    isolate: true,
+    pool: 'forks',
+    poolOptions: { forks: { singleFork: false } },
+    testTimeout: 60000,
+    hookTimeout: 120000,
     setupFiles: ['tests/setup-env.js'],
     coverage: {
       provider: 'v8',

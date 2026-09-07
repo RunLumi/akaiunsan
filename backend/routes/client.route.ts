@@ -1,3 +1,4 @@
+import fs from 'fs';
 import middlewareValidators from './../middlewares/validator.ts';
 const { headerValidator, clientValidator } = middlewareValidators;
 import multer from 'multer';
@@ -12,7 +13,10 @@ import * as SubscriptionController from './../controllers/subscription.controlle
 
 const customerStorage = multer.diskStorage(
   {
-      destination: 'uploads/customers',
+      destination: function (_req, _file, cb) {
+      fs.mkdirSync('uploads/customers', { recursive: true });
+      cb(null, 'uploads/customers');
+    },
       filename: function ( req, file, cb ) {
         let file_name = genTxt(20);
         let original_file_name = file.originalname.split('.');

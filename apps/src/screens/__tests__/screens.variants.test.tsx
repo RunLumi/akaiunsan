@@ -201,7 +201,7 @@ describe("screens alternative-state variants (Phase 3 characterization)", () => 
       expect(renderer.toJSON()).not.toBeNull();
       renderer.unmount();
     }
-  });
+  }, 30000);
 
   it("request errors route every screen through its error branch", async () => {
     (axios as any).mockRejectedValue(

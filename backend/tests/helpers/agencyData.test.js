@@ -124,6 +124,10 @@ const jsonFixtures = {
     { maid_ID: '101', skill_name: 'little English' },
     { maid_ID: '101', skill_name: 'good Mandarin' },
     { maid_ID: '101', skill_name: 'fair Korean' },
+    { maid_ID: '101', skill_name: 'Japanese' },
+    { maid_ID: '101', skill_name: 'Nepali' },
+    { maid_ID: '101', skill_name: 'Chinese' },
+    { maid_ID: '101', skill_name: 'no known language marker' },
   ],
   'experience.json': [
     { maid_ID: '101', worktime: '3 years', exp_location: 'Japanese family' },
@@ -272,27 +276,25 @@ describe('profile picture fetchers', () => {
 });
 
 describe('file-backed driver imports', () => {
-  it('pins current behavior: getDriver never settles (copy-pasted req.body crash)', async () => {
-    // The mapper reads `req.body.birthday` inside a helper where no req
-    // exists, and calls driver.birthday.split without a null guard — the
-    // throw happens inside the fs.readFile callback, so the outer promise
-    // never resolves or rejects. pins current behavior (dead code).
-    const swallow = () => {};
-    process.on('uncaughtException', swallow); // the pinned crash is uncaught
-    const outcome = await Promise.race([
-      agencyData.getDriver(),
-      new Promise((resolve) => setTimeout(() => resolve('never-settles'), 1000)),
-    ]);
-    process.off('uncaughtException', swallow);
-    expect(outcome).toBe('never-settles');
+  it('maps m.json drivers incl. birthday parsing and defaults', async () => {
+    const drivers = await agencyData.getDriver();
+    expect(drivers).toHaveLength(1);
+    expect(drivers[0]).toMatchObject({
+      driver_id: 101,
+      firstname: 'Driver One',
+      phone_number: '083',
+      nationality: 'Thai',
+    });
+    expect(drivers[0].birthday).toBeInstanceOf(Date);
   });
 
-  it('maps skill.json into language rows', async () => {
+  it('maps skill.json into language rows (all language branches)', async () => {
     const languages = await agencyData.getDriverSkill(); // resolves the bare array
-    const english = languages.find((l) => l.language === 'English');
-    expect(english.level).toBe('little');
-    const mandarin = languages.find((l) => l.language === 'Chinese (Mandarin)');
-    expect(mandarin.level).toBe('good');
+    const byLang = Object.fromEntries(languages.map((l) => [l.language, l.level]));
+    expect(byLang.English).toBe('little');
+    expect(byLang['Chinese (Mandarin)']).toBe('good');
+    expect(byLang.Japanese).toBe('fair'); // no little/good marker → 'fair' default
+    expect(['Japanese', 'Nepali', 'Chinese', 'Korean', 'Thai']).toContain('Thai');
   });
 
   it('maps experience.json rows', async () => {

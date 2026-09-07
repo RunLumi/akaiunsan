@@ -71,6 +71,7 @@
     "plugins": [
       "./plugins/withFirebaseDisableSpm",
       "./plugins/withAndroidGradleProps",
+      "./plugins/withAndroidReleaseSigning",
       "@react-native-firebase/app",
       "@react-native-firebase/crashlytics",
       "@react-native-google-signin/google-signin",

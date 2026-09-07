@@ -27,7 +27,7 @@ def verify_signature(payload: bytes, signature_header: str) -> bool:
 
 class WebhookHandler(BaseHTTPRequestHandler):
     def do_GET(self):
-        if self.path == "/health":
+        if self.path.endswith("/health"):
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
             self.end_headers()
@@ -90,6 +90,6 @@ class WebhookHandler(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    server = HTTPServer(("127.0.0.1", PORT), WebhookHandler)
-    print(f"Webhook deployment listener active on 127.0.0.1:{PORT}")
+    server = HTTPServer(("0.0.0.0", PORT), WebhookHandler)
+    print(f"Webhook deployment listener active on 0.0.0.0:{PORT}")
     server.serve_forever()

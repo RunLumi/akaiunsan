@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:464116560251:android:9e2e464304c1b77eb14dde",
         "android_client_info": {
-          "package_name": "com.ayasan.yoda.android"
+          "package_name": "com.akaiunsan.customer"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "464116560251-6ha8mne4rg0he1om6u3qc8ce2cmh7b5n.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.ayasan.yoda.android",
+            "package_name": "com.akaiunsan.customer",
             "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
           }
         },
@@ -25,7 +25,7 @@
           "client_id": "464116560251-imcs769k2p8g7qf740m04lolkis7h9fg.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.ayasan.yoda.android",
+            "package_name": "com.akaiunsan.customer",
             "certificate_hash": "9ecd4ca902eeeb8b9d76b86c7bdf3ad053fdbad6"
           }
         },
@@ -50,7 +50,7 @@
               "client_id": "464116560251-nre78v2hg71ucj6d4h0j6i792orevm8r.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.ayasan.customer"
+                "bundle_id": "com.akaiunsan.customer"
               }
             }
           ]

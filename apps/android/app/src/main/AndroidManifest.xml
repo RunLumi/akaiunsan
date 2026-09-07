@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.ayasan.yoda.android" xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.akaiunsan.customer" xmlns:tools="http://schemas.android.com/tools">
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
   <uses-permission android:name="android.permission.CAMERA"/>
@@ -11,13 +11,13 @@
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
   <application android:name=".MainApplication" android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:roundIcon="@mipmap/ic_launcher_round" android:allowBackup="true" android:theme="@style/AppTheme" android:usesCleartextTraffic="true">
     <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
-    <meta-data android:name="com.facebook.sdk.ApplicationName" android:value="Ayasan Service"/>
+    <meta-data android:name="com.facebook.sdk.ApplicationName" android:value="Akaiunsan Service"/>
     <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyD6rt8Bo6w4maFl8LBeX7zYczkEJfulwco"/>
     <meta-data android:name="expo.modules.updates.ENABLED" android:value="true"/>
     <meta-data android:name="expo.modules.updates.EXPO_SDK_VERSION" android:value="43.0.0"/>
     <meta-data android:name="expo.modules.updates.EXPO_UPDATES_CHECK_ON_LAUNCH" android:value="NEVER"/>
     <meta-data android:name="expo.modules.updates.EXPO_UPDATES_LAUNCH_WAIT_MS" android:value="0"/>
-    <meta-data android:name="expo.modules.updates.EXPO_UPDATE_URL" android:value="https://exp.host/@anonymous/ayasan"/>
+    <meta-data android:name="expo.modules.updates.EXPO_UPDATE_URL" android:value="https://exp.host/@anonymous/akaiunsan"/>
     <meta-data tools:replace="android:value" android:name="org.unimodules.core.AppLoader#react-native-headless" android:value="org.unimodules.adapters.react.apploader.RNHeadlessAppLoader"/>
     <activity android:name=".MainActivity" android:label="@string/app_name" android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode" android:launchMode="singleTask" android:windowSoftInputMode="adjustPan" android:theme="@style/Theme.App.SplashScreen" android:screenOrientation="portrait" android:exported="true">
       <intent-filter>
@@ -28,19 +28,18 @@
         <action android:name="android.intent.action.VIEW"/>
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
-        <data android:scheme="com.ayasan.yoda.android"/>
-        <data android:scheme="com.ayasan.customer"/>
+        <data android:scheme="com.akaiunsan.customer"/>
       </intent-filter>
       <intent-filter>
-        <data android:scheme="ayasan"/>
-        <data android:scheme="com.ayasan.customer"/>
+        <data android:scheme="akaiunsan"/>
+        <data android:scheme="com.akaiunsan.customer"/>
         <action android:name="android.intent.action.VIEW"/>
         <category android:name="android.intent.category.BROWSABLE"/>
         <category android:name="android.intent.category.DEFAULT"/>
       </intent-filter>
       <intent-filter android:autoVerify="true" data-generated="true">
         <action android:name="android.intent.action.VIEW"/>
-        <data android:scheme="ayasan" android:host="com.ayasan.yoda.android"/>
+        <data android:scheme="akaiunsan" android:host="com.akaiunsan.customer"/>
         <category android:name="android.intent.category.BROWSABLE"/>
         <category android:name="android.intent.category.DEFAULT"/>
       </intent-filter>

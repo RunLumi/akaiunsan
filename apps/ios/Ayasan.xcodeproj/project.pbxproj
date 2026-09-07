@@ -457,7 +457,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ayasan.customer;
+				PRODUCT_BUNDLE_IDENTIFIER = com.akaiunsan.customer;
 				PRODUCT_NAME = Ayasan;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Ayasan/Ayasan-Bridging-Header.h";
@@ -488,7 +488,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.ayasan.customer;
+				PRODUCT_BUNDLE_IDENTIFIER = com.akaiunsan.customer;
 				PRODUCT_NAME = Ayasan;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Ayasan/Ayasan-Bridging-Header.h";

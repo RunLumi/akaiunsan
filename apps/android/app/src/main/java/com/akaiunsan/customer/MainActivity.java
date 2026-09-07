@@ -1,4 +1,4 @@
-package com.ayasan.yoda.android;
+package com.akaiunsan.customer;
 import android.content.res.Configuration;
 import android.content.Intent;
 

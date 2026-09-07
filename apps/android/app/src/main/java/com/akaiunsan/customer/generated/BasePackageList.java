@@ -1,4 +1,4 @@
-package com.ayasan.yoda.android.generated;
+package com.akaiunsan.customer.generated;
 
 import java.util.Arrays;
 import java.util.List;

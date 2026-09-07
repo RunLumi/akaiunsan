@@ -11,7 +11,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Ayasan</string>
+	<string>Akaiunsan</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -31,8 +31,8 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.ayasan.customer</string>
-				<string>com.ayasan.customer</string>
+				<string>com.akaiunsan.customer</string>
+				<string>com.akaiunsan.customer</string>
 			</array>
 		</dict>
 		<dict>
@@ -53,7 +53,7 @@
 	<key>FacebookAppID</key>
 	<string>1552681784990344</string>
 	<key>FacebookDisplayName</key>
-	<string>Ayasan Service</string>
+	<string>Akaiunsan Service</string>
 	<key>GMSApiKey</key>
 	<string>AIzaSyC8um-ALVzMHt5KetZF-UXcyijGTprnidY</string>
 	<key>LSApplicationQueriesSchemes</key>

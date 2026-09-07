@@ -605,7 +605,7 @@ export default function Login(props: any) {
                 }
                 if (Platform.OS === "android") {
                   Linking.openURL(
-                    "https://play.google.com/store/apps/details?id=com.ayasan.yoda.android&hl=en&gl=US"
+                    "https://play.google.com/store/apps/details?id=com.akaiunsan.customer&hl=en&gl=US"
                   );
                 }
               }}

@@ -143,9 +143,10 @@ async function remove (req, res) {
 async function uploadProfile (req, res) {
   try {
     if (req.file) {
-      const sizeOf = require('image-size');
+      const { imageSize } = require('image-size');
+      const fs = require('fs');
       let image_file = `./uploads/supporters/${req.file.filename}`;
-      var dimensions = sizeOf(image_file);
+      var dimensions = imageSize(fs.readFileSync(image_file));
       let image_width = dimensions.width;
       let image_height = dimensions.height;
 

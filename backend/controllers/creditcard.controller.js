@@ -1,4 +1,4 @@
-const { Customer, CreditCard } = require('../models');
+const { Customer, CreditCard, ErrorLog } = require('../models');
 const model = require('../models').sequelize;
 const { substring, or, and } = require('sequelize').Op;
 const { findCustomerById } = require('../helpers/customer');

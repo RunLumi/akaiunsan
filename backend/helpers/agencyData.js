@@ -758,13 +758,20 @@ async function getDriverProfile (driver_id) {
     const fs = require('fs');
     const driver_uri = `https://www.ayasan-driver.com/profilepicture/${driver_id}/1.jpg`;
     const new_driver_uri = `${__dirname}/../uploads/supporters/driver_${driver_id}.jpg`;
-    const request = require('request');
 
-    request.head(driver_uri, function(err, res, body){
-      request(driver_uri).pipe(fs.createWriteStream(new_driver_uri)).on('close', function () {
-        resolve(`driver_${driver_id}.jpg`);
-      });
-    });
+    (async () => {
+      const response = await fetch(driver_uri, { method: 'HEAD' });
+      if (!response.ok)
+        return reject({ message: 'driver profile picture not found' });
+
+      const imageResponse = await fetch(driver_uri);
+      if (!imageResponse.ok)
+        return reject({ message: 'driver profile picture not found' });
+
+      const stream = fs.createWriteStream(new_driver_uri);
+      const buffer = Buffer.from(await imageResponse.arrayBuffer());
+      stream.end(buffer, () => resolve(`driver_${driver_id}.jpg`));
+    })().catch((err) => reject(err));
   });
 }
 

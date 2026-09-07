@@ -65,6 +65,15 @@ describe('helpers/security', () => {
     );
   });
 
+  it('rejects tokens signed with the none algorithm (jwt v9 hardening)', async () => {
+    const jwt = require('jsonwebtoken');
+    const unsigned = jwt.sign({ _user: { username: 'unit@test.local' } }, null, {
+      algorithm: 'none',
+    });
+    await expect(security.verifyToken(unsigned)).rejects.toThrow();
+    await expect(security.verifyToken('garbage.token.value')).rejects.toThrow();
+  });
+
   it('issues forget-password tokens that verify', async () => {
     const forgetToken = await security.requestForgetPasswordToken('unit@test.local', 'h');
     const decoded = await security.verifyToken(forgetToken);

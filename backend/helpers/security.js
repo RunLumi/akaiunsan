@@ -19,11 +19,12 @@ module.exports = {
       _user: { username, createdDate },
       host_name
     }, key["jwt-secret"], {
-      expiresIn: '30d'
+      expiresIn: '30d',
+      algorithm: 'HS256'
     });
   },
   verifyToken: async (token) => {
-    return await jwt.verify(token, key['jwt-secret']);
+    return await jwt.verify(token, key['jwt-secret'], { algorithms: ['HS256'] });
   },
   findUser: async (username) => {
     const found = await Customer.findOne({ where: { email: username } });
@@ -41,7 +42,8 @@ module.exports = {
       _user: { username, createdDate },
       host_name
     }, key["jwt-secret"], {
-      expiresIn: 60*30
+      expiresIn: 60*30,
+      algorithm: 'HS256'
     });
   }
 }

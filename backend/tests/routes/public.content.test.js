@@ -25,17 +25,20 @@ function patchModule(specifier, mockExports) {
 const nodemailer = require('nodemailer');
 const sentMails = [];
 const originalCreateTransport = nodemailer.createTransport;
+let originalFetch;
 
 let app;
 let db, APP_KEY, truncateAll;
 
 beforeAll(async () => {
-  const fakeRequest = (url, optionsOrCb, maybeCb) => {
-    const cb = typeof optionsOrCb === 'function' ? optionsOrCb : maybeCb;
-    cb(null, { statusCode: 200 }, '<html><body><div class="entry-content"><p>post body</p><div>dropped</div></div></body></html>');
-  };
-  fakeRequest.jar = () => ({});
-  patchModule('request', fakeRequest);
+  // blog.controller now fetches post bodies with the native fetch
+  originalFetch = global.fetch;
+  global.fetch = async (url) => ({
+    ok: true,
+    status: 200,
+    text: async () =>
+      '<html><body><div class="entry-content"><p>post body</p><div>dropped</div></div></body></html>',
+  });
   patchModule('rss-converter', {
     toJson: async () => ({
       items: [
@@ -72,6 +75,7 @@ beforeAll(async () => {
 
 afterAll(() => {
   nodemailer.createTransport = originalCreateTransport;
+  global.fetch = originalFetch;
   restoreFns.forEach((restore) => restore());
 });
 

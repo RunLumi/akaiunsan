@@ -347,35 +347,25 @@ describe('client credit cards (omise mocked)', () => {
     token = await factories.customerToken(customer);
   });
 
-  it('pins current behavior: first-card creation never responds (two stacked bugs)', async () => {
-    // 1) createOmiseCustomer returns only the omise id string, so destructuring
-    //    `{ card }` from it throws.
-    // 2) the controller's catch block references ErrorLog, which it never
-    //    imports — the handler crashes and no response is ever sent.
-    let responded = false;
-    const pending = authed(request(app).post('/client/credit-cards'), token)
-      .send({
-        name: 'Personal',
-        expiration_month: 12,
-        expiration_year: 2030,
-        brand: 'visa',
-        last_digits: '4242',
-        card_token: 'tokn_1',
-      })
-      .then((res) => {
-        responded = true;
-        return res;
-      });
+  it('pins current behavior: first-card creation 500s (createOmiseCustomer returns only the id)', async () => {
+    // createOmiseCustomer returns just the omise id string, so destructuring
+    // `{ card }` from it throws. pins current behavior (the controller now
+    // answers 500 instead of hanging since ErrorLog was imported).
+    const res = await authed(request(app).post('/client/credit-cards'), token).send({
+      name: 'Personal',
+      expiration_month: 12,
+      expiration_year: 2030,
+      brand: 'visa',
+      last_digits: '4242',
+      card_token: 'tokn_1',
+    });
 
-    const outcome = await Promise.race([
-      pending,
-      new Promise((resolve) => setTimeout(() => resolve('no-response'), 1500)),
-    ]);
-    expect(outcome).toBe('no-response'); // pins current behavior
+    expect(res.status).toBe(500);
+    expect(res.body.message).toMatch(/Cannot read properties|card/);
     expect(await db.CreditCard.count({ where: { customer_id: customer.id } })).toBe(0);
   });
 
-  it('pins current behavior: attach path also never responds (TDZ shadowing + ErrorLog import)', async () => {
+  it('pins current behavior: attach path 500s (TDZ shadowing of customer)', async () => {
     await db.Customer.update(
       { omise_customer_id: 'cust_test_existing' },
       { where: { id: customer.id } }
@@ -383,28 +373,18 @@ describe('client credit cards (omise mocked)', () => {
 
     // `const customer = await attachOmiseCard(customer.omise_customer_id, ...)`
     // shadows the outer customer inside its own initializer → ReferenceError
-    // "Cannot access 'customer' before initialization" → catch → ErrorLog is
-    // not imported → handler crashes, no response. pins current behavior
-    let responded = false;
-    const pending = authed(request(app).post('/client/credit-cards'), token)
-      .send({
-        name: 'Business',
-        expiration_month: 6,
-        expiration_year: 2029,
-        brand: 'mastercard',
-        last_digits: '5555',
-        card_token: 'tokn_2',
-      })
-      .then((res) => {
-        responded = true;
-        return res;
-      });
+    // "Cannot access 'customer' before initialization". pins current behavior.
+    const res = await authed(request(app).post('/client/credit-cards'), token).send({
+      name: 'Business',
+      expiration_month: 6,
+      expiration_year: 2029,
+      brand: 'mastercard',
+      last_digits: '5555',
+      card_token: 'tokn_2',
+    });
 
-    const outcome = await Promise.race([
-      pending,
-      new Promise((resolve) => setTimeout(() => resolve('no-response'), 1500)),
-    ]);
-    expect(outcome).toBe('no-response');
+    expect(res.status).toBe(500);
+    expect(res.body.message).toBe("Cannot access 'customer' before initialization");
   });
 
   it('lists, counts and details cards scoped to the customer', async () => {

@@ -5,7 +5,6 @@ const BLOG_URL = 'https://blog.ayasan-service.com/'
 const BLOG_RSS_URL = 'https://blog.ayasan-service.com/feed/?paged=';
 const BLOG_RSS_SEARCH_URL = 'https://blog.ayasan-service.com/?feed=rss2';
 const scrape = require('html-metadata');
-const request = require('request');
 
 async function getList (req, res) {
   try {
@@ -42,22 +41,18 @@ async function getContent (req, res) {
 
     var options =  {
       url: `${BLOG_URL}?p=${guid}`,
-      jar: request.jar(), // Cookie jar
       headers: {
         'User-Agent': 'webscraper'
       }
     };
     const meta_data = await scrape(options);
 
-    let result = await new Promise((resolve, reject) => {
-      request(`${BLOG_URL}?p=${guid}`, function (error, response, body) {
-        if (error || (response && response.statusCode != 200)) {
-          reject({ message: 'Request blog error' })
-        } else {
-          resolve(body)
-        }
-      });
-    })
+    const response = await fetch(`${BLOG_URL}?p=${guid}`, {
+      headers: { 'User-Agent': 'webscraper' }
+    });
+    if (response.status != 200)
+      throw { message: 'Request blog error' };
+    const result = await response.text();
 
     const cheerio = require('cheerio');
     let $ = cheerio.load(result);

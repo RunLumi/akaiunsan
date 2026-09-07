@@ -27,13 +27,12 @@ import EditAndReOrderService from "../EditAndReOrderServiceScreen/EditAndReOrder
 import Constants from "../../shared/Constants";
 // Home mounts <Swiper autoplay>; its scrollBy timers fire after the suite
 // ends and keep the CI worker alive past the coverage step — stub statically.
-vi.mock("react-native-swiper", () => ({
-  __esModule: true,
-  default: ({ children, ...props }) => {
-    const React = require("react");
-    return React.createElement("View", props, children);
-  },
-}));
+jest.mock("react-native-swiper", () => {
+  const React = require("react");
+  const Swiper = ({ children, ...props }: { children?: React.ReactNode; [key: string]: any }) =>
+    React.createElement("View", props, children);
+  return { __esModule: true, default: Swiper };
+});
 
 
 // Per-endpoint response shaping: the wizard callbacks read specific fields

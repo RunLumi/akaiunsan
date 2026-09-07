@@ -6,6 +6,7 @@ import cors from 'cors';
 import db from './models/index.ts';
 import registerRoutes from './routes/index.ts';
 import { logger } from './helpers/logger.ts';
+import { runMigrations } from './helpers/migrator.ts';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -15,7 +16,10 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-db.sequelize.sync();
+runMigrations().catch((e) => {
+  logger.error('migrations failed: %s', e.message);
+  process.exit(1);
+});
 
 registerRoutes(app);
 

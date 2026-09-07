@@ -253,7 +253,7 @@ async function matchSupporter (req, res) {
         { model: Customer }
       ]});
     if (job.payment_method == 'credit_card') {
-      let { omise_card_id, total_price } = job;
+      let { omise_card_id, final_price: total_price } = job;
       let { omise_customer_id, id } = job.Customer;
       //charge omise here
       const chargeDetail = await OmiseHelper.chargeCustomerCardById(omise_customer_id, total_price, omise_card_id);
@@ -263,10 +263,12 @@ async function matchSupporter (req, res) {
         chargeDetail.amount,
         'credit_card',
         'Job',
-        888,
+        job.id,
         id,
         chargeDetail.status 
-    )
+      );
+      await t.commit();
+      return res.status(200).json(true);
     } else {
       await t.commit();
       return res.status(200).json(true);

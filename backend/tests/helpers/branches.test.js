@@ -36,10 +36,12 @@ describe('helpers/version branches', () => {
 describe('helpers/agencyData correctNationality remaining branches', () => {
   it('maps every declared alias', () => {
     expect(agencyData.correctNationality('Vietnamese')).toBe('Vietnamese');
+    expect(agencyData.correctNationality('vietnamese')).toBe('Vietnamese');
     expect(agencyData.correctNationality('laos')).toBe('Lao');
     expect(agencyData.correctNationality('myanmar/thaiyai')).toBe('Myanmar/Thaiyai');
     expect(agencyData.correctNationality('cambodian')).toBe('Combodian');
     expect(agencyData.correctNationality('philipine')).toBe('Filipino');
+    expect(agencyData.correctNationality('philipines')).toBe('Filipino');
     expect(agencyData.correctNationality('')).toBeNull();
     expect(agencyData.correctNationality(undefined)).toBeNull();
   });

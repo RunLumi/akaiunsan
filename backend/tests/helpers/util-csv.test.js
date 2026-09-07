@@ -2,7 +2,7 @@ import { describe, it, expect, afterAll } from 'vitest';
 import fs from 'fs';
 import path from 'path';
 
-const util = require('../../helpers/util.ts');
+import * as util from '../../helpers/util.ts';
 
 const writtenFiles = [];
 

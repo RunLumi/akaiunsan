@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeAll } from 'vitest';
+import * as adminHelperModule from '../../helpers/admin.ts';
 import request from 'supertest';
 import app from '../../app';
 import { truncateAll, APP_KEY, db } from '../helpers/db';
@@ -66,7 +67,7 @@ describe('helpers/admin.findAdminById (unit)', () => {
   it('finds and rejects', async () => {
     const { createAdmin } = await import('../helpers/factories');
     const admin = await createAdmin({ username: 'findbyid@test.local' });
-    const adminHelper = require('../../helpers/admin.ts');
+    const adminHelper = adminHelperModule;
     const found = await adminHelper.findAdminById(admin.id);
     expect(found.username).toBe('findbyid@test.local');
     await expect(adminHelper.findAdminById(999999)).rejects.toThrow('Admin does not found.');

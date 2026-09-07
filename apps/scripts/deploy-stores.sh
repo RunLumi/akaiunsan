@@ -7,12 +7,39 @@ APP_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 ANDROID_ROOT="$APP_ROOT/android"
 IOS_ROOT="$APP_ROOT/ios"
 
+# The ignored local release files are the default credential source.
+load_env_file() {
+  local env_file="$1"
+  if [[ -f "$env_file" ]]; then
+    set -a
+    # shellcheck disable=SC1090
+    source "$env_file"
+    set +a
+  fi
+}
+
+load_env_file "$ANDROID_ROOT/keystore.env"
+load_env_file "$IOS_ROOT/scripts/release.env"
+
 ANDROID_PACKAGE="${ANDROID_PACKAGE:-com.akaiunsan.customer}"
-ANDROID_VARIANT="${ANDROID_VARIANT:-ProductionRelease}"
+ANDROID_VARIANT="${ANDROID_VARIANT:-Release}"
 ENVFILE="${ENVFILE:-.env.production}"
 PLAY_TRACK="${PLAY_TRACK:-internal}"
+PLAY_STATUS="${PLAY_STATUS:-completed}"
 IOS_SCHEME="${IOS_SCHEME:-Akaiunsan}"
+IOS_CONFIGURATION="${IOS_CONFIGURATION:-Release}"
 BUILD_ROOT="${BUILD_ROOT:-$APP_ROOT/build/store-release}"
+if [[ -z "${PLAY_UPLOADER:-}" && -x "/Volumes/SSD/imc/lcn-lumi/lumi/android/scripts/play_upload.sh" ]]; then
+  PLAY_UPLOADER="/Volumes/SSD/imc/lcn-lumi/lumi/android/scripts/play_upload.sh"
+fi
+
+# Normalize names used by this script from the Lumi-compatible local files.
+ANDROID_SIGNING_STORE_FILE="${ANDROID_SIGNING_STORE_FILE:-${KEYSTORE_PATH:-}}"
+ANDROID_SIGNING_STORE_PASSWORD="${ANDROID_SIGNING_STORE_PASSWORD:-${KEYSTORE_PASSWORD:-}}"
+ANDROID_SIGNING_KEY_ALIAS="${ANDROID_SIGNING_KEY_ALIAS:-${KEY_ALIAS:-}}"
+ANDROID_SIGNING_KEY_PASSWORD="${ANDROID_SIGNING_KEY_PASSWORD:-${KEY_PASSWORD:-}}"
+PLAY_SERVICE_ACCOUNT_JSON="${PLAY_SERVICE_ACCOUNT_JSON:-${GOOGLE_PLAY_SERVICE_ACCOUNT_JSON:-}}"
+APPLE_TEAM_ID="${APPLE_TEAM_ID:-${TEAM_ID:-}}"
 
 CONFIRM_UPLOAD=0
 BUILD_ONLY=0
@@ -24,36 +51,41 @@ usage() {
 Usage:
   ./apps/scripts/deploy-stores.sh [options]
 
-Builds production artifacts and, only with --confirm, uploads them through API
-clients. Without --confirm the script stops after building and validating files.
+Builds production artifacts and, only with --confirm, uploads them through
+Google Play and App Store Connect API clients. Without --confirm the script
+stops after building and validating files.
 
 Options:
-  --confirm       Upload the built artifacts to the selected stores.
+  --confirm       Upload the validated artifacts to the selected stores.
   --build-only    Build and validate artifacts; never upload.
   --android-only  Build/upload Android only.
   --ios-only      Build/upload iOS only.
   -h, --help      Show this help.
 
-Environment:
-  Android build:
-    ENVFILE=.env.production
-    ANDROID_VARIANT=ProductionRelease
-    PLAY_TRACK=internal            # internal|closed|open|production
-    GOOGLE_PLAY_SERVICE_ACCOUNT_JSON=/secure/path/play-service-account.json
+Local credential files loaded automatically when present:
+  apps/android/keystore.env
+  apps/android/release.jks
+  apps/ios/scripts/release.env
+  apps/ios/scripts/AuthKey_<ASC_KEY_ID>.p8
 
-  iOS build/upload:
-    IOS_SCHEME=Akaiunsan
-    APPLE_TEAM_ID=7MBXZKYSY4
-    ASC_API_KEY_JSON=/secure/path/app-store-connect-api-key.json
+Important environment:
+  ANDROID_VARIANT=Release       Gradle bundle task suffix.
+  PLAY_TRACK=internal            internal|closed|open|production
+  PLAY_STATUS=completed          Google Play release status.
+  PLAY_SERVICE_ACCOUNT_JSON      or GOOGLE_PLAY_SERVICE_ACCOUNT_JSON
+  ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_PATH
+  APPLE_TEAM_ID                  or TEAM_ID
 
-  Optional:
-    ALLOW_PROVISIONING_UPDATES=YES
-    ALLOW_PLAY_PRODUCTION=YES      # required when PLAY_TRACK=production
-    BUILD_ROOT=/absolute/path/for/artifacts
+Optional:
+  ALLOW_PROVISIONING_UPDATES=YES
+  ALLOW_PLAY_PRODUCTION=YES      required when PLAY_TRACK=production
+  PLAY_UPLOADER=/path/to/uploader API uploader; fastlane is the fallback.
+  POD_INSTALL=YES                run pod install when iOS Pods are absent.
+  SENTRY_DISABLE_AUTO_UPLOAD=true  skip Sentry upload unless explicitly enabled.
+  BUILD_ROOT=/absolute/path/for/artifacts
 
 The script uploads iOS to App Store Connect/TestFlight; it does not submit an
-iOS version for App Review. Google Play uploads to the selected track and do
-not publish to production unless PLAY_TRACK=production is explicitly chosen.
+iOS version for App Review.
 EOF
 }
 
@@ -73,6 +105,15 @@ require_file() {
 require_env() {
   local name="$1"
   [[ -n "${!name:-}" ]] || die "required environment variable is not set: $name"
+}
+
+absolute_path() {
+  local value="$1"
+  if [[ "$value" = /* ]]; then
+    printf '%s\n' "$value"
+  else
+    printf '%s/%s\n' "$APP_ROOT" "$value"
+  fi
 }
 
 while (($# > 0)); do
@@ -108,37 +149,56 @@ if ((TARGET_ANDROID == 0 && TARGET_IOS == 0)); then
   die "select at least one platform"
 fi
 
-if [[ "$PLAY_TRACK" != "internal" && "$PLAY_TRACK" != "closed" && "$PLAY_TRACK" != "open" && "$PLAY_TRACK" != "production" ]]; then
-  die "PLAY_TRACK must be internal, closed, open, or production"
-fi
+case "$PLAY_TRACK" in
+  internal|closed|open|production) ;;
+  *) die "PLAY_TRACK must be internal, closed, open, or production" ;;
+esac
+
+ENVFILE_PATH="$(absolute_path "$ENVFILE")"
 
 require_command find
+require_command mkdir
+require_command cp
+
 if ((TARGET_ANDROID == 1)); then
   require_command java
+  require_command keytool
   require_file "$ANDROID_ROOT/gradlew"
   require_file "$ANDROID_ROOT/app/build.gradle"
-  require_file "$APP_ROOT/$ENVFILE"
+  require_file "$ENVFILE_PATH"
+  require_env ANDROID_SIGNING_STORE_FILE
+  require_env ANDROID_SIGNING_STORE_PASSWORD
+  require_env ANDROID_SIGNING_KEY_ALIAS
+  require_env ANDROID_SIGNING_KEY_PASSWORD
+  require_file "$ANDROID_SIGNING_STORE_FILE"
+  keytool -list -keystore "$ANDROID_SIGNING_STORE_FILE" \
+    -storepass "$ANDROID_SIGNING_STORE_PASSWORD" \
+    -alias "$ANDROID_SIGNING_KEY_ALIAS" >/dev/null 2>&1 || \
+    die "Android release keystore or alias could not be opened"
   if ((CONFIRM_UPLOAD == 1)); then
-    require_env GOOGLE_PLAY_SERVICE_ACCOUNT_JSON
-    require_file "$GOOGLE_PLAY_SERVICE_ACCOUNT_JSON"
+    require_env PLAY_SERVICE_ACCOUNT_JSON
+    require_file "$PLAY_SERVICE_ACCOUNT_JSON"
   fi
 fi
 
 if ((TARGET_IOS == 1)); then
   require_command xcodebuild
+  require_command plutil
   require_file "$IOS_ROOT/Akaiunsan.xcodeproj/project.pbxproj"
+  require_file "$IOS_ROOT/Podfile"
   require_env APPLE_TEAM_ID
   if ((CONFIRM_UPLOAD == 1)); then
-    require_env ASC_API_KEY_JSON
-    require_file "$ASC_API_KEY_JSON"
+    require_env ASC_KEY_ID
+    require_env ASC_ISSUER_ID
+    require_env ASC_KEY_PATH
+    require_file "$ASC_KEY_PATH"
+    if ! command -v xcrun >/dev/null 2>&1 && ! command -v fastlane >/dev/null 2>&1; then
+      die "neither xcrun/altool nor fastlane is available for App Store Connect upload"
+    fi
   fi
 fi
 
-if ((CONFIRM_UPLOAD == 1)); then
-  require_command fastlane
-fi
-
-if [[ "$PLAY_TRACK" == "production" && "${ALLOW_PLAY_PRODUCTION:-NO}" != "YES" ]]; then
+if ((CONFIRM_UPLOAD == 1)) && [[ "$PLAY_TRACK" == "production" && "${ALLOW_PLAY_PRODUCTION:-NO}" != "YES" ]]; then
   die "PLAY_TRACK=production requires ALLOW_PLAY_PRODUCTION=YES"
 fi
 
@@ -149,24 +209,43 @@ IOS_IPA=""
 
 if ((TARGET_ANDROID == 1)); then
   echo "==> Building Android :app:bundle${ANDROID_VARIANT}"
+  ANDROID_BUILD_MARKER="$BUILD_ROOT/.android-build-started"
+  touch "$ANDROID_BUILD_MARKER"
   (
     cd "$ANDROID_ROOT"
-    ENVFILE="$ENVFILE" ./gradlew ":app:bundle${ANDROID_VARIANT}"
+    ANDROID_SIGNING_STORE_FILE="$ANDROID_SIGNING_STORE_FILE" \
+    ANDROID_SIGNING_STORE_PASSWORD="$ANDROID_SIGNING_STORE_PASSWORD" \
+    ANDROID_SIGNING_KEY_ALIAS="$ANDROID_SIGNING_KEY_ALIAS" \
+    ANDROID_SIGNING_KEY_PASSWORD="$ANDROID_SIGNING_KEY_PASSWORD" \
+    SENTRY_DISABLE_AUTO_UPLOAD="${SENTRY_DISABLE_AUTO_UPLOAD:-true}" \
+    ENVFILE="$ENVFILE_PATH" ./gradlew --no-configuration-cache ":app:bundle${ANDROID_VARIANT}"
   )
 
   ANDROID_ARTIFACTS=()
   while IFS= read -r artifact; do
-    ANDROID_ARTIFACTS+=("$artifact")
-  done < <(find "$ANDROID_ROOT/app/build/outputs/bundle" -type f -name '*.aab' -print | sort)
-  ((${#ANDROID_ARTIFACTS[@]} > 0)) || die "Gradle completed but no Android AAB was found"
-  ((${#ANDROID_ARTIFACTS[@]} == 1)) || die "expected exactly one Android AAB, found ${#ANDROID_ARTIFACTS[@]}"
+    [[ -n "$artifact" ]] && ANDROID_ARTIFACTS+=("$artifact")
+  done < <(find "$ANDROID_ROOT/app/build/outputs/bundle" -type f -name '*.aab' -newer "$ANDROID_BUILD_MARKER" -print 2>/dev/null | sort)
+  ((${#ANDROID_ARTIFACTS[@]} == 1)) || die "expected exactly one new Android AAB, found ${#ANDROID_ARTIFACTS[@]}"
   ANDROID_AAB="${ANDROID_ARTIFACTS[0]}"
   cp "$ANDROID_AAB" "$BUILD_ROOT/"
   ANDROID_AAB="$BUILD_ROOT/$(basename "$ANDROID_AAB")"
   echo "    artifact: $ANDROID_AAB"
 fi
 
+IOS_XCODE_INPUT=()
 if ((TARGET_IOS == 1)); then
+  if [[ "${POD_INSTALL:-YES}" == "YES" && ! -d "$IOS_ROOT/Pods" ]]; then
+    require_command pod
+    echo "==> Installing iOS pods"
+    (cd "$IOS_ROOT" && pod install)
+  fi
+
+  if [[ -f "$IOS_ROOT/Akaiunsan.xcworkspace/contents.xcworkspacedata" ]]; then
+    IOS_XCODE_INPUT=(-workspace "$IOS_ROOT/Akaiunsan.xcworkspace")
+  else
+    IOS_XCODE_INPUT=(-project "$IOS_ROOT/Akaiunsan.xcodeproj")
+  fi
+
   IOS_ARCHIVE="$BUILD_ROOT/${IOS_SCHEME}.xcarchive"
   IOS_EXPORT_DIR="$BUILD_ROOT/ios-export"
   IOS_EXPORT_OPTIONS="$BUILD_ROOT/export-options.plist"
@@ -175,24 +254,39 @@ if ((TARGET_IOS == 1)); then
   rm -f "$IOS_EXPORT_OPTIONS"
   plutil -create xml1 "$IOS_EXPORT_OPTIONS"
   plutil -insert method -string app-store "$IOS_EXPORT_OPTIONS"
+  plutil -insert destination -string "$([[ "$CONFIRM_UPLOAD" == "1" ]] && echo upload || echo export)" "$IOS_EXPORT_OPTIONS"
   plutil -insert signingStyle -string automatic "$IOS_EXPORT_OPTIONS"
   plutil -insert teamID -string "$APPLE_TEAM_ID" "$IOS_EXPORT_OPTIONS"
   plutil -insert uploadSymbols -bool false "$IOS_EXPORT_OPTIONS"
-  plutil -insert compileBitcode -bool false "$IOS_EXPORT_OPTIONS"
 
-  echo "==> Archiving iOS scheme $IOS_SCHEME"
+  XCODEBUILD_AUTH_FLAGS=()
+  if [[ -n "${ASC_KEY_ID:-}" && -n "${ASC_ISSUER_ID:-}" && -n "${ASC_KEY_PATH:-}" ]]; then
+    require_file "$ASC_KEY_PATH"
+    XCODEBUILD_AUTH_FLAGS=(
+      -authenticationKeyPath "$ASC_KEY_PATH"
+      -authenticationKeyID "$ASC_KEY_ID"
+      -authenticationKeyIssuerID "$ASC_ISSUER_ID"
+    )
+  fi
+
   XCODEBUILD_PROVISIONING_FLAGS=()
   if [[ "${ALLOW_PROVISIONING_UPDATES:-NO}" == "YES" ]]; then
-    XCODEBUILD_PROVISIONING_FLAGS+=("-allowProvisioningUpdates")
+    XCODEBUILD_PROVISIONING_FLAGS+=(-allowProvisioningUpdates)
   fi
+
+  echo "==> Archiving iOS scheme $IOS_SCHEME"
   (
     cd "$APP_ROOT"
-    xcodebuild \
-      -project "$IOS_ROOT/Akaiunsan.xcodeproj" \
+    set +u
+    SENTRY_DISABLE_AUTO_UPLOAD="${SENTRY_DISABLE_AUTO_UPLOAD:-true}" xcodebuild \
+      "${IOS_XCODE_INPUT[@]}" \
       -scheme "$IOS_SCHEME" \
-      -configuration Release \
+      -configuration "$IOS_CONFIGURATION" \
       -sdk iphoneos \
       -archivePath "$IOS_ARCHIVE" \
+      DEVELOPMENT_TEAM="$APPLE_TEAM_ID" \
+      CODE_SIGN_STYLE=Automatic \
+      "${XCODEBUILD_AUTH_FLAGS[@]}" \
       "${XCODEBUILD_PROVISIONING_FLAGS[@]}" \
       archive
   )
@@ -200,18 +294,21 @@ if ((TARGET_IOS == 1)); then
   echo "==> Exporting iOS IPA"
   (
     cd "$APP_ROOT"
+    set +u
     xcodebuild \
       -exportArchive \
       -archivePath "$IOS_ARCHIVE" \
       -exportOptionsPlist "$IOS_EXPORT_OPTIONS" \
-      -exportPath "$IOS_EXPORT_DIR"
+      -exportPath "$IOS_EXPORT_DIR" \
+      DEVELOPMENT_TEAM="$APPLE_TEAM_ID" \
+      "${XCODEBUILD_AUTH_FLAGS[@]}" \
+      "${XCODEBUILD_PROVISIONING_FLAGS[@]}"
   )
 
   IOS_ARTIFACTS=()
   while IFS= read -r artifact; do
-    IOS_ARTIFACTS+=("$artifact")
+    [[ -n "$artifact" ]] && IOS_ARTIFACTS+=("$artifact")
   done < <(find "$IOS_EXPORT_DIR" -type f -name '*.ipa' -print | sort)
-  ((${#IOS_ARTIFACTS[@]} > 0)) || die "Xcode completed but no iOS IPA was found"
   ((${#IOS_ARTIFACTS[@]} == 1)) || die "expected exactly one iOS IPA, found ${#IOS_ARTIFACTS[@]}"
   IOS_IPA="${IOS_ARTIFACTS[0]}"
   cp "$IOS_IPA" "$BUILD_ROOT/"
@@ -221,6 +318,8 @@ fi
 
 echo "==> Build validation"
 if ((TARGET_ANDROID == 1)); then
+  require_command unzip
+  require_command strings
   [[ "$(unzip -p "$ANDROID_AAB" base/manifest/AndroidManifest.xml 2>/dev/null | strings | grep -F -m1 "$ANDROID_PACKAGE" || true)" != "" ]] || \
     die "Android AAB does not contain package $ANDROID_PACKAGE"
 fi
@@ -239,23 +338,53 @@ echo "==> Upload plan"
 
 if ((TARGET_ANDROID == 1)); then
   echo "==> Uploading Android through Google Play API"
-  fastlane supply \
-    --aab "$ANDROID_AAB" \
-    --package_name "$ANDROID_PACKAGE" \
-    --track "$PLAY_TRACK" \
-    --json_key "$GOOGLE_PLAY_SERVICE_ACCOUNT_JSON" \
-    --skip_upload_metadata true \
-    --skip_upload_images true \
-    --skip_upload_screenshots true \
-    --skip_upload_changelogs true
+  if [[ -n "${PLAY_UPLOADER:-}" ]]; then
+    require_file "$PLAY_UPLOADER"
+    "$PLAY_UPLOADER" \
+      --aab "$ANDROID_AAB" \
+      --package "$ANDROID_PACKAGE" \
+      --service-account "$PLAY_SERVICE_ACCOUNT_JSON" \
+      --track "$PLAY_TRACK" \
+      --status "$PLAY_STATUS"
+  else
+    fastlane supply \
+      --aab "$ANDROID_AAB" \
+      --package_name "$ANDROID_PACKAGE" \
+      --track "$PLAY_TRACK" \
+      --release_status "$PLAY_STATUS" \
+      --json_key "$PLAY_SERVICE_ACCOUNT_JSON" \
+      --skip_upload_metadata true \
+      --skip_upload_images true \
+      --skip_upload_screenshots true \
+      --skip_upload_changelogs true
+  fi
 fi
 
 if ((TARGET_IOS == 1)); then
   echo "==> Uploading iOS through App Store Connect API"
-  fastlane pilot upload \
-    --ipa "$IOS_IPA" \
-    --api_key_path "$ASC_API_KEY_JSON" \
-    --skip_waiting_for_build_processing true
+  if command -v xcrun >/dev/null 2>&1 && xcrun --find altool >/dev/null 2>&1; then
+    ASC_UPLOAD_HOME="$(mktemp -d /private/tmp/akaiunsan-asc-home.XXXXXX)"
+    mkdir -p "$ASC_UPLOAD_HOME/.appstoreconnect/private_keys"
+    cp "$ASC_KEY_PATH" "$ASC_UPLOAD_HOME/.appstoreconnect/private_keys/AuthKey_${ASC_KEY_ID}.p8"
+    chmod 600 "$ASC_UPLOAD_HOME/.appstoreconnect/private_keys/AuthKey_${ASC_KEY_ID}.p8"
+    trap '[[ -n "${ASC_UPLOAD_HOME:-}" ]] && rm -rf "$ASC_UPLOAD_HOME"' EXIT
+    HOME="$ASC_UPLOAD_HOME" xcrun altool \
+      --upload-app \
+      --file "$IOS_IPA" \
+      --type ios \
+      --apiKey "$ASC_KEY_ID" \
+      --apiIssuer "$ASC_ISSUER_ID"
+  else
+    require_command fastlane
+    ASC_API_KEY_JSON_TEMP="$(mktemp /private/tmp/akaiunsan-asc-key.XXXXXX.json)"
+    node -e 'const fs=require("fs"); const [keyId,issuerId,keyPath,out]=process.argv.slice(1); fs.writeFileSync(out, JSON.stringify({key_id:keyId,issuer_id:issuerId,key_filepath:keyPath,in_house:false})+"\n", {mode:0o600});' \
+      "$ASC_KEY_ID" "$ASC_ISSUER_ID" "$ASC_KEY_PATH" "$ASC_API_KEY_JSON_TEMP"
+    trap '[[ -n "${ASC_API_KEY_JSON_TEMP:-}" ]] && rm -f "$ASC_API_KEY_JSON_TEMP"' EXIT
+    fastlane pilot upload \
+      --ipa "$IOS_IPA" \
+      --api_key_path "$ASC_API_KEY_JSON_TEMP" \
+      --skip_waiting_for_build_processing true
+  fi
 fi
 
 echo "==> Store upload commands completed"

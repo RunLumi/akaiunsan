@@ -2,7 +2,7 @@
 
 Date: 2026-09-07
 Status: Resolved
-Affected component: `ayasan_backend` production container
+Affected component: `akaiunsan_backend` production container
 Related release: `prod` deployment, verified at `32139fb`
 
 ## Summary
@@ -23,7 +23,7 @@ Customer-level impact was not independently measured in the incident record. The
 - The crash pointed to the compiled application entrypoint and a route-module interop mismatch.
 - The first repaired image started, but `/health` exposed `git.commit: "unknown"` and `git.branch: "unknown"`; this was treated as a separate observability defect rather than accepted as complete verification.
 - The final live check returned HTTP 200 from `https://akai-api.cjs.vn/health` with database connectivity, version metadata, uptime, and system information.
-- `docker inspect` reported `healthy` for `ayasan_backend`.
+- `docker inspect` reported `healthy` for `akaiunsan_backend`.
 - The VPS checkout was verified at the same deployed SHA and cleaned of generated `backend/version.json` residue after the check.
 
 ## Root causes
@@ -70,7 +70,7 @@ For every future production backend deployment, record:
 ```bash
 curl -sS -w '\nHTTP_STATUS:%{http_code}\n' https://akai-api.cjs.vn/health
 ssh ubuntu@15.235.202.219 \
-  'cd /opt/akaiunsan && git rev-parse HEAD && sudo docker inspect --format "{{.State.Health.Status}}" ayasan_backend'
+  'cd /opt/akaiunsan && git rev-parse HEAD && sudo docker inspect --format "{{.State.Health.Status}}" akaiunsan_backend'
 ```
 
 The release is accepted only when:
@@ -82,7 +82,7 @@ The release is accepted only when:
 - `git.branch` is `"prod"`;
 - `build.time` and `build.timeAgo` are present;
 - `uptime` and `system` fields are present; and
-- Docker reports `healthy` for `ayasan_backend`.
+- Docker reports `healthy` for `akaiunsan_backend`.
 
 ## Follow-ups
 

@@ -72,7 +72,7 @@ describe('POST /client/user/request-helper', () => {
     expect(row.district_name_en).toBe('Watthana');
     expect(row.status).toBeUndefined(); // pins current behavior: no status attribute at all
 
-    expect(sentMails.at(-1).subject).toContain('Thank you for choosing Ayasan');
+    expect(sentMails.at(-1).subject).toContain('Thank you for choosing Akaiunsan');
     expect(sentMails.at(-1).html).toContain('Custy');
   });
 

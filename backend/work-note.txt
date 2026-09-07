@@ -7,7 +7,7 @@ basic function in controller
 - delete by id
 
 
-//json i found from ayasan-app db
+//json i found from akaiunsan-app db
 {
   "facebook": {
     "id": "3354101051289781",

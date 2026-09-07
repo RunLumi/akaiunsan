@@ -8,6 +8,10 @@ import { loadConfig } from '../../helpers/config.ts';
  * and MariaDB would still enforce the FK constraints (intermittent flakes).
  */
 export async function truncateAll() {
+  // Ensure every model table exists before truncating (fresh DBs race the
+  // async boot-time sync otherwise).
+  await db.sequelize.sync();
+
   const tableNames = Object.keys(db)
     .filter((k) => !['sequelize', 'Sequelize'].includes(k))
     .map((model) => db[model].getTableName());

@@ -19,10 +19,10 @@ deploy-development:
   only:
     - develop
   tags:
-    - dev-api.ayasan.vn
+    - dev-api.akaiunsan.vn
   script:    
-    - sudo rsync -arz . /home/dev-api.ayasan.vn  
-    - cd /home/dev-api.ayasan.vn
+    - sudo rsync -arz . /home/dev-api.akaiunsan.vn  
+    - cd /home/dev-api.akaiunsan.vn
     - sudo npm install --development --silent  
     - sudo /usr/local/bin/pm2 delete all
     - sudo  /usr/local/bin/pm2 startup

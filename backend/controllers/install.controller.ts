@@ -21,11 +21,11 @@ export default async (req, res) => {
         role_name: 'Super Admin'
       });
       await Admin.create({
-        email: 'sale@ayasan.vn',
-        firstname: 'Ayasan',
+        email: 'sale@akaiunsan.vn',
+        firstname: 'Akaiunsan',
         lastname: 'IT',
         role: 'Super admin',
-        username: 'sale@ayasan.vn',
+        username: 'sale@akaiunsan.vn',
         password: hashed_pwd
       }, { transaction: t })
       await t.commit();
@@ -42,9 +42,9 @@ export default async (req, res) => {
       });
 
       var mailOptions = {
-        from: 'sale@ayasan.vn',
-        to: 'sale@ayasan.vn',
-        subject: 'Ayasan Service - Backoffice first install',
+        from: 'sale@akaiunsan.vn',
+        to: 'sale@akaiunsan.vn',
+        subject: 'Akaiunsan Service - Backoffice first install',
         html: `<p>Recommend to update your information asap.</p>
         <p>${temp_pwd}</p>`
       };

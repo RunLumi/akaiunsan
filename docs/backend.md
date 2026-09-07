@@ -1,4 +1,4 @@
-# Backend (`backend/` — ayasan-admin-api)
+# Backend (`backend/` — akaiunsan-admin-api)
 
 Express 4 + Sequelize 6 + MySQL/MariaDB, plain CommonJS, no TypeScript, no build step.
 
@@ -64,5 +64,5 @@ Production uses a Unix socket (`/var/run/mysqld/mysqld.sock`); local/dev use TCP
 
 ## Deployment
 
-- `.gitlab-ci.yml`: on push to `develop`, rsync to `/home/dev-api.ayasan.vn`, `npm install`, restart pm2 with `--watch`.
-- Production: manual `git pull origin master` + `pm2 restart` on the prod host, folder `/ayasan/api-prod` (credentials are in the team's password store — see docs/security.md before touching deploys).
+- `.gitlab-ci.yml`: on push to `develop`, rsync to `/home/dev-api.akaiunsan.vn`, `npm install`, restart pm2 with `--watch`.
+- Production: manual `git pull origin master` + `pm2 restart` on the prod host, folder `/akaiunsan/api-prod` (credentials are in the team's password store — see docs/security.md before touching deploys).

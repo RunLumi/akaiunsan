@@ -57,7 +57,7 @@ Scope: `backend/` only. Companion docs: [backend.md](backend.md) · [api-referen
 | ORM | **Sequelize 6 latest** + `sequelize-typescript`-style typing via `@types/sequelize`… see note | Keep SQL and models; avoid a rewrite |
 | Migrations | **`umzug`** (or sequelize-cli) backed by the same sequelize instance | Replaces `sync()` |
 | Test runner | **Vitest** + **supertest** | Fast, TS-native, jest-compatible API |
-| Test DB | **testcontainers** MariaDB (or compose service `ayasan_db_test`) | Real SQL dialect, disposable |
+| Test DB | **testcontainers** MariaDB (or compose service `akaiunsan_db_test`) | Real SQL dialect, disposable |
 | Fixtures | **@faker-js/faker** + small factory helpers | Deterministic-ish test data |
 | Validation | **zod** schemas per route | Runtime validation + static inference |
 | Logging | **pino** (+ `pino-http`) | Structured logs; kills the 119 console.logs |
@@ -223,7 +223,7 @@ Total ≈ **27–43 focused days**. Phases 0–2 alone (≈2 weeks) already remo
 
 | Date | Milestone | Evidence |
 |---|---|---|
-| 2026-09-07 | **Phase 0 complete** — vitest + supertest harness against a real local MariaDB (brew, test DB `ayasan_db_test`, `config/test.json` committed); app.js exportable without listening; `GET /health` added TDD-first; `erject` typo and header-logging leak fixed TDD-first; `patch-package` fixes `buffer-equal-constant-time` SlowBuffer crash under vite-node; native deps sharp→0.33 / bcrypt→6 for Node 22 | `246fcb9` |
+| 2026-09-07 | **Phase 0 complete** — vitest + supertest harness against a real local MariaDB (brew, test DB `akaiunsan_db_test`, `config/test.json` committed); app.js exportable without listening; `GET /health` added TDD-first; `erject` typo and header-logging leak fixed TDD-first; `patch-package` fixes `buffer-equal-constant-time` SlowBuffer crash under vite-node; native deps sharp→0.33 / bcrypt→6 for Node 22 | `246fcb9` |
 | 2026-09-07 | **Phase 1 substantially complete** — 130 characterization tests green across auth tiers, permissions matrix, CRUD conventions, commerce, statistics, uploads (sharp pipeline), agency routes (mysql/sftp mocked). 11 latent bugs pinned with `// pins current behavior` (job create/updateStatus/createReview, credit-card both paths, admin forget-token, banner partial writes, subscription leaks…). Model/schema drift reconciled: Job.customer_id/supporter_id, Subscription.active, Customer↔Job association | `63aa1b1`…`ab6ea7b` |
 | 2026-09-07 | **Phase 2 started** — npm `fs`/`path` shim packages removed, express 4.17→4.22 (suite green), engines node>=20, `.nvmrc` | latest |
 | 2026-09-07 | Coverage: **58.5% lines** (from 0). Biggest remaining gap: `helpers/agencyData.js` (legacy import tooling, quarantined per plan) and deep helper internals | `vitest run --coverage` |

@@ -1,8 +1,8 @@
 {
   "db-connection": {
-    "database": "ayasan_db_test",
-    "user": "ayasan_test",
-    "password": "ayasan_test",
+    "database": "akaiunsan_db_test",
+    "user": "akaiunsan_test",
+    "password": "akaiunsan_test",
     "host": "127.0.0.1",
     "port": 3306
   },

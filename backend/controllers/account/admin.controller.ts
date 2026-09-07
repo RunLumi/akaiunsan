@@ -182,9 +182,9 @@ async function requestForgetPassword (req, res) {
     });
 
     var mailOptions = {
-      from: 'Ayasan Service IT <sale@ayasan.vn>',
+      from: 'Akaiunsan Service IT <sale@akaiunsan.vn>',
       to: `${admin.firstname} ${admin.lastname} <${admin.email}>`,
-      subject: 'Ayasan Service Backoffice - Forget password',
+      subject: 'Akaiunsan Service Backoffice - Forget password',
       html: `<p>Forget token</p>
       <p>${token}</p>`
     };

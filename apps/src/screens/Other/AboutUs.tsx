@@ -25,8 +25,8 @@ export function AboutUsView(props: any) {
           source={{
             uri: url,
             // isTerms !== true
-            //   ? "https://www.ayasan-app.com/th-TH/privacy_policy/"
-            //   : "https://www.ayasan-app.com/th-TH/terms_of_service/",
+            //   ? "https://www.akaiunsan-app.com/th-TH/privacy_policy/"
+            //   : "https://www.akaiunsan-app.com/th-TH/terms_of_service/",
           }}
         />
       </View>
@@ -35,7 +35,7 @@ export function AboutUsView(props: any) {
 }
 
 export default function AboutUs(props: any) {
-  // https://www.ayasan-app.com/th-TH/privacy_policy/
+  // https://www.akaiunsan-app.com/th-TH/privacy_policy/
 
   return (
     <Container>
@@ -48,7 +48,7 @@ export default function AboutUs(props: any) {
         }}
       >
         <Text style={{ textAlign: "center", marginBottom: 4 }}>
-          Ayasan Holdings Co.,Ltd.
+          Akaiunsan Holdings Co.,Ltd.
         </Text>
         <Text style={{ textAlign: "center", marginBottom: 4 }}>
           02-714-2116
@@ -61,7 +61,7 @@ export default function AboutUs(props: any) {
             title="Privacy Policy"
             onPress={() => {
               props.navigation.push(Constants.SCREENS.OTHER.ABOUT_US_VIEW, {
-                url: 'https://www.ayasan-app.com/th-TH/privacy_policy/',
+                url: 'https://www.akaiunsan-app.com/th-TH/privacy_policy/',
               });
             }}
             textStyle={{ textAlign: "center" }}
@@ -71,7 +71,7 @@ export default function AboutUs(props: any) {
             title="Term of Use"
             onPress={() => {
               props.navigation.push(Constants.SCREENS.OTHER.ABOUT_US_VIEW, {
-                url: 'https://www.ayasan-app.com/th-TH/terms_of_service/',
+                url: 'https://www.akaiunsan-app.com/th-TH/terms_of_service/',
               });
             }}
             textStyle={{ textAlign: "center" }}

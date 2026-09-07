@@ -6,7 +6,7 @@
 # ==============================================================================
 
 {
-    email {$ACME_EMAIL:devops@ayasan.vn}
+    email {$ACME_EMAIL:devops@akaiunsan.vn}
 }
 
 # Reusable security headers
@@ -25,7 +25,7 @@
 # ------------------------------------------------------------------------------
 # Backend REST API
 # ------------------------------------------------------------------------------
-{$DOMAIN_API:api.ayasan.vn} {
+{$DOMAIN_API:api.akaiunsan.vn} {
     import security
 
     # Uploads limit (e.g., 20MB for helper profile images / KYC documents)
@@ -55,7 +55,7 @@
 # ------------------------------------------------------------------------------
 # Admin Back-Office Portal
 # ------------------------------------------------------------------------------
-{$DOMAIN_ADMIN:admin.ayasan.vn} {
+{$DOMAIN_ADMIN:admin.akaiunsan.vn} {
     import security
 
     reverse_proxy admin:80 {
@@ -67,7 +67,7 @@
 # ------------------------------------------------------------------------------
 # Customer Web Portal (Uncomment when frontend domain DNS is configured)
 # ------------------------------------------------------------------------------
-# {$DOMAIN_FRONTEND:ayasan.vn} {
+# {$DOMAIN_FRONTEND:akaiunsan.vn} {
 #     import security
 #     reverse_proxy frontend:80 {
 #         header_up Host {host}

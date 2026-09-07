@@ -15,5 +15,9 @@
  *      // ... other font families
  *      --font-roboto: 'Roboto', var(--font-sans);
  *   }
+ *
+ * 'be-vietnam-pro' is the display identity per the Living Standard design
+ * system (/DESIGN.md §3) — native Vietnamese diacritics, weight-driven
+ * hierarchy. Inter is banned by the design system.
  */
-export const fonts = ['inter', 'manrope', 'system'] as const
+export const fonts = ['be-vietnam-pro', 'manrope', 'system'] as const

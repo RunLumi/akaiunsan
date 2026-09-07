@@ -2,9 +2,9 @@
 
 ## System at a glance
 
-Ayasan is a home-services marketplace (cleaning, maid/driver helpers, supplies) operating mainly in Thailand/Vietnam. The monorepo contains:
+Akaiunsan is a home-services marketplace (cleaning, maid/driver helpers, supplies) operating mainly in Thailand/Vietnam. The monorepo contains:
 
-1. **backend/** — `ayasan-admin-api`: Express 5 REST API (Node 22 LTS / TypeScript) serving customer mobile & web apps, back-office administration, agency data sync, and bots.
+1. **backend/** — `akaiunsan-admin-api`: Express 5 REST API (Node 22 LTS / TypeScript) serving customer mobile & web apps, back-office administration, agency data sync, and bots.
 2. **admin/** — `shadcn-admin`: modern back-office web application built with React 19, TypeScript, Vite 8, TanStack Router, and Tailwind CSS v4.
 3. **frontend/** — customer web portal.
 4. **apps/** — `mobile-app`: customer-facing React Native app (iOS/Android).
@@ -19,7 +19,7 @@ mobile app (apps/)
 Express API (backend/app.js)
    │  Sequelize 6
    ▼
-MySQL / MariaDB ("ayasan_db")
+MySQL / MariaDB ("akaiunsan_db")
    ▲
    │  separate "agency" connection (models/agency*) for legacy data import
 ```
@@ -62,5 +62,5 @@ Model relations are declared once in `models/relations.js` — register new asso
 ## Environments
 
 - Backend NODE_ENV: `local`, `development`, `production` → `backend/config/<env>.json`.
-- Deployment: GitLab CI deploys `develop` → dev server (`dev-api.ayasan.vn`) with pm2; production runs from `/ayasan/api-prod` on a DigitalOcean host via pm2.
-- Mobile: dev / staging / production flavors on both Android (gradle variants + `.env.*` via react-native-config) and iOS (Xcode schemes `AyasanProduction`, `AysanStaging`).
+- Deployment: GitLab CI deploys `develop` → dev server (`dev-api.akaiunsan.vn`) with pm2; production runs from `/akaiunsan/api-prod` on a DigitalOcean host via pm2.
+- Mobile: dev / staging / production flavors on both Android (gradle variants + `.env.*` via react-native-config) and iOS (Xcode schemes `AkaiunsanProduction`, `AysanStaging`).

@@ -732,7 +732,7 @@ async function getAllStat () {
 async function getMaidProfile (maid_id) {
   return new Promise((resolve, reject) => {
 
-    const remoteDir = `/var/www/vhosts/ayasan-service.com/httpdocs/assets/uploads/profilepicture/${maid_id}/1.jpg`;
+    const remoteDir = `/var/www/vhosts/akaiunsan-service.com/httpdocs/assets/uploads/profilepicture/${maid_id}/1.jpg`;
 
 
     let sftp = new Client();
@@ -757,7 +757,7 @@ async function getMaidProfile (maid_id) {
 async function getDriverProfile (driver_id) {
   return new Promise((resolve, reject) => {
 
-    const driver_uri = `https://www.ayasan-driver.com/profilepicture/${driver_id}/1.jpg`;
+    const driver_uri = `https://www.akaiunsan-driver.com/profilepicture/${driver_id}/1.jpg`;
     const new_driver_uri = `uploads/supporters/driver_${driver_id}.jpg`;
 
     (async () => {

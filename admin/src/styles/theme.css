@@ -1,28 +1,36 @@
+/*
+ * "Living Standard" theme — AKAIUNSAN design system v2026.1 (/DESIGN.md).
+ * Semantic oklch tokens re-pointed to the brand palette audited from
+ * akaiunsan.prismate.vn. Dark mode is "Deep Moss" — built from the brand's
+ * own ramps, not inverted gray. Accent = Hi-Vis Lime, one accent only;
+ * ink on lime is 10.27:1 (AAA) in both modes.
+ */
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
+  --radius: 0.75rem;
+  --background: oklch(0.979 0.007 97.4); /* Warm Paper #f9f8f3 */
+  --foreground: oklch(0.256 0.02 129.4); /* Olive Ink #20251b — 14.72:1 on paper */
+  --card: oklch(1 0 0); /* Surface White */
+  --card-foreground: oklch(0.256 0.02 129.4);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
+  --popover-foreground: oklch(0.256 0.02 129.4);
+  --primary: oklch(0.853 0.164 117.3); /* Hi-Vis Lime #c7dc50 */
+  --primary-foreground: oklch(0.256 0.02 129.4); /* Ink on lime: 10.27:1 (AAA) */
+  --secondary: oklch(0.956 0.019 113.3); /* Mint #f0f2e4 */
+  --secondary-foreground: oklch(0.256 0.02 129.4);
+  --muted: oklch(0.948 0.012 96.4); /* Stone #f0eee5 */
+  --muted-foreground: oklch(0.518 0.027 120.7); /* Sage Muted #666b5a — 5.18:1 */
+  --accent: oklch(0.916 0.047 117.8); /* Mint Strong #e0e8c5 — hover wash */
+  --accent-foreground: oklch(0.256 0.02 129.4);
+  --destructive: oklch(0.552 0.207 25.1); /* Signal Red #d0202b */
+  --destructive-foreground: oklch(0.979 0.007 97.4);
+  --border: oklch(0.894 0.023 112.3); /* Sage Line #dcdecd */
+  --input: oklch(0.894 0.023 112.3);
+  --ring: oklch(0.46 0.096 122.1); /* Olive Dark #4f601a — visible focus */
+  --chart-1: oklch(0.853 0.164 117.3); /* lime */
+  --chart-2: oklch(0.764 0.155 118.5); /* leaf #a9bf3c */
+  --chart-3: oklch(0.558 0.116 119.6); /* olive #6c7d22 */
+  --chart-4: oklch(0.46 0.096 122.1); /* olive dark #4f601a */
+  --chart-5: oklch(0.863 0.022 92.5); /* stone dark #d7d2c2 */
 
   --sidebar: var(--background);
   --sidebar-foreground: var(--foreground);
@@ -34,34 +42,36 @@
   --sidebar-ring: var(--ring);
 }
 
+/* Deep Moss dark — surfaces from the moss ramp, lime unchanged (it glows) */
 .dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.14 0.04 259.21);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
-  --primary-foreground: oklch(0.208 0.042 265.755);
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
+  --background: oklch(0.202 0.025 132.9); /* Moss Black #12190d */
+  --foreground: oklch(0.979 0.007 97.4); /* Paper */
+  --card: oklch(0.249 0.037 131.2); /* Moss Deep #1b2512 */
+  --card-foreground: oklch(0.979 0.007 97.4);
+  --popover: oklch(0.26 0.045 130);
+  --popover-foreground: oklch(0.979 0.007 97.4);
+  --primary: oklch(0.853 0.164 117.3); /* Lime — unchanged across modes */
+  --primary-foreground: oklch(0.256 0.02 129.4); /* Ink on lime: 10.27:1 */
+  --secondary: oklch(0.26 0.045 130);
+  --secondary-foreground: oklch(0.979 0.007 97.4);
+  --muted: oklch(0.26 0.04 130);
+  --muted-foreground: oklch(0.863 0.022 92.5); /* Stone Dark — 13.66:1 on moss black */
+  --accent: oklch(0.26 0.05 130);
+  --accent-foreground: oklch(0.979 0.007 97.4);
+  --destructive: oklch(0.65 0.19 25);
+  --destructive-foreground: oklch(0.979 0.007 97.4);
+  --border: oklch(0.35 0.075 130); /* moss-700 #2d4214 */
+  --input: oklch(0.979 0.007 97.4 / 15%);
+  --ring: oklch(0.853 0.164 117.3); /* lime focus in dark */
+  --chart-1: oklch(0.853 0.164 117.3); /* lime */
+  --chart-2: oklch(0.764 0.155 118.5); /* leaf */
+  --chart-3: oklch(0.916 0.047 117.8); /* mint strong */
+  --chart-4: oklch(0.863 0.022 92.5); /* stone dark */
+  --chart-5: oklch(0.66 0.085 130); /* moss-400 */
 }
 
 @theme inline {
-  --font-inter: 'Inter', 'sans-serif';
+  --font-be-vietnam-pro: 'Be Vietnam Pro', 'Manrope', 'sans-serif';
   --font-manrope: 'Manrope', 'sans-serif';
 
   --radius-sm: calc(var(--radius) - 4px);

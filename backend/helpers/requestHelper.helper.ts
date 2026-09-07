@@ -98,7 +98,7 @@ async function newRequestEmail(data1, data2) {
     await sendMail(
       "Request for Driver",
       body_message,
-      "sale@ayasan.vn"
+      "sale@akaiunsan.vn"
     );
   } else {
     body_message += `
@@ -150,7 +150,7 @@ async function newRequestEmail(data1, data2) {
     await sendMail(
       "Request for Helper (Maid/Nanny)",
       body_message,
-      "sale@ayasan.vn"
+      "sale@akaiunsan.vn"
     );
   }
 }

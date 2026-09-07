@@ -20,11 +20,11 @@ This directory contains the production orchestration infrastructure for the Akai
 
 | Service | Container Name | Technology | Internal Port | Ingress Host | Memory Footprint |
 |---|---|---|---|---|---|
-| **Reverse Proxy** | `ayasan_caddy` | Caddy 2 Alpine | 80, 443 | Port 80 & 443 | ~28 MiB |
-| **Admin App** | `ayasan_admin` | Vite 8 + React 19 SPA | 80 | `akai-admin.cjs.vn` | ~12 MiB |
-| **Backend API** | `ayasan_backend` | Node 22 / Express 5 | 5000 | `akai-api.cjs.vn` | ~105 MiB |
-| **Database** | `ayasan_mariadb` | MariaDB 10.9.6 | 3306 | Internal network only (`db_net`) | ~70 MiB |
-| **Customer Web** | `ayasan_frontend` | Caddy Alpine static | 80 | Internal stub | ~10 MiB |
+| **Reverse Proxy** | `akaiunsan_caddy` | Caddy 2 Alpine | 80, 443 | Port 80 & 443 | ~28 MiB |
+| **Admin App** | `akaiunsan_admin` | Vite 8 + React 19 SPA | 80 | `akai-admin.cjs.vn` | ~12 MiB |
+| **Backend API** | `akaiunsan_backend` | Node 22 / Express 5 | 5000 | `akai-api.cjs.vn` | ~105 MiB |
+| **Database** | `akaiunsan_mariadb` | MariaDB 10.9.6 | 3306 | Internal network only (`db_net`) | ~70 MiB |
+| **Customer Web** | `akaiunsan_frontend` | Caddy Alpine static | 80 | Internal stub | ~10 MiB |
 
 **Total stack footprint**: **~225 MiB RAM** total (leaving >1.2 GiB free RAM on a 2GB VPS).
 
@@ -104,7 +104,7 @@ Before retrying a blocked pull, inspect `git status` and the exact diff. The cur
 After deployment, wait for the container health check and verify the public contract:
 ```bash
 curl -sS -w '\nHTTP_STATUS:%{http_code}\n' https://akai-api.cjs.vn/health
-sudo docker inspect --format '{{.State.Health.Status}}' ayasan_backend
+sudo docker inspect --format '{{.State.Health.Status}}' akaiunsan_backend
 ```
 
 The response must report HTTP 200, `status: "ok"`, `db: "up"`, and the expected deployed commit under `git.commit`. The container health state must be `healthy`. See the [backend health-check postmortem](../docs/postmortems/2026-09-07-backend-healthcheck-prod-deployment.md) for the failure mode and evidence standard.
@@ -153,6 +153,6 @@ If new commits are detected on `origin/prod`, it automatically pulls and rebuild
 
 ## 6. Security & Isolation Notes
 
-1. **Database Access**: Port 3306 is not published to the host. MariaDB is only reachable by `ayasan_backend` over the internal bridge network `db_net`.
+1. **Database Access**: Port 3306 is not published to the host. MariaDB is only reachable by `akaiunsan_backend` over the internal bridge network `db_net`.
 2. **TLS / SSL Certificates**: Caddy handles ACME TLS challenges automatically via Let's Encrypt with HTTP-01 and TLS-ALPN-01 protocols. Certificates renew automatically 30 days before expiration.
 3. **Environment Security**: `/opt/akaiunsan/deploy/.env` contains production database credentials, JWT secrets, and API keys. It is protected with file permissions `600` and is strictly excluded from Git.

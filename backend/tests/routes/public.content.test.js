@@ -44,8 +44,8 @@ beforeAll(async () => {
       items: [
         {
           title: 'Blog One',
-          link: 'https://ayasansite.wordpress.com/2026/01/blog-one/',
-          guid: 'https://ayasansite.wordpress.com/?p=101',
+          link: 'https://akaiunsansite.wordpress.com/2026/01/blog-one/',
+          guid: 'https://akaiunsansite.wordpress.com/?p=101',
           dc_author: 'writer',
           pubDate: '2026-01-01T00:00:00Z',
           description: 'first post',

@@ -216,7 +216,7 @@ describe('controllers/payment (unrouted; unit-driven)', () => {
 
 describe('helpers/subscription.processSubscriptionsPayment (cron)', () => {
   it('charges due subscriptions, resets hours and records recurring transactions', async () => {
-    const subscriptionHelper = require('../../helpers/subscription.ts');
+    const subscriptionHelper = await import('../../helpers/subscription.ts');
     const customer = await factories.createCustomer({
       email: 'cron@test.local',
       omise_customer_id: 'cust_cron',
@@ -249,7 +249,7 @@ describe('helpers/subscription.processSubscriptionsPayment (cron)', () => {
   });
 
   it('suspends subscriptions when the charge fails and retries next day', async () => {
-    const subscriptionHelper = require('../../helpers/subscription.ts');
+    const subscriptionHelper = await import('../../helpers/subscription.ts');
     const customer = await factories.createCustomer({
       email: 'cron-fail@test.local',
       omise_customer_id: 'cust_cronfail',

@@ -230,7 +230,7 @@ async function genAgencyData (supporter_id, supporter) {
 async function uploadSupporterProfileImage (image_url) {
   return new Promise((resolve, reject) => {
     let origin_url = `uploads/supporters/${image_url}`;
-    let destination_url = `/var/www/vhosts/ayasan-service.com/httpdocs/assets/uploads/profilepicture/${image_url}`;
+    let destination_url = `/var/www/vhosts/akaiunsan-service.com/httpdocs/assets/uploads/profilepicture/${image_url}`;
     sftp.connect(Object.assign({ port: '22' }, sftpConfig)).then(() => {
       sftp.put(origin_url, destination_url).then(() => {
         sftp.end();

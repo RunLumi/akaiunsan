@@ -388,7 +388,7 @@ async function matchDriverProfileImage (req, res) {
     for (let driver of drivers) {
       let profile_url = `0000000000${driver.driver_id}`;
       profile_url = profile_url.slice(-11);
-      let origin_file_url = `https://www.ayasan-driver.com/profilepicture/${profile_url}/1.jpg`;
+      let origin_file_url = `https://www.akaiunsan-driver.com/profilepicture/${profile_url}/1.jpg`;
       let new_profile_url = `./uploads/supporters/drivers/${profile_url}.jpg`;
       let destination_url = './uploads/supporters/drivers/';
       let file_name = `${profile_url}.jpg`;
@@ -414,7 +414,7 @@ async function matchDriverProfileImage (req, res) {
     // drivers.forEach((driver) => {
     //   let profile_url = `0000000000${driver.driver_id}`;
     //   profile_url = profile_url.slice(-11);
-    //   let origin_file_url = `https://www.ayasan-driver.com/profilepicture/${profile_url}/1.jpg`;
+    //   let origin_file_url = `https://www.akaiunsan-driver.com/profilepicture/${profile_url}/1.jpg`;
     //   let new_profile_url = `./uploads/supporters/drivers/${profile_url}.jpg`;
     //   let destination_url = './uploads/supporters/drivers/';
     //   let file_name = `${profile_url}.jpg`;

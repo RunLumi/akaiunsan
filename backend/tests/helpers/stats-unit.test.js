@@ -3,7 +3,7 @@ import db from '../../models/index.ts';
 
 // Unit-drive the 19 count* statistics helpers with and without dates so the
 // date/no-date and driver/maid branch variants all execute.
-const statsHelper = require('../../helpers/requestHelper.helper.ts');
+import * as statsHelper from '../../helpers/requestHelper.helper.ts';
 
 let province, district, subDistrict, customer;
 

@@ -1,4 +1,4 @@
-# Akaiunsan Platform (Ayasan)
+# Akaiunsan Platform (Akaiunsan)
 
 The **Akaiunsan** platform is a home-services marketplace (cleaning, maid & driver helpers, supplies) serving Thailand and Vietnam.
 
@@ -10,7 +10,7 @@ This repository is structured as a **modular monorepo** containing the backend R
 
 ```
 akaiunsan/
-├── backend/    # "ayasan-admin-api" — Express 5 REST API (Node 22 LTS, TypeScript)
+├── backend/    # "akaiunsan-admin-api" — Express 5 REST API (Node 22 LTS, TypeScript)
 ├── admin/      # "shadcn-admin" — Back-office admin portal (React 19, Vite 8, Tailwind v4, TanStack Router)
 ├── frontend/   # Customer web application portal
 ├── apps/       # "mobile-app" — Customer mobile app (React Native, iOS & Android)
@@ -35,11 +35,11 @@ The platform is deployed to a single VPS orchestrated via **Docker Compose** and
 
 | Service | Container Name | Technology | Internal Port | Ingress Route | Memory Footprint |
 |---|---|---|---|---|---|
-| **Reverse Proxy** | `ayasan_caddy` | Caddy 2 Alpine | 80, 443 | `*` (Ingress router) | ~28 MiB |
-| **Admin App** | `ayasan_admin` | Vite 8 + React 19 SPA | 80 | `https://akai-admin.cjs.vn` | ~12 MiB |
-| **API Backend** | `ayasan_backend` | Node 22 / Express 5 | 5000 | `https://akai-api.cjs.vn` | ~105 MiB |
-| **Database** | `ayasan_mariadb` | MariaDB 10.9.6 | 3306 | Internal network only (`db_net`) | ~70 MiB |
-| **Customer Web** | `ayasan_frontend` | Caddy Alpine static | 80 | Internal stub (ready for domain) | ~10 MiB |
+| **Reverse Proxy** | `akaiunsan_caddy` | Caddy 2 Alpine | 80, 443 | `*` (Ingress router) | ~28 MiB |
+| **Admin App** | `akaiunsan_admin` | Vite 8 + React 19 SPA | 80 | `https://akai-admin.cjs.vn` | ~12 MiB |
+| **API Backend** | `akaiunsan_backend` | Node 22 / Express 5 | 5000 | `https://akai-api.cjs.vn` | ~105 MiB |
+| **Database** | `akaiunsan_mariadb` | MariaDB 10.9.6 | 3306 | Internal network only (`db_net`) | ~70 MiB |
+| **Customer Web** | `akaiunsan_frontend` | Caddy Alpine static | 80 | Internal stub (ready for domain) | ~10 MiB |
 
 Complete deployment runbooks, environment setup, and backup scripts are documented in [deploy/README.md](deploy/README.md) and [docs/deployment.md](docs/deployment.md).
 

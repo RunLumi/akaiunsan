@@ -4,7 +4,7 @@ import { loadConfig } from '../helpers/config.ts';
 const NODE_ENV = process.env.NODE_ENV || 'local';
 const key = loadConfig(NODE_ENV);
 
-async function sendMail (topic, body, receiver = 'sale@ayasan.vn', isBcc = false) {
+async function sendMail (topic, body, receiver = 'sale@akaiunsan.vn', isBcc = false) {
   var transporter = await nodemailer.createTransport({
     host: key['mail-config'].host,
     port: key['mail-config'].port,
@@ -17,15 +17,15 @@ async function sendMail (topic, body, receiver = 'sale@ayasan.vn', isBcc = false
 
   if(isBcc) {
     var mailOptions = {
-      from: 'Ayasan Service <sale@ayasan.vn>',
+      from: 'Akaiunsan Service <sale@akaiunsan.vn>',
       to: receiver,
-      bcc: 'sale@ayasan.vn',
+      bcc: 'sale@akaiunsan.vn',
       subject: `${topic}`,
       html: body,
     };
   } else {
     var mailOptions = {
-      from: 'Ayasan Service <sale@ayasan.vn>',
+      from: 'Akaiunsan Service <sale@akaiunsan.vn>',
       to: receiver,
       subject: `${topic}`,
       html: body,

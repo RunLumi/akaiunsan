@@ -51,7 +51,7 @@ export default (app) => {
   // Un-authentication routes
   r_public(app);
   
-  //ayasan bot api routes
+  //akaiunsan bot api routes
   r_bot(app);
 
   r_agency(app);

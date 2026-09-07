@@ -20,48 +20,40 @@ function patchModule(specifier, mockExports) {
   });
 }
 
+const mkMaid = (overrides = {}) => ({
+  id: '00000000001',
+  internal_code: 'M001',
+  name: 'Somchai',
+  birthday: '1990-05-05',
+  phone_number: '081',
+  weight: '60',
+  height: '170',
+  nationality: 'thai',
+  location_ID: '72',
+  ltype: 1,
+  jtype: 1,
+  salary: 15000,
+  currency: 'THB',
+  mstatus: 2,
+  remark: 'has work-permit',
+  comment: 'good',
+  position_ID: 20,
+  jstatus: 1,
+  ...overrides,
+});
+
 const fixtures = {
   maid: [
-    {
-      id: '00000000001',
-      internal_code: 'M001',
-      name: 'Somchai',
-      birthday: '1990-05-05',
-      phone_number: '081',
-      weight: '60',
-      height: '170',
-      nationality: 'thai',
-      location_ID: '72',
-      ltype: 1,
-      jtype: 1,
-      salary: 15000,
-      currency: 'THB',
-      mstatus: 2,
-      remark: 'has work-permit',
-      comment: 'good',
-      position_ID: 20,
-      jstatus: 1,
-    },
-    {
-      id: '00000000002',
-      internal_code: 'M002',
-      name: 'Anna',
-      birthday: '0000-00-00',
-      phone_number: '082',
-      weight: '50',
-      height: '160',
-      nationality: 'philipine',
-      location_ID: '99',
-      ltype: 9,
-      jtype: 9,
-      salary: 20000,
-      currency: 'THB',
-      mstatus: 9,
-      remark: null,
-      comment: null,
-      position_ID: 99,
-      jstatus: 2,
-    },
+    mkMaid(),
+    // every remaining switch branch
+    mkMaid({ id: '00000000002', internal_code: 'M002', name: 'L1', nationality: 'vietnam', location_ID: '73', ltype: 2, jtype: 2, mstatus: 1, position_ID: 18 }),
+    mkMaid({ id: '00000000003', internal_code: 'M003', name: 'L3', nationality: 'lao', location_ID: '79', ltype: 3, mstatus: 3, position_ID: 19 }),
+    mkMaid({ id: '00000000004', internal_code: 'M004', name: 'C79', nationality: 'cambodia', location_ID: '80', position_ID: 21 }),
+    mkMaid({ id: '00000000005', internal_code: 'M005', name: 'C80', nationality: 'myanmar(ไทยใหญ่)', position_ID: 22 }),
+    mkMaid({ id: '00000000006', internal_code: 'M006', name: 'P23', nationality: 'filipino', position_ID: 23 }),
+    mkMaid({ id: '00000000007', internal_code: 'M007', name: 'P24', nationality: 'myanmar/thaiyai', position_ID: 24 }),
+    mkMaid({ id: '00000000008', internal_code: 'M008', name: 'P28', nationality: 'philipines', position_ID: 28 }),
+    mkMaid({ id: '00000000009', internal_code: 'M009', name: 'P29', position_ID: 29 }),
   ],
   skillmatch: [{ skill_name: 'Cook Thai', maid_ID: '00000000001', skill_ID: 85 }],
   experience: [
@@ -181,8 +173,9 @@ describe('getSuppoterFromAgency', () => {
   it('maps agency maid rows onto supporter shapes', async () => {
     const supporters = await agencyData.getSuppoterFromAgency(1, 2);
 
-    expect(supporters).toHaveLength(2);
-    const [first, second] = supporters;
+    expect(supporters).toHaveLength(9);
+    const [first] = supporters;
+    const second = supporters[1];
 
     expect(first).toMatchObject({
       firstname: 'Somchai',
@@ -197,11 +190,18 @@ describe('getSuppoterFromAgency', () => {
     });
     expect(first.birthday).toBeInstanceOf(Date);
 
-    // second row exercises the inactive/unknown-code paths
-    expect(second.active).toBe(false); // jstatus 2
-    expect(second.job_roles).toBeNull();
-    expect(second.birthday).toBeNull();
-    expect(second.work_permit).toBe(false);
+    // the 9-row fixture exercises every switch branch
+    expect(supporters.map((s2) => s2.job_live)).toEqual(expect.arrayContaining([
+      'Live in', 'Live out', 'Live in and out',
+    ]));
+    expect(supporters.map((s2) => s2.job_type)).toEqual(expect.arrayContaining(['Full time', 'Part time']));
+    expect(supporters.map((s2) => s2.marriage_status)).toEqual(expect.arrayContaining(['Married', 'Single', 'Divorced']));
+    expect(supporters.map((s2) => s2.job_location)).toEqual(expect.arrayContaining(['Bangkok', 'Nonthaburi', 'Cambodia', 'Laos']));
+    expect(supporters.map((s2) => s2.job_roles)).toEqual(expect.arrayContaining([
+      'maid', 'nanny', 'maid,nanny', 'maid,cook', 'maid,elder', 'maid,pet', 'premium', 'elder', 'restaurant',
+    ]));
+    expect(supporters.every((s2) => typeof s2.work_permit === 'boolean')).toBe(true);
+    expect(supporters.some((s2) => s2.birthday instanceof Date)).toBe(true);
   });
 });
 

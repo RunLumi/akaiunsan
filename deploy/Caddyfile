@@ -54,13 +54,12 @@
 }
 
 # ------------------------------------------------------------------------------
-# Customer Web Portal
+# Customer Web Portal (Uncomment when frontend domain DNS is configured)
 # ------------------------------------------------------------------------------
-{$DOMAIN_FRONTEND:ayasan.vn}, www.{$DOMAIN_FRONTEND:ayasan.vn} {
-    import security
-
-    reverse_proxy frontend:80 {
-        header_up Host {host}
-        header_up X-Real-IP {remote_host}
-    }
-}
+# {$DOMAIN_FRONTEND:ayasan.vn} {
+#     import security
+#     reverse_proxy frontend:80 {
+#         header_up Host {host}
+#         header_up X-Real-IP {remote_host}
+#     }
+# }

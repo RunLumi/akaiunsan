@@ -79,7 +79,7 @@ async function getList (req, res) {
         fields[prop] = filter[prop];
       });
     } else if (keyword) {
-      field_list = ['name', 'branch'];
+      let field_list = ['name', 'branch'];
       fields = {
         [or]: []
       };
@@ -122,7 +122,7 @@ async function count (req, res) {
         fields[prop] = filter[prop];
       });
     } else if (keyword) {
-      field_list = ['name', 'branch'];
+      let field_list = ['name', 'branch'];
       fields = {
         [or]: []
       };

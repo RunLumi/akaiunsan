@@ -20,7 +20,7 @@ async function getList (req, res) {
         fields[prop] = filter[prop];
       });
     } else if (keyword) {
-      field_list = ['status', 'job_type', 'total_hour'];
+      let field_list = ['status', 'job_type', 'total_hour'];
       fields = {
         [or]: []
       };

@@ -75,7 +75,7 @@ async function getList (req, res) {
         fields[prop] = filter[prop];
       });
     } else if (keyword) {
-      field_list = ['company_name'];
+      let field_list = ['company_name'];
       fields = {
         [or]: []
       };
@@ -118,7 +118,7 @@ async function count (req, res) {
         fields[prop] = filter[prop];
       });
     } else if (keyword) {
-      field_list = ['company_name'];
+      let field_list = ['company_name'];
       fields = {
         [or]: []
       };

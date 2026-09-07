@@ -76,7 +76,7 @@ async function getList (req, res) {
         fields[prop] = filter[prop];
       });
     } else if (keyword) {
-      field_list = ['role_name', 'permission'];
+      let field_list = ['role_name', 'permission'];
       fields = {
         [or]: []
       };
@@ -118,7 +118,7 @@ async function count (req, res) {
         fields[prop] = filter[prop];
       });
     } else if (keyword) {
-      field_list = ['role_name', 'permission'];
+      let field_list = ['role_name', 'permission'];
       fields = {
         [or]: []
       };

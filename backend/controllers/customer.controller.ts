@@ -86,7 +86,7 @@ async function getList (req, res) {
         fields[prop] = filter[prop];
       });
     } else if (keyword) {
-      field_list = ['firstname', 'lastname', 'phone_number', 'email', 'line_id'];
+      let field_list = ['firstname', 'lastname', 'phone_number', 'email', 'line_id'];
       fields = {
         [or]: []
       };
@@ -126,7 +126,7 @@ async function count (req, res) {
         fields[prop] = filter[prop];
       });
     } else if (keyword) {
-      field_list = ['firstname', 'lastname', 'phone_number', 'email', 'line_id'];
+      let field_list = ['firstname', 'lastname', 'phone_number', 'email', 'line_id'];
       fields = {
         [or]: []
       };

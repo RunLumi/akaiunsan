@@ -113,7 +113,7 @@ async function getList (req, res) {
         fields[prop] = filter[prop];
       });
     } else if (keyword) {
-      field_list = ['status', 'schedule', 'job_type',
+      let field_list = ['status', 'schedule', 'job_type',
         'address_sub_district', 'address_district', 'address_province',
         'address_glat', 'address_glng'];
       fields = {
@@ -158,7 +158,7 @@ async function count (req, res) {
         fields[prop] = filter[prop];
       });
     } else if (keyword) {
-      field_list = ['status', 'schedule', 'job_type',
+      let field_list = ['status', 'schedule', 'job_type',
       'address_sub_district', 'address_district', 'address_province',
       'address_glat', 'address_glng'];
       fields = {

@@ -95,7 +95,7 @@ async function getList (req, res) {
         fields[prop] = filter[prop];
       });
     } else if (keyword) {
-      field_list = ['firstname', 'lastname', 'company_name', 'company_branch', 'tax_id',
+      let field_list = ['firstname', 'lastname', 'company_name', 'company_branch', 'tax_id',
         'address_detail', 'address_sub_district', 'address_district', 'address_province',
         'address_country', 'address_postal_code', 'phone_number'];
       fields = {
@@ -140,7 +140,7 @@ async function count (req, res) {
         fields[prop] = filter[prop];
       });
     } else if (keyword) {
-      field_list = ['firstname', 'lastname', 'company_name', 'company_branch', 'tax_id',
+      let field_list = ['firstname', 'lastname', 'company_name', 'company_branch', 'tax_id',
         'address_detail', 'address_sub_district', 'address_district', 'address_province',
         'address_country', 'address_postal_code', 'phone_number'];
       fields = {

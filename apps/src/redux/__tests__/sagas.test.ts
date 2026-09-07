@@ -45,16 +45,21 @@ describe("auth saga characterization", () => {
     expect(seen.length).toBe(0);
   });
 
-  // pins current behavior: takeLatest passes the whole action object to
-  // logout(callback); the action is truthy so `callback()` throws after the
-  // put has already happened. The app "works" because redux-saga funnels the
-  // error into onError and LOG_OUT/SUCCESS was already dispatched.
-  it("pins: logout worker crashes calling the action object as callback", async () => {
+  it("does not crash when logout has no callback", async () => {
     const { store, seen, errors } = bootstrap();
     store.dispatch({ type: TYPES.AUTH.LOG_OUT });
     await new Promise((r) => setTimeout(r, 20));
     expect(seen).toContainEqual({ type: success(TYPES.AUTH.LOG_OUT) });
-    expect(errors.length).toBeGreaterThan(0);
+    expect(errors).toHaveLength(0);
+  });
+
+  it("invokes an optional logout callback", async () => {
+    const { store, errors } = bootstrap();
+    const callback = jest.fn();
+    store.dispatch({ type: TYPES.AUTH.LOG_OUT, callback });
+    await new Promise((r) => setTimeout(r, 20));
+    expect(callback).toHaveBeenCalledTimes(1);
+    expect(errors).toHaveLength(0);
   });
 
   it("no login watcher is registered (login saga is dead code)", () => {

@@ -57,11 +57,11 @@ export const HelperSelectFixPlan = ({
   const [oldDetail, setOldDetail] = React.useState("");
   const [serviceDetail, setServiceDetail] = React.useState("");
   const [searchHelper, setSearchHelper] = React.useState("");
-  const [dataHelper, setDataHelper] = React.useState([]);
+  const [dataHelper, setDataHelper] = React.useState<any[]>([]);
   const [national, setNational] = React.useState("");
   // const [id, setId] = React.useState('');
   const [experiences, setExperiences] = React.useState(0);
-  const [dataHelperSuggest, setDataHelperSuggest] = React.useState([]);
+  const [dataHelperSuggest, setDataHelperSuggest] = React.useState<any[]>([]);
   const [loadingListHelper, requestListHelper] = useApi({
     method: "post",
     url: Constants.API.services_helper_fixplan,

@@ -80,7 +80,7 @@ export default function Address(props: any) {
         >
           <Ionicons
             style={{ alignSelf: "flex-end" }}
-            name="ios-open-outline"
+            name="open-outline"
             size={24}
             color={currentAddress == item.id ? "white" : "black"}
           />

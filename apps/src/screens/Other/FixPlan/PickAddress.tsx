@@ -85,7 +85,7 @@ export default function PickAddress(props: any) {
       icon: (
         <Ionicons
           style={styles.spaceIcon}
-          name="ios-reader-outline"
+          name="reader-outline"
           size={24}
           color="black"
         />
@@ -93,7 +93,7 @@ export default function PickAddress(props: any) {
       iconPass: (
         <Ionicons
           style={styles.spaceIcon}
-          name="ios-reader-outline"
+          name="reader-outline"
           size={24}
           color={colors.main_color}
         />
@@ -145,7 +145,7 @@ export default function PickAddress(props: any) {
       icon: (
         <Ionicons
           style={styles.spaceIcon}
-          name="ios-card-outline"
+          name="id-card-outline"
           size={24}
           color="black"
         />
@@ -153,7 +153,7 @@ export default function PickAddress(props: any) {
       iconPass: (
         <Ionicons
           style={styles.spaceIcon}
-          name="ios-card-outline"
+          name="id-card-outline"
           size={24}
           color={colors.main_color}
         />

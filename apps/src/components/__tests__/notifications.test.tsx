@@ -27,7 +27,6 @@ describe("NotificationHandler", () => {
     // re-registered on each mount, so clear those plus the navigate side-effect.
     (Notifications.addNotificationReceivedListener as jest.Mock).mockClear();
     (Notifications.addNotificationResponseReceivedListener as jest.Mock).mockClear();
-    (Notifications.removeNotificationSubscription as jest.Mock).mockClear();
     (NavigationRoot.navigate as jest.Mock).mockClear();
   });
 
@@ -82,9 +81,12 @@ describe("NotificationHandler", () => {
   it("removes both subscriptions on unmount", async () => {
     const { unmount } = createWithStore(<NotificationHandler />, makeStore());
     await flush();
+    const receivedSubscription = (Notifications.addNotificationReceivedListener as jest.Mock)
+      .mock.results[0].value;
+    const responseSubscription = (Notifications.addNotificationResponseReceivedListener as jest.Mock)
+      .mock.results[0].value;
     act(() => unmount());
-    expect(Notifications.removeNotificationSubscription).toHaveBeenCalledTimes(
-      2
-    );
+    expect(receivedSubscription.remove).toHaveBeenCalledTimes(1);
+    expect(responseSubscription.remove).toHaveBeenCalledTimes(1);
   });
 });

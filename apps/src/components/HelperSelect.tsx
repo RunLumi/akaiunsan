@@ -58,8 +58,8 @@ export const HelperSelect = ({
   const [languageDetail, setLanguageDetail] = React.useState("");
   const [oldDetail, setOldDetail] = React.useState("");
   const [searchHelper, setSearchHelper] = React.useState("");
-  const [dataHelper, setDataHelper] = React.useState([]);
-  const [dataHelperSuggest, setDataHelperSuggest] = React.useState([]);
+  const [dataHelper, setDataHelper] = React.useState<any[]>([]);
+  const [dataHelperSuggest, setDataHelperSuggest] = React.useState<any[]>([]);
   const [loadingListHelper, requestListHelper] = useApi({
     method: "get",
     url: Constants.API.services_management_helper,
@@ -69,7 +69,7 @@ export const HelperSelect = ({
       } else {
         if (response.items && response.items.length) {
           setDataHelper(
-            response.items.filter((x) => x.status === Enum.HelperStatus.ACTIVE)
+            response.items.filter((x: any) => x.status === Enum.HelperStatus.ACTIVE)
           );
         }
       }
@@ -84,9 +84,9 @@ export const HelperSelect = ({
       } else {
         if (response.items && response.items.length) {
           setDataHelperSuggest(
-            response.items.filter((x) => x.status === Enum.HelperStatus.ACTIVE)
+            response.items.filter((x: any) => x.status === Enum.HelperStatus.ACTIVE)
           );
-          let dataHelperSuggest = response.items.map((x) => {
+          let dataHelperSuggest = response.items.map((x: any) => {
             if (x.status === Enum.HelperStatus.ACTIVE) {
               return x.id;
             }
@@ -144,7 +144,7 @@ export const HelperSelect = ({
       Alert.alert(i18n.t("auth.error"), i18n.t("home.select_your_helper"));
     }
   };
-  const searchNameHelper = (value: any) => {
+  const searchNameHelper = (value?: any) => {
     setSearchHelper(value);
     requestListHelper({
       params: paramArray([
@@ -173,7 +173,7 @@ export const HelperSelect = ({
     setDataHelper(valueHelpers);
     setDataHelperSuggest(valueHelperSuggest);
   };
-  const onSelectHelperSuggest = (value, idx) => {
+  const onSelectHelperSuggest = (value: any, idx: any) => {
     let valueHelperSuggest = [...dataHelperSuggest];
     let valueHelpers = [...dataHelper];
     for (let index = 0; index < valueHelperSuggest.length; index++) {
@@ -190,7 +190,7 @@ export const HelperSelect = ({
     setDataHelperSuggest(valueHelperSuggest);
     setDataHelper(valueHelpers);
   };
-  const renderItem = (item, idx) => (
+  const renderItem = (item: any, idx: any) => (
     <View key={idx} style={styles.viewImage}>
       <TouchableOpacity onPress={() => showDetail(item, idx, 1)}>
         <ImageBackground
@@ -609,13 +609,25 @@ export const HelperSelect = ({
           </Text>
           <SearchBar
             placeholder={i18n.t("home.search_helper")}
-            onChangeText={(value) => searchNameHelper(value)}
+            onChangeText={searchNameHelper}
             value={searchHelper}
             // containerStyle={{backgroundColor:"transparent"}}
             showLoading={loadingListHelper}
             loadingProps={{ color: colors.blue_link }}
             platform="ios"
             onCancel={() => console.log("Cancel")}
+            // react-native-elements SearchBar types require these presentation
+            // props even though they're optional at runtime; supplying defaults.
+            lightTheme={false}
+            round={false}
+            onClear={() => {}}
+            onFocus={() => {}}
+            onBlur={() => {}}
+            searchIcon={{ name: "search", color: "#86939e" }}
+            clearIcon={{ name: "clear", color: "#86939e" }}
+            showCancel={false}
+            cancelButtonTitle=""
+            cancelButtonProps={{}}
           />
           <View style={{ flex: 1 }}>
             <FlatList

@@ -509,7 +509,7 @@ export default function Option(props: any) {
               <View style={{ flexDirection: "row" }}>
                 <Ionicons
                   onPress={() => onChooseHelper()}
-                  name="ios-open-outline"
+                  name="open-outline"
                   size={24}
                   color={colors.gray_hidden_text}
                 />
@@ -755,7 +755,7 @@ export default function Option(props: any) {
                     <View style={{ flexDirection: "row" }}>
                       <Ionicons
                         onPress={() => onChooseHelper()}
-                        name="ios-open-outline"
+                        name="open-outline"
                         size={24}
                         color={colors.gray_hidden_text}
                       />

@@ -99,13 +99,13 @@ jest.mock("expo-location", () => ({
 
 jest.mock("expo-notifications", () => ({
   setNotificationHandler: jest.fn(),
-  addNotificationReceivedListener: jest.fn(() => 1),
-  addNotificationResponseReceivedListener: jest.fn(() => 2),
-  removeNotificationSubscription: jest.fn(),
+  addNotificationReceivedListener: jest.fn(() => ({ remove: jest.fn(), id: 1 })),
+  addNotificationResponseReceivedListener: jest.fn(() => ({ remove: jest.fn(), id: 2 })),
   getPermissionsAsync: jest.fn().mockResolvedValue({ status: "granted" }),
   requestPermissionsAsync: jest.fn().mockResolvedValue({ status: "granted" }),
   setNotificationChannelAsync: jest.fn(),
   scheduleNotificationAsync: jest.fn(),
+  SchedulableTriggerInputTypes: { TIME_INTERVAL: "timeInterval" },
   AndroidImportance: { MAX: 5, DEFAULT: 3 },
 }));
 

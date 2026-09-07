@@ -323,7 +323,7 @@ export default function Account(props: any) {
                 }}
               >
                 <Ionicons
-                  name="ios-power-sharp"
+                  name="power-sharp"
                   size={30}
                   color={colors.main_color}
                 />

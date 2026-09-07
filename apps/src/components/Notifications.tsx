@@ -10,6 +10,8 @@ import _ from "lodash";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
+    shouldShowBanner: true,
+    shouldShowList: true,
     shouldShowAlert: true,
     shouldPlaySound: false,
     shouldSetBadge: false,
@@ -19,8 +21,8 @@ Notifications.setNotificationHandler({
 export const NotificationHandler = (props: any) => {
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
-  const notificationListener = useRef<any>();
-  const responseListener = useRef<any>();
+  const notificationListener = useRef<any>(undefined);
+  const responseListener = useRef<any>(undefined);
 
   useEffect(() => {
     registerForPushNotificationsAsync().then((tokenDevice: any) => {
@@ -45,8 +47,8 @@ export const NotificationHandler = (props: any) => {
       });
 
     return () => {
-      Notifications.removeNotificationSubscription(notificationListener);
-      Notifications.removeNotificationSubscription(responseListener);
+      notificationListener.current?.remove?.();
+      responseListener.current?.remove?.();
     };
   }, []);
 
@@ -75,7 +77,10 @@ async function schedulePushNotification() {
       body: "Here is the notification body",
       data: { data: "goes here" },
     },
-    trigger: { seconds: 2 },
+    trigger: {
+      type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
+      seconds: 2,
+    },
   });
 }
 

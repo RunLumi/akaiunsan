@@ -47,7 +47,7 @@ export default function BottomTabNavigator() {
         component={Booking}
         options={{
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-clipboard-outline" color={color} />
+            <TabBarIcon name="clipboard-outline" color={color} />
           ),
         }}
       />
@@ -66,7 +66,7 @@ export default function BottomTabNavigator() {
         component={Account}
         options={{
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-person-outline" color={color} />
+            <TabBarIcon name="person-outline" color={color} />
           ),
         }}
       />

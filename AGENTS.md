@@ -3,7 +3,7 @@
 This repository ("akaiunsan") is the Ayasan platform: a home-services marketplace.
 ```
 akaiunsan/
-├── backend/   # "ayasan-admin-api" — Express 5 + Sequelize REST API (Node 22, TypeScript)
+├── backend/   # "ayasan-admin-api" — Express 5 + Sequelize REST API (Node 22 LTS, TypeScript)
 ├── admin/     # "shadcn-admin" — React 19 + Vite 8 + TanStack Router + Tailwind v4 admin portal
 ├── frontend/  # customer web portal
 ├── apps/      # "mobile-app" — React Native (iOS & Android) customer app
@@ -14,39 +14,49 @@ akaiunsan/
 
 | Doc | What's in it |
 |---|---|
-| [docs/architecture.md](docs/architecture.md) | how the two apps fit together, external services, domain overview |
-| [docs/setup.md](docs/setup.md) | local dev environment from zero (DB, config, run) |
+| [README.md](README.md) | **Monorepo overview**: service inventory, live URLs, quickstarts, documentation index |
+| [deploy/README.md](deploy/README.md) | **Production VPS operations runbook**: live server `15.235.202.219`, swap, SSL, and daily maintenance |
+| [docs/deployment.md](docs/deployment.md) | Master Docker Compose + Caddy setup, CI/CD pipeline, mobile store deploy |
+| [docs/architecture.md](docs/architecture.md) | How services fit together, domain overview, external integrations |
+| [docs/setup.md](docs/setup.md) | Local dev environment from zero (DB, config, run) |
 | [docs/backend.md](docs/backend.md) | API folder structure, conventions, request lifecycle |
-| [docs/api-reference.md](docs/api-reference.md) | route tiers, auth headers, endpoint inventory |
+| [docs/api-reference.md](docs/api-reference.md) | Route tiers, auth headers, endpoint inventory |
 | [docs/data-model.md](docs/data-model.md) | Sequelize models and relations |
-| [docs/mobile-app.md](docs/mobile-app.md) | app structure, build flavors, state management, `useApi` hook |
-| [docs/conventions.md](docs/conventions.md) | code patterns to follow when editing |
-| [docs/deployment.md](docs/deployment.md) | GitLab CI, pm2 servers, mobile release builds |
-| [docs/security.md](docs/security.md) | **read first**: committed secrets; what never to commit or print |
-| [docs/backend-upgrade-plan.md](docs/backend-upgrade-plan.md) | phased backend migration: TS + TDD + dependency upgrades (Phases 0–2 done, execution log inside) |
-| [docs/mobile-app-upgrade-plan.md](docs/mobile-app-upgrade-plan.md) | proposed phased mobile migration: TDD-first, Expo SDK 57 replatform, RTK Query (not started) |
+| [docs/mobile-app.md](docs/mobile-app.md) | App structure, build flavors, state management, `useApi` hook |
+| [docs/conventions.md](docs/conventions.md) | Code patterns to follow when editing |
+| [docs/security.md](docs/security.md) | **Read first**: committed secrets; what never to commit or print |
+| [docs/backend-upgrade-plan.md](docs/backend-upgrade-plan.md) | Phased backend migration: TS + TDD + Express 5 (Phases 0–3 landed) |
+| [docs/mobile-app-upgrade-plan.md](docs/mobile-app-upgrade-plan.md) | Proposed phased mobile migration: TDD-first, Expo SDK 57 replatform |
 
 ## Quick facts
 
-| | backend | apps |
-|---|---|---|
-| Runtime | Node.js, CommonJS (`require`) | React Native 0.64 + TypeScript 4.3, Expo SDK 43 (bare) |
-| Framework | Express 4, Sequelize 6, MySQL | React 17, React Navigation 6, Redux + Redux-Saga + redux-persist |
-| Install | `cd backend && npm install` | `cd apps && yarn install` |
-| Run (dev) | `npm run local` (NODE_ENV=local) | `yarn start:expo` (dev client) / `yarn android` / `yarn ios` |
-| Entry | `backend/app.js` | `apps/index.js` → `App.tsx` → `src/navigation` |
-| DB | MariaDB via `backend/docker-compose.yml` (port 15506) | — |
-| CI | `.gitlab-ci.yml` (deploys `develop` branch via pm2) | manual builds (see deployment.md) |
+| | backend | admin | apps | deploy (VPS) |
+|---|---|---|---|---|
+| Runtime | Node.js 22 LTS, TypeScript | React 19, TypeScript, Vite 8 | React Native 0.64 + TS 4.3, Expo 43 | Ubuntu 26.04 LTS (`15.235.202.219`) |
+| Framework | Express 5, Sequelize 6 | Tailwind v4, TanStack Router | React 17, React Nav 6, Redux Saga | Docker Engine 29 + Docker Compose v2 |
+| Install | `cd backend && npm install` | `cd admin && pnpm install` | `cd apps && yarn install` | `git pull origin main` |
+| Run (dev) | `npm run local` (tsx, local env) | `pnpm dev` (Vite port 5173) | `yarn start:expo` / `yarn android` / `yarn ios` | `sudo docker compose --env-file .env up -d --build` |
+| Entry | `backend/app.ts` &rarr; `dist/app.js` | `admin/src/main.tsx` | `apps/index.js` &rarr; `App.tsx` | `deploy/docker-compose.yml` + `Caddyfile` |
+| Database | MariaDB 10.9 (Docker port 3306) | — | — | Container `ayasan_mariadb` (internal `db_net`) |
+| CI / CD | GitHub Actions (`.github/workflows/deploy.yml`) | GH Actions build & push | Manual scripts (`apps/scripts/deploy-stores.sh`) | Ingress router `ayasan_caddy` with auto-TLS |
+
+## Production Endpoints & Host
+
+- **VPS Server**: `15.235.202.219` (SSH: `ssh ubuntu@15.235.202.219`)
+- **Admin App**: [https://akai-admin.cjs.vn](https://akai-admin.cjs.vn) (proxied to `ayasan_admin:80`)
+- **Backend API**: [https://akai-api.cjs.vn](https://akai-api.cjs.vn) (proxied to `ayasan_backend:5000`)
+- **API Health Check**: [https://akai-api.cjs.vn/health](https://akai-api.cjs.vn/health)
 
 ## Ground rules for agents
 
-1. **Backend is CommonJS** — use `require`/`module.exports`, no ESM imports, no build step.
-2. **Config is per-environment JSON** — `backend/config/{local,development,production}.json` selected by `NODE_ENV` (schema in `backend/config/readme.md`). These files are gitignored; never hardcode credentials — read them from the config `key` object (see `helpers/util.js` for the `sftp-connection` pattern) or `process.env`.
-3. **API auth model** — every route group checks an `app_key` header (`headerValidator`); `/client/*` additionally requires a customer Bearer JWT (`clientValidator`, exposes `req.customer`); `/back-office/*` requires an admin JWT plus `recordHistory` and per-section `checkPermission` role checks. Wire new endpoints into the matching route file — see docs/api-reference.md.
-4. **Adding a backend feature**: model in `backend/models/` (relations in `models/relations.js`) → controller in `backend/controllers/` → route in `backend/routes/{public,client,backoffice,agency,bot}.route.js`. Do not add routes in `app.js`.
-5. **Mobile app is TypeScript** — screens in `apps/src/screens/<Feature>/` with an `index.ts`, shared components in `apps/src/components/` (barrel export), theme/constants/i18n in `apps/src/shared/`. All API calls go through the `useApi` hook (`apps/src/hooks/useApi.ts`) which sets `Authorization`, `Accept-Language`, and `platform` headers and reads the base URL from `react-native-config`.
-6. **Env files for the app** — `.env`, `.env.dev`, `.env.staging`, `.env.production` (keys: `API_URL`, `OMISEKEY`, `OMISELINK`, `OMISEADDCARD`) are read by `react-native-config` at build time; pick a flavor with the `android:*` / `ios:*` scripts.
-7. **Do not rely on `db.sequelize.sync()`** for schema changes in production — it runs on boot but there is no migration tool; schema edits are manual.
-8. **Secrets**: the repo previously had credentials committed; they are now gitignored. Never print, copy, or commit values from `backend/config/*.json`, `.env*`, or signing keys (see docs/security.md).
-9. **No meaningful test suite** — backend `npm test` is a stub and the app only has the default jest-expo preset. Verify changes by running the relevant server/app.
-10. Git: default branch is `main`; the GitLab CI deploys the `develop` branch to the development server. Pre-commit hooks (ECC) block commits containing detected secrets — fix the code, don't bypass with `ECC_SKIP_PRECOMMIT=1`.
+1. **Backend is TypeScript** — dev runner is `tsx` (`npm run local`), production build produces `dist/` via `npm run build`. Keep CommonJS require-interop working during migrations.
+2. **Config is per-environment JSON** — `backend/config/{local,development,production}.json` selected by `NODE_ENV`. Inside Docker, `docker-entrypoint.sh` synthesizes `config/production.json` from `.env` variables if not mounted. Never commit real credentials.
+3. **API auth model** — every route group checks an `app_key` header (`headerValidator`); `/client/*` requires a customer Bearer JWT (`clientValidator`, exposes `req.customer`); `/back-office/*` requires an admin JWT plus `recordHistory` and per-section `checkPermission` role checks. Wire new endpoints into matching route files — see [docs/api-reference.md](docs/api-reference.md).
+4. **Adding a backend feature**: model in `backend/models/` (relations in `models/relations.ts`) &rarr; controller in `backend/controllers/` &rarr; route in `backend/routes/{public,client,backoffice,agency,bot}.route.ts`. Do not add routes in `app.ts`.
+5. **Admin app is React 19 + Vite 8** — located in `admin/`. Uses `pnpm` for dependency management with lockfile v9.0. Built via multi-stage Dockerfile and served by Caddy Alpine.
+6. **Mobile app is TypeScript** — screens in `apps/src/screens/<Feature>/` with an `index.ts`, shared components in `apps/src/components/` (barrel export). All API calls go through `useApi` hook (`apps/src/hooks/useApi.ts`).
+7. **Do not rely on `db.sequelize.sync()`** for schema changes in production — it runs on boot but schema edits are manual until migrations (Phase 5) land.
+8. **Secrets**: credentials are now gitignored. Never print, copy, or commit values from `backend/config/*.json`, `.env*`, or signing keys (see [docs/security.md](docs/security.md)).
+9. **Backend test suite**: `npm test` runs the 179-test Vitest characterization suite against test MariaDB. Ensure tests stay green on changes.
+10. **Git workflow**: default branch is `main`. Pre-commit hooks (ECC) block commits containing detected secrets — fix the code, don't bypass with `ECC_SKIP_PRECOMMIT=1`.
+11. **Production deployment**: Orchestrated in `deploy/`. The VPS pulls updates directly using its configured deploy key. After pulling, restart containers with `sudo docker compose --env-file .env up -d --build`.

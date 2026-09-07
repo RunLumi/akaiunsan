@@ -148,7 +148,7 @@ describe('driver file-backed imports', () => {
     expect(res.body).toBe(true);
     // pins current behavior: inserts are fired-and-forgotten (forEach async,
     // never awaited) — the response returns before rows land
-    await new Promise((r) => setTimeout(r, 400));
+    await new Promise((r) => setTimeout(r, 1500));
     expect(await db.SupporterLanguage.count()).toBeGreaterThanOrEqual(1);
   });
 
@@ -156,7 +156,7 @@ describe('driver file-backed imports', () => {
     const res = await pub(request(app).get('/import/supporter-driver-experience'));
     expect(res.status).toBe(200);
     expect(res.body).toBe(true);
-    await new Promise((r) => setTimeout(r, 400)); // fire-and-forgotten inserts
+    await new Promise((r) => setTimeout(r, 1500)); // fire-and-forgotten inserts (pins the race)
     expect(await db.SupporterExperience.count()).toBeGreaterThanOrEqual(1);
   });
 });

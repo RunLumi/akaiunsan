@@ -41,6 +41,10 @@ describe('bot list filter branches', () => {
     ['max_salary', '20000'],
     ['job_live', 'Live in'],
     ['job_type', 'Full time'],
+    ['min_age', '20'],
+    ['max_age', '40'],
+    ['min_age', '25'],
+    ['max_age', '60'],
   ];
 
   for (const [param, value] of cases) {

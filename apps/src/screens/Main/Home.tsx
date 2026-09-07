@@ -30,7 +30,7 @@ import Colors from "../../shared/Colors";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { useIsFocused } from "@react-navigation/native";
 import { ModalVersion } from "./components";
-import PushNotification from "react-native-push-notification";
+import notifee from "@notifee/react-native";
 import { paramArray } from "../../shared/Utils";
 
 const { width } = Dimensions.get("window");
@@ -193,7 +193,7 @@ export default function Home(props: any) {
             } else {
               return {
                 ...x,
-                image: require("../../assets/images/ayasan_logo.png"),
+                image: require("../../assets/images/akaiunsan_logo.png"),
               };
             }
           });
@@ -225,9 +225,7 @@ export default function Home(props: any) {
     callback: ({ error, response }) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
-        // setRefreshNoti(false);
-        // notifee.setBadgeCount(response.totalUnRead);
-        PushNotification.setApplicationIconBadgeNumber(response.totalUnRead)
+        notifee.setBadgeCount(response.totalUnRead)
 
         dispatch({
           type: TYPES.TOOLS.NOTIFICATION,
@@ -360,7 +358,7 @@ export default function Home(props: any) {
     setModalVisible(false);
     // dispatch({ type: success(TYPES.AUTH.LOG_OUT) });
     if (Platform.OS === "ios") {
-      Linking.openURL("https://apps.apple.com/us/app/ayasan/id1025748222");
+      Linking.openURL("https://apps.apple.com/us/app/akaiunsan/id6809336835");
     }
     if (Platform.OS === "android") {
       Linking.openURL(

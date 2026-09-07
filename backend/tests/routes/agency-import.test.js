@@ -1,3 +1,4 @@
+import fs from 'fs';
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import request from 'supertest';
 

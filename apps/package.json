@@ -103,6 +103,7 @@
     "eslint": "9.39.5",
     "eslint-config-prettier": "9.1.2",
     "eslint-plugin-react": "7.37.5",
+    "expo-doctor": "1.20.4",
     "jest": "~29.7.0",
     "jest-expo": "~57.0.5",
     "prettier": "3.9.6",
@@ -112,6 +113,17 @@
   },
   "engines": {
     "node": ">=22"
+  },
+  "expo": {
+    "doctor": {
+      "reactNativeDirectoryCheck": {
+        "exclude": [
+          "@react-native-community/checkbox",
+          "react-native-fast-image",
+          "@notifee/react-native"
+        ]
+      }
+    }
   },
   "private": true,
   "name": "mobile-app",

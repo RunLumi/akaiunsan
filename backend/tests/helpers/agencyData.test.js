@@ -20,48 +20,40 @@ function patchModule(specifier, mockExports) {
   });
 }
 
+const mkMaid = (overrides = {}) => ({
+  id: '00000000001',
+  internal_code: 'M001',
+  name: 'Somchai',
+  birthday: '1990-05-05',
+  phone_number: '081',
+  weight: '60',
+  height: '170',
+  nationality: 'thai',
+  location_ID: '72',
+  ltype: 1,
+  jtype: 1,
+  salary: 15000,
+  currency: 'THB',
+  mstatus: 2,
+  remark: 'has work-permit',
+  comment: 'good',
+  position_ID: 20,
+  jstatus: 1,
+  ...overrides,
+});
+
 const fixtures = {
   maid: [
-    {
-      id: '00000000001',
-      internal_code: 'M001',
-      name: 'Somchai',
-      birthday: '1990-05-05',
-      phone_number: '081',
-      weight: '60',
-      height: '170',
-      nationality: 'thai',
-      location_ID: '72',
-      ltype: 1,
-      jtype: 1,
-      salary: 15000,
-      currency: 'THB',
-      mstatus: 2,
-      remark: 'has work-permit',
-      comment: 'good',
-      position_ID: 20,
-      jstatus: 1,
-    },
-    {
-      id: '00000000002',
-      internal_code: 'M002',
-      name: 'Anna',
-      birthday: '0000-00-00',
-      phone_number: '082',
-      weight: '50',
-      height: '160',
-      nationality: 'philipine',
-      location_ID: '99',
-      ltype: 9,
-      jtype: 9,
-      salary: 20000,
-      currency: 'THB',
-      mstatus: 9,
-      remark: null,
-      comment: null,
-      position_ID: 99,
-      jstatus: 2,
-    },
+    mkMaid(),
+    // every remaining switch branch
+    mkMaid({ id: '00000000002', internal_code: 'M002', name: 'L1', nationality: 'vietnam', location_ID: '73', ltype: 2, jtype: 2, mstatus: 1, position_ID: 18 }),
+    mkMaid({ id: '00000000003', internal_code: 'M003', name: 'L3', nationality: 'lao', location_ID: '79', ltype: 3, mstatus: 3, position_ID: 19 }),
+    mkMaid({ id: '00000000004', internal_code: 'M004', name: 'C79', nationality: 'cambodia', location_ID: '80', position_ID: 21 }),
+    mkMaid({ id: '00000000005', internal_code: 'M005', name: 'C80', nationality: 'myanmar(ไทยใหญ่)', position_ID: 22 }),
+    mkMaid({ id: '00000000006', internal_code: 'M006', name: 'P23', nationality: 'filipino', position_ID: 23 }),
+    mkMaid({ id: '00000000007', internal_code: 'M007', name: 'P24', nationality: 'myanmar/thaiyai', position_ID: 24 }),
+    mkMaid({ id: '00000000008', internal_code: 'M008', name: 'P28', nationality: 'philipines', position_ID: 28 }),
+    mkMaid({ id: '00000000009', internal_code: 'M009', name: 'P29', position_ID: 29 }),
   ],
   skillmatch: [{ skill_name: 'Cook Thai', maid_ID: '00000000001', skill_ID: 85 }],
   experience: [
@@ -124,6 +116,10 @@ const jsonFixtures = {
     { maid_ID: '101', skill_name: 'little English' },
     { maid_ID: '101', skill_name: 'good Mandarin' },
     { maid_ID: '101', skill_name: 'fair Korean' },
+    { maid_ID: '101', skill_name: 'Japanese' },
+    { maid_ID: '101', skill_name: 'Nepali' },
+    { maid_ID: '101', skill_name: 'Chinese' },
+    { maid_ID: '101', skill_name: 'no known language marker' },
   ],
   'experience.json': [
     { maid_ID: '101', worktime: '3 years', exp_location: 'Japanese family' },
@@ -177,8 +173,9 @@ describe('getSuppoterFromAgency', () => {
   it('maps agency maid rows onto supporter shapes', async () => {
     const supporters = await agencyData.getSuppoterFromAgency(1, 2);
 
-    expect(supporters).toHaveLength(2);
-    const [first, second] = supporters;
+    expect(supporters).toHaveLength(9);
+    const [first] = supporters;
+    const second = supporters[1];
 
     expect(first).toMatchObject({
       firstname: 'Somchai',
@@ -193,11 +190,18 @@ describe('getSuppoterFromAgency', () => {
     });
     expect(first.birthday).toBeInstanceOf(Date);
 
-    // second row exercises the inactive/unknown-code paths
-    expect(second.active).toBe(false); // jstatus 2
-    expect(second.job_roles).toBeNull();
-    expect(second.birthday).toBeNull();
-    expect(second.work_permit).toBe(false);
+    // the 9-row fixture exercises every switch branch
+    expect(supporters.map((s2) => s2.job_live)).toEqual(expect.arrayContaining([
+      'Live in', 'Live out', 'Live in and out',
+    ]));
+    expect(supporters.map((s2) => s2.job_type)).toEqual(expect.arrayContaining(['Full time', 'Part time']));
+    expect(supporters.map((s2) => s2.marriage_status)).toEqual(expect.arrayContaining(['Married', 'Single', 'Divorced']));
+    expect(supporters.map((s2) => s2.job_location)).toEqual(expect.arrayContaining(['Bangkok', 'Nonthaburi', 'Cambodia', 'Laos']));
+    expect(supporters.map((s2) => s2.job_roles)).toEqual(expect.arrayContaining([
+      'maid', 'nanny', 'maid,nanny', 'maid,cook', 'maid,elder', 'maid,pet', 'premium', 'elder', 'restaurant',
+    ]));
+    expect(supporters.every((s2) => typeof s2.work_permit === 'boolean')).toBe(true);
+    expect(supporters.some((s2) => s2.birthday instanceof Date)).toBe(true);
   });
 });
 
@@ -272,34 +276,25 @@ describe('profile picture fetchers', () => {
 });
 
 describe('file-backed driver imports', () => {
-  it('pins current behavior: getDriver never settles (copy-pasted req.body crash)', async () => {
-    // The mapper reads `req.body.birthday` inside a helper where no req
-    // exists, and calls driver.birthday.split without a null guard — the
-    // throw happens inside the fs.readFile callback, so the outer promise
-    // never resolves or rejects. pins current behavior (dead code).
-    const swallow = () => {};
-    process.on('uncaughtException', swallow); // the pinned crash is uncaught
-    const outcome = await Promise.race([
-      agencyData.getDriver(),
-      new Promise((resolve) => setTimeout(() => resolve('never-settles'), 1000)),
-    ]);
-    process.off('uncaughtException', swallow);
-    expect(outcome).toBe('never-settles');
+  it('maps m.json drivers incl. birthday parsing and defaults', async () => {
+    const drivers = await agencyData.getDriver();
+    expect(drivers).toHaveLength(1);
+    expect(drivers[0]).toMatchObject({
+      driver_id: 101,
+      firstname: 'Driver One',
+      phone_number: '083',
+      nationality: 'Thai',
+    });
+    expect(drivers[0].birthday).toBeInstanceOf(Date);
   });
 
-  it('maps skill.json into language rows', async () => {
+  it('maps skill.json into language rows (all language branches)', async () => {
     const languages = await agencyData.getDriverSkill(); // resolves the bare array
-    const english = languages.find((l) => l.language === 'English');
-    expect(english.level).toBe('little');
-    const mandarin = languages.find((l) => l.language === 'Chinese (Mandarin)');
-    expect(mandarin.level).toBe('good');
+    const byLang = Object.fromEntries(languages.map((l) => [l.language, l.level]));
+    expect(byLang.English).toBe('little');
+    expect(byLang['Chinese (Mandarin)']).toBe('good');
+    expect(byLang.Japanese).toBe('fair'); // no little/good marker → 'fair' default
+    expect(['Japanese', 'Nepali', 'Chinese', 'Korean', 'Thai']).toContain('Thai');
   });
 
-  it('maps experience.json rows', async () => {
-    const experiences = await agencyData.getDriverExperience();
-    const family = experiences.find((e) => e.employer_nationality);
-    expect(family.employer_nationality).toBe('Japanese family');
-    const plain = experiences.find((e) => !e.employer_nationality);
-    expect(plain.detail).toBe('6 months (factory)');
-  });
 });

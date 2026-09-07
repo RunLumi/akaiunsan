@@ -479,14 +479,14 @@ async function getDriver () {
           job_roles: null,
           active: true
         }
-        let birthday = driver.birthday.split('-');
-        if (birthday && birthday.length && req.body.birthday[0] != '-'
-          && req.body.birthday != '0000-00-00' && req.body.birthday != '') {
-          let birthday = new Date();
-          birthday.setFullYear(birthday[0]);
-          birthday.setMonth(birthday[1]-1);
-          birthday.setDate(birthday[2]);
-          supporter.birthday = birthday;
+        let birthday = driver.birthday ? driver.birthday.split('-') : null;
+        if (birthday && birthday.length && driver.birthday[0] != '-'
+          && driver.birthday != '0000-00-00' && driver.birthday != '') {
+          let parsed = new Date();
+          parsed.setFullYear(Number(birthday[0]));
+          parsed.setMonth(Number(birthday[1]) - 1);
+          parsed.setDate(Number(birthday[2]));
+          supporter.birthday = parsed;
         }
         switch (driver.ltype) {
           case 1:

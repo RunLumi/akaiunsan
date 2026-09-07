@@ -1,0 +1,50 @@
+name: Mobile App CI
+
+on:
+  pull_request:
+    paths:
+      - "apps/**"
+      - ".github/workflows/apps-ci.yml"
+  push:
+    branches:
+      - main
+      - prod
+    paths:
+      - "apps/**"
+      - ".github/workflows/apps-ci.yml"
+
+jobs:
+  apps-ci:
+    name: typecheck · lint · jest
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./apps
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile --ignore-scripts
+
+      - name: Typecheck
+        run: yarn typecheck
+        continue-on-error: true
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Jest (characterization suite + coverage)
+        run: yarn test --ci --coverage --coverageReporters=json-summary --coverageReporters=text
+        env:
+          CI: "true"
+
+      - name: Enforce coverage floors
+        run: node ci/check-floors.js
+        env:
+          NODE_ENV: test

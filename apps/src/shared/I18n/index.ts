@@ -7,6 +7,7 @@ i18n.translations = {
 	th,
 };
 // Set the locale once at the beginning of your app.
-i18n.locale = Localization.locale.toLowerCase().includes('th') ? 'th' : 'en';
+const locale = Localization.getLocales()[0]?.languageCode;
+i18n.locale = locale && locale.toLowerCase().includes('th') ? 'th' : 'en';
 
 export default i18n;

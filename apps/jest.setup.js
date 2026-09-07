@@ -16,12 +16,23 @@ console.error = (...args) => {
 
 jest.mock("react-native-gesture-handler", () => {
   const ReactNative = require("react-native");
+  const makeHandler = () => {
+    const React = require("react");
+    return ({ children, ...props }) =>
+      React.createElement(ReactNative.View, props, children);
+  };
   return {
     FlatList: ReactNative.FlatList,
     ScrollView: ReactNative.ScrollView,
     TouchableOpacity: ReactNative.TouchableOpacity,
     TouchableWithoutFeedback: ReactNative.TouchableWithoutFeedback,
     GestureHandlerRootView: ReactNative.View,
+    PanGestureHandler: makeHandler(),
+    NativeViewGestureHandler: makeHandler(),
+    RawButton: makeHandler(),
+    BaseButton: makeHandler(),
+    RectButton: makeHandler(),
+    State: { UNDETERMINED: 0, BEGAN: 1, ACTIVE: 2, END: 3, FAILED: 4 },
   };
 });
 

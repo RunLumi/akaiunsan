@@ -35,12 +35,23 @@ import { DateTimeSelect } from "../DateTimeSelect";
           old: 30,
           star: 5,
           image: "",
-          isSelect: false,
+          status: 1,
+          isSelect: true,
           price: 100,
           pricePerUnit: 100,
           pricePerMore: 120,
         },
-        { id: "h-2", code: "LANGUAGE", name: "English", price: 50 },
+        {
+          id: "h-3",
+          code: "HELPER",
+          name: "Helper B",
+          old: 25,
+          star: 4,
+          image: "",
+          status: 1,
+          isSelect: false,
+        },
+        { id: "h-2", code: "LANGUAGE", name: "English", price: 50, status: 1 },
       ],
       data: [],
       errors: [],
@@ -77,7 +88,8 @@ const nav = () => ({
   isFocused: jest.fn(() => true),
 });
 
-// Calls every imperative handle registered on the `children`-as-ref props.
+// Calls every imperative handle registered on the `children`-as-ref props
+// (also covers parents that forward the ref through host props).
 const openImperative = (renderer: any, method: string, args: any[] = []) => {
   const hosts = renderer.root.findAll(
     (n: any) => typeof n.props?.[method] === "function"
@@ -108,8 +120,20 @@ const CASES: [string, any, string, any[]][] = [
   ],
 ];
 
-// The imperative handles register on the legacy `children`-as-ref prop.
+// The imperative handles register on the legacy `children`-as-ref prop; the
+// app opens them via ref.current.<method>() — tests do the same.
 const childRef = () => React.createRef<any>();
+
+const openViaRef = (ref: any, method: string, args: any[]) => {
+  act(() => {
+    try {
+      const result = ref.current?.[method]?.(...args);
+      if (result && typeof result.catch === "function") result.catch(() => {});
+    } catch {
+      // tolerated
+    }
+  });
+};
 
 const richProps: Record<string, any> = {
   "components/HelperSelect": {
@@ -150,15 +174,17 @@ describe("shared modal components (Phase 3 characterization)", () => {
   it.each(CASES)(
     "opens and exercises %s",
     async (label, Component, method, args) => {
+      const ref = childRef();
       const renderer = createWithStore(
         <Component
-          children={childRef()}
+          children={ref}
           navigation={mockNavInstance}
           {...(richProps[label] || {})}
         />,
         makeStore(preloadedState)
       );
       await flush();
+      openViaRef(ref, method, args);
       openImperative(renderer, method, args);
       await flush();
       for (let round = 0; round < 2; round++) {

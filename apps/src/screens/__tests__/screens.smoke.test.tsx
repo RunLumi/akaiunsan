@@ -132,6 +132,9 @@ const listItem = (over: Record<string, any> = {}) => ({
     },
   ],
   isAutoRenew: 1,
+  data: JSON.stringify({ NotificationId: "n-1", PromotionId: "p-1" }),
+  type: 2,
+  listImage: [{ image: "" }],
   ...over,
 });
 
@@ -139,7 +142,49 @@ const listItem = (over: Record<string, any> = {}) => ({
   status: 200,
   data: {
     data: {
-      items: [listItem()],
+      items: [listItem(),
+        {
+          id: "noti-news",
+          type: 2,
+          data: JSON.stringify({ NotificationId: "n-1", PromotionId: "p-1" }),
+          title: "News",
+          content: "news content",
+          status: 1,
+          image: "",
+          listImage: [{ image: "" }],
+          bookDetail: [
+            {
+              bookingDate: "2026-01-01T00:00:00.000Z",
+              bookingHour: "2026-01-01T01:00:00.000Z",
+              hour: 2,
+              label: "Mon",
+              serviceName: "Test service",
+            },
+          ],
+          isAutoRenew: 1,
+          serviceName: "Test service",
+        },
+        {
+          id: "noti-promo",
+          type: 1,
+          data: JSON.stringify({ PromotionId: "p-1" }),
+          title: "Promo",
+          content: "promo content",
+          status: 1,
+          image: "",
+          listImage: [{ image: "" }],
+          bookDetail: [
+            {
+              bookingDate: "2026-01-01T00:00:00.000Z",
+              bookingHour: "2026-01-01T01:00:00.000Z",
+              hour: 2,
+              label: "Mon",
+              serviceName: "Test service",
+            },
+          ],
+          isAutoRenew: 1,
+          serviceName: "Test service",
+        },],
       data: [listItem()],
       errors: [],
       results: [listItem()],

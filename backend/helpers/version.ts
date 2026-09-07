@@ -53,8 +53,6 @@ function loadVersionInfo(): VersionInfo {
 
   // Search candidate paths for version.json
   const candidatePaths = [
-    path.join(__dirname, '..', 'version.json'),
-    path.join(__dirname, 'version.json'),
     path.join(process.cwd(), 'version.json'),
     path.join(process.cwd(), 'dist', 'version.json'),
   ];

@@ -41,6 +41,8 @@ services:
       - "443:443/udp" # HTTP/3 (QUIC)
     env_file:
       - .env
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data

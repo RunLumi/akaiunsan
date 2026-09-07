@@ -33,11 +33,22 @@
         max_size 20MB
     }
 
-    reverse_proxy backend:5000 {
-        header_up Host {host}
-        header_up X-Real-IP {remote_host}
-        header_up X-Forwarded-For {remote_host}
-        header_up X-Forwarded-Proto {scheme}
+    # Automatic Deployment Webhook
+    handle /webhook/deploy* {
+        reverse_proxy host.docker.internal:9000 {
+            header_up Host {host}
+            header_up X-Real-IP {remote_host}
+        }
+    }
+
+    # Default: Reverse proxy to Express API
+    handle {
+        reverse_proxy backend:5000 {
+            header_up Host {host}
+            header_up X-Real-IP {remote_host}
+            header_up X-Forwarded-For {remote_host}
+            header_up X-Forwarded-Proto {scheme}
+        }
     }
 }
 

@@ -1,0 +1,16 @@
+[Unit]
+Description=Akaiunsan Auto-Deployment Webhook Daemon
+After=network.target docker.service
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/opt/akaiunsan/deploy
+ExecStart=/usr/bin/python3 /opt/akaiunsan/deploy/scripts/webhook-deploy.py
+Restart=always
+RestartSec=5
+StandardOutput=append:/var/log/akaiunsan-webhook.log
+StandardError=append:/var/log/akaiunsan-webhook.log
+
+[Install]
+WantedBy=multi-user.target

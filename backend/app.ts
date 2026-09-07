@@ -16,9 +16,9 @@ db.sequelize.sync();
 registerRoutes(app);
 
 // Test harnesses (supertest) import the app without binding a port; pm2 and
-// local dev still run the entry and expect it to listen. In ESM there is no
-// require.main — detect direct execution via the executed argv path.
-const isMain = process.argv[1] && import.meta.url === `file://${process.argv[1]}`;
+// local dev run `node dist/app.js` and expect it to listen.
+// Use require.main === module (CJS) — this project compiles to CommonJS.
+const isMain = require.main === module;
 if (isMain) {
   app.listen(PORT, async () => {
     console.log('================================================');

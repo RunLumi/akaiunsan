@@ -1,9 +1,10 @@
 import fs from 'fs';
+import omiseFactory from 'omise';
+import { loadConfig } from '../helpers/config.ts';
+
 const NODE_ENV = process.env.NODE_ENV || 'local';
 const key = loadConfig(NODE_ENV);
 
-import omiseFactory from 'omise';
-import { loadConfig } from '../helpers/config.ts';
 const omise = (omiseFactory as any)({
     omiseVersion: key.omise.omiseVersion,
     secretKey: key.omise.secretKey

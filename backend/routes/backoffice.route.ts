@@ -1,3 +1,4 @@
+import fs from 'fs';
 import middlewareValidators from './../middlewares/validator.ts';
 const { headerValidator, backofficeValidator } = middlewareValidators;
 import { recordHistory, checkPermission } from '../middlewares/admin.ts';
@@ -21,7 +22,10 @@ import * as RequestController from '../controllers/requesthelper/index.controlle
 
 const adminStorage = multer.diskStorage(
   {
-    destination: 'uploads/admins',
+    destination: function (_req, _file, cb) {
+      fs.mkdirSync('uploads/admins', { recursive: true });
+      cb(null, 'uploads/admins');
+    },
     filename: function (req, file, cb) {
       let file_name = genTxt(20);
       let original_file_name = file.originalname.split('.');
@@ -32,7 +36,10 @@ const adminStorage = multer.diskStorage(
 const adminUpload = multer({ storage: adminStorage });
 const customerStorage = multer.diskStorage(
   {
-    destination: 'uploads/customers',
+    destination: function (_req, _file, cb) {
+      fs.mkdirSync('uploads/customers', { recursive: true });
+      cb(null, 'uploads/customers');
+    },
     filename: function (req, file, cb) {
       let file_name = genTxt(20);
       let original_file_name = file.originalname.split('.');
@@ -43,7 +50,10 @@ const customerStorage = multer.diskStorage(
 const customerUpload = multer({ storage: customerStorage });
 const supporterStorage = multer.diskStorage(
   {
-    destination: 'uploads/supporters',
+    destination: function (_req, _file, cb) {
+      fs.mkdirSync('uploads/supporters', { recursive: true });
+      cb(null, 'uploads/supporters');
+    },
     filename: function (req, file, cb) {
       let file_name = genTxt(20);
       let original_file_name = file.originalname.split('.');
@@ -54,7 +64,10 @@ const supporterStorage = multer.diskStorage(
 const supporterUpload = multer({ storage: supporterStorage });
 const bannerStorage = multer.diskStorage(
   {
-    destination: 'uploads/banners',
+    destination: function (_req, _file, cb) {
+      fs.mkdirSync('uploads/banners', { recursive: true });
+      cb(null, 'uploads/banners');
+    },
     filename: function (req, file, cb) {
       let file_name = genTxt(20);
       let original_file_name = file.originalname.split('.');

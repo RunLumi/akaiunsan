@@ -22,6 +22,9 @@ COPY . .
 # Build TypeScript to dist and fix require paths + asset copying
 RUN npm run build
 
+# Prune devDependencies, leaving only production dependencies (which are already patched)
+RUN npm prune --omit=dev
+
 # ------------------------------------------------------------------------------
 # Stage 2: Minimal Production Runner
 # ------------------------------------------------------------------------------
@@ -36,12 +39,8 @@ ENV NODE_ENV=production \
 RUN apt-get update && apt-get install -y --no-install-recommends curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Install production dependencies only
 COPY package*.json ./
-COPY patches/ ./patches/
-RUN npm ci --omit=dev && npm cache clean --force
-
-# Copy built application and runtime templates/assets from builder
+COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/mail-template ./mail-template
 COPY --from=builder /app/config ./config

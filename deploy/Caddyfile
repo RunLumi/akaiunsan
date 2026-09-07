@@ -1,0 +1,66 @@
+# ==============================================================================
+# Caddy Ingress Configuration
+# ==============================================================================
+# Automatic HTTPS via Let's Encrypt / ZeroSSL with HTTP/3 QUIC support.
+# Domain variables can be customized in deploy/.env
+# ==============================================================================
+
+{
+    email {$ACME_EMAIL:devops@ayasan.vn}
+}
+
+# Reusable security headers
+(security) {
+    encode zstd gzip
+    header {
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "SAMEORIGIN"
+        X-XSS-Protection "1; mode=block"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        -Server
+    }
+}
+
+# ------------------------------------------------------------------------------
+# Backend REST API
+# ------------------------------------------------------------------------------
+{$DOMAIN_API:api.ayasan.vn} {
+    import security
+
+    # Uploads limit (e.g., 20MB for helper profile images / KYC documents)
+    request_body {
+        max_size 20MB
+    }
+
+    reverse_proxy backend:5000 {
+        header_up Host {host}
+        header_up X-Real-IP {remote_host}
+        header_up X-Forwarded-For {remote_host}
+        header_up X-Forwarded-Proto {scheme}
+    }
+}
+
+# ------------------------------------------------------------------------------
+# Admin Back-Office Portal
+# ------------------------------------------------------------------------------
+{$DOMAIN_ADMIN:admin.ayasan.vn} {
+    import security
+
+    reverse_proxy admin:80 {
+        header_up Host {host}
+        header_up X-Real-IP {remote_host}
+    }
+}
+
+# ------------------------------------------------------------------------------
+# Customer Web Portal
+# ------------------------------------------------------------------------------
+{$DOMAIN_FRONTEND:ayasan.vn}, www.{$DOMAIN_FRONTEND:ayasan.vn} {
+    import security
+
+    reverse_proxy frontend:80 {
+        header_up Host {host}
+        header_up X-Real-IP {remote_host}
+    }
+}

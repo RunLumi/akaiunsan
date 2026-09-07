@@ -1,0 +1,17 @@
+node_modules
+dist
+coverage
+uploads
+exports
+.git
+.gitignore
+.nvmrc
+*.log
+config/local.json
+config/development.json
+config/production.json
+config/g-cred.json
+tests
+work-note.txt
+view_summary.json
+count.sql

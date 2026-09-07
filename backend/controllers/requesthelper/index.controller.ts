@@ -21,7 +21,7 @@ async function create (req, res) {
       email_topic = 'ขอบคุณที่ใช้บริการกับอะยะซันเซอร์วิส';
     } else {
       email_lang = 'en';
-      email_topic = 'Thank you for choosing Ayasan Service';
+      email_topic = 'Thank you for choosing Akaiunsan Service';
     }
     const customer = await Customer.findOne({ where: { id: customer_id }});
     const mail_template = await new Promise((resolve, reject) => {
@@ -35,7 +35,7 @@ async function create (req, res) {
     let email_message = mail_template.replace('${firstname}', customer.firstname)
     email_message = email_message.replace('${lastname}', customer.lastname)
 
-    await sendMail('Thank you for choosing Ayasan Service', email_message, customer.email);
+    await sendMail('Thank you for choosing Akaiunsan Service', email_message, customer.email);
 
     return res.status(200).json(true);
   } catch (err) {

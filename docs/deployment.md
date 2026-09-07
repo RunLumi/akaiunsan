@@ -65,7 +65,7 @@ Deployment completion is not established by a source SHA, a green build, or a co
 
 ```bash
 curl -sS -w '\nHTTP_STATUS:%{http_code}\n' https://akai-api.cjs.vn/health
-ssh ubuntu@15.235.202.219 'cd /opt/akaiunsan && git rev-parse HEAD && sudo docker inspect --format "{{.State.Health.Status}}" ayasan_backend'
+ssh ubuntu@15.235.202.219 'cd /opt/akaiunsan && git rev-parse HEAD && sudo docker inspect --format "{{.State.Health.Status}}" akaiunsan_backend'
 ```
 
 Accept only when the public response is HTTP 200 with `status: "ok"`, `db: "up"`, and the expected `git.commit`, and the backend container reports `healthy`. The verified incident and recovery record is in [docs/postmortems/2026-09-07-backend-healthcheck-prod-deployment.md](postmortems/2026-09-07-backend-healthcheck-prod-deployment.md).
@@ -74,14 +74,14 @@ Accept only when the public response is HTTP 200 with `status: "ok"`, `db: "up"`
 
 ## Legacy Backend (PM2)
 
-**Development** (automated): `.gitlab-ci.yml` — on push to `develop`, a gitlab-runner tagged `dev-api.ayasan.vn`:
-1. rsyncs the repo to `/home/dev-api.ayasan.vn`
+**Development** (automated): `.gitlab-ci.yml` — on push to `develop`, a gitlab-runner tagged `dev-api.akaiunsan.vn`:
+1. rsyncs the repo to `/home/dev-api.akaiunsan.vn`
 2. `npm install`
 3. `pm2 delete all` + `pm2 start app.js --env development --watch` + `pm2 save`
 
-A MariaDB container (`dev-api.ayasan.vn-db`, from `backend/docker-compose.yml`) serves the dev database on the dev host.
+A MariaDB container (`dev-api.akaiunsan.vn-db`, from `backend/docker-compose.yml`) serves the dev database on the dev host.
 
-**Production** (manual, per `backend/README.md`): on the prod server, folder `/ayasan/api-prod`:
+**Production** (manual, per `backend/README.md`): on the prod server, folder `/akaiunsan/api-prod`:
 ```bash
 git pull origin master
 pm2 restart 3        # the pm2 app id for the API
@@ -126,7 +126,7 @@ export APPLE_TEAM_ID="$TEAM_ID"
 The API credential files must stay outside git. `--confirm` is required for uploads; `--build-only`, `--android-only`, and `--ios-only` are available for narrower runs. Set `PLAY_TRACK=closed` or `open` only when that release destination is intentional. Production uploads additionally require `ALLOW_PLAY_PRODUCTION=YES`.
 
 Android variants: `dev|staging|production` × `debug|release` (`yarn android:*` scripts).
-iOS schemes: `AyasanProduction`, `AysanStaging` (note the typo — it's the real scheme name).
+iOS schemes: `AkaiunsanProduction`, `AysanStaging` (note the typo — it's the real scheme name).
 
 Signing: Android release keystores and iOS certs/profiles live in `apps/` (gitignored since the root `.gitignore` was added — see security.md for what must be provisioned manually on a fresh clone). OTA updates go through `expo-updates` (see the `updateSource` hook in `App.tsx`).
 

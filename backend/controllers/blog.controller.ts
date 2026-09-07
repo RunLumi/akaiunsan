@@ -7,9 +7,9 @@ import { ErrorLog } from '../models/index.ts';
 import scrape from 'html-metadata';
 let error_status = 500;
 let error_message = 'Unexpected error';
-const BLOG_URL = 'https://blog.ayasan-service.com/'
-const BLOG_RSS_URL = 'https://blog.ayasan-service.com/feed/?paged=';
-const BLOG_RSS_SEARCH_URL = 'https://blog.ayasan-service.com/?feed=rss2';
+const BLOG_URL = 'https://blog.akaiunsan-service.com/'
+const BLOG_RSS_URL = 'https://blog.akaiunsan-service.com/feed/?paged=';
+const BLOG_RSS_SEARCH_URL = 'https://blog.akaiunsan-service.com/?feed=rss2';
 
 async function getList (req, res) {
   try {
@@ -21,8 +21,8 @@ async function getList (req, res) {
     feed.items.forEach(item => {
       blog_list.push({
         title: item.title,
-        link: item.link.replace('https://ayasansite.wordpress.com/', '/blog/detail/'),
-        guid: item.guid.replace('https://ayasansite.wordpress.com/', ''),
+        link: item.link.replace('https://akaiunsansite.wordpress.com/', '/blog/detail/'),
+        guid: item.guid.replace('https://akaiunsansite.wordpress.com/', ''),
         author: item.dc_author,
         date: item.pubDate,
         description: item.description,
@@ -105,8 +105,8 @@ async function getSearch (req, res) {
     feed.items.forEach(item => {
       blog_list.push({
         title: item.title,
-        link: item.link.replace('https://ayasansite.wordpress.com/', '/blog/detail/'),
-        guid: item.guid.replace('http://ayasansite.wordpress.com/', ''),
+        link: item.link.replace('https://akaiunsansite.wordpress.com/', '/blog/detail/'),
+        guid: item.guid.replace('http://akaiunsansite.wordpress.com/', ''),
         author: item.dc_author,
         date: item.pubDate,
         description: item.description,

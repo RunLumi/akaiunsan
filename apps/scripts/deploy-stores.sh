@@ -11,7 +11,7 @@ ANDROID_PACKAGE="${ANDROID_PACKAGE:-com.akaiunsan.customer}"
 ANDROID_VARIANT="${ANDROID_VARIANT:-ProductionRelease}"
 ENVFILE="${ENVFILE:-.env.production}"
 PLAY_TRACK="${PLAY_TRACK:-internal}"
-IOS_SCHEME="${IOS_SCHEME:-AyasanProduction}"
+IOS_SCHEME="${IOS_SCHEME:-Akaiunsan}"
 BUILD_ROOT="${BUILD_ROOT:-$APP_ROOT/build/store-release}"
 
 CONFIRM_UPLOAD=0
@@ -42,7 +42,7 @@ Environment:
     GOOGLE_PLAY_SERVICE_ACCOUNT_JSON=/secure/path/play-service-account.json
 
   iOS build/upload:
-    IOS_SCHEME=AyasanProduction
+    IOS_SCHEME=Akaiunsan
     APPLE_TEAM_ID=7MBXZKYSY4
     ASC_API_KEY_JSON=/secure/path/app-store-connect-api-key.json
 
@@ -126,7 +126,7 @@ fi
 
 if ((TARGET_IOS == 1)); then
   require_command xcodebuild
-  require_file "$IOS_ROOT/Ayasan.xcworkspace/contents.xcworkspacedata"
+  require_file "$IOS_ROOT/Akaiunsan.xcodeproj/project.pbxproj"
   require_env APPLE_TEAM_ID
   if ((CONFIRM_UPLOAD == 1)); then
     require_env ASC_API_KEY_JSON
@@ -188,7 +188,7 @@ if ((TARGET_IOS == 1)); then
   (
     cd "$APP_ROOT"
     xcodebuild \
-      -workspace "$IOS_ROOT/Ayasan.xcworkspace" \
+      -project "$IOS_ROOT/Akaiunsan.xcodeproj" \
       -scheme "$IOS_SCHEME" \
       -configuration Release \
       -sdk iphoneos \

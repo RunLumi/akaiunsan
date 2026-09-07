@@ -322,7 +322,7 @@ export default function Signup(props: any) {
               {i18n.t("auth.login")}
             </Text>
             <Image
-              source={require("../../assets/images/ayasan_logo.png")}
+              source={require("../../assets/images/akaiunsan_logo.png")}
               style={s.logo}
             />
             <View style={s.content}>

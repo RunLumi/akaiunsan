@@ -248,8 +248,8 @@ export default function Account(props: any) {
         source={{
           uri:
             language === "en"
-              ? "https://admincp.ayasan.vn/assets/html/chatbox.html"
-              : "https://admincp.ayasan.vn/assets/html/chatbox-th.html",
+              ? "https://admincp.akaiunsan.vn/assets/html/chatbox.html"
+              : "https://admincp.akaiunsan.vn/assets/html/chatbox-th.html",
         }}
       />
     );

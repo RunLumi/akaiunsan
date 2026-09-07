@@ -136,7 +136,7 @@ export default function ForgotPassword(props: any) {
 					}}
 				>
 					<Image
-						source={require('../../assets/images/ayasan_logo.png')}
+						source={require('../../assets/images/akaiunsan_logo.png')}
 						style={s.logo}
 					/>
 				</View>
@@ -188,7 +188,7 @@ export default function ForgotPassword(props: any) {
 					}}
 				>
 					<Image
-						source={require('../../assets/images/ayasan_logo.png')}
+						source={require('../../assets/images/akaiunsan_logo.png')}
 						style={s.logo}
 					/>
 				</View>
@@ -230,7 +230,7 @@ export default function ForgotPassword(props: any) {
 					}}
 				>
 					<Image
-						source={require('../../assets/images/ayasan_logo.png')}
+						source={require('../../assets/images/akaiunsan_logo.png')}
 						style={s.logo}
 					/>
 				</View>

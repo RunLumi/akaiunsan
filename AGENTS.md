@@ -1,9 +1,9 @@
 # AGENTS.md — Guidance for AI Agents
 
-This repository ("akaiunsan") is the Ayasan platform: a home-services marketplace.
+This repository ("akaiunsan") is the Akaiunsan platform: a home-services marketplace.
 ```
 akaiunsan/
-├── backend/   # "ayasan-admin-api" — Express 5 + Sequelize REST API (Node 22 LTS, TypeScript)
+├── backend/   # "akaiunsan-admin-api" — Express 5 + Sequelize REST API (Node 22 LTS, TypeScript)
 ├── admin/     # "shadcn-admin" — React 19 + Vite 8 + TanStack Router + Tailwind v4 admin portal
 ├── frontend/  # customer web portal
 ├── apps/      # "mobile-app" — React Native (iOS & Android) customer app
@@ -38,14 +38,14 @@ akaiunsan/
 | Install | `cd backend && npm install` | `cd admin && pnpm install` | `cd apps && yarn install` | `git pull origin prod` |
 | Run (dev) | `npm run local` (tsx, local env) | `pnpm dev` (Vite port 5173) | `yarn start:expo` / `yarn android` / `yarn ios` | `sudo docker compose --env-file .env up -d --build` |
 | Entry | `backend/app.ts` &rarr; `dist/app.js` | `admin/src/main.tsx` | `apps/index.js` &rarr; `App.tsx` | `deploy/docker-compose.yml` + `Caddyfile` |
-| Database | MariaDB 10.9 (Docker port 3306) | — | — | Container `ayasan_mariadb` (internal `db_net`) |
-| CI / CD | GitHub Actions (`.github/workflows/deploy.yml`) | GH Actions build & push | Manual scripts (`apps/scripts/deploy-stores.sh`) | Ingress router `ayasan_caddy` with auto-TLS |
+| Database | MariaDB 10.9 (Docker port 3306) | — | — | Container `akaiunsan_mariadb` (internal `db_net`) |
+| CI / CD | GitHub Actions (`.github/workflows/deploy.yml`) | GH Actions build & push | Manual scripts (`apps/scripts/deploy-stores.sh`) | Ingress router `akaiunsan_caddy` with auto-TLS |
 
 ## Production Endpoints & Host
 
 - **VPS Server**: `15.235.202.219` (SSH: `ssh ubuntu@15.235.202.219`)
-- **Admin App**: [https://akai-admin.cjs.vn](https://akai-admin.cjs.vn) (proxied to `ayasan_admin:80`)
-- **Backend API**: [https://akai-api.cjs.vn](https://akai-api.cjs.vn) (proxied to `ayasan_backend:5000`)
+- **Admin App**: [https://akai-admin.cjs.vn](https://akai-admin.cjs.vn) (proxied to `akaiunsan_admin:80`)
+- **Backend API**: [https://akai-api.cjs.vn](https://akai-api.cjs.vn) (proxied to `akaiunsan_backend:5000`)
 - **API Health Check**: [https://akai-api.cjs.vn/health](https://akai-api.cjs.vn/health)
 
 ## Ground rules for agents

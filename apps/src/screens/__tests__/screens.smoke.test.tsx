@@ -55,10 +55,98 @@ import SubscriptionDetail from "../Subscription/SubscriptionDetail";
 // App defaults resolved by the axios mock: a 200 envelope whose inner data
 // carries both `items` and `data` arrays, so `useApi` responses shape-check
 // for the screens that read either. Individual tests can still override.
+
+// Rich list item so every list/section renderer executes its content branch
+// (avatars, prices, names, counts) instead of only its empty state.
+const listItem = (over: Record<string, any> = {}) => ({
+  id: "li-1",
+  orderId: "ord-1",
+  orderDetailId: "od-1",
+  title: "Test item",
+  name: "Test item",
+  serviceName: "Test service",
+  serviceType: 1,
+  serviceId: "svc-1",
+  price: 100,
+  salePrice: 90,
+  totalPrice: 100,
+  point: 10,
+  image: "",
+  imageUrl: "",
+  thumb: "",
+  avatar: "",
+  description: "desc",
+  content: "content",
+  status: 1,
+  isDefault: 1,
+  createdAt: "2026-01-01T00:00:00.000Z",
+  bookingDate: "2026-01-01T00:00:00.000Z",
+  bookingHour: "2026-01-01T01:00:00.000Z",
+  bookingDetail: {
+    bookingDate: "2026-01-01T00:00:00.000Z",
+    bookingHour: "2026-01-01T01:00:00.000Z",
+    specialHelper: null,
+    serviceType: 1,
+    age: "",
+    cardId: "",
+    extraServices: [],
+  },
+  customerInfo: {
+    addressId: "addr-1",
+    address: "Test address",
+  bookDetail: [
+    {
+      bookingDate: "2026-01-01T00:00:00.000Z",
+      bookingHour: "2026-01-01T01:00:00.000Z",
+      hour: 2,
+      label: "Mon",
+      serviceName: "Test service",
+    },
+  ],
+  isAutoRenew: 1,
+    district: "District",
+    city: "City",
+    province: "Province",
+    phoneNumber: "0123456789",
+    roomOrFloor: "",
+    remark: "",
+    bedRooms: 0,
+    bathRooms: 0,
+  },
+  promotion: { id: "promo-1", percent: 10, money: 100, name: "Promo" },
+  promotionId: "promo-1",
+  star: 5,
+  review: "great",
+  numberKids: 0,
+  petProfiles: [],
+  activity: "",
+  numberExtraPet: 0,
+  address: "Test address",
+  bookDetail: [
+    {
+      bookingDate: "2026-01-01T00:00:00.000Z",
+      bookingHour: "2026-01-01T01:00:00.000Z",
+      hour: 2,
+      label: "Mon",
+      serviceName: "Test service",
+    },
+  ],
+  isAutoRenew: 1,
+  ...over,
+});
+
 (axios as any).mockResolvedValue({
   status: 200,
-  data: { data: { items: [], data: [], errors: [] } },
+  data: {
+    data: {
+      items: [listItem()],
+      data: [listItem()],
+      errors: [],
+      results: [listItem()],
+    },
+  },
 });
+
 
 // `auth.user` starts null in the real store; several account screens assume a
 // logged-in user is present (they are only reachable behind the auth gate).
@@ -68,7 +156,7 @@ const preloadedState = {
     user: {
       id: 1,
       fullName: "Test User",
-      email: "test@ayasan.com",
+      email: "test@akaiunsan.com",
       phoneNumber: "0123456789",
       address: "Bangkok",
       gender: 0,
@@ -153,7 +241,7 @@ const baseParams = {
   onGoBack: () => {},
   fromThread: "",
   items: [],
-  email: "test@ayasan.com",
+  email: "test@akaiunsan.com",
   password: "",
   hour: 1,
   plan: {
@@ -222,7 +310,17 @@ const EXTRA_PROPS: Record<string, any> = {
     times: [{ startAt: moment("2026-01-01T00:00:00.000Z") }],
     price: 100,
     onPickDate: () => {},
-    address: { longAddress: "Test address" },
+    address: "Test address",
+  bookDetail: [
+    {
+      bookingDate: "2026-01-01T00:00:00.000Z",
+      bookingHour: "2026-01-01T01:00:00.000Z",
+      hour: 2,
+      label: "Mon",
+      serviceName: "Test service",
+    },
+  ],
+  isAutoRenew: 1,
   },
 };
 

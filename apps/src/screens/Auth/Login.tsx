@@ -444,7 +444,7 @@ export default function Login(props: any) {
           </View>
           <View style={s.logoContainer}>
             <Image
-              source={require("../../assets/images/ayasan_logo.png")}
+              source={require("../../assets/images/akaiunsan_logo.png")}
               style={s.logo}
             />
           </View>
@@ -537,7 +537,7 @@ export default function Login(props: any) {
               onPress={() => {
                 if (Platform.OS === "ios") {
                   Linking.openURL(
-                    "https://apps.apple.com/us/app/ayasan/id1025748222"
+                    "https://apps.apple.com/us/app/akaiunsan/id1025748222"
                   );
                 }
                 if (Platform.OS === "android") {

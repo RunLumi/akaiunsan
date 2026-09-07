@@ -23,8 +23,8 @@ else
   exit 1
 fi
 
-DB_CONTAINER="ayasan_mariadb"
-DB_NAME="${DB_NAME:-ayasan_db_prod}"
+DB_CONTAINER="akaiunsan_mariadb"
+DB_NAME="${DB_NAME:-akaiunsan_db_prod}"
 DB_USER="root"
 DB_PASS="${DB_ROOT_PASSWORD}"
 

@@ -70,11 +70,11 @@ export default {
   },
   API: {
     // dev
-    dev: "http://api-mobile-ayasan.dev.ncs.int",
-    // base: 'http://api-mobile-ayasan.dev.ncs.int:80',
-    stg: "https://api-mobile-ayasan.stg.nichietsuvn.com",
+    dev: "http://api-mobile-akaiunsan.dev.ncs.int",
+    // base: 'http://api-mobile-akaiunsan.dev.ncs.int:80',
+    stg: "https://api-mobile-akaiunsan.stg.nichietsuvn.com",
     //prod
-    base: "https://api-mobile.ayasan.vn",
+    base: "https://api-mobile.akaiunsan.vn",
     upload_image: "/uploads/image",
 
     // AUTH
@@ -187,11 +187,11 @@ export default {
   },
   //stg
   LOGINLINE:
-    "https://admin-ayasan.stg.nichietsuvn.com/assets/html/PageRedirectLineLogin.html",
+    "https://admin-akaiunsan.stg.nichietsuvn.com/assets/html/PageRedirectLineLogin.html",
   // pro
-  // LOGINLINE:'https://admincp.ayasan.vn/assets/html/RedirectLineLogin.html',
+  // LOGINLINE:'https://admincp.akaiunsan.vn/assets/html/RedirectLineLogin.html',
   //dev
-  // LOGINLINE:'https://admin-ayasan.dev.nichietsuvn.com/assets/html/PageRedirectLineLoginDev.html',
+  // LOGINLINE:'https://admin-akaiunsan.dev.nichietsuvn.com/assets/html/PageRedirectLineLoginDev.html',
   iOSLink: "com.akaiunsan.customer://",
   androidLink: "akaiunsan://",
   //Nhờ KH cung cấp key google mapp cấu hình ở đây và app.json

@@ -3,7 +3,7 @@
 # ==============================================================================
 # Services:
 #   - caddy: Reverse proxy with automatic Let's Encrypt / ZeroSSL TLS & HTTP/3
-#   - backend: Express 5 + TypeScript API (Ayasan Admin / Customer API)
+#   - backend: Express 5 + TypeScript API (Akaiunsan Admin / Customer API)
 #   - frontend: Customer Web Portal
 #   - admin: Back-Office Management Dashboard
 #   - mariadb: Production Database (internal network only)
@@ -17,15 +17,15 @@ networks:
 
 volumes:
   mariadb_data:
-    name: ayasan_mariadb_data
+    name: akaiunsan_mariadb_data
   backend_uploads:
-    name: ayasan_backend_uploads
+    name: akaiunsan_backend_uploads
   backend_exports:
-    name: ayasan_backend_exports
+    name: akaiunsan_backend_exports
   caddy_data:
-    name: ayasan_caddy_data
+    name: akaiunsan_caddy_data
   caddy_config:
-    name: ayasan_caddy_config
+    name: akaiunsan_caddy_config
 
 services:
   # ----------------------------------------------------------------------------
@@ -33,7 +33,7 @@ services:
   # ----------------------------------------------------------------------------
   caddy:
     image: caddy:2-alpine
-    container_name: ayasan_caddy
+    container_name: akaiunsan_caddy
     restart: unless-stopped
     ports:
       - "80:80"
@@ -66,8 +66,8 @@ services:
     build:
       context: ../backend
       dockerfile: Dockerfile
-    image: ${IMAGE_BACKEND:-ayasan-backend:latest}
-    container_name: ayasan_backend
+    image: ${IMAGE_BACKEND:-akaiunsan-backend:latest}
+    container_name: akaiunsan_backend
     restart: unless-stopped
     env_file:
       - .env
@@ -109,8 +109,8 @@ services:
     build:
       context: ../frontend
       dockerfile: Dockerfile
-    image: ${IMAGE_FRONTEND:-ayasan-frontend:latest}
-    container_name: ayasan_frontend
+    image: ${IMAGE_FRONTEND:-akaiunsan-frontend:latest}
+    container_name: akaiunsan_frontend
     restart: unless-stopped
     networks:
       - ingress_net
@@ -132,8 +132,8 @@ services:
     build:
       context: ../admin
       dockerfile: Dockerfile
-    image: ${IMAGE_ADMIN:-ayasan-admin:latest}
-    container_name: ayasan_admin
+    image: ${IMAGE_ADMIN:-akaiunsan-admin:latest}
+    container_name: akaiunsan_admin
     restart: unless-stopped
     networks:
       - ingress_net
@@ -153,14 +153,14 @@ services:
   # ----------------------------------------------------------------------------
   mariadb:
     image: mariadb:10.9.6
-    container_name: ayasan_mariadb
+    container_name: akaiunsan_mariadb
     restart: unless-stopped
     volumes:
       - mariadb_data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?DB_ROOT_PASSWORD is required}
-      MYSQL_DATABASE: ${DB_NAME:-ayasan_db_prod}
-      MYSQL_USER: ${DB_USER:-ayasan}
+      MYSQL_DATABASE: ${DB_NAME:-akaiunsan_db_prod}
+      MYSQL_USER: ${DB_USER:-akaiunsan}
       MYSQL_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is required}
     networks:
       - db_net

@@ -27,7 +27,7 @@ async function contactUs (req, res) {
     </tbody>
     </table>
     `;
-    await sendMail('Contact Us message', body_message, 'sale@ayasan.vn');
+    await sendMail('Contact Us message', body_message, 'sale@akaiunsan.vn');
     return res.status(200).json(true);
   } catch (err) {
     err.message ? error_message = err.message : error_message;
@@ -70,7 +70,7 @@ async function contactBiz (req, res) {
     </tbody>
     </table>
     `;
-    await sendMail('Request for business quotation', body_message, 'sale@ayasan.vn');
+    await sendMail('Request for business quotation', body_message, 'sale@akaiunsan.vn');
     return res.status(200).json(true);
   } catch (err) {
     err.message ? error_message = err.message : error_message;
@@ -104,7 +104,7 @@ async function employment (req, res) {
     </tbody>
     </table>
     `;
-    await sendMail('Employment Request Message', body_message, 'sale@ayasan.vn');
+    await sendMail('Employment Request Message', body_message, 'sale@akaiunsan.vn');
     return res.status(200).json(true);
   } catch (err) {
     err.message ? error_message = err.message : error_message;

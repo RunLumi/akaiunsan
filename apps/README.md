@@ -10,7 +10,7 @@ cd android && ENVFILE=.env.dev && ./gradlew app:assembleRelease
 "android:staging-release": "react-native run-android app:--variant=stagingrelease",
 "android:prod": "react-native run-android app:--variant=productiondebug",
 "android:prod-release": "react-native run-android app:--variant=productionrelease",
-"ios:prod": "react-native run-ios --scheme 'AyasanProduction'",
+"ios:prod": "react-native run-ios --scheme 'AkaiunsanProduction'",
 "ios:staging": "react-native run-ios --scheme 'AysanStaging'"
 
 # Deploy prod

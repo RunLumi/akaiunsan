@@ -111,7 +111,7 @@ export default function Booking(props: any) {
     setModalVisible(false);
     // dispatch({ type: success(TYPES.AUTH.LOG_OUT) });
     if (Platform.OS === "ios") {
-      Linking.openURL("https://apps.apple.com/us/app/ayasan/id1025748222");
+      Linking.openURL("https://apps.apple.com/us/app/akaiunsan/id1025748222");
     }
     if (Platform.OS === "android") {
       Linking.openURL(

@@ -37,7 +37,7 @@ async function signup (req, res) {
       // }
       
     let email_lang = 'en';
-    let email_topic = 'Welcome to Ayasan Service';
+    let email_topic = 'Welcome to Akaiunsan Service';
     const mail_template = await new Promise((resolve, reject) => {
       fs.readFile(`mail-template/${email_lang}/account.html`, 'utf8', function (err, data) {
         if (err) {

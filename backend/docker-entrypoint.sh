@@ -16,8 +16,8 @@ if [ ! -f "$TARGET_CONFIG" ]; then
   cat <<EOF > "$TARGET_CONFIG"
 {
   "db-connection": {
-    "database": "${DB_NAME:-ayasan_db_prod}",
-    "user": "${DB_USER:-ayasan}",
+    "database": "${DB_NAME:-akaiunsan_db_prod}",
+    "user": "${DB_USER:-akaiunsan}",
     "password": "${DB_PASSWORD:-}",
     "host": "${DB_HOST:-mariadb}",
     "port": ${DB_PORT:-3306}

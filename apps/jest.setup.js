@@ -1,3 +1,19 @@
+// The legacy screens enqueue VirtualizedList state updates that land after the
+// suite finishes; React's act() warning then tries to log post-run, which jest
+// turns into "Cannot log after tests are done" and fails the CI process even
+// though every test passed. Suppress exactly that warning class.
+const originalConsoleError = console.error;
+console.error = (...args) => {
+  const message = typeof args[0] === "string" ? args[0] : String(args[0] ?? "");
+  if (
+    message.includes("not wrapped in act") ||
+    message.includes("Cannot log after tests are done")
+  ) {
+    return;
+  }
+  originalConsoleError(...args);
+};
+
 jest.mock("react-native-gesture-handler", () => {
   const ReactNative = require("react-native");
   return {

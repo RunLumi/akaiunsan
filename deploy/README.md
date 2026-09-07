@@ -118,7 +118,37 @@ crontab -e
 
 ---
 
-## 5. Security & Isolation Notes
+## 5. Automated Deployment (`prod` Branch)
+
+The VPS is configured for automated deployment on changes to the `prod` branch using a dual mechanism:
+
+### Option 1: GitHub Webhook (Instant)
+Configure a webhook in GitHub repository settings to trigger deployments immediately upon push:
+1. Go to **Settings &rarr; Webhooks &rarr; Add webhook** in the GitHub repository.
+2. **Payload URL**: `https://akai-api.cjs.vn/webhook/deploy`
+3. **Content type**: `application/json`
+4. **Secret**: `akaiunsan_prod_deploy_secret_2026`
+5. **Events**: Just the `push` event.
+6. The webhook service on the VPS (`akaiunsan-webhook.service`) validates the HMAC-SHA256 signature and automatically runs `auto-deploy.sh` when pushes target `refs/heads/prod`.
+
+*Manual trigger via curl:*
+```bash
+curl -X POST "https://akai-api.cjs.vn/webhook/deploy?token=akaiunsan_prod_deploy_secret_2026"
+```
+
+### Option 2: Automated Cron Sync (Every 2 Minutes)
+The VPS runs a background cron check every 2 minutes:
+```cron
+*/2 * * * * /opt/akaiunsan/deploy/scripts/auto-deploy.sh >> /var/log/akaiunsan-deploy.log 2>&1
+```
+If new commits are detected on `origin/prod`, it automatically pulls and rebuilds containers.
+
+### Option 3: GitHub Actions CI/CD
+`.github/workflows/deploy.yml` triggers on pushes to `prod` to run Vitest tests, build Docker images, and deploy.
+
+---
+
+## 6. Security & Isolation Notes
 
 1. **Database Access**: Port 3306 is not published to the host. MariaDB is only reachable by `ayasan_backend` over the internal bridge network `db_net`.
 2. **TLS / SSL Certificates**: Caddy handles ACME TLS challenges automatically via Let's Encrypt with HTTP-01 and TLS-ALPN-01 protocols. Certificates renew automatically 30 days before expiration.

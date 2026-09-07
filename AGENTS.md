@@ -25,6 +25,7 @@ akaiunsan/
 | [docs/mobile-app.md](docs/mobile-app.md) | App structure, build flavors, state management, `useApi` hook |
 | [docs/conventions.md](docs/conventions.md) | Code patterns to follow when editing |
 | [docs/security.md](docs/security.md) | **Read first**: committed secrets; what never to commit or print |
+| [docs/postmortems/2026-09-07-backend-healthcheck-prod-deployment.md](docs/postmortems/2026-09-07-backend-healthcheck-prod-deployment.md) | Production backend crash-loop, build repair, deployment recovery, and evidence |
 | [docs/backend-upgrade-plan.md](docs/backend-upgrade-plan.md) | Phased backend migration: TS + TDD + Express 5 (Phases 0–3 landed) |
 | [docs/mobile-app-upgrade-plan.md](docs/mobile-app-upgrade-plan.md) | Proposed phased mobile migration: TDD-first, Expo SDK 57 replatform |
 
@@ -34,7 +35,7 @@ akaiunsan/
 |---|---|---|---|---|
 | Runtime | Node.js 22 LTS, TypeScript | React 19, TypeScript, Vite 8 | React Native 0.64 + TS 4.3, Expo 43 | Ubuntu 26.04 LTS (`15.235.202.219`) |
 | Framework | Express 5, Sequelize 6 | Tailwind v4, TanStack Router | React 17, React Nav 6, Redux Saga | Docker Engine 29 + Docker Compose v2 |
-| Install | `cd backend && npm install` | `cd admin && pnpm install` | `cd apps && yarn install` | `git pull origin main` |
+| Install | `cd backend && npm install` | `cd admin && pnpm install` | `cd apps && yarn install` | `git pull origin prod` |
 | Run (dev) | `npm run local` (tsx, local env) | `pnpm dev` (Vite port 5173) | `yarn start:expo` / `yarn android` / `yarn ios` | `sudo docker compose --env-file .env up -d --build` |
 | Entry | `backend/app.ts` &rarr; `dist/app.js` | `admin/src/main.tsx` | `apps/index.js` &rarr; `App.tsx` | `deploy/docker-compose.yml` + `Caddyfile` |
 | Database | MariaDB 10.9 (Docker port 3306) | — | — | Container `ayasan_mariadb` (internal `db_net`) |
@@ -57,6 +58,6 @@ akaiunsan/
 6. **Mobile app is TypeScript** — screens in `apps/src/screens/<Feature>/` with an `index.ts`, shared components in `apps/src/components/` (barrel export). All API calls go through `useApi` hook (`apps/src/hooks/useApi.ts`).
 7. **Do not rely on `db.sequelize.sync()`** for schema changes in production — it runs on boot but schema edits are manual until migrations (Phase 5) land.
 8. **Secrets**: credentials are now gitignored. Never print, copy, or commit values from `backend/config/*.json`, `.env*`, or signing keys (see [docs/security.md](docs/security.md)).
-9. **Backend test suite**: `npm test` runs the 179-test Vitest characterization suite against test MariaDB. Ensure tests stay green on changes.
+9. **Backend test suite**: `npm test` runs the Vitest characterization suite against test MariaDB. The exact count changes as coverage work lands; report the observed count rather than relying on a stale number.
 10. **Git workflow**: default branch is `main`. Pre-commit hooks (ECC) block commits containing detected secrets — fix the code, don't bypass with `ECC_SKIP_PRECOMMIT=1`.
-11. **Production deployment**: Orchestrated in `deploy/`. The VPS pulls updates directly using its configured deploy key. After pulling, restart containers with `sudo docker compose --env-file .env up -d --build`.
+11. **Production deployment**: The deploy source branch is `prod`, not `main`. The VPS pulls updates directly using its configured deploy key and runs `deploy/scripts/auto-deploy.sh`; accept a release only after `/health` returns HTTP 200 with `status: ok`, `db: up`, and the expected `git.commit`.

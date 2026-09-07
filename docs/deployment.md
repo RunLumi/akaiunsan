@@ -9,9 +9,9 @@ The platform is deployed to a single VPS using Docker Compose and Caddy for auto
 | Service | Technology | Port (Internal) | Public Route (via Caddy) |
 |---|---|---|---|
 | **`caddy`** | Caddy 2 Alpine | 80, 443 | Entry point (Let's Encrypt / HTTP/3) |
-| **`backend`** | Node 22 slim / Express 5 | 5000 | `api.ayasan.vn` (20MB upload limit) |
-| **`admin`** | shadcn-admin / Vite SPA | 80 | `admin.ayasan.vn` |
-| **`frontend`** | Customer Web Portal | 80 | `ayasan.vn`, `www.ayasan.vn` |
+| **`backend`** | Node 22 slim / Express 5 | 5000 | `akai-api.cjs.vn` (20MB upload limit) |
+| **`admin`** | shadcn-admin / Vite SPA | 80 | `akai-admin.cjs.vn` |
+| **`frontend`** | Customer Web Portal | 80 | Internal stub |
 | **`mariadb`** | MariaDB 10.9.6 | 3306 | Internal only (`db_net`) |
 
 ### Deployment Directory Layout
@@ -53,12 +53,22 @@ deploy/
 
 ### CI/CD Workflow (`.github/workflows/deploy.yml`)
 
-1. Triggered on push to `main`.
-2. Runs backend tests and build validation.
-3. Builds multi-stage Docker images (`backend`, `admin`, `frontend`) using GitHub layer caching.
-4. Pushes tagged images to GitHub Container Registry (`ghcr.io`).
-5. Executes an SSH deployment step to the VPS:
-   `docker compose pull && docker compose up -d --remove-orphans && docker image prune -f`.
+1. Triggered on push to `prod` or manually with `workflow_dispatch`.
+2. Installs backend dependencies and runs the currently non-blocking TypeScript check.
+3. Builds multi-stage Docker images (`backend`, `admin`, `frontend`) using GitHub layer caching and pushes SHA/latest tags to GHCR.
+4. Executes `deploy/scripts/auto-deploy.sh --force` on the VPS over SSH.
+5. The deploy script fast-forwards the VPS checkout from `origin/prod`, writes build metadata, rebuilds Compose services, and prunes dangling images.
+
+### Production acceptance gate
+
+Deployment completion is not established by a source SHA, a green build, or a container restart alone. Record all of the following for a release:
+
+```bash
+curl -sS -w '\nHTTP_STATUS:%{http_code}\n' https://akai-api.cjs.vn/health
+ssh ubuntu@15.235.202.219 'cd /opt/akaiunsan && git rev-parse HEAD && sudo docker inspect --format "{{.State.Health.Status}}" ayasan_backend'
+```
+
+Accept only when the public response is HTTP 200 with `status: "ok"`, `db: "up"`, and the expected `git.commit`, and the backend container reports `healthy`. The verified incident and recovery record is in [docs/postmortems/2026-09-07-backend-healthcheck-prod-deployment.md](postmortems/2026-09-07-backend-healthcheck-prod-deployment.md).
 
 ---
 

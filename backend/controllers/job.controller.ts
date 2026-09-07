@@ -226,10 +226,10 @@ async function updateStatus (req, res) {
       await Subscription.update({ used_hour }, { where: { active: true, customer_id: job.customer_id }, transaction: t });
       await SubscriptionTransaction.create({ amount: job.expect_work_hour, action: 'cancel_job' }, { transaction: t });
       await t.commit();
-      return res.status(200).json(result);
+      return res.status(200).json(true);
     } else {
       await t.commit();
-      return res.status(200).json(result);
+      return res.status(200).json(true);
     }
   } catch (err) {
     // console.log(err)
@@ -300,6 +300,7 @@ async function createReview (req, res) {
     else
       sum = rating;
     await Supporter.update({ sum_job_rating: sum }, { where: { id: supporter_id }, transaction: t });
+    await t.commit();
     return res.status(200).json(true);
   } catch (err) {
     // console.log(err)

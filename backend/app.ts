@@ -5,6 +5,7 @@ import * as Sentry from '@sentry/node';
 import cors from 'cors';
 import db from './models/index.ts';
 import registerRoutes from './routes/index.ts';
+import { logger } from './helpers/logger.ts';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -25,23 +26,9 @@ Sentry.setupExpressErrorHandler(app);
 
 // Shared boot path: pm2/dev entry and tests call this. Returns the bound
 // server so callers can close it.
-export function startServer (port = PORT) {
+export function startServer (port = PORT, log = logger) {
   return app.listen(port, async () => {
-    console.log('================================================');
-    console.log(' .d88b. 888d888 8888b. 88888b.  .d88b.  .d88b.  ');
-    console.log('d88""88b888P"      "88b888 "88bd88P"88bd8P  Y8b ');
-    console.log('888  888888    .d888888888  888888  88888888888 ');
-    console.log('Y88..88P888    888  888888  888Y88b 888Y8b.     ');
-    console.log(' "Y88P" 888    "Y888888888  888 "Y88888 "Y8888  ');
-    console.log('                                    888         ');
-    console.log('                               Y8b d88P         ');
-    console.log('                                "Y88P"          ');
-    console.log('================================================');
-    let current_date = new Date();
-    console.log('run datetime:', current_date);
-    console.log('port:', port);
-    console.log('env:', process.env.NODE_ENV);
-    console.log('================================================');
+    log.info('backend started — port: %s, env: %s, started at: %s', port, process.env.NODE_ENV, new Date().toISOString());
   });
 }
 

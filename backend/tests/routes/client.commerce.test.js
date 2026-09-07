@@ -173,7 +173,7 @@ describe('client jobs', () => {
     expect(denied.body.message).toBe('Job not found');
   });
 
-  it('pins current behavior: updateStatus always fails with a 500 (undeclared result)', async () => {
+  it('updateStatus commits and answers 200 (fixed)', async () => {
     const job = await db.Job.create({
       status: 'waiting',
       job_type: 'cleaning',
@@ -186,13 +186,14 @@ describe('client jobs', () => {
       request(app).put(`/client/jobs/${job.id}/status/working`),
       token
     );
-    // The controller returns `result`, which is never declared — ReferenceError
-    // after commit. pins current behavior
-    expect(res.status).toBe(500);
-    expect(res.body.message).toMatch(/result is not defined/);
+    // The controller previously returned an undeclared `result` (ReferenceError).
+    // Now it commits and answers true.
+    expect(res.status).toBe(200);
+    expect(res.body).toBe(true);
+    expect((await db.Job.findByPk(job.id)).status).toBe('working');
   });
 
-  it('pins current behavior: createReview returns true but never commits the transaction', async () => {
+  it('createReview persists the review (transaction committed — fixed)', async () => {
     const supporter = await db.Supporter.create({ firstname: 'Helper' });
     const job = await db.Job.create({
       status: 'done',
@@ -209,11 +210,9 @@ describe('client jobs', () => {
 
     expect(res.status).toBe(200);
     expect(res.body).toBe(true);
-    // missing t.commit(): the review row is never persisted. pins current behavior
-    await db.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
+    // the missing t.commit() was fixed — the review row now persists
     const reviews = await db.JobReview.findAll({ where: { job_id: job.id } });
-    await db.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
-    expect(reviews).toHaveLength(0);
+    expect(reviews).toHaveLength(1);
   });
 
   it('deletes a job via the back office (details keyed by id remain — pins current behavior)', async () => {

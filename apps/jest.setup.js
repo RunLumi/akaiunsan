@@ -396,3 +396,18 @@ if (typeof globalThis.FormData === "undefined") {
   }
   globalThis.FormData = FormDataStub;
 }
+
+// Platform.OS is read at render time by KeyboardAvoidingView wrappers across
+// the screens; jest-expo's Platform stands in everywhere EXCEPT inside
+// dynamically-imported ServiceScreen subtrees on CI, where it came through as
+// undefined. Pin it deterministically for the characterization suite.
+if (!globalThis.__platformPinned) {
+  const RN = require("react-native");
+  if (!RN.Platform || !RN.Platform.OS) {
+    Object.defineProperty(RN, "Platform", {
+      configurable: true,
+      value: { OS: "ios", select: (o) => (o && o.ios) || "ios", Version: 57 },
+    });
+  }
+  globalThis.__platformPinned = true;
+}

@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 
 const { uploadSupporterProfileImage, genTxt, getCustomerData, getAddressData } =
-  require('../../helpers/util.ts');
+  await import('../../helpers/util.ts');
 
 describe('genTxt', () => {
   it('generates a random string of the requested length', () => {

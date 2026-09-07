@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 
-const agencyData = require('../../helpers/agencyData.ts');
-const version = require('../../helpers/version.ts');
-const util = require('../../helpers/util.ts');
+import * as agencyData from '../../helpers/agencyData.ts';
+import * as version from '../../helpers/version.ts';
+import * as util from '../../helpers/util.ts';
 
 describe('helpers/version branches', () => {
   it('formatTimeAgo spans seconds→years', () => {

@@ -73,7 +73,7 @@ describe('POST /auth/signup (customer)', () => {
 
     expect(sentMails).toHaveLength(1);
     expect(sentMails[0].to).toBe(email);
-    expect(sentMails[0].bcc).toBe('sale@ayasan.vn');
+    expect(sentMails[0].bcc).toBe('sale@akaiunsan.vn');
     expect(sentMails[0].html).toContain('New');
   });
 
@@ -283,7 +283,7 @@ describe('GET /back/office/install', () => {
     const res = await request(app)
       .post('/auth/admin/signin')
       .set('app_key', APP_KEY)
-      .send({ username: 'sale@ayasan.vn', password: 'whatever' });
+      .send({ username: 'sale@akaiunsan.vn', password: 'whatever' });
 
     // install.controller creates the admin without `active` (NULL → the
     // `active: true` signin filter misses it) and without role_id (the Role

@@ -84,6 +84,6 @@ describe('loadConfig', () => {
     const cfg = loadConfig('test');
     expect(cfg['app_key']).toBeTruthy();
     expect(cfg['jwt-secret']).toBeTruthy();
-    expect(cfg['db-connection'].database).toBe('ayasan_db_test');
+    expect(cfg['db-connection'].database).toBe('akaiunsan_db_test');
   });
 });

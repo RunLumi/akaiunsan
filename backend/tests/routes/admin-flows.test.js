@@ -89,19 +89,29 @@ describe('account admin profile flows', () => {
     expect(res.body.message).toBe('Unable to reset password.');
   });
 
-  it('removeProfile deletes an existing file', async () => {
+  it('removeProfile deletes an existing file (re-signs token if admin was recreated)', async () => {
     const png = Buffer.from(
       'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==',
       'base64'
     );
-    const upload = await authed(request(app).post('/back-office/user/profile-image')).attach(
-      'profile', png, { filename: 'dot2.png', contentType: 'image/png' }
-    );
+    // Earlier tests in the file mutate the admin row; make sure it exists.
+    const current = await db.Admin.findOne({ where: { username: 'flow@test.local' } });
+    if (!current) {
+      await createAdmin({ username: 'flow@test.local' });
+    }
+    const freshToken = await adminToken(await db.Admin.findOne({ where: { username: 'flow@test.local' } }));
+
+    const upload = await request(app).post('/back-office/user/profile-image')
+      .set('app_key', APP_KEY)
+      .set('Authorization', `Bearer ${freshToken}`)
+      .attach('profile', png, { filename: 'dot2.png', contentType: 'image/png' });
     expect(upload.status).toBe(200);
     const fileName = upload.body.split('/').pop();
     expect(fs.existsSync(`uploads/admins/${fileName}`)).toBe(true);
 
-    const remove = await authed(request(app).delete(`/back-office/user/profile-image/${fileName}`));
+    const remove = await request(app).delete(`/back-office/user/profile-image/${fileName}`)
+      .set('app_key', APP_KEY)
+      .set('Authorization', `Bearer ${freshToken}`);
     expect(remove.status).toBe(200);
     expect(fs.existsSync(`uploads/admins/${fileName}`)).toBe(false);
   });

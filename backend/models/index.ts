@@ -1,8 +1,10 @@
+import fs from 'fs';
+import Sequelize from 'sequelize';
+import relations from './relations.ts';
+
 const NODE_ENV = process.env.NODE_ENV || 'local';
-const config = require(`../config/${NODE_ENV}.json`);
-const Sequelize = require('sequelize');
-const fs = require('fs');
-const relations = require('./relations.ts');
+// resolved from cwd (backend/): works for tsx, vitest, dist and pm2 alike
+const config = JSON.parse(fs.readFileSync(`config/${NODE_ENV}.json`, 'utf8'));
 
 const db: any = {};
 
@@ -41,7 +43,7 @@ if (NODE_ENV == 'production') {
   }
 }
 
-const sequelize = new Sequelize(
+const sequelizeClient = new Sequelize(
   config["db-connection"].database,
   config["db-connection"].user,
   config["db-connection"].password,
@@ -49,19 +51,137 @@ const sequelize = new Sequelize(
 )
 
 db.Sequelize = Sequelize;
-db.sequelize = sequelize;
+db.sequelize = sequelizeClient;
 
-fs.readdirSync(__dirname)
-  .filter(file => {
-    return (file.indexOf(".") !== 0)
-      && !["index.ts", "index.js", "relations.ts", "relations.js"].includes(file)
-      && (file.endsWith('.ts') || file.endsWith('.js'));
-  })
-  .forEach(file => {
-    let modelName = file.replace(/\.(ts|js)$/, '');
-    db[modelName] = require(`./${file}`)(sequelize, Sequelize);
-  });
+// static import map (kept in sync with the model files by convention; the
+// previous readdirSync/require loader cannot live in an ESM module)
+import AddressFactory from './Address.ts';
+import AdminFactory from './Admin.ts';
+import AdminHistoryFactory from './AdminHistory.ts';
+import BannerFactory from './Banner.ts';
+import BannerLanguageFactory from './BannerLanguage.ts';
+import BizCustomerFactory from './BizCustomer.ts';
+import ChargeFactory from './Charge.ts';
+import CleaningSupplyFactory from './CleaningSupply.ts';
+import CreditCardFactory from './CreditCard.ts';
+import CustomerFactory from './Customer.ts';
+import CustomerSupplyFactory from './CustomerSupply.ts';
+import CustomerSupplyDetailFactory from './CustomerSupplyDetail.ts';
+import DistrictFactory from './District.ts';
+import ErrorLogFactory from './ErrorLog.ts';
+import ImportDataFactory from './ImportData.ts';
+import JobFactory from './Job.ts';
+import JobDetailFactory from './JobDetail.ts';
+import JobReviewFactory from './JobReview.ts';
+import ProvinceFactory from './Province.ts';
+import PurchaseOrderFactory from './PurchaseOrder.ts';
+import PurchaseOrderDetailFactory from './PurchaseOrderDetail.ts';
+import RequestDriverFactory from './RequestDriver.ts';
+import RequestHelperFactory from './RequestHelper.ts';
+import RequestHelperStatusFactory from './RequestHelperStatus.ts';
+import RequestMaidFactory from './RequestMaid.ts';
+import RoleFactory from './Role.ts';
+import SubDistrictFactory from './SubDistrict.ts';
+import SubscriptionFactory from './Subscription.ts';
+import SubscriptionTransactionFactory from './SubscriptionTransaction.ts';
+import SupplierFactory from './Supplier.ts';
+import SupplierProductFactory from './SupplierProduct.ts';
+import SupplyOrderFactory from './SupplyOrder.ts';
+import SupplyOrderDetailFactory from './SupplyOrderDetail.ts';
+import SupporterFactory from './Supporter.ts';
+import SupporterEducationFactory from './SupporterEducation.ts';
+import SupporterExperienceFactory from './SupporterExperience.ts';
+import SupporterLanguageFactory from './SupporterLanguage.ts';
+import SupporterSkillFactory from './SupporterSkill.ts';
+import SupporterViewCountFactory from './SupporterViewCount.ts';
 
-  relations(db);
+const modelFactories: any = {
+  Address: AddressFactory,
+  Admin: AdminFactory,
+  AdminHistory: AdminHistoryFactory,
+  Banner: BannerFactory,
+  BannerLanguage: BannerLanguageFactory,
+  BizCustomer: BizCustomerFactory,
+  Charge: ChargeFactory,
+  CleaningSupply: CleaningSupplyFactory,
+  CreditCard: CreditCardFactory,
+  Customer: CustomerFactory,
+  CustomerSupply: CustomerSupplyFactory,
+  CustomerSupplyDetail: CustomerSupplyDetailFactory,
+  District: DistrictFactory,
+  ErrorLog: ErrorLogFactory,
+  ImportData: ImportDataFactory,
+  Job: JobFactory,
+  JobDetail: JobDetailFactory,
+  JobReview: JobReviewFactory,
+  Province: ProvinceFactory,
+  PurchaseOrder: PurchaseOrderFactory,
+  PurchaseOrderDetail: PurchaseOrderDetailFactory,
+  RequestDriver: RequestDriverFactory,
+  RequestHelper: RequestHelperFactory,
+  RequestHelperStatus: RequestHelperStatusFactory,
+  RequestMaid: RequestMaidFactory,
+  Role: RoleFactory,
+  SubDistrict: SubDistrictFactory,
+  Subscription: SubscriptionFactory,
+  SubscriptionTransaction: SubscriptionTransactionFactory,
+  Supplier: SupplierFactory,
+  SupplierProduct: SupplierProductFactory,
+  SupplyOrder: SupplyOrderFactory,
+  SupplyOrderDetail: SupplyOrderDetailFactory,
+  Supporter: SupporterFactory,
+  SupporterEducation: SupporterEducationFactory,
+  SupporterExperience: SupporterExperienceFactory,
+  SupporterLanguage: SupporterLanguageFactory,
+  SupporterSkill: SupporterSkillFactory,
+  SupporterViewCount: SupporterViewCountFactory,
+};
+for (const [modelName, factory] of Object.entries(modelFactories)) {
+  db[modelName] = factory(sequelizeClient, Sequelize);
+}
 
-module.exports = db;
+relations(db);
+
+export default db;
+export const sequelize = db.sequelize;
+
+export const Address = db.Address;
+export const Admin = db.Admin;
+export const AdminHistory = db.AdminHistory;
+export const Banner = db.Banner;
+export const BannerLanguage = db.BannerLanguage;
+export const BizCustomer = db.BizCustomer;
+export const Charge = db.Charge;
+export const CleaningSupply = db.CleaningSupply;
+export const CreditCard = db.CreditCard;
+export const Customer = db.Customer;
+export const CustomerSupply = db.CustomerSupply;
+export const CustomerSupplyDetail = db.CustomerSupplyDetail;
+export const District = db.District;
+export const ErrorLog = db.ErrorLog;
+export const ImportData = db.ImportData;
+export const Job = db.Job;
+export const JobDetail = db.JobDetail;
+export const JobReview = db.JobReview;
+export const Province = db.Province;
+export const PurchaseOrder = db.PurchaseOrder;
+export const PurchaseOrderDetail = db.PurchaseOrderDetail;
+export const RequestDriver = db.RequestDriver;
+export const RequestHelper = db.RequestHelper;
+export const RequestHelperStatus = db.RequestHelperStatus;
+export const RequestMaid = db.RequestMaid;
+export const Role = db.Role;
+export const SubDistrict = db.SubDistrict;
+export const Subscription = db.Subscription;
+export const SubscriptionTransaction = db.SubscriptionTransaction;
+export const Supplier = db.Supplier;
+export const SupplierProduct = db.SupplierProduct;
+export const SupplyOrder = db.SupplyOrder;
+export const SupplyOrderDetail = db.SupplyOrderDetail;
+export const Supporter = db.Supporter;
+export const SupporterEducation = db.SupporterEducation;
+export const SupporterExperience = db.SupporterExperience;
+export const SupporterLanguage = db.SupporterLanguage;
+export const SupporterSkill = db.SupporterSkill;
+export const SupporterViewCount = db.SupporterViewCount;
+

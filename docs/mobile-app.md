@@ -57,10 +57,12 @@ android/             # gradle project with dev/staging/production variants
 
 ## Patterns to follow
 
-- New screen: add a folder under `src/screens/<Feature>/`, register it in `src/navigation/`, use shared components from `src/components` (import via the barrel `components`).
-- Data fetching / side effects go through redux-saga (`redux/sagas/`); state via reducers + redux-persist for auth.
+- New screen: add a folder under `src/screens/<Feature>/` with an `index.ts`, register it in `src/navigation/` (screen-name constants live in `src/shared/Constants.ts`), use shared components from `src/components` (import via the barrel `components`).
+- **All HTTP calls go through the `useApi` hook** (`src/hooks/useApi.ts`): it reads the base URL from `react-native-config` (`API_URL`), attaches `Authorization: Bearer <token>` from redux, `Accept-Language`, and `platform` headers, and unwraps the API's `{ data }` envelope (surfacing `errors[0].message` as the error string). Use it (or the sagas that wrap it) rather than raw axios.
+- Data fetching / side effects go through redux-saga (`redux/sagas/`); state via reducers + redux-persist for auth. Action types are declared in `redux/actions.ts` with `success`/`failure` suffix helpers.
 - Use `src/shared/{Colors,Styles,Layout,Constants}` for theming — don't hardcode colors/sizes inline.
-- API calls use a central axios setup; check `src/shared/Constants.ts` and `.env.*` for base URLs.
+- Navigation from outside components: `src/navigation/root.ts` exposes `NavigationRoot.{navigate,push,replace,pop}` via a navigation ref.
+- i18n via `i18n-js`; translations in `src/shared/I18n/{en,th}.ts`; current language in redux (`reducers/language.ts`).
 - Push notifications: channel `com.ayasan.yoda.android` created in `App.tsx`; foreground handling in `src/components/Notifications.tsx`.
 
 ## Signing / release notes (from apps/README.md)

@@ -8,13 +8,19 @@ akaiunsan/
 └── apps/      # "mobile-app" — React Native 0.64 (Expo SDK 43 bare workflow) customer app, TypeScript + Redux Saga
 ```
 
-## Read first
+## Documentation index
 
-- [docs/architecture.md](docs/architecture.md) — how the two apps fit together
-- [docs/backend.md](docs/backend.md) — API structure, models, routing, environments
-- [docs/mobile-app.md](docs/mobile-app.md) — app structure, build flavors, state management
-- [docs/conventions.md](docs/conventions.md) — code patterns to follow when editing
-- [docs/security.md](docs/security.md) — **important**: known secrets/credential issues; what never to commit or print
+| Doc | What's in it |
+|---|---|
+| [docs/architecture.md](docs/architecture.md) | how the two apps fit together, external services, domain overview |
+| [docs/setup.md](docs/setup.md) | local dev environment from zero (DB, config, run) |
+| [docs/backend.md](docs/backend.md) | API folder structure, conventions, request lifecycle |
+| [docs/api-reference.md](docs/api-reference.md) | route tiers, auth headers, endpoint inventory |
+| [docs/data-model.md](docs/data-model.md) | Sequelize models and relations |
+| [docs/mobile-app.md](docs/mobile-app.md) | app structure, build flavors, state management, `useApi` hook |
+| [docs/conventions.md](docs/conventions.md) | code patterns to follow when editing |
+| [docs/deployment.md](docs/deployment.md) | GitLab CI, pm2 servers, mobile release builds |
+| [docs/security.md](docs/security.md) | **read first**: committed secrets; what never to commit or print |
 
 ## Quick facts
 
@@ -23,19 +29,20 @@ akaiunsan/
 | Runtime | Node.js, CommonJS (`require`) | React Native 0.64 + TypeScript 4.3, Expo SDK 43 (bare) |
 | Framework | Express 4, Sequelize 6, MySQL | React 17, React Navigation 6, Redux + Redux-Saga + redux-persist |
 | Install | `cd backend && npm install` | `cd apps && yarn install` |
-| Run (dev) | `npm run local` (NODE_ENV=local) or `npm run dev` | `yarn start:expo` (dev client) / `yarn android` / `yarn ios` |
+| Run (dev) | `npm run local` (NODE_ENV=local) | `yarn start:expo` (dev client) / `yarn android` / `yarn ios` |
 | Entry | `backend/app.js` | `apps/index.js` → `App.tsx` → `src/navigation` |
 | DB | MariaDB via `backend/docker-compose.yml` (port 15506) | — |
-| CI | `.gitlab-ci.yml` (deploys `develop` branch via pm2) | manual builds (see mobile-app.md) |
+| CI | `.gitlab-ci.yml` (deploys `develop` branch via pm2) | manual builds (see deployment.md) |
 
 ## Ground rules for agents
 
-1. **Backend is CommonJS** — use `require`/`module.exports`, no ESM imports. It has no build step; it runs raw Node.
-2. **Config is per-environment JSON** — `backend/config/{local,development,production}.json` selected by `NODE_ENV`. Never hardcode DB credentials, JWT secrets, or API keys in source; the schema is documented in `backend/config/readme.md`.
-3. **Adding an API endpoint**: create/extend a controller in `backend/controllers/`, add a model in `backend/models/` (and register relations in `backend/models/relations.js`), then wire the route in `backend/routes/` (`public.route.js` = no auth, `client.route.js` = customer auth, `backoffice.route.js` = admin auth, `agency.route.js`, `bot.route.js`). Do not add routes in `app.js`.
-4. **Mobile app is TypeScript** — screens live in `apps/src/screens/<Feature>/`, shared components in `apps/src/components/`, theme/constants in `apps/src/shared/` (includes i18n in `shared/I18n`). Redux layers: `actions.ts`, `reducers/`, `sagas/` under `apps/src/redux/`.
-5. **Env files for the app** — `.env`, `.env.dev`, `.env.staging`, `.env.production` are read by `react-native-config` at build time (see scripts `android:staging`, `android:prod`, etc.).
-6. **Do not run `db.sequelize.sync()` destructively** — it already runs at startup (`models/index.js`); schema changes should be made carefully (this codebase has no migration tool).
-7. **Secrets**: the repo currently contains committed credentials and signing keys (see docs/security.md). Never print, copy, or commit new secrets; never paste values from `backend/config/*.json` into output.
-8. There are **no tests** wired up on the backend (`npm test` is a stub) and only the default jest-expo preset on the app. Verify changes by running the relevant server/app rather than assuming a test suite exists.
-9. Git: default branch is `main`; the GitLab CI deploys the `develop` branch to the development server.
+1. **Backend is CommonJS** — use `require`/`module.exports`, no ESM imports, no build step.
+2. **Config is per-environment JSON** — `backend/config/{local,development,production}.json` selected by `NODE_ENV` (schema in `backend/config/readme.md`). These files are gitignored; never hardcode credentials — read them from the config `key` object (see `helpers/util.js` for the `sftp-connection` pattern) or `process.env`.
+3. **API auth model** — every route group checks an `app_key` header (`headerValidator`); `/client/*` additionally requires a customer Bearer JWT (`clientValidator`, exposes `req.customer`); `/back-office/*` requires an admin JWT plus `recordHistory` and per-section `checkPermission` role checks. Wire new endpoints into the matching route file — see docs/api-reference.md.
+4. **Adding a backend feature**: model in `backend/models/` (relations in `models/relations.js`) → controller in `backend/controllers/` → route in `backend/routes/{public,client,backoffice,agency,bot}.route.js`. Do not add routes in `app.js`.
+5. **Mobile app is TypeScript** — screens in `apps/src/screens/<Feature>/` with an `index.ts`, shared components in `apps/src/components/` (barrel export), theme/constants/i18n in `apps/src/shared/`. All API calls go through the `useApi` hook (`apps/src/hooks/useApi.ts`) which sets `Authorization`, `Accept-Language`, and `platform` headers and reads the base URL from `react-native-config`.
+6. **Env files for the app** — `.env`, `.env.dev`, `.env.staging`, `.env.production` (keys: `API_URL`, `OMISEKEY`, `OMISELINK`, `OMISEADDCARD`) are read by `react-native-config` at build time; pick a flavor with the `android:*` / `ios:*` scripts.
+7. **Do not rely on `db.sequelize.sync()`** for schema changes in production — it runs on boot but there is no migration tool; schema edits are manual.
+8. **Secrets**: the repo previously had credentials committed; they are now gitignored. Never print, copy, or commit values from `backend/config/*.json`, `.env*`, or signing keys (see docs/security.md).
+9. **No meaningful test suite** — backend `npm test` is a stub and the app only has the default jest-expo preset. Verify changes by running the relevant server/app.
+10. Git: default branch is `main`; the GitLab CI deploys the `develop` branch to the development server. Pre-commit hooks (ECC) block commits containing detected secrets — fix the code, don't bypass with `ECC_SKIP_PRECOMMIT=1`.

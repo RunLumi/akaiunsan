@@ -36,6 +36,8 @@ exports/             # generated exports
 3. Auth: `helpers/security.js` issues/verifies JWTs; `middlewares/admin.js` guards back-office routes and checks roles.
 4. Controllers use the `db` object from `models/index.js` (e.g. `db.Customer`, `db.Job`).
 
+Auth details and the endpoint inventory are in [api-reference.md](api-reference.md); the model catalog is in [data-model.md](data-model.md); local setup is in [setup.md](setup.md).
+
 ## Configuration
 
 `config/<NODE_ENV>.json` schema (documented in `config/readme.md`):

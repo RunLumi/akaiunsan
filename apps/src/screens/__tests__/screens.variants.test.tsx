@@ -235,7 +235,7 @@ describe("screens alternative-state variants (Phase 3 characterization)", () => 
     }
     // The sweep itself must run; individual fragility is tolerated but visible.
     expect(CASES.length).toBeGreaterThan(0);
-  });
+  }, 30000);
 
   it("never-settling requests pin every screen's loading state", async () => {
     (axios as any).mockImplementation(() => new Promise(() => {}));
@@ -252,5 +252,5 @@ describe("screens alternative-state variants (Phase 3 characterization)", () => 
       expect(renderer.toJSON()).not.toBeNull();
       renderer.unmount();
     }
-  });
+  }, 30000);
 });

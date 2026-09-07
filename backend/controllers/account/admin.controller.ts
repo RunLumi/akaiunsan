@@ -49,7 +49,7 @@ async function register (req, res) {
     const count = await Admin.count();
     if (count)
       throw { message: 'Please login to create new account.' };
-    let { admin } = await getAdminData(data);
+    let { admin }: { admin: any } = await getAdminData(data);
     admin.password = data.password;
     admin.password = await encryptPassword(admin.password);
     admin.role = 'admin';
@@ -205,13 +205,13 @@ async function resetPassword (req, res) {
   try {
     let { _forget_token, new_password, confirm_password } = req.body;
     const decoded = await verifyToken(_forget_token);
-    const admin = await Admin.findOne({ where: { username: decoded._user.username }})
+    const admin = await Admin.findOne({ where: { username: (decoded as any)._user.username }})
     if (!admin)
       throw { message: 'This account doesn\'t exist.' };
     if (new_password != confirm_password)
       throw { message: 'New password and confirm password are not matched.' };
     let encrypted_password = await encryptPassword(new_password);
-    await Admin.update({ password: encrypted_password }, { where: { username: decoded._user.username }, transaction: t });
+    await Admin.update({ password: encrypted_password }, { where: { username: (decoded as any)._user.username }, transaction: t });
     await t.commit();
     return res.status(200).json(true);
   } catch (err) {

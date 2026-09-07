@@ -19,7 +19,7 @@ async function create (req, res) {
     if (!data.password) {
       data.password = genTxt(10);
     }
-    let { admin } = await getAdminData(data);
+    let { admin }: { admin: any } = await getAdminData(data);
     admin.password = await encryptPassword(admin.password);
     const result = await Admin.create(admin, { transaction: t });
     await t.commit();
@@ -51,7 +51,7 @@ async function update (req, res) {
     const exist_admin = await Admin.findOne({ where: { username: data.username }});
     if (exist_admin && admin_id != exist_admin.id)
       throw { message: 'This username is already in used.' };
-    let { admin } = await getAdminData(data);
+    let { admin }: { admin: any } = await getAdminData(data);
     await Admin.update(admin, { where: { id: admin_id }, transaction: t });
     await t.commit();
     return res.status(200).json(true);

@@ -132,6 +132,10 @@ services:
     build:
       context: ../admin
       dockerfile: Dockerfile
+      args:
+        # Inlined into the SPA bundle at build time (see admin/src/lib/api.ts)
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-https://akai-api.cjs.vn}
+        VITE_APP_KEY: ${APP_KEY:-}
     image: ${IMAGE_ADMIN:-akaiunsan-admin:latest}
     container_name: akaiunsan_admin
     restart: unless-stopped

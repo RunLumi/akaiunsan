@@ -43,6 +43,9 @@ The platform is deployed to a single VPS orchestrated via **Docker Compose** and
 
 Complete deployment runbooks, environment setup, and backup scripts are documented in [deploy/README.md](deploy/README.md) and [docs/deployment.md](docs/deployment.md).
 
+The most recent production incident and recovery evidence is recorded in
+[docs/postmortems/2026-09-07-backend-healthcheck-prod-deployment.md](docs/postmortems/2026-09-07-backend-healthcheck-prod-deployment.md).
+
 ---
 
 ## 3. Quickstart: Local Development
@@ -88,4 +91,5 @@ Detailed guides are available in the [`docs/`](docs/) directory:
 - [docs/data-model.md](docs/data-model.md) — Sequelize models, tables, and relationships.
 - [docs/mobile-app.md](docs/mobile-app.md) — React Native mobile app architecture and API hooks.
 - [docs/security.md](docs/security.md) — Security policies, secret management, and git rules.
+- [docs/postmortems/2026-09-07-backend-healthcheck-prod-deployment.md](docs/postmortems/2026-09-07-backend-healthcheck-prod-deployment.md) — Backend crash-loop, Docker build repair, deployment recovery, and verification evidence.
 - [deploy/README.md](deploy/README.md) — Production VPS operations runbook.

@@ -5,17 +5,6 @@ jest.mock("redux-logger", () => {
   const logger = () => (next: any) => (action: any) => next(action);
   return logger;
 });
-jest.mock("redux-persist", () => {
-  const actual = jest.requireActual("redux-persist");
-  return {
-    ...actual,
-    persistStore: () => ({
-      pause: jest.fn(),
-      flush: jest.fn(),
-      purge: jest.fn(),
-    }),
-  };
-});
 
 import Store from "../store";
 import storeModule from "../store";

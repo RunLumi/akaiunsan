@@ -90,21 +90,24 @@ sudo docker compose logs -f caddy
 ```
 
 ### B. Deploying Updates (Rolling Rebuild)
-To pull code changes and redeploy:
+The production deployment source branch is `prod`. Prefer the automated webhook, cron, or GitHub Actions path described below. For a controlled manual recovery:
 ```bash
 ssh ubuntu@15.235.202.219
 cd /opt/akaiunsan
 
-# Pull latest commits from main
-git pull origin main
-
-# Rebuild and restart containers with zero downtime
-cd deploy
-sudo docker compose --env-file .env up -d --build
-
-# Clean up dangling images
-sudo docker image prune -f
+# Force a pull, rebuild, and restart from origin/prod
+./deploy/scripts/auto-deploy.sh --force
 ```
+
+Before retrying a blocked pull, inspect `git status` and the exact diff. The current deploy script generates the tracked `backend/version.json` as build input; restore that file only when the diff is confirmed to be generated metadata. Preserve any other VPS-local work rather than resetting or discarding it.
+
+After deployment, wait for the container health check and verify the public contract:
+```bash
+curl -sS -w '\nHTTP_STATUS:%{http_code}\n' https://akai-api.cjs.vn/health
+sudo docker inspect --format '{{.State.Health.Status}}' ayasan_backend
+```
+
+The response must report HTTP 200, `status: "ok"`, `db: "up"`, and the expected deployed commit under `git.commit`. The container health state must be `healthy`. See the [backend health-check postmortem](../docs/postmortems/2026-09-07-backend-healthcheck-prod-deployment.md) for the failure mode and evidence standard.
 
 ### C. Automated Nightly Database Backups
 A pre-configured backup script is in `scripts/backup-db.sh`. It creates compressed gzip dumps in `deploy/backups/` and automatically prunes dumps older than 7 days.
@@ -144,7 +147,7 @@ The VPS runs a background cron check every 2 minutes:
 If new commits are detected on `origin/prod`, it automatically pulls and rebuilds containers.
 
 ### Option 3: GitHub Actions CI/CD
-`.github/workflows/deploy.yml` triggers on pushes to `prod` to run Vitest tests, build Docker images, and deploy.
+`.github/workflows/deploy.yml` triggers on pushes to `prod` to run the backend validation step, build and push Docker images, and invoke the VPS deploy script over SSH. The workflow's `typecheck` step is currently non-blocking while the TypeScript migration is incomplete; a successful workflow is not a substitute for the public health and container checks above.
 
 ---
 

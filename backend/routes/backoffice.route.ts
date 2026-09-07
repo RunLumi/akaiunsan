@@ -1,8 +1,24 @@
-const { headerValidator, backofficeValidator } = require('./../middlewares/validator.ts');
-const { recordHistory, checkPermission } = require('../middlewares/admin.ts');
+import middlewareValidators from './../middlewares/validator.ts';
+const { headerValidator, backofficeValidator } = middlewareValidators;
+import { recordHistory, checkPermission } from '../middlewares/admin.ts';
+import multer from 'multer';
+import { genTxt } from '../helpers/util.ts';
+import AccountController from '../controllers/account/account.controller.ts';
+import * as AdminController from '../controllers/admin.controller.ts';
+import * as AddressController from '../controllers/address.controller.ts';
+import * as BannerController from './../controllers/banner.controller.ts';
+import * as BizCustomerController from '../controllers/bizcustomer.controller.ts';
+import * as CleaningSupplyController from '../controllers/cleaningsupply.controller.ts';
+import * as CustomerController from '../controllers/customer.controller.ts';
+import * as CustomerSupplyController from '../controllers/customersupply.controller.ts';
+import * as JobController from '../controllers/job.controller.ts';
+import * as JobReviewController from '../controllers/jobreview.controller.ts';
+import * as SupplierController from '../controllers/supplier.controller.ts';
+import * as SubscriptionController from './../controllers/subscription.controller.ts';
+import * as SupporterController from '../controllers/supporter.controller.ts';
+import * as RoleController from '../controllers/role.controller.ts';
+import * as RequestController from '../controllers/requesthelper/index.controller.ts';
 
-const multer = require('multer');
-const { genTxt } = require('../helpers/util.ts');
 const adminStorage = multer.diskStorage(
   {
     destination: 'uploads/admins',
@@ -48,23 +64,8 @@ const bannerStorage = multer.diskStorage(
 );
 const bannerUpload = multer({ storage: bannerStorage });
 
-const AccountController = require('../controllers/account/account.controller.ts');
-const AdminController = require('../controllers/admin.controller.ts');
-const AddressController = require('../controllers/address.controller.ts');
-const BannerController = require('./../controllers/banner.controller.ts');
-const BizCustomerController = require('../controllers/bizcustomer.controller.ts');
-const CleaningSupplyController = require('../controllers/cleaningsupply.controller.ts');
-const CustomerController = require('../controllers/customer.controller.ts');
-const CustomerSupplyController = require('../controllers/customersupply.controller.ts');
-const JobController = require('../controllers/job.controller.ts');
-const JobReviewController = require('../controllers/jobreview.controller.ts');
-const SupplierController = require('../controllers/supplier.controller.ts');
-const SubscriptionController = require('./../controllers/subscription.controller.ts');
-const SupporterController = require('../controllers/supporter.controller.ts');
-const RoleController = require('../controllers/role.controller.ts');
-const RequestController = require('../controllers/requesthelper/index.controller.ts');
 
-module.exports = app => {
+export default app => {
   app.use('/back-office/*s', headerValidator);
   app.use('/back-office/*s', backofficeValidator)
   app.use('/back-office/*s', recordHistory);

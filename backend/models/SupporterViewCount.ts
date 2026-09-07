@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const SupporterViewCount = sequelize.define('SupporterViewCount', {
     id: {
       type: DataTypes.INTEGER,

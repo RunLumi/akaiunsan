@@ -1,19 +1,16 @@
-const { Supporter, SupporterExperience, SupporterSkill, SupporterEducation, SupporterLanguage, ImportData, ErrorLog } = require('../models/index.ts');
-const supporter = require('../helpers/supporter.helper.ts');
-const { json2csv, writeCsvFile } = require('../helpers/util.ts');
-const { getSuppoterFromAgency, getSkillFromAgency, getExperienceFromAgency,getDriver, getDriverSkill, getDriverExperience } = require('../helpers/agencyData.ts');
-const {
-  substring,
-  and,
-  or,
-  not,
-  eq,
-  ne,
-  gte,
-  lte
-} = require('sequelize').Op;
-const fs = require('fs');
-const imageDownloader = require('image-downloader');
+import sharp from 'sharp';
+import { imageSize } from 'image-size';
+import moment from 'moment';
+import * as cheerio from 'cheerio';
+import rssConverter from 'rss-converter';
+import { Supporter, SupporterExperience, SupporterSkill, SupporterEducation, SupporterLanguage, ImportData, ErrorLog } from '../models/index.ts';
+import * as supporter from '../helpers/supporter.helper.ts';
+import { json2csv, writeCsvFile } from '../helpers/util.ts';
+import { getSuppoterFromAgency, getSkillFromAgency, getExperienceFromAgency,getDriver, getDriverSkill, getDriverExperience } from '../helpers/agencyData.ts';
+import fs from 'fs';
+import imageDownloader from 'image-downloader';
+import { Op } from 'sequelize';
+const { substring, and, or, not, eq, ne, gte, lte } = (Op as any);
 
 let error_status = 500;
 let error_message = 'Unexpected error';
@@ -143,14 +140,13 @@ async function remove (req, res) {
 async function uploadProfile (req, res) {
   try {
     if (req.file) {
-      const { imageSize } = require('image-size');
-      const fs = require('fs');
+      
       let image_file = `./uploads/supporters/${req.file.filename}`;
       var dimensions = imageSize(fs.readFileSync(image_file));
       let image_width = dimensions.width;
       let image_height = dimensions.height;
 
-      const sharp = require('sharp');
+      
 
       if (image_width == image_height) {
         return res.status(200).json({
@@ -444,24 +440,6 @@ async function matchDriverProfileImage (req, res) {
   }
 }
 
-module.exports = {
-  getPublicDetail,
-  getDetail,
-  getPublicList,
-  getList,
-  create,
-  update,
-  remove,
-  getPublicCount,
-  count,
-  uploadProfile,
-  removeProfile,
-  exportFile,
-  getOldSupporterData,
-  getOldDriverData,
-  getOldDriverSkillData,
-  getOldDriverExperienceData,
-  matchDriverId,
-  matchAgencyProfileImage,
-  matchDriverProfileImage
-}
+export { getPublicDetail, getDetail, getPublicList, getList, create, update, remove, getPublicCount, count, uploadProfile, removeProfile, exportFile, getOldSupporterData, getOldDriverData, getOldDriverSkillData, getOldDriverExperienceData, matchDriverId, matchAgencyProfileImage, matchDriverProfileImage };
+const defaultExport = { getPublicDetail, getDetail, getPublicList, getList, create, update, remove, getPublicCount, count, uploadProfile, removeProfile, exportFile, getOldSupporterData, getOldDriverData, getOldDriverSkillData, getOldDriverExperienceData, matchDriverId, matchAgencyProfileImage, matchDriverProfileImage };
+export default defaultExport;

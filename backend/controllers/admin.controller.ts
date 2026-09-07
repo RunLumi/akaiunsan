@@ -1,8 +1,10 @@
-const { Admin, Role, ErrorLog } = require('../models/index.ts');
-const { genTxt, getAdminData } = require('../helpers/util.ts');
-const { encryptPassword } = require('../helpers/security.ts');
-const model = require('../models/index.ts').sequelize;
-const { substring, or } = require('sequelize').Op;
+import { Admin, Role, ErrorLog } from '../models/index.ts';
+import { genTxt, getAdminData } from '../helpers/util.ts';
+import { encryptPassword } from '../helpers/security.ts';
+import __interop_model from '../models/index.ts';
+import __esModuleChain_Op from 'sequelize';
+const model = (__interop_model as any).sequelize;
+const { substring, or } = (__esModuleChain_Op as any).Op;
 let error_status = 500;
 let error_message = 'Unexpected error';
 
@@ -232,14 +234,6 @@ async function removeProfile (req, res) {
   }
 }
 
-module.exports = {
-  getDetail: getDetail,
-  getList: getList,
-  create: create,
-  update: update,
-  remove: remove,
-  count: count,
-  uploadProfile: uploadProfile,
-  removeProfile: removeProfile,
-  updatePassword: updatePassword,
-}
+export { getDetail as getDetail, getList as getList, create as create, update as update, remove as remove, count as count, uploadProfile as uploadProfile, removeProfile as removeProfile, updatePassword as updatePassword };
+const defaultExport = { getDetail, getList, create, update, remove, count, uploadProfile, removeProfile, updatePassword };
+export default defaultExport;

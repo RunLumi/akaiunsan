@@ -1,13 +1,14 @@
-const { Admin, Role, ErrorLog } = require('../../models/index.ts');
-const { genTxt, getAdminData } = require('../../helpers/util.ts');
-const { encryptPassword, comparePassword, generateToken,
-  requestForgetPasswordToken, verifyToken } = require('../../helpers/security.ts');
-const model = require('../../models/index.ts').sequelize;
+import fs from 'fs';
+import { Admin, Role, ErrorLog } from '../../models/index.ts';
+import { genTxt, getAdminData } from '../../helpers/util.ts';
+import { encryptPassword, comparePassword, generateToken, requestForgetPasswordToken, verifyToken } from '../../helpers/security.ts';
+import __interop_model from '../../models/index.ts';
+import nodemailer from 'nodemailer';
+const model = (__interop_model as any).sequelize;
 let error_status = 500;
 let error_message = 'Unexpected error';
-const nodemailer = require('nodemailer');
 const NODE_ENV = process.env.NODE_ENV || 'local';
-const key = require(`../../config/${NODE_ENV}.json`);
+const key = JSON.parse(fs.readFileSync(`config/${NODE_ENV}.json`, 'utf8'));
 
 async function signin (req, res) {
   try {
@@ -222,14 +223,5 @@ async function resetPassword (req, res) {
   }
 }
 
-module.exports = {
-  update: update,
-  uploadProfile: uploadProfile,
-  removeProfile: removeProfile,
-  signin: signin,
-  updatePassword: updatePassword,
-  resetPassword,
-  register,
-  requestForgetPassword,
-  getAdminFromToken
-}
+const adminModule = { update, uploadProfile, removeProfile, signin, updatePassword, resetPassword, register, requestForgetPassword, getAdminFromToken };
+export default adminModule;

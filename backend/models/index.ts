@@ -136,6 +136,9 @@ const modelFactories: any = {
   SupporterViewCount: SupporterViewCountFactory,
 };
 for (const [modelName, factory] of Object.entries(modelFactories)) {
+  if (typeof factory !== 'function') {
+    console.error('BAD FACTORY:', modelName, typeof factory);
+  }
   db[modelName] = factory(sequelizeClient, Sequelize);
 }
 

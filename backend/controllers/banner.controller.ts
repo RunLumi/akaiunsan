@@ -1,8 +1,14 @@
-const { Banner, BannerLanguage, ErrorLog } = require('../models/index.ts');
+import sharp from 'sharp';
+import { imageSize } from 'image-size';
+import moment from 'moment';
+import * as cheerio from 'cheerio';
+import rssConverter from 'rss-converter';
+import fs from 'fs';
+import { Banner, BannerLanguage, ErrorLog } from '../models/index.ts';
 let error_status = 500;
 let error_message = 'Unexpected error';
 const NODE_ENV = process.env.NODE_ENV || 'local';
-const config = require(`../config/${NODE_ENV}.json`);
+const config = JSON.parse(fs.readFileSync(`config/${NODE_ENV}.json`, 'utf8'));
 const IMAGE_BASE_URL = config.image_base_url;
 
 async function update (req, res) {
@@ -75,7 +81,7 @@ async function update (req, res) {
 }
 
 async function getDisplay (req, res) {
-  const moment = require('moment');
+  
   try {
     const lang_code = req.params.lang_code ? req.params.lang_code.toUpperCase() : null;
     const list = await Banner.findAll({ where: { active: true }, order: [['ordering', 'ASC']], include: [{ model: BannerLanguage }] });
@@ -176,9 +182,6 @@ async function uploadImage (req, res) {
   }
 }
 
-module.exports = {
-  getList,
-  getDisplay,
-  update,
-  uploadImage,
-}
+export { getList, getDisplay, update, uploadImage };
+const defaultExport = { getList, getDisplay, update, uploadImage };
+export default defaultExport;

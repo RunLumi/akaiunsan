@@ -1,7 +1,7 @@
-const { Supporter, SupporterExperience, SupporterSkill, SupporterLanguage,
-  SupporterEducation, ImportData, ErrorLog } = require('../../models/index.ts');
-const { pairSkill, pairExperience, getAllStat, correctNationality, getDriverProfile } = require('../../helpers/agencyData.ts');
-const model = require('../../models/index.ts').sequelize;
+import { Supporter, SupporterExperience, SupporterSkill, SupporterLanguage, SupporterEducation, ImportData, ErrorLog } from '../../models/index.ts';
+import { pairSkill, pairExperience, getAllStat, correctNationality, getDriverProfile } from '../../helpers/agencyData.ts';
+import __interop_model from '../../models/index.ts';
+const model = (__interop_model as any).sequelize;
 let error_status = 500;
 let error_message = 'Unexpected error';
 const job_location_list = {
@@ -291,10 +291,6 @@ async function updateAllStat (req, res) {
   }
 }
 
-module.exports = {
-  create,
-  update,
-  remove,
-  uploadProfile,
-  updateAllStat
-}
+export { create, update, remove, uploadProfile, updateAllStat };
+const defaultExport = { create, update, remove, uploadProfile, updateAllStat };
+export default defaultExport;

@@ -1,22 +1,25 @@
-const express = require('express');
+import express from 'express';
+import cors from 'cors';
+import db from './models/index.ts';
+import registerRoutes from './routes/index.ts';
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-const cors = require('cors');
 app.use(cors());
 
-const bodyParser = require('body-parser');
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-const db = require('./models/index.ts');
 db.sequelize.sync();
 
-require('./routes/index.ts')(app);
+registerRoutes(app);
 
 // Test harnesses (supertest) import the app without binding a port; pm2 and
-// local dev still run `node app.js` and expect it to listen.
-if (require.main === module) {
+// local dev still run the entry and expect it to listen. In ESM there is no
+// require.main — detect direct execution via the executed argv path.
+const isMain = process.argv[1] && import.meta.url === `file://${process.argv[1]}`;
+if (isMain) {
   app.listen(PORT, async () => {
     console.log('================================================');
     console.log(' .d88b. 888d888 8888b. 88888b.  .d88b.  .d88b.  ');
@@ -36,4 +39,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = app;
+export default app;

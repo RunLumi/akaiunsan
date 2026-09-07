@@ -1,6 +1,6 @@
-const OmiseHelper = require('./../helpers/omise.ts')
-const CustomerHelper = require('./../helpers/customer.ts')
-const PaymentHelper = require('./../helpers/payment.ts')
+import * as OmiseHelper from './../helpers/omise.ts';
+import * as CustomerHelper from './../helpers/customer.ts';
+import * as PaymentHelper from './../helpers/payment.ts';
 
 /**
  * For both new and existing omise customer
@@ -91,7 +91,6 @@ const getCustomerCards = async (req, res) => {
     }
 }
 
-module.exports = {
-    makePayment,
-    getCustomerCards
-}
+export { makePayment, getCustomerCards };
+const defaultExport = { makePayment, getCustomerCards };
+export default defaultExport;

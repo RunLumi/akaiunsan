@@ -1,6 +1,8 @@
-const { BizCustomer, ErrorLog } = require('../models/index.ts');
-const model = require('../models/index.ts').sequelize;
-const { substring, or, and } = require('sequelize').Op;
+import { BizCustomer, ErrorLog } from '../models/index.ts';
+import __interop_model from '../models/index.ts';
+import __esModuleChain_Op from 'sequelize';
+const model = (__interop_model as any).sequelize;
+const { substring, or, and } = (__esModuleChain_Op as any).Op;
 let error_status = 500;
 let error_message = 'Unexpected error';
 
@@ -161,11 +163,6 @@ async function remove (req, res) {
   }
 }
 
-module.exports = {
-  getDetail: getDetail,
-  getList: getList,
-  create: create,
-  update: update,
-  remove: remove,
-  count: count
-}
+export { getDetail as getDetail, getList as getList, create as create, update as update, remove as remove, count as count };
+const defaultExport = { getDetail, getList, create, update, remove, count };
+export default defaultExport;

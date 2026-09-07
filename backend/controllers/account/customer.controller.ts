@@ -1,15 +1,15 @@
-const { Customer, ErrorLog } = require('../../models/index.ts');
-const { genTxt, getCustomerData } = require('../../helpers/util.ts');
-const { encryptPassword, comparePassword, generateToken,
-  requestForgetPasswordToken, verifyToken } = require('../../helpers/security.ts');
-const model = require('../../models/index.ts').sequelize;
+import fs from 'fs';
+import { Customer, ErrorLog } from '../../models/index.ts';
+import { genTxt, getCustomerData } from '../../helpers/util.ts';
+import { encryptPassword, comparePassword, generateToken, requestForgetPasswordToken, verifyToken } from '../../helpers/security.ts';
+import __interop_model from '../../models/index.ts';
+import nodemailer from 'nodemailer';
+import { sendMail } from '../../helpers/mail.ts';
+const model = (__interop_model as any).sequelize;
 let error_status = 500;
 let error_message = 'Unexpected error';
-const nodemailer = require('nodemailer');
 const NODE_ENV = process.env.NODE_ENV || 'local';
-const key = require(`../../config/${NODE_ENV}.json`);
-const fs = require('fs');
-const { sendMail } = require('../../helpers/mail.ts');
+const key = JSON.parse(fs.readFileSync(`config/${NODE_ENV}.json`, 'utf8'));
 
 async function signup (req, res) {
   const t = await model.transaction();
@@ -253,14 +253,5 @@ async function resetPassword (req, res) {
   }
 }
 
-module.exports = {
-  update: update,
-  updatePassword,
-  uploadProfile: uploadProfile,
-  removeProfile: removeProfile,
-  signup: signup,
-  signin: signin,
-  getCustomerFromToken,
-  requestForgetPassword,
-  resetPassword
-}
+const customerModule = { update, updatePassword, uploadProfile, removeProfile, signup, signin, getCustomerFromToken, requestForgetPassword, resetPassword };
+export default customerModule;

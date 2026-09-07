@@ -1,7 +1,15 @@
-const { headerValidator, clientValidator } = require('./../middlewares/validator.ts');
+import middlewareValidators from './../middlewares/validator.ts';
+const { headerValidator, clientValidator } = middlewareValidators;
+import multer from 'multer';
+import { genTxt } from '../helpers/util.ts';
+import AccountController from '../controllers/account/account.controller.ts';
+import * as AddressController from '../controllers/address.controller.ts';
+import * as CreditCardController from '../controllers/creditcard.controller.ts';
+import * as RequestController from '../controllers/requesthelper/index.controller.ts';
+import * as JobController from '../controllers/job.controller.ts';
+import * as JobReviewController from '../controllers/jobreview.controller.ts';
+import * as SubscriptionController from './../controllers/subscription.controller.ts';
 
-const multer = require('multer');
-const { genTxt } = require('../helpers/util.ts');
 const customerStorage = multer.diskStorage(
   {
       destination: 'uploads/customers',
@@ -14,15 +22,8 @@ const customerStorage = multer.diskStorage(
 );
 const customerUpload = multer({ storage: customerStorage });
 
-const AccountController = require('../controllers/account/account.controller.ts');
-const AddressController = require('../controllers/address.controller.ts');
-const CreditCardController = require('../controllers/creditcard.controller.ts');
-const RequestController = require('../controllers/requesthelper/index.controller.ts');
-const JobController = require('../controllers/job.controller.ts');
-const JobReviewController = require('../controllers/jobreview.controller.ts');
-const SubscriptionController = require('./../controllers/subscription.controller.ts');
 
-module.exports = app => {
+export default app => {
   app.use('/client/*s', headerValidator);
   app.use('/client/*s', clientValidator)
 

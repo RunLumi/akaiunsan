@@ -1,5 +1,6 @@
-const { RequestHelperStatus, ErrorLog } = require('../../models/index.ts');
-const { substring } = require('sequelize').Op;
+import { RequestHelperStatus, ErrorLog } from '../../models/index.ts';
+import __esModuleChain_Op from 'sequelize';
+const { substring } = (__esModuleChain_Op as any).Op;
 let error_status = 500;
 let error_message = 'Unexpected error';
 
@@ -104,11 +105,6 @@ async function remove (req, res) {
   }
 }
 
-module.exports = {
-  create,
-  update,
-  getDetail,
-  getList,
-  getCount,
-  remove
-}
+export { create, update, getDetail, getList, getCount, remove };
+const defaultExport = { create, update, getDetail, getList, getCount, remove };
+export default defaultExport;

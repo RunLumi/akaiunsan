@@ -1,4 +1,4 @@
-package com.ayasan.yoda.android;
+package com.akaiunsan.customer;
 
 import android.app.Application;
 import android.content.Context;
@@ -13,7 +13,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
-import com.ayasan.yoda.android.generated.BasePackageList;
+import com.akaiunsan.customer.generated.BasePackageList;
 
 //import org.unimodules.adapters.react.ReactAdapterPackage;
 //import org.unimodules.adapters.react.ModuleRegistryAdapter;
@@ -125,7 +125,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
          We use reflection here to pick up the class that initializes Flipper,
         since Flipper library is not available in release mode
         */
-        Class<?> aClass = Class.forName("com.ayasan.yoda.android.ReactNativeFlipper");
+        Class<?> aClass = Class.forName("com.akaiunsan.customer.ReactNativeFlipper");
         aClass
             .getMethod("initializeFlipper", Context.class, ReactInstanceManager.class)
             .invoke(null, context, reactInstanceManager);

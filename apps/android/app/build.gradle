@@ -148,13 +148,13 @@ android {
     }
 
     defaultConfig {
-        applicationId 'com.ayasan.yoda.android'
+        applicationId 'com.akaiunsan.customer'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 155
         versionName "6.1.0"
         multiDexEnabled true
-        resValue "string", "build_config_package", "com.ayasan.yoda.android"
+        resValue "string", "build_config_package", "com.akaiunsan.customer"
 
     }
     splits {

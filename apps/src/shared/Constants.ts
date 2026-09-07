@@ -195,8 +195,8 @@ export default {
   // LOGINLINE:'https://admincp.ayasan.vn/assets/html/RedirectLineLogin.html',
   //dev
   // LOGINLINE:'https://admin-ayasan.dev.nichietsuvn.com/assets/html/PageRedirectLineLoginDev.html',
-  iOSLink: "com.ayasan.customer://",
-  androidLink: "ayasan://",
+  iOSLink: "com.akaiunsan.customer://",
+  androidLink: "akaiunsan://",
   //Nhờ KH cung cấp key google mapp cấu hình ở đây và app.json
   GOOGLEMAPSAPIKEYIOS: "AIzaSyD6rt8Bo6w4maFl8LBeX7zYczkEJfulwco",
   GOOGLEMAPSAPIKEYANDROIND: "AIzaSyD6rt8Bo6w4maFl8LBeX7zYczkEJfulwco",

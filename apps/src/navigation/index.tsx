@@ -52,10 +52,10 @@ const { width } = Dimensions.get("window");
 
 export default function Navigation() {
   const linking = {
-    prefixes: ["ayasan://"],
+    prefixes: ["akaiunsan://"],
     config: {
       screens: {
-        "Auth/Login": "com.ayasan.yoda.android",
+        "Auth/Login": "com.akaiunsan.customer",
       },
     },
   };

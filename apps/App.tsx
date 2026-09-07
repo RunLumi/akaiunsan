@@ -16,8 +16,8 @@ export default function App() {
 
   useEffect(() => {
     checkExitsChannel(
-      "com.ayasan.yoda.android",
-      createChannel("com.ayasan.yoda.android")
+      "com.akaiunsan.customer",
+      createChannel("com.akaiunsan.customer")
     )
 
     async function requestUserPermission() {
@@ -73,7 +73,7 @@ export default function App() {
     if (!isEmpty(notifyData.data)) {
       // Send from FCM console
       PushNotification.localNotification({
-        channelId: "com.ayasan.yoda.android",
+        channelId: "com.akaiunsan.customer",
         ignoreInForeground: false,
         title: notifyData?.notification?.title,
         message: notifyData?.notification?.body,
@@ -83,7 +83,7 @@ export default function App() {
     } else {
       // Send from BE
       PushNotification.localNotification({
-        channelId: "com.ayasan.yoda.android",
+        channelId: "com.akaiunsan.customer",
         ignoreInForeground: false,
         title: notifyData?.notification?.title,
         message: notifyData?.notification?.body,

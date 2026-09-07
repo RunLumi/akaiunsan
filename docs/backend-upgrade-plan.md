@@ -217,3 +217,15 @@ Order chosen so leaf/utility code converts first, entrypoint last. Each converte
 | 7 PostgreSQL (PostGIS/JSONB) | 5–10 d | yes, after 5 |
 
 Total ≈ **27–43 focused days**. Phases 0–2 alone (≈2 weeks) already remove every high-risk dependency — recommended as the first milestone even if TS is deferred.
+---
+
+## 8. Execution log (updated as phases land)
+
+| Date | Milestone | Evidence |
+|---|---|---|
+| 2026-09-07 | **Phase 0 complete** — vitest + supertest harness against a real local MariaDB (brew, test DB `ayasan_db_test`, `config/test.json` committed); app.js exportable without listening; `GET /health` added TDD-first; `erject` typo and header-logging leak fixed TDD-first; `patch-package` fixes `buffer-equal-constant-time` SlowBuffer crash under vite-node; native deps sharp→0.33 / bcrypt→6 for Node 22 | `246fcb9` |
+| 2026-09-07 | **Phase 1 substantially complete** — 130 characterization tests green across auth tiers, permissions matrix, CRUD conventions, commerce, statistics, uploads (sharp pipeline), agency routes (mysql/sftp mocked). 11 latent bugs pinned with `// pins current behavior` (job create/updateStatus/createReview, credit-card both paths, admin forget-token, banner partial writes, subscription leaks…). Model/schema drift reconciled: Job.customer_id/supporter_id, Subscription.active, Customer↔Job association | `63aa1b1`…`ab6ea7b` |
+| 2026-09-07 | **Phase 2 started** — npm `fs`/`path` shim packages removed, express 4.17→4.22 (suite green), engines node>=20, `.nvmrc` | latest |
+| 2026-09-07 | Coverage: **58.5% lines** (from 0). Biggest remaining gap: `helpers/agencyData.js` (legacy import tooling, quarantined per plan) and deep helper internals | `vitest run --coverage` |
+
+**Pinned bugs awaiting deliberate TDD fixes (Phase 4+):** see tests marked `pins current behavior` — job creation (`omise_card_id` ReferenceError), job updateStatus (`result` ReferenceError), job createReview (missing commit), credit-card create (both paths never respond), subscription list data leak + findOne({id}) bug, admin forget-password token payload, banner bulk update without transaction, supporter public list (`rows is not iterable`), admin removeProfile (`fs` not imported), install.controller first-admin (no `active`/`role_id`).

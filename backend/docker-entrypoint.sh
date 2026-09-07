@@ -39,4 +39,8 @@ EOF
   echo "[entrypoint] Synthesized $TARGET_CONFIG from environment variables."
 fi
 
+# Ensure dist/config also has the config file for relative requires inside dist/
+mkdir -p dist/config
+cp -f "$TARGET_CONFIG" "dist/$TARGET_CONFIG"
+
 exec "$@"

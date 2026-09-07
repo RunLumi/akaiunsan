@@ -1,0 +1,20 @@
+export default {
+  main_color: "#F48120",
+  gray: "#808080",
+  background: "#ffffff",
+  white: "#ffffff",
+  main_blue: "rgb(4,97,178)",
+  blue_link: "rgb(57,163,255)",
+  main_orange: "rgb(247,147,30)",
+  main_orange_light: "rgba(247,147,30,0.15)",
+  grab_orange: "rgb(244, 129, 32)",
+  gray_hidden_text: "rgba(179,179,179, 1)",
+  gray_normal_text: "rgb(153,153,153)",
+  black_text: "rgb(51,51,51)",
+  gray_light: "#f0f0f0",
+  black: "#000000",
+  red: "#FF0000",
+  yellow: "#fcb813",
+  green: "#34a853",
+  pinky: "rgba(255, 190, 190, 0.3)"
+};

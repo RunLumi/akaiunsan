@@ -1,0 +1,29 @@
+version: "3"
+
+services:  
+  mariadb:
+    container_name: dev-api.ayasan.vn-db
+    image: "mariadb:10.9.6"
+    restart: "unless-stopped"
+    ports:
+      - "15506:3306"
+    volumes:
+      - "/home/dev-api.ayasan.vn-db/mysql/data:/var/lib/mysql"
+      - "/home/dev-api.ayasan.vn-db/mysql/logs:/var/lib/mysql/logs"
+      - /home/dev-api.ayasan.vn-db/mariadb-conf:/etc/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "Nichietsuvn@123"
+      MYSQL_DATABASE: "ayasan_db_dev"
+      MYSQL_USER: "ayasan_db_dev"
+      MYSQL_PASSWORD: "ayasan_db_dev"
+    deploy:
+        resources:
+            limits:
+              cpus: "1"
+              memory: 2048M
+            reservations:
+              cpus: "0.5"
+              memory: 512M
+networks:
+  default:
+    name: dev-api.ayasan.vn-db_default

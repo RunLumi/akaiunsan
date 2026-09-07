@@ -1,0 +1,38 @@
+const path = require('path');
+const SupporterController = require('../controllers/supporter.controller');
+const InstallController = require('../controllers/install.controller');
+const AgencyController = require('../controllers/agency/index.controller');
+
+module.exports = (app) => {
+  //test route
+  app.get('/import/supporter-agency-profile-image', SupporterController.matchAgencyProfileImage);
+  app.get('/import/supporter-agency-stat', AgencyController.maid.updateAllStat);
+  app.get('/import/supporter-agency', SupporterController.getOldSupporterData);
+  app.get('/import/supporter-driver-experience', SupporterController.getOldDriverExperienceData);
+  app.get('/import/supporter-driver-skill', SupporterController.getOldDriverSkillData);
+  app.get('/import/supporter-driver-match-skill', SupporterController.matchDriverId);
+  app.get('/import/supporter-driver-profile-image', SupporterController.matchDriverProfileImage);
+  app.get('/import/supporter-driver', SupporterController.getOldDriverData);
+
+  //install first admin
+  app.get('/back/office/install', InstallController);
+
+  // images and files access
+  app.get('/uploads/*', (req, res, next) => {
+    res.sendFile(path.resolve(`${__dirname}/..${req.originalUrl}`));
+  })
+
+  // Un-authentication routes
+  require('./public.route')(app);
+  
+  //ayasan bot api routes
+  require('./bot.route')(app);
+
+  require('./agency.route')(app);
+
+  // authentication required
+  require('./backoffice.route')(app);
+  require('./client.route')(app);
+
+  require('./error')(app);
+}

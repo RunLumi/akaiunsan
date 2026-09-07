@@ -1,0 +1,24 @@
+basic function in controller
+- create one
+- get by id
+- get list (pagination, ordering, sorting with search by keyword or filter)
+  ***need to fix bug search by keyword if keyword is empty
+- update by id
+- delete by id
+
+
+//json i found from ayasan-app db
+{
+  "facebook": {
+    "id": "3354101051289781",
+    "access_token": "EAAWEJZBYZBWogBADJZBlqZBaH7GxEL6tT4ZAjibZA0sNUy1oUqZAK2TgwtZAU89RZAEe2ZCZAjKxke0vo6xMTsZA7kbrD3PZAnKt3a24oZCBtStpPkjcGKfTCuZC0NjAtlGKuZA0yiHOQzWW7EdZAoDAuGZAFul1NBtZCK3J3nCyTuxMoqp2E56O8mYZBwDmNtXbAJjfpMK03dkZD",
+    "expiration_date": "2020-09-29T07:33:10.078Z"
+  }
+}
+
+{
+  "address": "Union Space",
+  "room_number": "1",
+  "type": "condo",
+  "address_number": ""
+}

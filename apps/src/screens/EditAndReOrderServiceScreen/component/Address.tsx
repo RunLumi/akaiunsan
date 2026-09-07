@@ -1,0 +1,196 @@
+import React, { useEffect } from "react";
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  SafeAreaView,
+  FlatList,
+  Alert,
+} from "react-native";
+import colors from "../../../shared/Colors";
+import { Ionicons } from "@expo/vector-icons";
+import { Loading, PositionSelect, Text } from "../../../components";
+import i18n from "../../../shared/I18n";
+import useApi from "../../../hooks/useApi";
+import { useSelector } from "react-redux";
+import Constants from "../../../shared/Constants";
+export default function Address(props: any) {
+  const user = useSelector((state: any) => state.auth.user);
+
+  const [listAddress, setListAddress] = React.useState([]);
+  const childRef = React.useRef();
+
+  const [currentAddress, setCurrentAddress] = React.useState(null);
+
+  const [loadingListAddress, requestListAddress] = useApi({
+    method: "get",
+    url: Constants.API.list_address,
+    callback: ({ error, response }) => {
+      if (error) {
+        Alert.alert(i18n.t("auth.error"), error);
+      }
+
+      setListAddress(response && response.items);
+      findSameAddress(response && response.items);
+    },
+  });
+
+  const handleValuePosition = () =>
+      setTimeout(() => {
+        requestListAddress();
+      }, 300);
+    };
+
+  const getValueAddress = (value) => {
+    setCurrentAddress(value.id);
+    props.handleAddress(value);
+  };
+
+  const findSameAddress = (dataAddress: any) => {
+    let getPhoneNumber = props.bookingDetail && props.bookingDetail.phoneNumber;
+    for (let index = 0; index < dataAddress.length; index++) {
+      if (dataAddress[index].phoneNumber === getPhoneNumber) {
+        getValueAddress(dataAddress[index]);
+        break;
+      }
+    }
+  };
+
+  useEffect(() => {
+    requestListAddress();
+  }, []);
+
+  const renderItem = ({ item, index }) => (
+    <TouchableOpacity onPress={() => getValueAddress(item)}>
+      <View
+        style={{
+          ...styles.itemRender,
+          backgroundColor:
+            currentAddress == item.id ? colors.main_orange : "white",
+        }}
+      >
+        <TouchableOpacity
+          style={{
+            position: "absolute",
+            right: 16,
+            top: 16,
+            zIndex: 99,
+          }}
+          onPress={() => childRef.current.openModalPosition(item)}
+        >
+          <Ionicons
+            style={{ alignSelf: "flex-end" }}
+            name="ios-open-outline"
+            size={24}
+            color={currentAddress == item.id ? "white" : "black"}
+          />
+        </TouchableOpacity>
+        <View style={{ flexDirection: "column" }}>
+          <View style={styles.rowItemRender}>
+            <Ionicons
+              name="person"
+              size={24}
+              color={currentAddress == item.id ? "white" : "black"}
+            />
+            <Text style={styles.textItemRender}>{user && user.fullName}</Text>
+          </View>
+          <View style={styles.rowItemRender}>
+            <Ionicons
+              name="phone-portrait-outline"
+              size={24}
+              color={currentAddress == item.id ? "white" : "black"}
+            />
+            <Text style={styles.textItemRender}>{item.phoneNumber}</Text>
+          </View>
+          <View style={styles.rowItemRender}>
+            <Ionicons
+              name="location-sharp"
+              size={24}
+              color={currentAddress == item.id ? "white" : "black"}
+            />
+            <Text style={styles.textItemRender}>{item.longAddress}</Text>
+          </View>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+
+  return (
+    <View style={{ flex: 1 }}>
+      <Loading loading={loadingListAddress} />
+      <SafeAreaView style={styles.container}>
+        <FlatList
+          contentContainerStyle={
+            listAddress.length === 0 && {
+              flexGrow: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100%",
+            }
+          }
+          data={listAddress}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => index.toString()}
+          ListEmptyComponent={
+            <Text style={styles.emptyDataAddress}>
+              {i18n.t("auth.no_address")}
+            </Text>
+          }
+        />
+      </SafeAreaView>
+      <TouchableOpacity
+        onPress={() => childRef.current.openModalPosition()}
+        style={styles.addAddress}
+      >
+        <Ionicons name="add-circle" size={30} color={colors.main_color} />
+        <Text style={styles.textAddAddress}>
+          {i18n.t("auth.add_new_address")}
+        </Text>
+      </TouchableOpacity>
+      <PositionSelect
+        children={childRef}
+        valuePosition={handleValuePosition}
+        navigation={props.navigation}
+        type={props.type}
+      />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: 15,
+  },
+  emptyDataAddress: {
+    textAlign: "center",
+    fontSize: 22,
+    color: colors.gray_hidden_text,
+    marginTop: 10,
+  },
+  addAddress: {
+    borderTopWidth: 1,
+    borderTopColor: colors.gray_normal_text,
+    flexDirection: "row",
+    paddingHorizontal: 25,
+    paddingVertical: 10,
+  },
+  textAddAddress: {
+    fontSize: 20,
+    marginLeft: 10,
+  },
+  itemRender: {
+    borderRadius: 15,
+    backgroundColor: colors.white,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginVertical: 5,
+  },
+  rowItemRender: {
+    flexDirection: "row",
+    marginVertical: 3,
+  },
+  textItemRender: {
+    marginLeft: 10,
+  },
+});

@@ -1,0 +1,49 @@
+{
+  "parser": "babel-eslint",
+  "plugins": ["react", "react-native"],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true
+    }
+  },
+  "extends": ["eslint:recommended", "plugin:react/recommended", "airbnb-base"],
+  "rules": {
+    "arrow-body-style": "warn",
+    "no-mixed-operators": [
+      "warn",
+      {
+        "groups": [
+          ["&", "|", "^", "~", "<<", ">>", ">>>"],
+          ["==", "!=", "===", "!==", ">", ">=", "<", "<="],
+          ["&&", "||"],
+          ["in", "instanceof"]
+        ],
+        "allowSamePrecedence": false
+      }
+    ],
+    "no-underscore-dangle": 0,
+    "no-use-before-define": 0,
+    "react/prop-types": 0,
+    "class-methods-use-this": 0,
+    "import/prefer-default-export": 0,
+    "camelcase": 0,
+    "max-len": 0,
+    "no-nested-ternary": 0,
+    "react/no-string-refs": 0,
+    "no-restricted-syntax": 0,
+    "global-require": 0,
+    "import/no-extraneous-dependencies": 0
+  },
+  "globals": {
+    "fetch": true,
+    "require": true,
+    "FormData": true,
+    "navigator": true,
+    "parseInt": true,
+    "__DEV__": true,
+    "logDebug": true,
+    "logError": true,
+    "logWarn": true
+  }
+}

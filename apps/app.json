@@ -1,0 +1,84 @@
+{
+  "expo": {
+    "name": "Ayasan",
+    "slug": "ayasan",
+    "version": "4.0.1",
+    "orientation": "portrait",
+    "icon": "./src/assets/images/App.png",
+    "scheme": "com.ayasan.customer",
+    "userInterfaceStyle": "automatic",
+    "facebookAppId": "1552681784990344",
+    "facebookScheme": "fb1552681784990344",
+    "facebookDisplayName": "Ayasan Service",
+    "splash": {
+      "image": "./src/assets/images/Splash-screen.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#F48120"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0,
+      "checkAutomatically": "ON_ERROR_RECOVERY"
+    },
+    "androidStatusBar": {
+      "backgroundColor": "#FFFFFF",
+      "translucent": false
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": false,
+      "config": {
+        "googleMapsApiKey": "AIzaSyD6rt8Bo6w4maFl8LBeX7zYczkEJfulwco"
+      },
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "bundleIdentifier": "com.ayasan.customer",
+      "buildNumber": "5",
+      "usesAppleSignIn": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Ayasan would like to access the camera to take a picture for the profile image or scan a QR code when you need it.",
+        "NSPhotoLibraryUsageDescription": "Ayasan would like to access the photo library to save photos or upload profile image.",
+        "NSPhotoLibraryAddUsageDescription": "Ayasan would like to access the photo library to save photos or upload profile image.",
+        "NSMicrophoneUsageDescription": "Ayasan would like to access the microphone to record videos of your comments about the quality of our services for sharing its with others.",
+        "NSLocationWhenInUseUsageDescription":"Ayasan would like to access the location for updating nearby friends and give you suitable suggestions",
+        "NSLocationUsageDescription": "Ayasan would like to access the location for updating nearby friends and give you suitable suggestions"
+      }
+    },
+    "android": {
+      "versionCode": 76,
+      "softwareKeyboardLayoutMode": "pan",
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/images/App.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "package": "com.ayasan.yoda.android",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyD6rt8Bo6w4maFl8LBeX7zYczkEJfulwco"
+        }
+      },
+      "googleServicesFile": "./google-services.json",
+      "useNextNotificationsApi": true,
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "ayasan",
+              "host": "com.ayasan.yoda.android"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ]
+    },
+    "plugins": [
+      "@react-native-firebase/app",
+      "@react-native-firebase/crashlytics",
+      "@notifee/react-native",
+      "@react-native-google-signin/google-signin"
+    ],
+    "web": {
+      "favicon": "./src/assets/images/favicon.png"
+    }
+  }
+}

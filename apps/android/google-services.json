@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "464116560251",
+    "project_id": "ayasan-service-vn",
+    "storage_bucket": "ayasan-service-vn.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:464116560251:android:9e2e464304c1b77eb14dde",
+        "android_client_info": {
+          "package_name": "com.ayasan.yoda.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "464116560251-6ha8mne4rg0he1om6u3qc8ce2cmh7b5n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ayasan.yoda.android",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "464116560251-imcs769k2p8g7qf740m04lolkis7h9fg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ayasan.yoda.android",
+            "certificate_hash": "9ecd4ca902eeeb8b9d76b86c7bdf3ad053fdbad6"
+          }
+        },
+        {
+          "client_id": "464116560251-d9928akj9e2bh5h5csdmdkc6c8qi2mma.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoiFrdt4xNVU6fkzA4K7pv7eAbUmcltp4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "464116560251-d9928akj9e2bh5h5csdmdkc6c8qi2mma.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "464116560251-nre78v2hg71ucj6d4h0j6i792orevm8r.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ayasan.customer"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>464116560251-nre78v2hg71ucj6d4h0j6i792orevm8r.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.464116560251-nre78v2hg71ucj6d4h0j6i792orevm8r</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>464116560251-6ha8mne4rg0he1om6u3qc8ce2cmh7b5n.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDZ88pW2fRW-SxXu6zDQftlOCm0C0DcyWI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>464116560251</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.ayasan.customer</string>
+	<key>PROJECT_ID</key>
+	<string>ayasan-service-vn</string>
+	<key>STORAGE_BUCKET</key>
+	<string>ayasan-service-vn.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:464116560251:ios:2f758a4bdc211a5eb14dde</string>
+</dict>
+</plist>

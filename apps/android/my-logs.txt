@@ -1,0 +1,2005 @@
+
+> Configure project :@react-native-firebase_messaging
+:@react-native-firebase_messaging package.json found at /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/@react-native-firebase/messaging/package.json
+:react-native-firebase_app package.json found at /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/@react-native-firebase/app/package.json
+:@react-native-firebase_messaging:firebase.bom using default value: 30.5.0
+:@react-native-firebase_messaging package.json found at /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/@react-native-firebase/messaging/package.json
+:@react-native-firebase_messaging:version set from package.json: 14.12.0 (14,12,0 - 14012000)
+:@react-native-firebase_messaging:android.compileSdk using custom value: 33
+:@react-native-firebase_messaging:android.targetSdk using custom value: 31
+:@react-native-firebase_messaging:android.minSdk using custom value: 21
+:@react-native-firebase_messaging:reactNativeAndroidDir /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/react-native/android
+
+> Configure project :app
+Reading env from: .env
+
+> Configure project :expo-structured-headers
+Warning: The 'kotlin-android-extensions' Gradle plugin is deprecated. Please use this migration guide (https://goo.gle/kotlin-android-extensions-deprecation) to start working with View Binding (https://developer.android.com/topic/libraries/view-binding) and the 'kotlin-parcelize' plugin.
+
+> Configure project :expo-updates-interface
+Warning: The 'kotlin-android-extensions' Gradle plugin is deprecated. Please use this migration guide (https://goo.gle/kotlin-android-extensions-deprecation) to start working with View Binding (https://developer.android.com/topic/libraries/view-binding) and the 'kotlin-parcelize' plugin.
+
+> Configure project :expo
+Using expo modules
+— [32m@react-native-google-signin/google-signin[0m (7.2.2)
+— [32m@unimodules/core[0m (7.2.0)
+— [32mexpo-application[0m (4.0.2)
+— [32mexpo-clipboard[0m (2.0.3)
+— [32mexpo-constants[0m (12.1.3)
+— [32mexpo-error-recovery[0m (3.0.5)
+— [32mexpo-facebook[0m (12.0.3)
+— [32mexpo-file-system[0m (13.0.3)
+— [32mexpo-font[0m (10.0.5)
+— [32mexpo-image-loader[0m (3.0.0)
+— [32mexpo-image-picker[0m (11.0.3)
+— [32mexpo-json-utils[0m (0.2.1)
+— [32mexpo-keep-awake[0m (10.0.2)
+— [32mexpo-localization[0m (11.0.0)
+— [32mexpo-location[0m (13.0.4)
+— [32mexpo-manifests[0m (0.2.4)
+— [32mexpo-modules-core[0m (0.4.10)
+— [32mexpo-notifications[0m (0.13.3)
+— [32mexpo-permissions[0m (13.0.3)
+— [32mexpo-splash-screen[0m (0.13.5)
+— [32mexpo-structured-headers[0m (2.0.0)
+— [32mexpo-updates[0m (0.10.15)
+— [32mexpo-web-browser[0m (10.0.3)
+— [32munimodules-app-loader[0m (3.0.1)
+
+> Configure project :notifee_react-native
+:notifee_react-native @notifee/react-native found at /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/@notifee/react-native
+:notifee_react-native package.json found at /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/@notifee/react-native/package.json
+:notifee_react-native:version set from package.json: 7.3.0 (7,3,0 - 7003000)
+:notifee_react-native:android.compileSdk using custom value: 33
+:notifee_react-native:android.targetSdk using custom value: 31
+:notifee_react-native:android.minSdk using custom value: 21
+:notifee_react-native:reactNativeAndroidDir /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/react-native/android
+
+> Configure project :react-native-firebase_analytics
+:react-native-firebase_analytics package.json found at /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/@react-native-firebase/analytics/package.json
+:react-native-firebase_app package.json found at /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/@react-native-firebase/app/package.json
+:react-native-firebase_analytics:firebase.bom using default value: 30.5.0
+:react-native-firebase_analytics package.json found at /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/@react-native-firebase/analytics/package.json
+:react-native-firebase_analytics:version set from package.json: 14.12.0 (14,12,0 - 14012000)
+:react-native-firebase_analytics:android.compileSdk using custom value: 33
+:react-native-firebase_analytics:android.targetSdk using custom value: 31
+:react-native-firebase_analytics:android.minSdk using custom value: 21
+:react-native-firebase_analytics:reactNativeAndroidDir /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/react-native/android
+
+> Configure project :react-native-firebase_app
+:react-native-firebase_app package.json found at /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/@react-native-firebase/app/package.json
+:react-native-firebase_app:firebase.bom using default value: 30.5.0
+:react-native-firebase_app:play.play-services-auth using default value: 20.3.0
+:react-native-firebase_app package.json found at /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/@react-native-firebase/app/package.json
+:react-native-firebase_app:version set from package.json: 14.12.0 (14,12,0 - 14012000)
+:react-native-firebase_app:android.compileSdk using custom value: 33
+:react-native-firebase_app:android.targetSdk using custom value: 31
+:react-native-firebase_app:android.minSdk using custom value: 21
+:react-native-firebase_app:reactNativeAndroidDir /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/react-native/android
+
+> Configure project :react-native-firebase_crashlytics
+:react-native-firebase_crashlytics package.json found at /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/@react-native-firebase/crashlytics/package.json
+:react-native-firebase_app package.json found at /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/@react-native-firebase/app/package.json
+:react-native-firebase_crashlytics:firebase.bom using default value: 30.5.0
+:react-native-firebase_crashlytics package.json found at /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/@react-native-firebase/crashlytics/package.json
+:react-native-firebase_crashlytics:version set from package.json: 14.12.0 (14,12,0 - 14012000)
+:react-native-firebase_crashlytics:android.compileSdk using custom value: 33
+:react-native-firebase_crashlytics:android.targetSdk using custom value: 31
+:react-native-firebase_crashlytics:android.minSdk using custom value: 21
+:react-native-firebase_crashlytics:reactNativeAndroidDir /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/react-native/android
+
+> Configure project :react-native-firebase_messaging
+:react-native-firebase_messaging package.json found at /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/@react-native-firebase/messaging/package.json
+:react-native-firebase_app package.json found at /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/@react-native-firebase/app/package.json
+:react-native-firebase_messaging:firebase.bom using default value: 30.5.0
+:react-native-firebase_messaging package.json found at /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/@react-native-firebase/messaging/package.json
+:react-native-firebase_messaging:version set from package.json: 14.12.0 (14,12,0 - 14012000)
+:react-native-firebase_messaging:android.compileSdk using custom value: 33
+:react-native-firebase_messaging:android.targetSdk using custom value: 31
+:react-native-firebase_messaging:android.minSdk using custom value: 21
+:react-native-firebase_messaging:reactNativeAndroidDir /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/react-native/android
+WARNING:: Please remove usages of `jcenter()` Maven repository from your build scripts and migrate your build to other Maven repositories.
+This repository is deprecated and it will be shut down in the future.
+See http://developer.android.com/r/tools/jcenter-end-of-service for more information.
+Currently detected usages in: root project 'Ayasan', project ':@react-native-firebase_messaging', project ':app', ...
+
+> Task :@react-native-firebase_messaging:clean
+> Task :app:clean
+> Task :expo:clean
+> Task :expo-application:clean
+> Task :expo-clipboard:clean
+> Task :expo-constants:clean
+> Task :expo-error-recovery:clean
+> Task :expo-facebook:clean
+> Task :expo-file-system:clean
+> Task :expo-font:clean
+> Task :expo-image-loader:clean
+> Task :expo-image-picker:clean
+> Task :expo-json-utils:clean
+> Task :expo-keep-awake:clean
+> Task :expo-localization:clean
+> Task :expo-location:clean
+> Task :expo-manifests:clean
+> Task :expo-modules-core:clean
+> Task :expo-notifications:clean
+> Task :expo-permissions:clean
+> Task :expo-splash-screen:clean
+> Task :expo-structured-headers:clean
+> Task :expo-updates:clean
+> Task :expo-updates-interface:clean
+> Task :expo-web-browser:clean
+> Task :notifee_react-native:clean
+> Task :react-native-async-storage_async-storage:clean
+> Task :react-native-clipboard_clipboard:clean
+> Task :react-native-community_checkbox:clean
+> Task :react-native-community_datetimepicker:clean
+> Task :react-native-community_masked-view:clean
+> Task :react-native-config:clean
+> Task :react-native-device-info:clean
+> Task :react-native-fast-image:clean
+> Task :react-native-firebase_analytics:clean
+> Task :react-native-firebase_app:clean
+> Task :react-native-firebase_crashlytics:clean
+> Task :react-native-firebase_messaging:clean UP-TO-DATE
+> Task :react-native-gesture-handler:clean
+> Task :react-native-google-signin-google-signin:clean
+> Task :react-native-google-signin_google-signin:clean UP-TO-DATE
+> Task :react-native-maps:clean
+> Task :react-native-picker_picker:clean
+> Task :react-native-push-notification:clean
+> Task :react-native-restart:clean
+> Task :react-native-safe-area-context:clean
+> Task :react-native-screens:clean
+> Task :react-native-webview:clean
+> Task :unimodules-app-loader:clean
+> Task :unimodules-core:clean
+> Task :unimodules-task-manager-interface:clean
+> Task :app:generatePackageList
+> Task :app:preBuild
+> Task :app:preReleaseBuild
+> Task :app:writeReleaseApplicationId
+> Task :app:analyticsRecordingRelease
+> Task :@react-native-firebase_messaging:preBuild UP-TO-DATE
+> Task :@react-native-firebase_messaging:preReleaseBuild UP-TO-DATE
+> Task :react-native-firebase_app:preBuild UP-TO-DATE
+> Task :react-native-firebase_app:preReleaseBuild UP-TO-DATE
+> Task :react-native-firebase_app:packageReleaseRenderscript NO-SOURCE
+> Task :@react-native-firebase_messaging:compileReleaseRenderscript NO-SOURCE
+> Task :@react-native-firebase_messaging:generateReleaseResValues
+> Task :@react-native-firebase_messaging:generateReleaseResources
+> Task :@react-native-firebase_messaging:packageReleaseResources
+> Task :@react-native-firebase_messaging:compileReleaseLibraryResources
+
+> Task :app:bundleReleaseJsAndAssets
+warning: the transform cache was reset.
+                    Welcome to Metro!
+              Fast - Scalable - Integrated
+
+
+info Writing bundle output to:, /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/generated/assets/react/release/index.android.bundle
+info Writing sourcemap output to:, /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/generated/sourcemaps/react/release/index.android.bundle.map
+info Done writing bundle output
+info Done writing sourcemap output
+info Copying 102 asset files
+info Done copying assets
+
+> Task :@react-native-firebase_messaging:mergeReleaseShaders
+> Task :@react-native-firebase_messaging:compileReleaseShaders NO-SOURCE
+> Task :@react-native-firebase_messaging:generateReleaseAssets UP-TO-DATE
+> Task :@react-native-firebase_messaging:packageReleaseAssets
+> Task :app:mergeReleaseShaders
+> Task :app:compileReleaseShaders NO-SOURCE
+> Task :app:generateReleaseAssets UP-TO-DATE
+> Task :expo:generateExpoModulesPackageList
+> Task :expo:preBuild
+> Task :expo:preReleaseBuild
+> Task :expo:mergeReleaseShaders
+> Task :expo:compileReleaseShaders NO-SOURCE
+> Task :expo:generateReleaseAssets UP-TO-DATE
+> Task :expo:packageReleaseAssets
+> Task :expo-application:preBuild UP-TO-DATE
+> Task :expo-application:preReleaseBuild UP-TO-DATE
+> Task :expo-application:mergeReleaseShaders
+> Task :expo-application:compileReleaseShaders NO-SOURCE
+> Task :expo-application:generateReleaseAssets UP-TO-DATE
+> Task :expo-application:packageReleaseAssets
+> Task :expo-clipboard:preBuild UP-TO-DATE
+> Task :expo-clipboard:preReleaseBuild UP-TO-DATE
+> Task :expo-clipboard:mergeReleaseShaders
+> Task :expo-clipboard:compileReleaseShaders NO-SOURCE
+> Task :expo-clipboard:generateReleaseAssets UP-TO-DATE
+> Task :expo-clipboard:packageReleaseAssets
+> Task :expo-constants:preBuild UP-TO-DATE
+> Task :expo-constants:preReleaseBuild UP-TO-DATE
+> Task :expo-constants:mergeReleaseShaders
+> Task :expo-constants:compileReleaseShaders NO-SOURCE
+> Task :expo-constants:createReleaseExpoConfig
+> Task :expo-constants:copyReleaseExpoConfig
+> Task :expo-constants:generateReleaseAssets UP-TO-DATE
+> Task :expo-constants:packageReleaseAssets
+> Task :expo-error-recovery:preBuild UP-TO-DATE
+> Task :expo-error-recovery:preReleaseBuild UP-TO-DATE
+> Task :expo-error-recovery:mergeReleaseShaders
+> Task :expo-error-recovery:compileReleaseShaders NO-SOURCE
+> Task :expo-error-recovery:generateReleaseAssets UP-TO-DATE
+> Task :expo-error-recovery:packageReleaseAssets
+> Task :expo-facebook:preBuild UP-TO-DATE
+> Task :expo-facebook:preReleaseBuild UP-TO-DATE
+> Task :expo-facebook:mergeReleaseShaders
+> Task :expo-facebook:compileReleaseShaders NO-SOURCE
+> Task :expo-facebook:generateReleaseAssets UP-TO-DATE
+> Task :expo-facebook:packageReleaseAssets
+> Task :expo-file-system:preBuild UP-TO-DATE
+> Task :expo-file-system:preReleaseBuild UP-TO-DATE
+> Task :expo-file-system:mergeReleaseShaders
+> Task :expo-file-system:compileReleaseShaders NO-SOURCE
+> Task :expo-file-system:generateReleaseAssets UP-TO-DATE
+> Task :expo-file-system:packageReleaseAssets
+> Task :expo-font:preBuild UP-TO-DATE
+> Task :expo-font:preReleaseBuild UP-TO-DATE
+> Task :expo-font:mergeReleaseShaders
+> Task :expo-font:compileReleaseShaders NO-SOURCE
+> Task :expo-font:generateReleaseAssets UP-TO-DATE
+> Task :expo-font:packageReleaseAssets
+> Task :expo-image-loader:preBuild UP-TO-DATE
+> Task :expo-image-loader:preReleaseBuild UP-TO-DATE
+> Task :expo-image-loader:mergeReleaseShaders
+> Task :expo-image-loader:compileReleaseShaders NO-SOURCE
+> Task :expo-image-loader:generateReleaseAssets UP-TO-DATE
+> Task :expo-image-loader:packageReleaseAssets
+> Task :expo-image-picker:preBuild UP-TO-DATE
+> Task :expo-image-picker:preReleaseBuild UP-TO-DATE
+> Task :expo-image-picker:mergeReleaseShaders
+> Task :expo-image-picker:compileReleaseShaders NO-SOURCE
+> Task :expo-image-picker:generateReleaseAssets UP-TO-DATE
+> Task :expo-image-picker:packageReleaseAssets
+> Task :expo-json-utils:preBuild UP-TO-DATE
+> Task :expo-json-utils:preReleaseBuild UP-TO-DATE
+> Task :expo-json-utils:mergeReleaseShaders
+> Task :expo-json-utils:compileReleaseShaders NO-SOURCE
+> Task :expo-json-utils:generateReleaseAssets UP-TO-DATE
+> Task :expo-json-utils:packageReleaseAssets
+> Task :expo-keep-awake:preBuild UP-TO-DATE
+> Task :expo-keep-awake:preReleaseBuild UP-TO-DATE
+> Task :expo-keep-awake:mergeReleaseShaders
+> Task :expo-keep-awake:compileReleaseShaders NO-SOURCE
+> Task :expo-keep-awake:generateReleaseAssets UP-TO-DATE
+> Task :expo-keep-awake:packageReleaseAssets
+> Task :expo-localization:preBuild UP-TO-DATE
+> Task :expo-localization:preReleaseBuild UP-TO-DATE
+> Task :expo-localization:mergeReleaseShaders
+> Task :expo-localization:compileReleaseShaders NO-SOURCE
+> Task :expo-localization:generateReleaseAssets UP-TO-DATE
+> Task :expo-localization:packageReleaseAssets
+> Task :expo-location:preBuild UP-TO-DATE
+> Task :expo-location:preReleaseBuild UP-TO-DATE
+> Task :expo-location:mergeReleaseShaders
+> Task :expo-location:compileReleaseShaders NO-SOURCE
+> Task :expo-location:generateReleaseAssets UP-TO-DATE
+> Task :expo-location:packageReleaseAssets
+> Task :expo-manifests:preBuild UP-TO-DATE
+> Task :expo-manifests:preReleaseBuild UP-TO-DATE
+> Task :expo-manifests:mergeReleaseShaders
+> Task :expo-manifests:compileReleaseShaders NO-SOURCE
+> Task :expo-manifests:generateReleaseAssets UP-TO-DATE
+> Task :expo-manifests:packageReleaseAssets
+> Task :expo-modules-core:preBuild UP-TO-DATE
+> Task :expo-modules-core:preReleaseBuild UP-TO-DATE
+> Task :expo-modules-core:mergeReleaseShaders
+> Task :expo-modules-core:compileReleaseShaders NO-SOURCE
+> Task :expo-modules-core:generateReleaseAssets UP-TO-DATE
+> Task :expo-modules-core:packageReleaseAssets
+> Task :expo-notifications:preBuild UP-TO-DATE
+> Task :expo-notifications:preReleaseBuild UP-TO-DATE
+> Task :expo-notifications:mergeReleaseShaders
+> Task :expo-notifications:compileReleaseShaders NO-SOURCE
+> Task :expo-notifications:generateReleaseAssets UP-TO-DATE
+> Task :expo-notifications:packageReleaseAssets
+> Task :expo-permissions:preBuild UP-TO-DATE
+> Task :expo-permissions:preReleaseBuild UP-TO-DATE
+> Task :expo-permissions:mergeReleaseShaders
+> Task :expo-permissions:compileReleaseShaders NO-SOURCE
+> Task :expo-permissions:generateReleaseAssets UP-TO-DATE
+> Task :expo-permissions:packageReleaseAssets
+> Task :expo-splash-screen:preBuild UP-TO-DATE
+> Task :expo-splash-screen:preReleaseBuild UP-TO-DATE
+> Task :expo-splash-screen:mergeReleaseShaders
+> Task :expo-splash-screen:compileReleaseShaders NO-SOURCE
+> Task :expo-splash-screen:generateReleaseAssets UP-TO-DATE
+> Task :expo-splash-screen:packageReleaseAssets
+> Task :expo-structured-headers:preBuild UP-TO-DATE
+> Task :expo-structured-headers:preReleaseBuild UP-TO-DATE
+> Task :expo-structured-headers:mergeReleaseShaders
+> Task :expo-structured-headers:compileReleaseShaders NO-SOURCE
+> Task :expo-structured-headers:generateReleaseAssets UP-TO-DATE
+> Task :expo-structured-headers:packageReleaseAssets
+> Task :expo-updates:preBuild UP-TO-DATE
+> Task :expo-updates:preReleaseBuild UP-TO-DATE
+> Task :expo-updates:mergeReleaseShaders
+> Task :expo-updates:compileReleaseShaders NO-SOURCE
+> Task :expo-updates:generateReleaseAssets UP-TO-DATE
+> Task :expo-updates:packageReleaseAssets
+> Task :expo-updates-interface:preBuild UP-TO-DATE
+> Task :expo-updates-interface:preReleaseBuild UP-TO-DATE
+> Task :expo-updates-interface:mergeReleaseShaders
+> Task :expo-updates-interface:compileReleaseShaders NO-SOURCE
+> Task :expo-updates-interface:generateReleaseAssets UP-TO-DATE
+> Task :expo-updates-interface:packageReleaseAssets
+> Task :expo-web-browser:preBuild UP-TO-DATE
+> Task :expo-web-browser:preReleaseBuild UP-TO-DATE
+> Task :expo-web-browser:mergeReleaseShaders
+> Task :expo-web-browser:compileReleaseShaders NO-SOURCE
+> Task :expo-web-browser:generateReleaseAssets UP-TO-DATE
+> Task :expo-web-browser:packageReleaseAssets
+> Task :notifee_react-native:preBuild UP-TO-DATE
+> Task :notifee_react-native:preReleaseBuild UP-TO-DATE
+> Task :notifee_react-native:mergeReleaseShaders
+> Task :notifee_react-native:compileReleaseShaders NO-SOURCE
+> Task :notifee_react-native:generateReleaseAssets UP-TO-DATE
+> Task :notifee_react-native:packageReleaseAssets
+> Task :react-native-async-storage_async-storage:preBuild UP-TO-DATE
+> Task :react-native-async-storage_async-storage:preReleaseBuild UP-TO-DATE
+> Task :react-native-async-storage_async-storage:mergeReleaseShaders
+> Task :react-native-async-storage_async-storage:compileReleaseShaders NO-SOURCE
+> Task :react-native-async-storage_async-storage:generateReleaseAssets UP-TO-DATE
+> Task :react-native-async-storage_async-storage:packageReleaseAssets
+> Task :react-native-clipboard_clipboard:preBuild UP-TO-DATE
+> Task :react-native-clipboard_clipboard:preReleaseBuild UP-TO-DATE
+> Task :react-native-clipboard_clipboard:mergeReleaseShaders
+> Task :react-native-clipboard_clipboard:compileReleaseShaders NO-SOURCE
+> Task :react-native-clipboard_clipboard:generateReleaseAssets UP-TO-DATE
+> Task :react-native-clipboard_clipboard:packageReleaseAssets
+> Task :react-native-community_checkbox:preBuild UP-TO-DATE
+> Task :react-native-community_checkbox:preReleaseBuild UP-TO-DATE
+> Task :react-native-community_checkbox:mergeReleaseShaders
+> Task :react-native-community_checkbox:compileReleaseShaders NO-SOURCE
+> Task :react-native-community_checkbox:generateReleaseAssets UP-TO-DATE
+> Task :react-native-community_checkbox:packageReleaseAssets
+> Task :react-native-community_datetimepicker:preBuild UP-TO-DATE
+> Task :react-native-community_datetimepicker:preReleaseBuild UP-TO-DATE
+> Task :react-native-community_datetimepicker:mergeReleaseShaders
+> Task :react-native-community_datetimepicker:compileReleaseShaders NO-SOURCE
+> Task :react-native-community_datetimepicker:generateReleaseAssets UP-TO-DATE
+> Task :react-native-community_datetimepicker:packageReleaseAssets
+> Task :react-native-community_masked-view:preBuild UP-TO-DATE
+> Task :react-native-community_masked-view:preReleaseBuild UP-TO-DATE
+> Task :react-native-community_masked-view:mergeReleaseShaders
+> Task :react-native-community_masked-view:compileReleaseShaders NO-SOURCE
+> Task :react-native-community_masked-view:generateReleaseAssets UP-TO-DATE
+> Task :react-native-community_masked-view:packageReleaseAssets
+> Task :react-native-config:preBuild UP-TO-DATE
+> Task :react-native-config:preReleaseBuild UP-TO-DATE
+> Task :react-native-config:mergeReleaseShaders
+> Task :react-native-config:compileReleaseShaders NO-SOURCE
+> Task :react-native-config:generateReleaseAssets UP-TO-DATE
+> Task :react-native-config:packageReleaseAssets
+> Task :react-native-device-info:preBuild UP-TO-DATE
+> Task :react-native-device-info:preReleaseBuild UP-TO-DATE
+> Task :react-native-device-info:mergeReleaseShaders
+> Task :react-native-device-info:compileReleaseShaders NO-SOURCE
+> Task :react-native-device-info:generateReleaseAssets UP-TO-DATE
+> Task :react-native-device-info:packageReleaseAssets
+> Task :react-native-fast-image:preBuild UP-TO-DATE
+> Task :react-native-fast-image:preReleaseBuild UP-TO-DATE
+> Task :react-native-fast-image:mergeReleaseShaders
+> Task :react-native-fast-image:compileReleaseShaders NO-SOURCE
+> Task :react-native-fast-image:generateReleaseAssets UP-TO-DATE
+> Task :react-native-fast-image:packageReleaseAssets
+> Task :react-native-firebase_analytics:preBuild UP-TO-DATE
+> Task :react-native-firebase_analytics:preReleaseBuild UP-TO-DATE
+> Task :react-native-firebase_analytics:mergeReleaseShaders
+> Task :react-native-firebase_analytics:compileReleaseShaders NO-SOURCE
+> Task :react-native-firebase_analytics:generateReleaseAssets UP-TO-DATE
+> Task :react-native-firebase_analytics:packageReleaseAssets
+> Task :react-native-firebase_app:mergeReleaseShaders
+> Task :react-native-firebase_app:compileReleaseShaders NO-SOURCE
+> Task :react-native-firebase_app:generateReleaseAssets UP-TO-DATE
+> Task :react-native-firebase_app:packageReleaseAssets
+> Task :react-native-firebase_crashlytics:preBuild UP-TO-DATE
+> Task :react-native-firebase_crashlytics:preReleaseBuild UP-TO-DATE
+> Task :react-native-firebase_crashlytics:mergeReleaseShaders
+> Task :react-native-firebase_crashlytics:compileReleaseShaders NO-SOURCE
+> Task :react-native-firebase_crashlytics:generateReleaseAssets UP-TO-DATE
+> Task :react-native-firebase_crashlytics:packageReleaseAssets
+> Task :react-native-firebase_messaging:preBuild UP-TO-DATE
+> Task :react-native-firebase_messaging:preReleaseBuild UP-TO-DATE
+> Task :react-native-firebase_messaging:mergeReleaseShaders UP-TO-DATE
+> Task :react-native-firebase_messaging:compileReleaseShaders NO-SOURCE
+> Task :react-native-firebase_messaging:generateReleaseAssets UP-TO-DATE
+> Task :react-native-firebase_messaging:packageReleaseAssets UP-TO-DATE
+> Task :react-native-gesture-handler:preBuild UP-TO-DATE
+> Task :react-native-gesture-handler:preReleaseBuild UP-TO-DATE
+> Task :react-native-gesture-handler:mergeReleaseShaders
+> Task :react-native-gesture-handler:compileReleaseShaders NO-SOURCE
+> Task :react-native-gesture-handler:generateReleaseAssets UP-TO-DATE
+> Task :react-native-gesture-handler:packageReleaseAssets
+> Task :react-native-google-signin-google-signin:preBuild UP-TO-DATE
+> Task :react-native-google-signin-google-signin:preReleaseBuild UP-TO-DATE
+> Task :react-native-google-signin-google-signin:mergeReleaseShaders
+> Task :react-native-google-signin-google-signin:compileReleaseShaders NO-SOURCE
+> Task :react-native-google-signin-google-signin:generateReleaseAssets UP-TO-DATE
+> Task :react-native-google-signin-google-signin:packageReleaseAssets
+> Task :react-native-google-signin_google-signin:preBuild UP-TO-DATE
+> Task :react-native-google-signin_google-signin:preReleaseBuild UP-TO-DATE
+> Task :react-native-google-signin_google-signin:mergeReleaseShaders UP-TO-DATE
+> Task :react-native-google-signin_google-signin:compileReleaseShaders NO-SOURCE
+> Task :react-native-google-signin_google-signin:generateReleaseAssets UP-TO-DATE
+> Task :react-native-google-signin_google-signin:packageReleaseAssets UP-TO-DATE
+> Task :react-native-maps:preBuild UP-TO-DATE
+> Task :react-native-maps:preReleaseBuild UP-TO-DATE
+> Task :react-native-maps:mergeReleaseShaders
+> Task :react-native-maps:compileReleaseShaders NO-SOURCE
+> Task :react-native-maps:generateReleaseAssets UP-TO-DATE
+> Task :react-native-maps:packageReleaseAssets
+> Task :react-native-picker_picker:preBuild UP-TO-DATE
+> Task :react-native-picker_picker:preReleaseBuild UP-TO-DATE
+> Task :react-native-picker_picker:mergeReleaseShaders
+> Task :react-native-picker_picker:compileReleaseShaders NO-SOURCE
+> Task :react-native-picker_picker:generateReleaseAssets UP-TO-DATE
+> Task :react-native-picker_picker:packageReleaseAssets
+> Task :react-native-push-notification:preBuild UP-TO-DATE
+> Task :react-native-push-notification:preReleaseBuild UP-TO-DATE
+> Task :react-native-push-notification:mergeReleaseShaders
+> Task :react-native-push-notification:compileReleaseShaders NO-SOURCE
+> Task :react-native-push-notification:generateReleaseAssets UP-TO-DATE
+> Task :react-native-push-notification:packageReleaseAssets
+> Task :react-native-restart:preBuild UP-TO-DATE
+> Task :react-native-restart:preReleaseBuild UP-TO-DATE
+> Task :react-native-restart:mergeReleaseShaders
+> Task :react-native-restart:compileReleaseShaders NO-SOURCE
+> Task :react-native-restart:generateReleaseAssets UP-TO-DATE
+> Task :react-native-restart:packageReleaseAssets
+> Task :react-native-safe-area-context:preBuild UP-TO-DATE
+> Task :react-native-safe-area-context:preReleaseBuild UP-TO-DATE
+> Task :react-native-safe-area-context:mergeReleaseShaders
+> Task :react-native-safe-area-context:compileReleaseShaders NO-SOURCE
+> Task :react-native-safe-area-context:generateReleaseAssets UP-TO-DATE
+> Task :react-native-safe-area-context:packageReleaseAssets
+> Task :react-native-screens:preBuild UP-TO-DATE
+> Task :react-native-screens:preReleaseBuild UP-TO-DATE
+> Task :react-native-screens:mergeReleaseShaders
+> Task :react-native-screens:compileReleaseShaders NO-SOURCE
+> Task :react-native-screens:generateReleaseAssets UP-TO-DATE
+> Task :react-native-screens:packageReleaseAssets
+> Task :react-native-webview:preBuild UP-TO-DATE
+> Task :react-native-webview:preReleaseBuild UP-TO-DATE
+> Task :react-native-webview:mergeReleaseShaders
+> Task :react-native-webview:compileReleaseShaders NO-SOURCE
+> Task :react-native-webview:generateReleaseAssets UP-TO-DATE
+> Task :react-native-webview:packageReleaseAssets
+> Task :unimodules-app-loader:preBuild UP-TO-DATE
+> Task :unimodules-app-loader:preReleaseBuild UP-TO-DATE
+> Task :unimodules-app-loader:mergeReleaseShaders
+> Task :unimodules-app-loader:compileReleaseShaders NO-SOURCE
+> Task :unimodules-app-loader:generateReleaseAssets UP-TO-DATE
+> Task :unimodules-app-loader:packageReleaseAssets
+> Task :unimodules-core:preBuild UP-TO-DATE
+> Task :unimodules-core:preReleaseBuild UP-TO-DATE
+> Task :unimodules-core:mergeReleaseShaders
+> Task :unimodules-core:compileReleaseShaders NO-SOURCE
+> Task :unimodules-core:generateReleaseAssets UP-TO-DATE
+> Task :unimodules-core:packageReleaseAssets
+> Task :unimodules-task-manager-interface:preBuild UP-TO-DATE
+> Task :unimodules-task-manager-interface:preReleaseBuild UP-TO-DATE
+> Task :unimodules-task-manager-interface:mergeReleaseShaders
+> Task :unimodules-task-manager-interface:compileReleaseShaders NO-SOURCE
+> Task :unimodules-task-manager-interface:generateReleaseAssets UP-TO-DATE
+> Task :unimodules-task-manager-interface:packageReleaseAssets
+> Task :app:mergeReleaseAssets
+> Task :app:copyReleaseBundledJs
+> Task :@react-native-firebase_messaging:packageReleaseRenderscript NO-SOURCE
+> Task :expo:packageReleaseRenderscript NO-SOURCE
+> Task :expo-application:packageReleaseRenderscript NO-SOURCE
+> Task :expo-clipboard:packageReleaseRenderscript NO-SOURCE
+> Task :expo-constants:packageReleaseRenderscript NO-SOURCE
+> Task :expo-error-recovery:packageReleaseRenderscript NO-SOURCE
+> Task :expo-facebook:packageReleaseRenderscript NO-SOURCE
+> Task :expo-file-system:packageReleaseRenderscript NO-SOURCE
+> Task :expo-font:packageReleaseRenderscript NO-SOURCE
+> Task :expo-image-loader:packageReleaseRenderscript NO-SOURCE
+> Task :expo-image-picker:packageReleaseRenderscript NO-SOURCE
+> Task :expo-json-utils:packageReleaseRenderscript NO-SOURCE
+> Task :expo-keep-awake:packageReleaseRenderscript NO-SOURCE
+> Task :expo-localization:packageReleaseRenderscript NO-SOURCE
+> Task :expo-location:packageReleaseRenderscript NO-SOURCE
+> Task :expo-manifests:packageReleaseRenderscript NO-SOURCE
+> Task :expo-modules-core:packageReleaseRenderscript NO-SOURCE
+> Task :expo-notifications:packageReleaseRenderscript NO-SOURCE
+> Task :expo-permissions:packageReleaseRenderscript NO-SOURCE
+> Task :expo-splash-screen:packageReleaseRenderscript NO-SOURCE
+> Task :expo-structured-headers:packageReleaseRenderscript NO-SOURCE
+> Task :expo-updates:packageReleaseRenderscript NO-SOURCE
+> Task :expo-updates-interface:packageReleaseRenderscript NO-SOURCE
+> Task :expo-web-browser:packageReleaseRenderscript NO-SOURCE
+> Task :notifee_react-native:packageReleaseRenderscript NO-SOURCE
+> Task :react-native-async-storage_async-storage:packageReleaseRenderscript NO-SOURCE
+> Task :react-native-clipboard_clipboard:packageReleaseRenderscript NO-SOURCE
+> Task :react-native-community_checkbox:packageReleaseRenderscript NO-SOURCE
+> Task :react-native-community_datetimepicker:packageReleaseRenderscript NO-SOURCE
+> Task :react-native-community_masked-view:packageReleaseRenderscript NO-SOURCE
+> Task :react-native-config:packageReleaseRenderscript NO-SOURCE
+> Task :react-native-device-info:packageReleaseRenderscript NO-SOURCE
+> Task :react-native-fast-image:packageReleaseRenderscript NO-SOURCE
+> Task :react-native-firebase_analytics:packageReleaseRenderscript NO-SOURCE
+> Task :react-native-firebase_crashlytics:packageReleaseRenderscript NO-SOURCE
+> Task :react-native-firebase_messaging:packageReleaseRenderscript NO-SOURCE
+> Task :react-native-gesture-handler:packageReleaseRenderscript NO-SOURCE
+> Task :react-native-google-signin-google-signin:packageReleaseRenderscript NO-SOURCE
+> Task :react-native-google-signin_google-signin:packageReleaseRenderscript NO-SOURCE
+> Task :react-native-maps:packageReleaseRenderscript NO-SOURCE
+> Task :react-native-picker_picker:packageReleaseRenderscript NO-SOURCE
+> Task :react-native-push-notification:packageReleaseRenderscript NO-SOURCE
+> Task :react-native-restart:packageReleaseRenderscript NO-SOURCE
+> Task :react-native-safe-area-context:packageReleaseRenderscript NO-SOURCE
+> Task :react-native-screens:packageReleaseRenderscript NO-SOURCE
+> Task :react-native-webview:packageReleaseRenderscript NO-SOURCE
+> Task :unimodules-app-loader:packageReleaseRenderscript NO-SOURCE
+> Task :unimodules-core:packageReleaseRenderscript NO-SOURCE
+> Task :unimodules-task-manager-interface:packageReleaseRenderscript NO-SOURCE
+> Task :app:compileReleaseRenderscript NO-SOURCE
+> Task :app:generateReleaseResValues
+> Task :app:generateReleaseResources
+> Task :app:injectCrashlyticsMappingFileIdRelease
+> Task :app:processReleaseGoogleServices
+> Task :expo:compileReleaseRenderscript NO-SOURCE
+> Task :expo:generateReleaseResValues
+> Task :expo:generateReleaseResources
+> Task :expo:packageReleaseResources
+> Task :expo-application:compileReleaseRenderscript NO-SOURCE
+> Task :expo-application:generateReleaseResValues
+> Task :expo-application:generateReleaseResources
+> Task :expo-application:packageReleaseResources
+> Task :expo-clipboard:compileReleaseRenderscript NO-SOURCE
+> Task :expo-clipboard:generateReleaseResValues
+> Task :expo-clipboard:generateReleaseResources
+> Task :expo-clipboard:packageReleaseResources
+> Task :expo-constants:compileReleaseRenderscript NO-SOURCE
+> Task :expo-constants:generateReleaseResValues
+> Task :expo-constants:generateReleaseResources
+> Task :expo-constants:packageReleaseResources
+> Task :expo-error-recovery:compileReleaseRenderscript NO-SOURCE
+> Task :expo-error-recovery:generateReleaseResValues
+> Task :expo-error-recovery:generateReleaseResources
+> Task :expo-error-recovery:packageReleaseResources
+> Task :expo-facebook:compileReleaseRenderscript NO-SOURCE
+> Task :expo-facebook:generateReleaseResValues
+> Task :expo-facebook:generateReleaseResources
+> Task :expo-facebook:packageReleaseResources
+> Task :expo-file-system:compileReleaseRenderscript NO-SOURCE
+> Task :expo-file-system:generateReleaseResValues
+> Task :expo-file-system:generateReleaseResources
+> Task :expo-file-system:packageReleaseResources
+> Task :expo-font:compileReleaseRenderscript NO-SOURCE
+> Task :expo-font:generateReleaseResValues
+> Task :expo-font:generateReleaseResources
+> Task :expo-font:packageReleaseResources
+> Task :expo-image-loader:compileReleaseRenderscript NO-SOURCE
+> Task :expo-image-loader:generateReleaseResValues
+> Task :expo-image-loader:generateReleaseResources
+> Task :expo-image-loader:packageReleaseResources
+> Task :expo-image-picker:compileReleaseRenderscript NO-SOURCE
+> Task :expo-image-picker:generateReleaseResValues
+> Task :expo-image-picker:generateReleaseResources
+> Task :expo-image-picker:packageReleaseResources
+> Task :expo-json-utils:compileReleaseRenderscript NO-SOURCE
+> Task :expo-json-utils:generateReleaseResValues
+> Task :expo-json-utils:generateReleaseResources
+> Task :expo-json-utils:packageReleaseResources
+> Task :expo-keep-awake:compileReleaseRenderscript NO-SOURCE
+> Task :expo-keep-awake:generateReleaseResValues
+> Task :expo-keep-awake:generateReleaseResources
+> Task :expo-keep-awake:packageReleaseResources
+> Task :expo-localization:compileReleaseRenderscript NO-SOURCE
+> Task :expo-localization:generateReleaseResValues
+> Task :expo-localization:generateReleaseResources
+> Task :expo-localization:packageReleaseResources
+> Task :expo-location:compileReleaseRenderscript NO-SOURCE
+> Task :expo-location:generateReleaseResValues
+> Task :expo-location:generateReleaseResources
+> Task :expo-location:packageReleaseResources
+> Task :expo-manifests:compileReleaseRenderscript NO-SOURCE
+> Task :expo-manifests:generateReleaseResValues
+> Task :expo-manifests:generateReleaseResources
+> Task :expo-manifests:packageReleaseResources
+> Task :expo-modules-core:compileReleaseRenderscript NO-SOURCE
+> Task :expo-modules-core:generateReleaseResValues
+> Task :expo-modules-core:generateReleaseResources
+> Task :expo-modules-core:packageReleaseResources
+> Task :expo-notifications:compileReleaseRenderscript NO-SOURCE
+> Task :expo-notifications:generateReleaseResValues
+> Task :expo-notifications:generateReleaseResources
+> Task :expo-notifications:packageReleaseResources
+> Task :expo-permissions:compileReleaseRenderscript NO-SOURCE
+> Task :expo-permissions:generateReleaseResValues
+> Task :expo-permissions:generateReleaseResources
+> Task :expo-permissions:packageReleaseResources
+> Task :expo-splash-screen:compileReleaseRenderscript NO-SOURCE
+> Task :expo-splash-screen:generateReleaseResValues
+> Task :expo-splash-screen:generateReleaseResources
+> Task :expo-splash-screen:packageReleaseResources
+> Task :expo-structured-headers:compileReleaseRenderscript NO-SOURCE
+> Task :expo-structured-headers:generateReleaseResValues
+> Task :expo-structured-headers:generateReleaseResources
+> Task :expo-structured-headers:packageReleaseResources
+> Task :expo-updates:compileReleaseRenderscript NO-SOURCE
+> Task :expo-updates:generateReleaseResValues
+> Task :expo-updates:generateReleaseResources
+> Task :expo-updates:packageReleaseResources
+> Task :expo-updates-interface:compileReleaseRenderscript NO-SOURCE
+> Task :expo-updates-interface:generateReleaseResValues
+> Task :expo-updates-interface:generateReleaseResources
+> Task :expo-updates-interface:packageReleaseResources
+> Task :expo-web-browser:compileReleaseRenderscript NO-SOURCE
+> Task :expo-web-browser:generateReleaseResValues
+> Task :expo-web-browser:generateReleaseResources
+> Task :expo-web-browser:packageReleaseResources
+> Task :notifee_react-native:compileReleaseRenderscript NO-SOURCE
+> Task :notifee_react-native:generateReleaseResValues
+> Task :notifee_react-native:generateReleaseResources
+> Task :notifee_react-native:packageReleaseResources
+> Task :react-native-async-storage_async-storage:compileReleaseRenderscript NO-SOURCE
+> Task :react-native-async-storage_async-storage:generateReleaseResValues
+> Task :react-native-async-storage_async-storage:generateReleaseResources
+> Task :react-native-async-storage_async-storage:packageReleaseResources
+> Task :react-native-clipboard_clipboard:compileReleaseRenderscript NO-SOURCE
+> Task :react-native-clipboard_clipboard:generateReleaseResValues
+> Task :react-native-clipboard_clipboard:generateReleaseResources
+> Task :react-native-clipboard_clipboard:packageReleaseResources
+> Task :react-native-community_checkbox:compileReleaseRenderscript NO-SOURCE
+> Task :react-native-community_checkbox:generateReleaseResValues
+> Task :react-native-community_checkbox:generateReleaseResources
+> Task :react-native-community_checkbox:packageReleaseResources
+> Task :react-native-community_datetimepicker:compileReleaseRenderscript NO-SOURCE
+> Task :react-native-community_datetimepicker:generateReleaseResValues
+> Task :react-native-community_datetimepicker:generateReleaseResources
+> Task :react-native-community_datetimepicker:packageReleaseResources
+> Task :react-native-community_masked-view:compileReleaseRenderscript NO-SOURCE
+> Task :react-native-community_masked-view:generateReleaseResValues
+> Task :react-native-community_masked-view:generateReleaseResources
+> Task :react-native-community_masked-view:packageReleaseResources
+> Task :react-native-config:compileReleaseRenderscript NO-SOURCE
+> Task :react-native-config:generateReleaseResValues
+> Task :react-native-config:generateReleaseResources
+> Task :react-native-config:packageReleaseResources
+> Task :react-native-device-info:compileReleaseRenderscript NO-SOURCE
+> Task :react-native-device-info:generateReleaseResValues
+> Task :react-native-device-info:generateReleaseResources
+> Task :react-native-device-info:packageReleaseResources
+> Task :react-native-fast-image:compileReleaseRenderscript NO-SOURCE
+> Task :react-native-fast-image:generateReleaseResValues
+> Task :react-native-fast-image:generateReleaseResources
+> Task :react-native-fast-image:packageReleaseResources
+> Task :react-native-firebase_analytics:compileReleaseRenderscript NO-SOURCE
+> Task :react-native-firebase_analytics:generateReleaseResValues
+> Task :react-native-firebase_analytics:generateReleaseResources
+> Task :react-native-firebase_analytics:packageReleaseResources
+> Task :react-native-firebase_app:compileReleaseRenderscript NO-SOURCE
+> Task :react-native-firebase_app:generateReleaseResValues
+> Task :react-native-firebase_app:generateReleaseResources
+> Task :react-native-firebase_app:packageReleaseResources
+> Task :react-native-firebase_crashlytics:compileReleaseRenderscript NO-SOURCE
+> Task :react-native-firebase_crashlytics:generateReleaseResValues
+> Task :react-native-firebase_crashlytics:generateReleaseResources
+> Task :react-native-firebase_crashlytics:packageReleaseResources
+> Task :react-native-firebase_messaging:compileReleaseRenderscript NO-SOURCE
+> Task :react-native-firebase_messaging:generateReleaseResValues UP-TO-DATE
+> Task :react-native-firebase_messaging:generateReleaseResources UP-TO-DATE
+> Task :react-native-firebase_messaging:packageReleaseResources
+> Task :react-native-gesture-handler:compileReleaseRenderscript NO-SOURCE
+> Task :react-native-gesture-handler:generateReleaseResValues
+> Task :react-native-gesture-handler:generateReleaseResources
+> Task :react-native-gesture-handler:packageReleaseResources
+> Task :react-native-google-signin-google-signin:compileReleaseRenderscript NO-SOURCE
+> Task :react-native-google-signin-google-signin:generateReleaseResValues
+> Task :react-native-google-signin-google-signin:generateReleaseResources
+> Task :react-native-google-signin-google-signin:packageReleaseResources
+> Task :react-native-google-signin_google-signin:compileReleaseRenderscript NO-SOURCE
+> Task :react-native-google-signin_google-signin:generateReleaseResValues UP-TO-DATE
+> Task :react-native-google-signin_google-signin:generateReleaseResources UP-TO-DATE
+> Task :react-native-google-signin_google-signin:packageReleaseResources
+> Task :react-native-maps:compileReleaseRenderscript NO-SOURCE
+> Task :react-native-maps:generateReleaseResValues
+> Task :react-native-maps:generateReleaseResources
+> Task :react-native-maps:packageReleaseResources
+> Task :react-native-picker_picker:compileReleaseRenderscript NO-SOURCE
+> Task :react-native-picker_picker:generateReleaseResValues
+> Task :react-native-picker_picker:generateReleaseResources
+> Task :react-native-picker_picker:packageReleaseResources
+> Task :react-native-push-notification:compileReleaseRenderscript NO-SOURCE
+> Task :react-native-push-notification:generateReleaseResValues
+> Task :react-native-push-notification:generateReleaseResources
+> Task :react-native-push-notification:packageReleaseResources
+> Task :react-native-restart:compileReleaseRenderscript NO-SOURCE
+> Task :react-native-restart:generateReleaseResValues
+> Task :react-native-restart:generateReleaseResources
+> Task :react-native-restart:packageReleaseResources
+> Task :react-native-safe-area-context:compileReleaseRenderscript NO-SOURCE
+> Task :react-native-safe-area-context:generateReleaseResValues
+> Task :react-native-safe-area-context:generateReleaseResources
+> Task :react-native-safe-area-context:packageReleaseResources
+> Task :react-native-screens:compileReleaseRenderscript NO-SOURCE
+> Task :react-native-screens:generateReleaseResValues
+> Task :react-native-screens:generateReleaseResources
+> Task :react-native-screens:packageReleaseResources
+> Task :react-native-webview:compileReleaseRenderscript NO-SOURCE
+> Task :react-native-webview:generateReleaseResValues
+> Task :react-native-webview:generateReleaseResources
+> Task :react-native-webview:packageReleaseResources
+> Task :unimodules-app-loader:compileReleaseRenderscript NO-SOURCE
+> Task :unimodules-app-loader:generateReleaseResValues
+> Task :unimodules-app-loader:generateReleaseResources
+> Task :unimodules-app-loader:packageReleaseResources
+> Task :unimodules-core:compileReleaseRenderscript NO-SOURCE
+> Task :unimodules-core:generateReleaseResValues
+> Task :unimodules-core:generateReleaseResources
+> Task :unimodules-core:packageReleaseResources
+> Task :unimodules-task-manager-interface:compileReleaseRenderscript NO-SOURCE
+> Task :unimodules-task-manager-interface:generateReleaseResValues
+> Task :unimodules-task-manager-interface:generateReleaseResources
+> Task :unimodules-task-manager-interface:packageReleaseResources
+> Task :app:createReleaseCompatibleScreenManifests
+> Task :@react-native-firebase_messaging:extractDeepLinksRelease
+> Task :@react-native-firebase_messaging:processReleaseManifest
+> Task :app:extractDeepLinksRelease
+> Task :expo:extractDeepLinksRelease
+> Task :expo:processReleaseManifest
+> Task :expo-application:extractDeepLinksRelease
+> Task :expo-application:processReleaseManifest
+> Task :expo-clipboard:extractDeepLinksRelease
+> Task :expo-clipboard:processReleaseManifest
+> Task :expo-constants:extractDeepLinksRelease
+> Task :expo-constants:processReleaseManifest
+> Task :expo-error-recovery:extractDeepLinksRelease
+> Task :expo-error-recovery:processReleaseManifest
+> Task :expo-facebook:extractDeepLinksRelease
+> Task :expo-facebook:processReleaseManifest
+> Task :expo-file-system:extractDeepLinksRelease
+
+> Task :expo-file-system:processReleaseManifest
+/Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-file-system/android/src/main/AndroidManifest.xml:8:9-10:20 Warning:
+	provider#expo.modules.filesystem.FileSystemFileProvider@android:authorities was tagged at AndroidManifest.xml:8 to replace other declarations but no other declaration present
+
+> Task :expo-font:extractDeepLinksRelease
+> Task :expo-font:processReleaseManifest
+> Task :expo-image-loader:extractDeepLinksRelease
+> Task :expo-image-loader:processReleaseManifest
+> Task :expo-image-picker:extractDeepLinksRelease
+> Task :expo-image-picker:processReleaseManifest
+> Task :expo-json-utils:extractDeepLinksRelease
+> Task :expo-json-utils:processReleaseManifest
+> Task :expo-keep-awake:extractDeepLinksRelease
+> Task :expo-keep-awake:processReleaseManifest
+> Task :expo-localization:extractDeepLinksRelease
+> Task :expo-localization:processReleaseManifest
+> Task :expo-location:extractDeepLinksRelease
+> Task :expo-location:processReleaseManifest
+> Task :expo-manifests:extractDeepLinksRelease
+> Task :expo-manifests:processReleaseManifest
+> Task :expo-modules-core:extractDeepLinksRelease
+> Task :expo-modules-core:processReleaseManifest
+> Task :expo-notifications:extractDeepLinksRelease
+> Task :expo-notifications:processReleaseManifest
+> Task :expo-permissions:extractDeepLinksRelease
+> Task :expo-permissions:processReleaseManifest
+> Task :expo-splash-screen:extractDeepLinksRelease
+> Task :expo-splash-screen:processReleaseManifest
+> Task :expo-structured-headers:extractDeepLinksRelease
+> Task :expo-structured-headers:processReleaseManifest
+> Task :expo-updates:extractDeepLinksRelease
+> Task :expo-updates:processReleaseManifest
+> Task :expo-updates-interface:extractDeepLinksRelease
+> Task :expo-updates-interface:processReleaseManifest
+> Task :expo-web-browser:extractDeepLinksRelease
+> Task :notifee_react-native:extractDeepLinksRelease
+> Task :expo-web-browser:processReleaseManifest
+> Task :notifee_react-native:processReleaseManifest
+> Task :react-native-async-storage_async-storage:extractDeepLinksRelease
+> Task :react-native-clipboard_clipboard:extractDeepLinksRelease
+> Task :react-native-community_checkbox:extractDeepLinksRelease
+> Task :react-native-async-storage_async-storage:processReleaseManifest
+> Task :react-native-clipboard_clipboard:processReleaseManifest
+> Task :react-native-community_datetimepicker:extractDeepLinksRelease
+> Task :react-native-community_checkbox:processReleaseManifest
+> Task :react-native-community_datetimepicker:processReleaseManifest
+> Task :react-native-community_masked-view:extractDeepLinksRelease
+> Task :react-native-config:extractDeepLinksRelease
+> Task :react-native-community_masked-view:processReleaseManifest
+> Task :react-native-device-info:extractDeepLinksRelease
+> Task :react-native-fast-image:extractDeepLinksRelease
+> Task :react-native-device-info:processReleaseManifest
+> Task :react-native-config:processReleaseManifest
+> Task :react-native-firebase_analytics:extractDeepLinksRelease
+> Task :react-native-fast-image:processReleaseManifest
+> Task :react-native-firebase_app:extractDeepLinksRelease
+> Task :react-native-firebase_analytics:processReleaseManifest
+> Task :react-native-firebase_app:processReleaseManifest
+> Task :react-native-firebase_crashlytics:extractDeepLinksRelease
+> Task :react-native-firebase_messaging:extractDeepLinksRelease UP-TO-DATE
+> Task :react-native-firebase_messaging:processReleaseManifest UP-TO-DATE
+> Task :react-native-gesture-handler:extractDeepLinksRelease
+> Task :react-native-google-signin-google-signin:extractDeepLinksRelease
+> Task :react-native-google-signin_google-signin:extractDeepLinksRelease UP-TO-DATE
+> Task :react-native-maps:extractDeepLinksRelease
+> Task :react-native-firebase_crashlytics:processReleaseManifest
+> Task :react-native-gesture-handler:processReleaseManifest
+> Task :react-native-google-signin-google-signin:processReleaseManifest
+> Task :react-native-picker_picker:extractDeepLinksRelease
+> Task :react-native-google-signin_google-signin:processReleaseManifest UP-TO-DATE
+> Task :react-native-maps:processReleaseManifest
+> Task :react-native-picker_picker:processReleaseManifest
+> Task :react-native-push-notification:extractDeepLinksRelease
+> Task :react-native-restart:extractDeepLinksRelease
+> Task :react-native-safe-area-context:extractDeepLinksRelease
+> Task :react-native-push-notification:processReleaseManifest
+> Task :react-native-restart:processReleaseManifest
+> Task :react-native-screens:extractDeepLinksRelease
+> Task :react-native-webview:extractDeepLinksRelease
+> Task :react-native-screens:processReleaseManifest
+> Task :unimodules-app-loader:extractDeepLinksRelease
+> Task :react-native-webview:processReleaseManifest
+> Task :react-native-safe-area-context:processReleaseManifest
+> Task :unimodules-core:extractDeepLinksRelease
+> Task :unimodules-task-manager-interface:extractDeepLinksRelease
+> Task :unimodules-app-loader:processReleaseManifest
+> Task :unimodules-core:processReleaseManifest
+> Task :expo:compileReleaseLibraryResources
+> Task :unimodules-task-manager-interface:processReleaseManifest
+> Task :expo-application:compileReleaseLibraryResources
+> Task :expo-clipboard:compileReleaseLibraryResources
+
+> Task :app:processReleaseMainManifest
+[:react-native-google-signin_google-signin] /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/@react-native-google-signin/google-signin/android/build/intermediates/merged_manifest/release/AndroidManifest.xml Warning:
+	Package name 'com.reactnativegooglesignin' used in: :react-native-google-signin_google-signin, :react-native-google-signin-google-signin.
+[:@react-native-firebase_messaging] /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/@react-native-firebase/messaging/android/build/intermediates/merged_manifest/release/AndroidManifest.xml Warning:
+	Package name 'io.invertase.firebase.messaging' used in: :@react-native-firebase_messaging, :react-native-firebase_messaging.
+/Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/src/main/AndroidManifest.xml:23:9-32:20 Warning:
+	provider#expo.modules.filesystem.FileSystemFileProvider@android:authorities was tagged at AndroidManifest.xml:23 to replace other declarations but no other declaration present
+
+> Task :app:processReleaseManifest
+> Task :app:processApplicationManifestReleaseForBundle
+> Task :expo-constants:compileReleaseLibraryResources
+> Task :expo-error-recovery:compileReleaseLibraryResources
+> Task :expo-facebook:compileReleaseLibraryResources
+> Task :expo-file-system:compileReleaseLibraryResources
+> Task :expo-font:compileReleaseLibraryResources
+> Task :expo-image-loader:compileReleaseLibraryResources
+> Task :expo-image-picker:compileReleaseLibraryResources
+> Task :expo-json-utils:compileReleaseLibraryResources
+> Task :expo-keep-awake:compileReleaseLibraryResources
+> Task :expo-localization:compileReleaseLibraryResources
+> Task :expo-location:compileReleaseLibraryResources
+> Task :expo-manifests:compileReleaseLibraryResources
+> Task :expo-modules-core:compileReleaseLibraryResources
+> Task :expo-notifications:compileReleaseLibraryResources
+> Task :expo-permissions:compileReleaseLibraryResources
+> Task :expo-structured-headers:compileReleaseLibraryResources
+> Task :expo-splash-screen:compileReleaseLibraryResources
+> Task :expo-updates:compileReleaseLibraryResources
+> Task :expo-updates-interface:compileReleaseLibraryResources
+> Task :expo-web-browser:compileReleaseLibraryResources
+> Task :notifee_react-native:compileReleaseLibraryResources
+> Task :react-native-async-storage_async-storage:compileReleaseLibraryResources
+> Task :react-native-clipboard_clipboard:compileReleaseLibraryResources
+> Task :react-native-community_checkbox:compileReleaseLibraryResources
+> Task :react-native-community_datetimepicker:compileReleaseLibraryResources
+> Task :react-native-community_masked-view:compileReleaseLibraryResources
+> Task :react-native-config:compileReleaseLibraryResources
+> Task :react-native-device-info:compileReleaseLibraryResources
+> Task :react-native-fast-image:compileReleaseLibraryResources
+> Task :react-native-firebase_analytics:compileReleaseLibraryResources
+> Task :react-native-firebase_app:compileReleaseLibraryResources
+> Task :react-native-firebase_messaging:compileReleaseLibraryResources UP-TO-DATE
+> Task :react-native-firebase_crashlytics:compileReleaseLibraryResources
+> Task :react-native-gesture-handler:compileReleaseLibraryResources
+> Task :react-native-google-signin-google-signin:compileReleaseLibraryResources
+> Task :react-native-maps:compileReleaseLibraryResources
+> Task :react-native-push-notification:compileReleaseLibraryResources
+> Task :react-native-google-signin_google-signin:compileReleaseLibraryResources UP-TO-DATE
+> Task :react-native-restart:compileReleaseLibraryResources
+> Task :react-native-safe-area-context:compileReleaseLibraryResources
+> Task :react-native-picker_picker:compileReleaseLibraryResources
+> Task :react-native-screens:compileReleaseLibraryResources
+> Task :unimodules-app-loader:compileReleaseLibraryResources
+> Task :react-native-webview:compileReleaseLibraryResources
+> Task :unimodules-core:compileReleaseLibraryResources
+> Task :unimodules-task-manager-interface:compileReleaseLibraryResources
+> Task :react-native-firebase_app:compileReleaseAidl NO-SOURCE
+> Task :react-native-firebase_app:generateReleaseBuildConfig
+> Task :@react-native-firebase_messaging:compileReleaseAidl NO-SOURCE
+> Task :react-native-firebase_app:javaPreCompileRelease
+> Task :react-native-firebase_app:parseReleaseLocalResources
+> Task :@react-native-firebase_messaging:generateReleaseBuildConfig
+> Task :expo-modules-core:compileReleaseAidl NO-SOURCE
+> Task :expo-application:compileReleaseAidl NO-SOURCE
+> Task :@react-native-firebase_messaging:javaPreCompileRelease
+> Task :expo-application:generateReleaseBuildConfig
+> Task :@react-native-firebase_messaging:parseReleaseLocalResources
+> Task :expo-application:parseReleaseLocalResources
+> Task :expo-modules-core:parseReleaseLocalResources
+> Task :expo-modules-core:generateReleaseBuildConfig
+> Task :react-native-firebase_app:generateReleaseRFile
+> Task :expo-clipboard:compileReleaseAidl NO-SOURCE
+> Task :expo-application:javaPreCompileRelease
+> Task :expo-modules-core:javaPreCompileRelease
+> Task :expo-clipboard:generateReleaseBuildConfig
+> Task :expo-clipboard:javaPreCompileRelease
+> Task :expo-clipboard:parseReleaseLocalResources
+> Task :expo-modules-core:generateReleaseRFile
+> Task :app:mergeReleaseResources
+
+> Task :react-native-firebase_app:compileReleaseJavaWithJavac
+
+> Task :react-native-firebase_app:bundleLibRuntimeToJarRelease
+> Task :expo-constants:compileReleaseAidl NO-SOURCE
+> Task :expo-constants:generateReleaseBuildConfig
+> Task :react-native-firebase_app:bundleLibCompileToJarRelease
+> Task :expo-constants:parseReleaseLocalResources
+> Task :expo-constants:javaPreCompileRelease
+> Task :@react-native-firebase_messaging:generateReleaseRFile
+> Task :expo-application:generateReleaseRFile
+> Task :expo-clipboard:generateReleaseRFile
+> Task :expo-constants:generateReleaseRFile
+
+> Task :@react-native-firebase_messaging:compileReleaseJavaWithJavac
+
+> Task :expo-error-recovery:compileReleaseAidl NO-SOURCE
+> Task :expo-error-recovery:generateReleaseBuildConfig
+> Task :@react-native-firebase_messaging:bundleLibRuntimeToJarRelease
+> Task :expo-facebook:compileReleaseAidl NO-SOURCE
+> Task :expo-error-recovery:javaPreCompileRelease
+> Task :expo-error-recovery:parseReleaseLocalResources
+> Task :expo-facebook:generateReleaseBuildConfig
+> Task :expo-facebook:parseReleaseLocalResources
+> Task :expo-file-system:compileReleaseAidl NO-SOURCE
+> Task :expo-facebook:javaPreCompileRelease
+> Task :expo-error-recovery:generateReleaseRFile
+> Task :expo-file-system:generateReleaseBuildConfig
+> Task :expo-file-system:parseReleaseLocalResources
+> Task :expo-font:compileReleaseAidl NO-SOURCE
+> Task :expo-file-system:javaPreCompileRelease
+> Task :expo-facebook:generateReleaseRFile
+> Task :expo-font:generateReleaseBuildConfig
+> Task :expo-font:parseReleaseLocalResources
+> Task :expo-font:javaPreCompileRelease
+> Task :expo-file-system:generateReleaseRFile
+> Task :expo-image-loader:compileReleaseAidl NO-SOURCE
+> Task :expo-image-loader:generateReleaseBuildConfig
+> Task :expo-image-picker:compileReleaseAidl NO-SOURCE
+> Task :expo-image-loader:javaPreCompileRelease
+> Task :expo-image-loader:parseReleaseLocalResources
+> Task :expo-image-picker:generateReleaseBuildConfig
+> Task :expo-font:generateReleaseRFile
+> Task :expo-image-picker:parseReleaseLocalResources
+> Task :expo-image-picker:javaPreCompileRelease
+> Task :expo-json-utils:compileReleaseAidl NO-SOURCE
+> Task :expo-image-loader:generateReleaseRFile
+> Task :expo-json-utils:generateReleaseBuildConfig
+> Task :expo-keep-awake:compileReleaseAidl NO-SOURCE
+> Task :expo-image-picker:generateReleaseRFile
+> Task :expo-json-utils:parseReleaseLocalResources
+> Task :expo-json-utils:javaPreCompileRelease
+> Task :expo-keep-awake:generateReleaseBuildConfig
+> Task :expo-json-utils:generateReleaseRFile
+> Task :expo-keep-awake:parseReleaseLocalResources
+> Task :expo-keep-awake:javaPreCompileRelease
+> Task :expo-localization:compileReleaseAidl NO-SOURCE
+> Task :expo-localization:generateReleaseBuildConfig
+> Task :expo-keep-awake:generateReleaseRFile
+> Task :expo-localization:parseReleaseLocalResources
+> Task :expo-localization:javaPreCompileRelease
+> Task :unimodules-task-manager-interface:compileReleaseAidl NO-SOURCE
+> Task :expo-location:compileReleaseAidl NO-SOURCE
+> Task :expo-location:generateReleaseBuildConfig
+> Task :expo-localization:generateReleaseRFile
+> Task :expo-location:parseReleaseLocalResources
+> Task :unimodules-task-manager-interface:generateReleaseBuildConfig
+> Task :unimodules-task-manager-interface:parseReleaseLocalResources
+> Task :unimodules-task-manager-interface:javaPreCompileRelease
+> Task :expo-manifests:compileReleaseAidl NO-SOURCE
+> Task :expo-location:javaPreCompileRelease
+> Task :expo-manifests:generateReleaseBuildConfig
+> Task :expo-notifications:compileReleaseAidl NO-SOURCE
+> Task :expo-manifests:javaPreCompileRelease
+> Task :expo-manifests:parseReleaseLocalResources
+> Task :unimodules-task-manager-interface:generateReleaseRFile
+> Task :expo-notifications:generateReleaseBuildConfig
+> Task :expo-notifications:javaPreCompileRelease
+> Task :expo-manifests:generateReleaseRFile
+> Task :expo-notifications:parseReleaseLocalResources
+> Task :expo-location:generateReleaseRFile
+> Task :expo-permissions:compileReleaseAidl NO-SOURCE
+> Task :expo-permissions:generateReleaseBuildConfig
+> Task :expo-permissions:parseReleaseLocalResources
+> Task :expo-splash-screen:compileReleaseAidl NO-SOURCE
+> Task :expo-permissions:javaPreCompileRelease
+> Task :expo-notifications:generateReleaseRFile
+> Task :expo-splash-screen:generateReleaseBuildConfig
+> Task :expo-structured-headers:compileReleaseAidl NO-SOURCE
+> Task :expo-splash-screen:javaPreCompileRelease
+> Task :expo-json-utils:compileReleaseKotlin
+> Task :expo-structured-headers:generateReleaseBuildConfig
+> Task :expo-splash-screen:parseReleaseLocalResources
+> Task :expo-permissions:generateReleaseRFile
+> Task :expo-json-utils:compileReleaseJavaWithJavac
+> Task :expo-json-utils:bundleLibRuntimeToJarRelease
+> Task :expo-json-utils:bundleLibCompileToJarRelease
+> Task :expo-structured-headers:parseReleaseLocalResources
+> Task :expo-splash-screen:generateReleaseRFile
+> Task :expo-updates-interface:compileReleaseAidl NO-SOURCE
+> Task :expo-updates:compileReleaseAidl NO-SOURCE
+> Task :expo-structured-headers:javaPreCompileRelease
+> Task :expo-updates:generateReleaseBuildConfig
+> Task :expo-updates:parseReleaseLocalResources
+> Task :expo-structured-headers:generateReleaseRFile
+> Task :expo-updates-interface:parseReleaseLocalResources
+> Task :expo-updates-interface:generateReleaseBuildConfig
+> Task :expo-updates-interface:javaPreCompileRelease
+> Task :expo-updates-interface:generateReleaseRFile
+> Task :expo-web-browser:compileReleaseAidl NO-SOURCE
+> Task :expo-web-browser:generateReleaseBuildConfig
+> Task :expo-web-browser:parseReleaseLocalResources
+> Task :expo-web-browser:javaPreCompileRelease
+> Task :react-native-google-signin-google-signin:compileReleaseAidl NO-SOURCE
+> Task :expo-updates:javaPreCompileRelease
+> Task :react-native-google-signin-google-signin:generateReleaseBuildConfig
+> Task :react-native-google-signin-google-signin:parseReleaseLocalResources
+> Task :react-native-google-signin-google-signin:javaPreCompileRelease
+> Task :expo-web-browser:generateReleaseRFile
+> Task :expo-updates-interface:compileReleaseKotlin
+> Task :expo-updates-interface:compileReleaseJavaWithJavac
+> Task :expo-updates-interface:bundleLibCompileToJarRelease
+> Task :expo-updates-interface:bundleLibRuntimeToJarRelease
+> Task :unimodules-app-loader:compileReleaseAidl NO-SOURCE
+> Task :unimodules-app-loader:generateReleaseBuildConfig
+> Task :unimodules-app-loader:parseReleaseLocalResources
+> Task :unimodules-app-loader:javaPreCompileRelease
+> Task :react-native-google-signin-google-signin:generateReleaseRFile
+> Task :unimodules-core:compileReleaseAidl NO-SOURCE
+> Task :expo-structured-headers:compileReleaseKotlin
+> Task :unimodules-app-loader:generateReleaseRFile
+> Task :expo-structured-headers:compileReleaseJavaWithJavac
+> Task :expo-structured-headers:bundleLibRuntimeToJarRelease
+> Task :expo-structured-headers:bundleLibCompileToJarRelease
+> Task :unimodules-core:generateReleaseBuildConfig
+> Task :unimodules-core:javaPreCompileRelease
+> Task :unimodules-core:parseReleaseLocalResources
+> Task :expo-updates:generateReleaseRFile
+
+> Task :react-native-google-signin-google-signin:compileReleaseJavaWithJavac
+
+> Task :react-native-google-signin-google-signin:bundleLibRuntimeToJarRelease
+> Task :expo:compileReleaseAidl NO-SOURCE
+> Task :expo:generateReleaseBuildConfig
+> Task :expo:parseReleaseLocalResources
+> Task :unimodules-core:generateReleaseRFile
+> Task :expo:javaPreCompileRelease
+> Task :react-native-google-signin-google-signin:bundleLibCompileToJarRelease
+> Task :notifee_react-native:compileReleaseAidl NO-SOURCE
+> Task :notifee_react-native:generateReleaseBuildConfig
+> Task :notifee_react-native:parseReleaseLocalResources
+> Task :notifee_react-native:javaPreCompileRelease
+> Task :react-native-async-storage_async-storage:compileReleaseAidl NO-SOURCE
+> Task :expo:generateReleaseRFile
+> Task :react-native-async-storage_async-storage:generateReleaseBuildConfig
+> Task :react-native-async-storage_async-storage:javaPreCompileRelease
+> Task :react-native-async-storage_async-storage:parseReleaseLocalResources
+> Task :react-native-clipboard_clipboard:compileReleaseAidl NO-SOURCE
+> Task :notifee_react-native:generateReleaseRFile
+> Task :react-native-clipboard_clipboard:generateReleaseBuildConfig
+> Task :react-native-clipboard_clipboard:parseReleaseLocalResources
+> Task :react-native-async-storage_async-storage:generateReleaseRFile
+
+> Task :notifee_react-native:compileReleaseJavaWithJavac
+
+> Task :notifee_react-native:bundleLibRuntimeToJarRelease
+
+> Task :react-native-async-storage_async-storage:compileReleaseJavaWithJavac
+
+> Task :react-native-async-storage_async-storage:bundleLibRuntimeToJarRelease
+> Task :react-native-clipboard_clipboard:javaPreCompileRelease
+> Task :react-native-community_checkbox:compileReleaseAidl NO-SOURCE
+> Task :react-native-community_checkbox:generateReleaseBuildConfig
+> Task :react-native-community_checkbox:javaPreCompileRelease
+> Task :react-native-clipboard_clipboard:generateReleaseRFile
+> Task :react-native-community_datetimepicker:compileReleaseAidl NO-SOURCE
+> Task :react-native-community_datetimepicker:generateReleaseBuildConfig
+> Task :react-native-community_checkbox:parseReleaseLocalResources
+> Task :react-native-community_datetimepicker:parseReleaseLocalResources
+
+> Task :expo-modules-core:compileReleaseKotlin
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-modules-core/android/src/main/java/expo/modules/adapters/react/permissions/PermissionsService.kt: (157, 30): 'getPackageInfo(String, Int): PackageInfo!' is deprecated. Deprecated in Java
+
+> Task :react-native-clipboard_clipboard:compileReleaseJavaWithJavac
+
+> Task :expo-manifests:compileReleaseKotlin
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-manifests/android/src/main/java/expo/modules/manifests/core/BaseLegacyManifest.kt: (10, 16): This declaration overrides deprecated member but not marked as deprecated itself. This deprecation won't be inherited in future releases. Please add @Deprecated annotation or suppress
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-manifests/android/src/main/java/expo/modules/manifests/core/BaseLegacyManifest.kt: (10, 86): 'getLegacyID(): String' is deprecated. Prefer scopeKey or projectId depending on use case
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-manifests/android/src/main/java/expo/modules/manifests/core/BaseLegacyManifest.kt: (12, 72): 'getStableLegacyID(): String?' is deprecated. Overrides deprecated member in 'expo.modules.manifests.core.Manifest'. Prefer scopeKey or projectId depending on use case
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-manifests/android/src/main/java/expo/modules/manifests/core/Manifest.kt: (28, 12): 'getRawJson(): JSONObject' is deprecated. Prefer to use specific field getters
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-manifests/android/src/main/java/expo/modules/manifests/core/Manifest.kt: (174, 46): Right operand of elvis operator (?:) is useless if it is null
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-manifests/android/src/main/java/expo/modules/manifests/core/NewManifest.kt: (18, 16): This declaration overrides deprecated member but not marked as deprecated itself. This deprecation won't be inherited in future releases. Please add @Deprecated annotation or suppress
+
+> Task :expo-modules-core:compileReleaseJavaWithJavac
+
+> Task :expo-modules-core:bundleLibCompileToJarRelease
+> Task :expo-manifests:compileReleaseJavaWithJavac
+> Task :expo-manifests:bundleLibRuntimeToJarRelease
+> Task :expo-manifests:bundleLibCompileToJarRelease
+> Task :react-native-clipboard_clipboard:bundleLibRuntimeToJarRelease
+> Task :expo-modules-core:bundleLibRuntimeToJarRelease
+> Task :react-native-community_checkbox:generateReleaseRFile
+> Task :react-native-community_datetimepicker:javaPreCompileRelease
+> Task :react-native-community_datetimepicker:generateReleaseRFile
+> Task :expo-facebook:compileReleaseKotlin
+
+> Task :expo-facebook:compileReleaseJavaWithJavac
+
+> Task :expo-facebook:bundleLibRuntimeToJarRelease
+aapt2 W 01-13 11:33:42 55416 197248 LoadedArsc.cpp:682] Unknown chunk type '200'.
+
+> Task :app:bundleReleaseResources
+> Task :expo-error-recovery:compileReleaseKotlin
+> Task :expo-error-recovery:compileReleaseJavaWithJavac
+> Task :expo-error-recovery:bundleLibRuntimeToJarRelease
+> Task :expo-clipboard:compileReleaseKotlin
+> Task :expo-clipboard:compileReleaseJavaWithJavac
+> Task :expo-clipboard:bundleLibRuntimeToJarRelease
+> Task :expo-localization:compileReleaseKotlin
+
+> Task :expo-application:compileReleaseKotlin
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-application/android/src/main/java/expo/modules/application/ApplicationModule.kt: (52, 34): 'getPackageInfo(String, Int): PackageInfo!' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-application/android/src/main/java/expo/modules/application/ApplicationModule.kt: (70, 33): 'getPackageInfo(String, Int): PackageInfo!' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-application/android/src/main/java/expo/modules/application/ApplicationModule.kt: (83, 33): 'getPackageInfo(String, Int): PackageInfo!' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-application/android/src/main/java/expo/modules/application/ApplicationModule.kt: (129, 14): 'versionCode: Int' is deprecated. Deprecated in Java
+
+> Task :expo-file-system:compileReleaseKotlin
+
+> Task :expo-localization:compileReleaseJavaWithJavac
+
+> Task :expo-application:compileReleaseJavaWithJavac
+> Task :expo-application:bundleLibRuntimeToJarRelease
+
+> Task :expo-file-system:compileReleaseJavaWithJavac
+
+> Task :expo-localization:bundleLibRuntimeToJarRelease
+> Task :expo-file-system:bundleLibRuntimeToJarRelease
+> Task :unimodules-task-manager-interface:compileReleaseKotlin
+
+> Task :expo-font:compileReleaseKotlin
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-font/android/src/main/java/expo/modules/font/FontLoaderModule.kt: (55, 38): Type mismatch: inferred type is String? but String was expected
+
+> Task :unimodules-task-manager-interface:compileReleaseJavaWithJavac
+
+> Task :expo-constants:compileReleaseKotlin
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-constants/android/src/main/java/expo/modules/constants/ConstantsService.kt: (58, 42): 'getPackageInfo(String, Int): PackageInfo!' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-constants/android/src/main/java/expo/modules/constants/ConstantsService.kt: (132, 17): 'versionCode: Int' is deprecated. Deprecated in Java
+
+> Task :expo-font:compileReleaseJavaWithJavac
+> Task :expo-constants:compileReleaseJavaWithJavac
+> Task :expo-constants:bundleLibRuntimeToJarRelease
+> Task :expo-keep-awake:compileReleaseKotlin
+> Task :expo-font:bundleLibRuntimeToJarRelease
+> Task :unimodules-task-manager-interface:bundleLibCompileToJarRelease
+
+> Task :expo-image-loader:compileReleaseKotlin
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-image-loader/android/src/main/java/expo/modules/imageloader/ImageLoaderModule.kt: (6, 19): 'AsyncTask<Params : Any!, Progress : Any!, Result : Any!>' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-image-loader/android/src/main/java/expo/modules/imageloader/ImageLoaderModule.kt: (11, 42): 'SimpleTarget<Z : Any!>' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-image-loader/android/src/main/java/expo/modules/imageloader/ImageLoaderModule.kt: (63, 7): 'AsyncTask<Params : Any!, Progress : Any!, Result : Any!>' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-image-loader/android/src/main/java/expo/modules/imageloader/ImageLoaderModule.kt: (63, 17): 'THREAD_POOL_EXECUTOR: Executor!' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-image-loader/android/src/main/java/expo/modules/imageloader/ImageLoaderModule.kt: (88, 22): 'SimpleTarget<Z : Any!>' is deprecated. Deprecated in Java
+
+> Task :expo-keep-awake:compileReleaseJavaWithJavac
+> Task :expo-image-loader:compileReleaseJavaWithJavac
+> Task :expo-image-loader:bundleLibRuntimeToJarRelease
+> Task :expo-keep-awake:bundleLibRuntimeToJarRelease
+> Task :expo-location:compileReleaseKotlin
+
+> Task :expo-location:compileReleaseJavaWithJavac
+
+> Task :expo-location:bundleLibRuntimeToJarRelease
+> Task :expo-web-browser:compileReleaseKotlin
+
+> Task :expo-web-browser:compileReleaseJavaWithJavac
+
+> Task :expo-web-browser:bundleLibRuntimeToJarRelease
+> Task :unimodules-app-loader:compileReleaseKotlin
+> Task :unimodules-app-loader:compileReleaseJavaWithJavac
+> Task :unimodules-app-loader:bundleLibRuntimeToJarRelease
+> Task :unimodules-core:compileReleaseKotlin
+> Task :unimodules-core:compileReleaseJavaWithJavac
+> Task :unimodules-core:bundleLibRuntimeToJarRelease
+> Task :unimodules-task-manager-interface:bundleLibRuntimeToJarRelease
+> Task :expo-application:bundleLibCompileToJarRelease
+> Task :expo-clipboard:bundleLibCompileToJarRelease
+> Task :expo-constants:bundleLibCompileToJarRelease
+> Task :expo-error-recovery:bundleLibCompileToJarRelease
+> Task :expo-facebook:bundleLibCompileToJarRelease
+> Task :expo-file-system:bundleLibCompileToJarRelease
+> Task :expo-font:bundleLibCompileToJarRelease
+> Task :expo-image-loader:bundleLibCompileToJarRelease
+> Task :expo-keep-awake:bundleLibCompileToJarRelease
+> Task :expo-localization:bundleLibCompileToJarRelease
+> Task :expo-web-browser:bundleLibCompileToJarRelease
+> Task :unimodules-app-loader:bundleLibCompileToJarRelease
+> Task :expo-location:bundleLibCompileToJarRelease
+> Task :unimodules-core:bundleLibCompileToJarRelease
+> Task :react-native-community_checkbox:compileReleaseJavaWithJavac
+> Task :react-native-community_checkbox:bundleLibRuntimeToJarRelease
+
+> Task :react-native-community_datetimepicker:compileReleaseJavaWithJavac
+
+> Task :react-native-community_masked-view:compileReleaseAidl NO-SOURCE
+> Task :react-native-community_datetimepicker:bundleLibRuntimeToJarRelease
+> Task :react-native-community_masked-view:generateReleaseBuildConfig
+> Task :react-native-community_masked-view:parseReleaseLocalResources
+> Task :react-native-community_masked-view:generateReleaseRFile
+> Task :react-native-firebase_analytics:compileReleaseAidl NO-SOURCE
+> Task :react-native-community_masked-view:javaPreCompileRelease
+> Task :react-native-firebase_analytics:generateReleaseBuildConfig
+> Task :react-native-community_masked-view:compileReleaseJavaWithJavac
+> Task :react-native-community_masked-view:bundleLibRuntimeToJarRelease
+> Task :react-native-firebase_analytics:parseReleaseLocalResources
+> Task :react-native-firebase_analytics:generateReleaseRFile
+> Task :react-native-firebase_analytics:javaPreCompileRelease
+
+> Task :react-native-firebase_analytics:compileReleaseJavaWithJavac
+
+> Task :react-native-firebase_crashlytics:compileReleaseAidl NO-SOURCE
+> Task :react-native-firebase_analytics:bundleLibRuntimeToJarRelease
+> Task :react-native-firebase_crashlytics:generateReleaseBuildConfig
+> Task :react-native-firebase_crashlytics:javaPreCompileRelease
+> Task :react-native-firebase_crashlytics:parseReleaseLocalResources
+> Task :react-native-firebase_messaging:compileReleaseAidl NO-SOURCE
+> Task :react-native-firebase_messaging:generateReleaseBuildConfig UP-TO-DATE
+> Task :react-native-firebase_messaging:parseReleaseLocalResources UP-TO-DATE
+> Task :react-native-firebase_crashlytics:generateReleaseRFile
+> Task :react-native-firebase_messaging:generateReleaseRFile UP-TO-DATE
+> Task :react-native-firebase_messaging:javaPreCompileRelease UP-TO-DATE
+> Task :react-native-firebase_messaging:compileReleaseJavaWithJavac UP-TO-DATE
+> Task :react-native-firebase_messaging:bundleLibRuntimeToJarRelease UP-TO-DATE
+> Task :react-native-google-signin_google-signin:compileReleaseAidl NO-SOURCE
+> Task :react-native-google-signin_google-signin:generateReleaseBuildConfig UP-TO-DATE
+> Task :react-native-google-signin_google-signin:parseReleaseLocalResources UP-TO-DATE
+> Task :react-native-google-signin_google-signin:generateReleaseRFile UP-TO-DATE
+> Task :react-native-google-signin_google-signin:javaPreCompileRelease UP-TO-DATE
+> Task :react-native-google-signin_google-signin:compileReleaseJavaWithJavac UP-TO-DATE
+> Task :react-native-google-signin_google-signin:bundleLibRuntimeToJarRelease UP-TO-DATE
+
+> Task :react-native-firebase_crashlytics:compileReleaseJavaWithJavac
+
+> Task :react-native-picker_picker:compileReleaseAidl NO-SOURCE
+> Task :react-native-picker_picker:generateReleaseBuildConfig
+> Task :react-native-picker_picker:javaPreCompileRelease
+> Task :react-native-picker_picker:parseReleaseLocalResources
+> Task :react-native-config:compileReleaseAidl NO-SOURCE
+> Task :react-native-firebase_crashlytics:bundleLibRuntimeToJarRelease
+> Task :react-native-config:generateReleaseBuildConfig
+> Task :react-native-picker_picker:generateReleaseRFile
+> Task :react-native-config:parseReleaseLocalResources
+> Task :expo-permissions:compileReleaseKotlin
+
+> Task :react-native-picker_picker:compileReleaseJavaWithJavac
+
+> Task :expo-splash-screen:compileReleaseKotlin
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-splash-screen/android/src/main/java/expo/modules/splashscreen/SplashScreenReactActivityLifecycleListener.kt: (17, 50): Parameter 'activityContext' is never used
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-splash-screen/android/src/main/java/expo/modules/splashscreen/SplashScreenReactActivityLifecycleListener.kt: (35, 66): 'toLowerCase(): String' is deprecated. Use lowercase() instead.
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-splash-screen/android/src/main/java/expo/modules/splashscreen/SplashScreenViewController.kt: (20, 25): 'constructor Handler()' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-splash-screen/android/src/main/java/expo/modules/splashscreen/SplashScreenViewController.kt: (41, 5): Parameter 'failureCallback' is never used
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-splash-screen/android/src/main/java/expo/modules/splashscreen/singletons/SplashScreenStatusBar.kt: (23, 27): 'replaceSystemWindowInsets(Int, Int, Int, Int): WindowInsets' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-splash-screen/android/src/main/java/expo/modules/splashscreen/singletons/SplashScreenStatusBar.kt: (24, 29): 'getter for systemWindowInsetLeft: Int' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-splash-screen/android/src/main/java/expo/modules/splashscreen/singletons/SplashScreenStatusBar.kt: (26, 29): 'getter for systemWindowInsetRight: Int' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-splash-screen/android/src/main/java/expo/modules/splashscreen/singletons/SplashScreenStatusBar.kt: (27, 29): 'getter for systemWindowInsetBottom: Int' is deprecated. Deprecated in Java
+
+> Task :expo-permissions:compileReleaseJavaWithJavac
+> Task :expo-permissions:bundleLibRuntimeToJarRelease
+> Task :expo-splash-screen:compileReleaseJavaWithJavac
+> Task :expo-splash-screen:bundleLibRuntimeToJarRelease
+> Task :expo-splash-screen:bundleLibCompileToJarRelease
+> Task :react-native-picker_picker:bundleLibRuntimeToJarRelease
+> Task :expo-permissions:bundleLibCompileToJarRelease
+> Task :react-native-config:javaPreCompileRelease
+> Task :react-native-device-info:compileReleaseAidl NO-SOURCE
+> Task :react-native-device-info:generateReleaseBuildConfig
+> Task :react-native-config:generateReleaseRFile
+> Task :react-native-device-info:parseReleaseLocalResources
+> Task :react-native-config:compileReleaseJavaWithJavac
+> Task :react-native-config:bundleLibRuntimeToJarRelease
+> Task :react-native-device-info:javaPreCompileRelease
+
+> Task :expo-updates:compileReleaseKotlin
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-updates/android/src/main/java/expo/modules/updates/manifest/LegacyUpdateManifest.kt: (35, 53): 'getRawJson(): JSONObject' is deprecated. Prefer to use specific field getters
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-updates/android/src/main/java/expo/modules/updates/manifest/NewUpdateManifest.kt: (47, 50): 'getRawJson(): JSONObject' is deprecated. Prefer to use specific field getters
+
+> Task :react-native-device-info:generateReleaseRFile
+
+> Task :expo-image-picker:compileReleaseKotlin
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-image-picker/android/src/main/java/expo/modules/imagepicker/ImagePickerConstants.kt: (98, 34): 'TAG_ISO_SPEED_RATINGS: String' is deprecated. Deprecated in Java
+
+> Task :expo-notifications:compileReleaseKotlin
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/service/NotificationsService.kt: (400, 37): 'queryBroadcastReceivers(Intent, Int): (Mutable)List<ResolveInfo!>' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/service/NotificationsService.kt: (555, 54): 'get(String!): Any?' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/service/NotificationsService.kt: (617, 22): 'getParcelable(String?): T?' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/service/NotificationsService.kt: (618, 22): 'getParcelable(String?): T?' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/service/NotificationsService.kt: (645, 14): 'getParcelableExtra(String!): T?' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/service/NotificationsService.kt: (649, 31): 'getParcelableExtra(String!): T?' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/service/NotificationsService.kt: (650, 25): 'getParcelableExtra(String!): T?' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/service/NotificationsService.kt: (681, 18): 'getParcelableExtra(String!): T?' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/service/NotificationsService.kt: (721, 22): 'getParcelable(String?): T?' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/service/delegates/Base64Serialization.kt: (26, 45): Returning type parameter has been inferred to Nothing implicitly because Nothing is more specific than specified expected type. Please specify type arguments explicitly in accordance with expected type to hide this warning. Nothing can produce an exception at runtime. See KT-36776 for more details.
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/service/delegates/ExpoHandlingDelegate.kt: (97, 30): 'resolveActivity(Intent, Int): ResolveInfo?' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/service/delegates/ExpoPresentationDelegate.kt: (176, 70): 'priority: Int' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/service/delegates/ExpoPresentationDelegate.kt: (177, 41): 'vibrate: LongArray!' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/service/delegates/ExpoPresentationDelegate.kt: (178, 30): 'sound: Uri!' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/service/delegates/ExpoPresentationDelegate.kt: (191, 41): 'get(String!): Any?' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/service/delegates/ExpoPresentationDelegate.kt: (194, 124): 'get(String!): Any?' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/service/delegates/FirebaseMessagingDelegate.kt: (112, 12): Safe call on a non-null receiver will have nullable type in future releases
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo-notifications/android/src/main/java/expo/modules/notifications/service/delegates/FirebaseMessagingDelegate.kt: (112, 30): Unnecessary safe call on a non-null receiver of type (Mutable)Map<String!, String!>
+
+> Task :expo-updates:compileReleaseJavaWithJavac
+The following annotation processors are not incremental: room-compiler-2.1.0.jar (androidx.room:room-compiler:2.1.0).
+Make sure all annotation processors are incremental to improve your build speed.
+
+> Task :expo-image-picker:compileReleaseJavaWithJavac
+> Task :expo-image-picker:bundleLibRuntimeToJarRelease
+
+> Task :expo-notifications:compileReleaseJavaWithJavac
+
+> Task :react-native-fast-image:compileReleaseAidl NO-SOURCE
+> Task :expo-image-picker:bundleLibCompileToJarRelease
+> Task :react-native-fast-image:generateReleaseBuildConfig
+> Task :expo-updates:bundleLibRuntimeToJarRelease
+> Task :expo-notifications:bundleLibCompileToJarRelease
+> Task :react-native-fast-image:parseReleaseLocalResources
+> Task :expo-notifications:bundleLibRuntimeToJarRelease
+> Task :expo-updates:bundleLibCompileToJarRelease
+> Task :react-native-fast-image:javaPreCompileRelease
+> Task :react-native-gesture-handler:compileReleaseAidl NO-SOURCE
+> Task :react-native-gesture-handler:generateReleaseBuildConfig
+> Task :react-native-fast-image:generateReleaseRFile
+> Task :react-native-gesture-handler:javaPreCompileRelease
+> Task :react-native-maps:compileReleaseAidl NO-SOURCE
+> Task :react-native-gesture-handler:parseReleaseLocalResources
+> Task :react-native-maps:generateReleaseBuildConfig
+> Task :react-native-maps:parseReleaseLocalResources
+> Task :react-native-gesture-handler:generateReleaseRFile
+
+> Task :react-native-device-info:compileReleaseJavaWithJavac
+
+> Task :react-native-device-info:bundleLibRuntimeToJarRelease
+> Task :react-native-maps:generateReleaseRFile
+
+> Task :react-native-gesture-handler:compileReleaseJavaWithJavac
+
+> Task :react-native-gesture-handler:bundleLibRuntimeToJarRelease
+
+> Task :react-native-fast-image:compileReleaseJavaWithJavac
+
+> Task :react-native-fast-image:bundleLibRuntimeToJarRelease
+> Task :react-native-maps:javaPreCompileRelease
+> Task :react-native-push-notification:compileReleaseAidl NO-SOURCE
+> Task :react-native-push-notification:generateReleaseBuildConfig
+> Task :react-native-push-notification:javaPreCompileRelease
+> Task :react-native-push-notification:parseReleaseLocalResources
+
+> Task :expo:compileReleaseKotlin
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo/android/src/main/java/expo/modules/ReactActivityDelegateWrapper.kt: (134, 38): Unchecked cast: Any! to T
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo/android/src/main/java/expo/modules/ReactActivityDelegateWrapper.kt: (148, 45): Unchecked cast: Any! to T
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo/android/src/main/java/expo/modules/ReactNativeHostWrapper.kt: (15, 37): 'UIImplementationProvider' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo/android/src/main/java/expo/modules/ReactNativeHostWrapper.kt: (42, 47): 'UIImplementationProvider' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/expo/android/src/main/java/expo/modules/ReactNativeHostWrapper.kt: (100, 34): Unchecked cast: Any! to T
+
+> Task :react-native-maps:compileReleaseJavaWithJavac
+
+> Task :expo:compileReleaseJavaWithJavac
+> Task :expo:bundleLibRuntimeToJarRelease
+> Task :react-native-maps:bundleLibRuntimeToJarRelease
+> Task :react-native-restart:compileReleaseAidl NO-SOURCE
+> Task :react-native-restart:generateReleaseBuildConfig
+> Task :react-native-restart:parseReleaseLocalResources
+> Task :react-native-restart:javaPreCompileRelease
+> Task :react-native-safe-area-context:compileReleaseAidl NO-SOURCE
+> Task :react-native-push-notification:generateReleaseRFile
+> Task :react-native-safe-area-context:generateReleaseBuildConfig
+> Task :react-native-restart:generateReleaseRFile
+> Task :react-native-safe-area-context:parseReleaseLocalResources
+
+> Task :react-native-push-notification:compileReleaseJavaWithJavac
+
+> Task :react-native-push-notification:bundleLibRuntimeToJarRelease
+> Task :react-native-safe-area-context:generateReleaseRFile
+> Task :react-native-restart:compileReleaseJavaWithJavac
+> Task :react-native-safe-area-context:javaPreCompileRelease
+> Task :react-native-restart:bundleLibRuntimeToJarRelease
+
+> Task :react-native-safe-area-context:compileReleaseJavaWithJavac
+
+> Task :react-native-screens:compileReleaseAidl NO-SOURCE
+> Task :react-native-safe-area-context:bundleLibRuntimeToJarRelease
+> Task :react-native-screens:generateReleaseBuildConfig
+> Task :react-native-screens:javaPreCompileRelease
+> Task :react-native-webview:compileReleaseAidl NO-SOURCE
+> Task :react-native-screens:parseReleaseLocalResources
+> Task :react-native-webview:generateReleaseBuildConfig
+> Task :react-native-webview:javaPreCompileRelease
+> Task :react-native-webview:parseReleaseLocalResources
+> Task :react-native-screens:generateReleaseRFile
+> Task :react-native-webview:generateReleaseRFile
+> Task :app:checkReleaseDuplicateClasses
+> Task :@react-native-firebase_messaging:bundleLibCompileToJarRelease
+> Task :app:compileReleaseAidl NO-SOURCE
+> Task :app:generateReleaseBuildConfig
+> Task :app:javaPreCompileRelease
+> Task :@react-native-firebase_messaging:writeReleaseAarMetadata
+> Task :expo:writeReleaseAarMetadata
+> Task :expo-application:writeReleaseAarMetadata
+> Task :expo-clipboard:writeReleaseAarMetadata
+> Task :expo-constants:writeReleaseAarMetadata
+> Task :expo-error-recovery:writeReleaseAarMetadata
+> Task :expo-facebook:writeReleaseAarMetadata
+> Task :expo-file-system:writeReleaseAarMetadata
+> Task :expo-font:writeReleaseAarMetadata
+> Task :expo-image-loader:writeReleaseAarMetadata
+> Task :expo-image-picker:writeReleaseAarMetadata
+> Task :expo-json-utils:writeReleaseAarMetadata
+> Task :expo-keep-awake:writeReleaseAarMetadata
+> Task :expo-localization:writeReleaseAarMetadata
+> Task :expo-location:writeReleaseAarMetadata
+> Task :expo-manifests:writeReleaseAarMetadata
+> Task :expo-modules-core:writeReleaseAarMetadata
+> Task :expo-notifications:writeReleaseAarMetadata
+> Task :expo-permissions:writeReleaseAarMetadata
+> Task :expo-splash-screen:writeReleaseAarMetadata
+> Task :expo-structured-headers:writeReleaseAarMetadata
+> Task :expo-updates:writeReleaseAarMetadata
+> Task :expo-updates-interface:writeReleaseAarMetadata
+> Task :expo-web-browser:writeReleaseAarMetadata
+> Task :notifee_react-native:writeReleaseAarMetadata
+> Task :react-native-async-storage_async-storage:writeReleaseAarMetadata
+> Task :react-native-clipboard_clipboard:writeReleaseAarMetadata
+> Task :react-native-community_checkbox:writeReleaseAarMetadata
+> Task :react-native-community_datetimepicker:writeReleaseAarMetadata
+> Task :react-native-community_masked-view:writeReleaseAarMetadata
+> Task :react-native-config:writeReleaseAarMetadata
+> Task :react-native-device-info:writeReleaseAarMetadata
+> Task :react-native-fast-image:writeReleaseAarMetadata
+> Task :react-native-firebase_analytics:writeReleaseAarMetadata
+> Task :react-native-firebase_app:writeReleaseAarMetadata
+> Task :react-native-firebase_messaging:writeReleaseAarMetadata UP-TO-DATE
+> Task :react-native-firebase_crashlytics:writeReleaseAarMetadata
+> Task :react-native-gesture-handler:writeReleaseAarMetadata
+> Task :react-native-google-signin-google-signin:writeReleaseAarMetadata
+> Task :react-native-maps:writeReleaseAarMetadata
+> Task :react-native-google-signin_google-signin:writeReleaseAarMetadata UP-TO-DATE
+> Task :react-native-picker_picker:writeReleaseAarMetadata
+> Task :react-native-push-notification:writeReleaseAarMetadata
+> Task :react-native-restart:writeReleaseAarMetadata
+> Task :react-native-safe-area-context:writeReleaseAarMetadata
+> Task :react-native-screens:writeReleaseAarMetadata
+> Task :react-native-webview:writeReleaseAarMetadata
+> Task :unimodules-app-loader:writeReleaseAarMetadata
+> Task :unimodules-core:writeReleaseAarMetadata
+> Task :unimodules-task-manager-interface:writeReleaseAarMetadata
+> Task :react-native-webview:compileReleaseKotlin
+
+> Task :react-native-screens:compileReleaseKotlin
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/Screen.kt: (80, 26): 'constructor GuardedRunnable(ReactContext!)' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackFragment.kt: (59, 28): 'setter for targetElevation: Float' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackFragment.kt: (142, 28): 'setter for targetElevation: Float' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackHeaderConfig.kt: (154, 56): 'getter for systemWindowInsetTop: Int' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackHeaderConfig.kt: (222, 29): 'setColorFilter(Int, PorterDuff.Mode): Unit' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenWindowTraits.kt: (56, 22): 'constructor GuardedRunnable(ReactContext!)' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenWindowTraits.kt: (84, 57): 'getter for systemUiVisibility: Int' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenWindowTraits.kt: (86, 53): 'SYSTEM_UI_FLAG_LIGHT_STATUS_BAR: Int' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenWindowTraits.kt: (88, 54): 'SYSTEM_UI_FLAG_LIGHT_STATUS_BAR: Int' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenWindowTraits.kt: (90, 27): 'setter for systemUiVisibility: Int' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenWindowTraits.kt: (106, 22): 'constructor GuardedRunnable(ReactContext!)' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenWindowTraits.kt: (115, 43): 'replaceSystemWindowInsets(Int, Int, Int, Int): WindowInsets' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenWindowTraits.kt: (116, 47): 'getter for systemWindowInsetLeft: Int' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenWindowTraits.kt: (118, 47): 'getter for systemWindowInsetRight: Int' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenWindowTraits.kt: (119, 47): 'getter for systemWindowInsetBottom: Int' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenWindowTraits.kt: (138, 69): 'FLAG_FULLSCREEN: Int' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenWindowTraits.kt: (139, 71): 'FLAG_FORCE_NOT_FULLSCREEN: Int' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenWindowTraits.kt: (141, 69): 'FLAG_FORCE_NOT_FULLSCREEN: Int' is deprecated. Deprecated in Java
+w: /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenWindowTraits.kt: (142, 71): 'FLAG_FULLSCREEN: Int' is deprecated. Deprecated in Java
+
+> Task :expo-updates:createReleaseExpoManifest
+                    Welcome to Metro!
+              Fast - Scalable - Integrated
+
+
+
+> Task :react-native-screens:compileReleaseJavaWithJavac
+> Task :react-native-screens:bundleLibRuntimeToJarRelease
+
+> Task :react-native-webview:compileReleaseJavaWithJavac
+
+> Task :react-native-webview:bundleLibRuntimeToJarRelease
+> Task :notifee_react-native:bundleLibCompileToJarRelease
+> Task :react-native-async-storage_async-storage:bundleLibCompileToJarRelease
+> Task :expo:bundleLibCompileToJarRelease
+> Task :react-native-clipboard_clipboard:bundleLibCompileToJarRelease
+> Task :react-native-community_masked-view:bundleLibCompileToJarRelease
+> Task :react-native-community_checkbox:bundleLibCompileToJarRelease
+> Task :app:processReleaseManifestForPackage
+> Task :react-native-config:bundleLibCompileToJarRelease
+> Task :react-native-community_datetimepicker:bundleLibCompileToJarRelease
+> Task :app:checkReleaseAarMetadata
+> Task :react-native-device-info:bundleLibCompileToJarRelease
+> Task :react-native-fast-image:bundleLibCompileToJarRelease
+> Task :expo-updates:copyReleaseExpoManifest
+> Task :react-native-firebase_messaging:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :react-native-firebase_analytics:bundleLibCompileToJarRelease
+> Task :react-native-google-signin_google-signin:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :react-native-firebase_crashlytics:bundleLibCompileToJarRelease
+> Task :react-native-picker_picker:bundleLibCompileToJarRelease
+> Task :react-native-gesture-handler:bundleLibCompileToJarRelease
+> Task :react-native-restart:bundleLibCompileToJarRelease
+> Task :react-native-push-notification:bundleLibCompileToJarRelease
+> Task :react-native-maps:bundleLibCompileToJarRelease
+> Task :react-native-safe-area-context:bundleLibCompileToJarRelease
+> Task :app:desugarReleaseFileDependencies
+> Task :react-native-screens:bundleLibCompileToJarRelease
+> Task :react-native-webview:bundleLibCompileToJarRelease
+> Task :@react-native-firebase_messaging:processReleaseJavaRes NO-SOURCE
+> Task :@react-native-firebase_messaging:bundleLibResRelease NO-SOURCE
+> Task :app:processReleaseJavaRes NO-SOURCE
+> Task :expo:processReleaseJavaRes NO-SOURCE
+> Task :expo-application:processReleaseJavaRes NO-SOURCE
+> Task :expo:bundleLibResRelease
+> Task :expo-clipboard:processReleaseJavaRes NO-SOURCE
+> Task :expo-application:bundleLibResRelease
+> Task :expo-constants:cleanupReleaseExpoConfig
+> Task :expo-clipboard:bundleLibResRelease
+> Task :expo-constants:processReleaseJavaRes NO-SOURCE
+> Task :expo-error-recovery:processReleaseJavaRes NO-SOURCE
+> Task :expo-constants:bundleLibResRelease
+> Task :expo-facebook:processReleaseJavaRes NO-SOURCE
+> Task :expo-error-recovery:bundleLibResRelease
+> Task :expo-facebook:bundleLibResRelease NO-SOURCE
+> Task :expo-file-system:processReleaseJavaRes NO-SOURCE
+> Task :expo-font:processReleaseJavaRes NO-SOURCE
+> Task :expo-file-system:bundleLibResRelease
+> Task :expo-image-loader:processReleaseJavaRes NO-SOURCE
+> Task :expo-font:bundleLibResRelease
+> Task :expo-image-picker:processReleaseJavaRes NO-SOURCE
+> Task :expo-image-loader:bundleLibResRelease
+> Task :expo-json-utils:processReleaseJavaRes NO-SOURCE
+> Task :expo-keep-awake:processReleaseJavaRes NO-SOURCE
+> Task :expo-image-picker:bundleLibResRelease
+> Task :expo-json-utils:bundleLibResRelease
+> Task :expo-localization:processReleaseJavaRes NO-SOURCE
+> Task :expo-localization:bundleLibResRelease NO-SOURCE
+> Task :expo-location:processReleaseJavaRes NO-SOURCE
+> Task :expo-location:bundleLibResRelease NO-SOURCE
+> Task :expo-manifests:processReleaseJavaRes NO-SOURCE
+> Task :expo-keep-awake:bundleLibResRelease
+> Task :expo-modules-core:processReleaseJavaRes NO-SOURCE
+> Task :expo-manifests:bundleLibResRelease
+> Task :expo-notifications:processReleaseJavaRes NO-SOURCE
+> Task :expo-modules-core:bundleLibResRelease
+> Task :expo-permissions:processReleaseJavaRes NO-SOURCE
+> Task :expo-notifications:bundleLibResRelease
+> Task :expo-splash-screen:processReleaseJavaRes NO-SOURCE
+> Task :expo-permissions:bundleLibResRelease
+> Task :expo-structured-headers:processReleaseJavaRes NO-SOURCE
+> Task :expo-structured-headers:bundleLibResRelease NO-SOURCE
+> Task :expo-updates:processReleaseJavaRes NO-SOURCE
+> Task :expo-splash-screen:bundleLibResRelease
+> Task :expo-updates-interface:processReleaseJavaRes NO-SOURCE
+> Task :expo-updates-interface:bundleLibResRelease NO-SOURCE
+> Task :expo-web-browser:processReleaseJavaRes NO-SOURCE
+> Task :expo-web-browser:bundleLibResRelease NO-SOURCE
+> Task :notifee_react-native:processReleaseJavaRes NO-SOURCE
+> Task :notifee_react-native:bundleLibResRelease NO-SOURCE
+> Task :react-native-async-storage_async-storage:processReleaseJavaRes NO-SOURCE
+> Task :react-native-async-storage_async-storage:bundleLibResRelease NO-SOURCE
+> Task :react-native-clipboard_clipboard:processReleaseJavaRes NO-SOURCE
+> Task :react-native-clipboard_clipboard:bundleLibResRelease NO-SOURCE
+> Task :react-native-community_checkbox:processReleaseJavaRes NO-SOURCE
+> Task :react-native-community_checkbox:bundleLibResRelease NO-SOURCE
+> Task :react-native-community_datetimepicker:processReleaseJavaRes NO-SOURCE
+> Task :react-native-community_datetimepicker:bundleLibResRelease NO-SOURCE
+> Task :react-native-community_masked-view:processReleaseJavaRes NO-SOURCE
+> Task :react-native-community_masked-view:bundleLibResRelease NO-SOURCE
+> Task :react-native-config:processReleaseJavaRes NO-SOURCE
+> Task :react-native-config:bundleLibResRelease NO-SOURCE
+> Task :react-native-device-info:processReleaseJavaRes NO-SOURCE
+> Task :expo-updates:bundleLibResRelease
+> Task :react-native-device-info:bundleLibResRelease NO-SOURCE
+> Task :react-native-fast-image:processReleaseJavaRes NO-SOURCE
+> Task :react-native-fast-image:bundleLibResRelease NO-SOURCE
+> Task :react-native-firebase_analytics:processReleaseJavaRes NO-SOURCE
+> Task :react-native-firebase_analytics:bundleLibResRelease NO-SOURCE
+> Task :react-native-firebase_app:processReleaseJavaRes NO-SOURCE
+> Task :react-native-firebase_app:bundleLibResRelease NO-SOURCE
+> Task :react-native-firebase_crashlytics:processReleaseJavaRes NO-SOURCE
+> Task :react-native-firebase_crashlytics:bundleLibResRelease NO-SOURCE
+> Task :react-native-firebase_messaging:processReleaseJavaRes NO-SOURCE
+> Task :react-native-firebase_messaging:bundleLibResRelease NO-SOURCE
+> Task :react-native-gesture-handler:processReleaseJavaRes NO-SOURCE
+> Task :react-native-gesture-handler:bundleLibResRelease NO-SOURCE
+> Task :react-native-google-signin-google-signin:processReleaseJavaRes NO-SOURCE
+> Task :react-native-google-signin-google-signin:bundleLibResRelease NO-SOURCE
+> Task :react-native-google-signin_google-signin:processReleaseJavaRes NO-SOURCE
+> Task :react-native-google-signin_google-signin:bundleLibResRelease NO-SOURCE
+> Task :react-native-maps:processReleaseJavaRes NO-SOURCE
+> Task :react-native-maps:bundleLibResRelease NO-SOURCE
+> Task :react-native-picker_picker:processReleaseJavaRes NO-SOURCE
+> Task :react-native-picker_picker:bundleLibResRelease NO-SOURCE
+> Task :react-native-push-notification:processReleaseJavaRes NO-SOURCE
+> Task :react-native-push-notification:bundleLibResRelease NO-SOURCE
+> Task :react-native-restart:processReleaseJavaRes NO-SOURCE
+> Task :react-native-restart:bundleLibResRelease NO-SOURCE
+> Task :react-native-safe-area-context:processReleaseJavaRes NO-SOURCE
+> Task :react-native-safe-area-context:bundleLibResRelease NO-SOURCE
+> Task :react-native-screens:processReleaseJavaRes NO-SOURCE
+> Task :react-native-webview:processReleaseJavaRes NO-SOURCE
+> Task :react-native-screens:bundleLibResRelease
+> Task :unimodules-app-loader:processReleaseJavaRes NO-SOURCE
+> Task :react-native-webview:bundleLibResRelease
+> Task :unimodules-app-loader:bundleLibResRelease NO-SOURCE
+> Task :unimodules-core:processReleaseJavaRes NO-SOURCE
+> Task :unimodules-core:bundleLibResRelease NO-SOURCE
+> Task :unimodules-task-manager-interface:processReleaseJavaRes NO-SOURCE
+> Task :unimodules-task-manager-interface:bundleLibResRelease NO-SOURCE
+> Task :@react-native-firebase_messaging:mergeReleaseJniLibFolders
+> Task :@react-native-firebase_messaging:mergeReleaseNativeLibs NO-SOURCE
+> Task :@react-native-firebase_messaging:stripReleaseDebugSymbols NO-SOURCE
+> Task :@react-native-firebase_messaging:copyReleaseJniLibsProjectOnly
+> Task :app:mergeReleaseJniLibFolders
+> Task :expo:mergeReleaseJniLibFolders
+> Task :expo:mergeReleaseNativeLibs NO-SOURCE
+> Task :expo:stripReleaseDebugSymbols NO-SOURCE
+> Task :expo-application:mergeReleaseJniLibFolders
+> Task :expo-application:mergeReleaseNativeLibs NO-SOURCE
+> Task :expo:copyReleaseJniLibsProjectOnly
+> Task :expo-application:stripReleaseDebugSymbols NO-SOURCE
+> Task :expo-application:copyReleaseJniLibsProjectOnly
+> Task :expo-clipboard:mergeReleaseJniLibFolders
+> Task :expo-clipboard:mergeReleaseNativeLibs NO-SOURCE
+> Task :expo-clipboard:stripReleaseDebugSymbols NO-SOURCE
+> Task :expo-clipboard:copyReleaseJniLibsProjectOnly
+> Task :expo-constants:mergeReleaseJniLibFolders
+> Task :expo-constants:mergeReleaseNativeLibs NO-SOURCE
+> Task :expo-constants:stripReleaseDebugSymbols NO-SOURCE
+> Task :expo-constants:copyReleaseJniLibsProjectOnly
+> Task :expo-error-recovery:mergeReleaseJniLibFolders
+> Task :expo-error-recovery:mergeReleaseNativeLibs NO-SOURCE
+> Task :expo-error-recovery:stripReleaseDebugSymbols NO-SOURCE
+> Task :expo-error-recovery:copyReleaseJniLibsProjectOnly
+> Task :expo-facebook:mergeReleaseJniLibFolders
+> Task :expo-facebook:mergeReleaseNativeLibs NO-SOURCE
+> Task :expo-facebook:stripReleaseDebugSymbols NO-SOURCE
+> Task :expo-facebook:copyReleaseJniLibsProjectOnly
+> Task :expo-file-system:mergeReleaseJniLibFolders
+> Task :expo-file-system:mergeReleaseNativeLibs NO-SOURCE
+> Task :expo-file-system:stripReleaseDebugSymbols NO-SOURCE
+> Task :expo-file-system:copyReleaseJniLibsProjectOnly
+> Task :expo-font:mergeReleaseJniLibFolders
+> Task :expo-font:mergeReleaseNativeLibs NO-SOURCE
+> Task :expo-font:stripReleaseDebugSymbols NO-SOURCE
+> Task :expo-font:copyReleaseJniLibsProjectOnly
+> Task :expo-image-loader:mergeReleaseJniLibFolders
+> Task :expo-image-loader:mergeReleaseNativeLibs NO-SOURCE
+> Task :expo-image-loader:stripReleaseDebugSymbols NO-SOURCE
+> Task :expo-image-loader:copyReleaseJniLibsProjectOnly
+> Task :expo-image-picker:mergeReleaseJniLibFolders
+> Task :expo-image-picker:mergeReleaseNativeLibs NO-SOURCE
+> Task :expo-image-picker:stripReleaseDebugSymbols NO-SOURCE
+> Task :expo-image-picker:copyReleaseJniLibsProjectOnly
+> Task :expo-json-utils:mergeReleaseJniLibFolders
+> Task :expo-json-utils:mergeReleaseNativeLibs NO-SOURCE
+> Task :expo-json-utils:stripReleaseDebugSymbols NO-SOURCE
+> Task :expo-json-utils:copyReleaseJniLibsProjectOnly
+> Task :expo-keep-awake:mergeReleaseJniLibFolders
+> Task :expo-keep-awake:mergeReleaseNativeLibs NO-SOURCE
+> Task :expo-keep-awake:stripReleaseDebugSymbols NO-SOURCE
+> Task :expo-keep-awake:copyReleaseJniLibsProjectOnly
+> Task :expo-localization:mergeReleaseJniLibFolders
+> Task :expo-localization:mergeReleaseNativeLibs NO-SOURCE
+> Task :expo-localization:stripReleaseDebugSymbols NO-SOURCE
+> Task :expo-localization:copyReleaseJniLibsProjectOnly
+> Task :expo-location:mergeReleaseJniLibFolders
+> Task :expo-location:mergeReleaseNativeLibs NO-SOURCE
+> Task :expo-location:stripReleaseDebugSymbols NO-SOURCE
+> Task :expo-location:copyReleaseJniLibsProjectOnly
+> Task :expo-manifests:mergeReleaseJniLibFolders
+> Task :expo-manifests:mergeReleaseNativeLibs NO-SOURCE
+> Task :expo-manifests:stripReleaseDebugSymbols NO-SOURCE
+> Task :expo-manifests:copyReleaseJniLibsProjectOnly
+> Task :expo-modules-core:mergeReleaseJniLibFolders
+> Task :expo-modules-core:mergeReleaseNativeLibs NO-SOURCE
+> Task :expo-modules-core:stripReleaseDebugSymbols NO-SOURCE
+> Task :expo-modules-core:copyReleaseJniLibsProjectOnly
+> Task :expo-notifications:mergeReleaseJniLibFolders
+> Task :expo-notifications:mergeReleaseNativeLibs NO-SOURCE
+> Task :expo-notifications:stripReleaseDebugSymbols NO-SOURCE
+> Task :expo-notifications:copyReleaseJniLibsProjectOnly
+> Task :expo-permissions:mergeReleaseJniLibFolders
+> Task :expo-permissions:mergeReleaseNativeLibs NO-SOURCE
+> Task :expo-permissions:stripReleaseDebugSymbols NO-SOURCE
+> Task :expo-permissions:copyReleaseJniLibsProjectOnly
+> Task :expo-splash-screen:mergeReleaseJniLibFolders
+> Task :expo-splash-screen:mergeReleaseNativeLibs NO-SOURCE
+> Task :expo-splash-screen:stripReleaseDebugSymbols NO-SOURCE
+> Task :expo-splash-screen:copyReleaseJniLibsProjectOnly
+> Task :expo-structured-headers:mergeReleaseJniLibFolders
+> Task :expo-structured-headers:mergeReleaseNativeLibs NO-SOURCE
+> Task :expo-structured-headers:stripReleaseDebugSymbols NO-SOURCE
+> Task :expo-structured-headers:copyReleaseJniLibsProjectOnly
+> Task :expo-updates:mergeReleaseJniLibFolders
+> Task :expo-updates:mergeReleaseNativeLibs NO-SOURCE
+> Task :expo-updates:stripReleaseDebugSymbols NO-SOURCE
+> Task :expo-updates:copyReleaseJniLibsProjectOnly
+> Task :expo-updates-interface:mergeReleaseJniLibFolders
+> Task :expo-updates-interface:mergeReleaseNativeLibs NO-SOURCE
+> Task :expo-updates-interface:stripReleaseDebugSymbols NO-SOURCE
+> Task :expo-updates-interface:copyReleaseJniLibsProjectOnly
+> Task :expo-web-browser:mergeReleaseJniLibFolders
+> Task :expo-web-browser:mergeReleaseNativeLibs NO-SOURCE
+> Task :expo-web-browser:stripReleaseDebugSymbols NO-SOURCE
+> Task :expo-web-browser:copyReleaseJniLibsProjectOnly
+> Task :notifee_react-native:mergeReleaseJniLibFolders
+> Task :notifee_react-native:mergeReleaseNativeLibs NO-SOURCE
+> Task :notifee_react-native:stripReleaseDebugSymbols NO-SOURCE
+> Task :notifee_react-native:copyReleaseJniLibsProjectOnly
+> Task :react-native-async-storage_async-storage:mergeReleaseJniLibFolders
+> Task :react-native-async-storage_async-storage:mergeReleaseNativeLibs NO-SOURCE
+> Task :react-native-async-storage_async-storage:stripReleaseDebugSymbols NO-SOURCE
+> Task :react-native-async-storage_async-storage:copyReleaseJniLibsProjectOnly
+> Task :react-native-clipboard_clipboard:mergeReleaseJniLibFolders
+> Task :react-native-clipboard_clipboard:mergeReleaseNativeLibs NO-SOURCE
+> Task :react-native-clipboard_clipboard:stripReleaseDebugSymbols NO-SOURCE
+> Task :react-native-clipboard_clipboard:copyReleaseJniLibsProjectOnly
+> Task :react-native-community_checkbox:mergeReleaseJniLibFolders
+> Task :react-native-community_checkbox:mergeReleaseNativeLibs NO-SOURCE
+> Task :react-native-community_checkbox:stripReleaseDebugSymbols NO-SOURCE
+> Task :react-native-community_checkbox:copyReleaseJniLibsProjectOnly
+> Task :react-native-community_datetimepicker:mergeReleaseJniLibFolders
+> Task :react-native-community_datetimepicker:mergeReleaseNativeLibs NO-SOURCE
+> Task :react-native-community_datetimepicker:stripReleaseDebugSymbols NO-SOURCE
+> Task :react-native-community_datetimepicker:copyReleaseJniLibsProjectOnly
+> Task :react-native-community_masked-view:mergeReleaseJniLibFolders
+> Task :react-native-community_masked-view:mergeReleaseNativeLibs NO-SOURCE
+> Task :react-native-community_masked-view:stripReleaseDebugSymbols NO-SOURCE
+> Task :react-native-community_masked-view:copyReleaseJniLibsProjectOnly
+> Task :react-native-config:mergeReleaseJniLibFolders
+> Task :react-native-config:mergeReleaseNativeLibs NO-SOURCE
+> Task :react-native-config:stripReleaseDebugSymbols NO-SOURCE
+> Task :react-native-config:copyReleaseJniLibsProjectOnly
+> Task :react-native-device-info:mergeReleaseJniLibFolders
+> Task :react-native-device-info:mergeReleaseNativeLibs NO-SOURCE
+> Task :react-native-device-info:stripReleaseDebugSymbols NO-SOURCE
+> Task :react-native-device-info:copyReleaseJniLibsProjectOnly
+> Task :react-native-fast-image:mergeReleaseJniLibFolders
+> Task :react-native-fast-image:mergeReleaseNativeLibs NO-SOURCE
+> Task :react-native-fast-image:stripReleaseDebugSymbols NO-SOURCE
+> Task :react-native-fast-image:copyReleaseJniLibsProjectOnly
+> Task :react-native-firebase_analytics:mergeReleaseJniLibFolders
+> Task :react-native-firebase_analytics:mergeReleaseNativeLibs NO-SOURCE
+> Task :react-native-firebase_analytics:stripReleaseDebugSymbols NO-SOURCE
+> Task :react-native-firebase_analytics:copyReleaseJniLibsProjectOnly
+> Task :react-native-firebase_app:mergeReleaseJniLibFolders
+> Task :react-native-firebase_app:mergeReleaseNativeLibs NO-SOURCE
+> Task :react-native-firebase_app:stripReleaseDebugSymbols NO-SOURCE
+> Task :react-native-firebase_app:copyReleaseJniLibsProjectOnly
+> Task :react-native-firebase_crashlytics:mergeReleaseJniLibFolders
+> Task :react-native-firebase_crashlytics:mergeReleaseNativeLibs NO-SOURCE
+> Task :react-native-firebase_crashlytics:stripReleaseDebugSymbols NO-SOURCE
+> Task :react-native-firebase_crashlytics:copyReleaseJniLibsProjectOnly
+> Task :react-native-firebase_messaging:mergeReleaseJniLibFolders UP-TO-DATE
+> Task :react-native-firebase_messaging:mergeReleaseNativeLibs NO-SOURCE
+> Task :react-native-firebase_messaging:stripReleaseDebugSymbols NO-SOURCE
+> Task :react-native-firebase_messaging:copyReleaseJniLibsProjectOnly UP-TO-DATE
+> Task :react-native-gesture-handler:mergeReleaseJniLibFolders
+> Task :react-native-gesture-handler:mergeReleaseNativeLibs NO-SOURCE
+> Task :react-native-gesture-handler:stripReleaseDebugSymbols NO-SOURCE
+> Task :react-native-gesture-handler:copyReleaseJniLibsProjectOnly
+> Task :react-native-google-signin-google-signin:mergeReleaseJniLibFolders
+> Task :react-native-google-signin-google-signin:mergeReleaseNativeLibs NO-SOURCE
+> Task :react-native-google-signin-google-signin:stripReleaseDebugSymbols NO-SOURCE
+> Task :react-native-google-signin-google-signin:copyReleaseJniLibsProjectOnly
+> Task :react-native-google-signin_google-signin:mergeReleaseJniLibFolders UP-TO-DATE
+> Task :react-native-google-signin_google-signin:mergeReleaseNativeLibs NO-SOURCE
+> Task :react-native-google-signin_google-signin:stripReleaseDebugSymbols NO-SOURCE
+> Task :react-native-google-signin_google-signin:copyReleaseJniLibsProjectOnly UP-TO-DATE
+> Task :react-native-maps:mergeReleaseJniLibFolders
+> Task :react-native-maps:mergeReleaseNativeLibs NO-SOURCE
+> Task :react-native-maps:stripReleaseDebugSymbols NO-SOURCE
+> Task :react-native-maps:copyReleaseJniLibsProjectOnly
+> Task :react-native-picker_picker:mergeReleaseJniLibFolders
+> Task :react-native-picker_picker:mergeReleaseNativeLibs NO-SOURCE
+> Task :react-native-picker_picker:stripReleaseDebugSymbols NO-SOURCE
+> Task :react-native-picker_picker:copyReleaseJniLibsProjectOnly
+> Task :react-native-push-notification:mergeReleaseJniLibFolders
+> Task :react-native-push-notification:mergeReleaseNativeLibs NO-SOURCE
+> Task :react-native-push-notification:stripReleaseDebugSymbols NO-SOURCE
+> Task :react-native-push-notification:copyReleaseJniLibsProjectOnly
+> Task :react-native-restart:mergeReleaseJniLibFolders
+> Task :react-native-restart:mergeReleaseNativeLibs NO-SOURCE
+> Task :react-native-restart:stripReleaseDebugSymbols NO-SOURCE
+> Task :react-native-restart:copyReleaseJniLibsProjectOnly
+> Task :react-native-safe-area-context:mergeReleaseJniLibFolders
+> Task :react-native-safe-area-context:mergeReleaseNativeLibs NO-SOURCE
+> Task :react-native-safe-area-context:stripReleaseDebugSymbols NO-SOURCE
+> Task :react-native-safe-area-context:copyReleaseJniLibsProjectOnly
+> Task :react-native-screens:mergeReleaseJniLibFolders
+> Task :react-native-screens:mergeReleaseNativeLibs NO-SOURCE
+> Task :react-native-screens:stripReleaseDebugSymbols NO-SOURCE
+> Task :react-native-screens:copyReleaseJniLibsProjectOnly
+> Task :react-native-webview:mergeReleaseJniLibFolders
+> Task :react-native-webview:mergeReleaseNativeLibs NO-SOURCE
+> Task :react-native-webview:stripReleaseDebugSymbols NO-SOURCE
+> Task :react-native-webview:copyReleaseJniLibsProjectOnly
+> Task :unimodules-app-loader:mergeReleaseJniLibFolders
+> Task :unimodules-app-loader:mergeReleaseNativeLibs NO-SOURCE
+> Task :unimodules-app-loader:stripReleaseDebugSymbols NO-SOURCE
+> Task :unimodules-app-loader:copyReleaseJniLibsProjectOnly
+> Task :unimodules-core:mergeReleaseJniLibFolders
+> Task :unimodules-core:mergeReleaseNativeLibs NO-SOURCE
+> Task :unimodules-core:stripReleaseDebugSymbols NO-SOURCE
+> Task :unimodules-core:copyReleaseJniLibsProjectOnly
+> Task :unimodules-task-manager-interface:mergeReleaseJniLibFolders
+> Task :unimodules-task-manager-interface:mergeReleaseNativeLibs NO-SOURCE
+> Task :unimodules-task-manager-interface:stripReleaseDebugSymbols NO-SOURCE
+> Task :unimodules-task-manager-interface:copyReleaseJniLibsProjectOnly
+> Task :app:collectReleaseDependencies
+> Task :app:configureReleaseDependencies
+> Task :app:parseReleaseIntegrityConfig UP-TO-DATE
+> Task :app:writeReleaseAppMetadata
+> Task :app:validateSigningRelease
+aapt2 W 01-13 11:34:15 55416 197248 LoadedArsc.cpp:682] Unknown chunk type '200'.
+
+> Task :app:mergeReleaseJavaResource
+> Task :app:processReleaseResources
+> Task :app:compileReleaseJavaWithJavac
+> Task :app:mergeReleaseNativeLibs
+> Task :app:dexBuilderRelease
+> Task :app:mergeExtDexRelease
+
+> Task :app:stripReleaseDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libc++_shared.so, libcrashlytics-common.so, libcrashlytics-handler.so, libcrashlytics-trampoline.so, libcrashlytics.so, libfb.so, libfbjni.so, libfolly_futures.so, libfolly_json.so, libglog.so, libglog_init.so, libhermes-executor-common-debug.so, libhermes-executor-common-release.so, libhermes-executor-debug.so, libhermes-executor-release.so, libhermes-inspector.so, libimagepipeline.so, libjsc.so, libjscexecutor.so, libjsijniprofiler.so, libjsinspector.so, libnative-filters.so, libnative-imagetranscoder.so, libreact_codegen_reactandroidspec.so, libreact_nativemodule_core.so, libreactnativeblob.so, libreactnativejni.so, libreactnativeutilsjni.so, libreactperfloggerjni.so, libreanimated.so, libturbomodulejsijni.so, libyoga.so.
+
+> Task :app:extractReleaseNativeSymbolTables
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/armeabi-v7a/libhermes-inspector.so because unable to locate the objcopy executable for the armeabi-v7a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/armeabi-v7a/libreactperfloggerjni.so because unable to locate the objcopy executable for the armeabi-v7a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/armeabi-v7a/libnative-filters.so because unable to locate the objcopy executable for the armeabi-v7a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/armeabi-v7a/libfbjni.so because unable to locate the objcopy executable for the armeabi-v7a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/armeabi-v7a/libhermes-executor-common-release.so because unable to locate the objcopy executable for the armeabi-v7a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/armeabi-v7a/libcrashlytics-common.so because unable to locate the objcopy executable for the armeabi-v7a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/armeabi-v7a/libreactnativeblob.so because unable to locate the objcopy executable for the armeabi-v7a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/armeabi-v7a/libreactnativeutilsjni.so because unable to locate the objcopy executable for the armeabi-v7a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/armeabi-v7a/libnative-imagetranscoder.so because unable to locate the objcopy executable for the armeabi-v7a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/armeabi-v7a/libjsc.so because unable to locate the objcopy executable for the armeabi-v7a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/armeabi-v7a/libjsijniprofiler.so because unable to locate the objcopy executable for the armeabi-v7a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/armeabi-v7a/libjsinspector.so because unable to locate the objcopy executable for the armeabi-v7a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/armeabi-v7a/libfolly_json.so because unable to locate the objcopy executable for the armeabi-v7a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/armeabi-v7a/libglog.so because unable to locate the objcopy executable for the armeabi-v7a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/armeabi-v7a/libimagepipeline.so because unable to locate the objcopy executable for the armeabi-v7a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/armeabi-v7a/libglog_init.so because unable to locate the objcopy executable for the armeabi-v7a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/armeabi-v7a/libturbomodulejsijni.so because unable to locate the objcopy executable for the armeabi-v7a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/armeabi-v7a/libreact_codegen_reactandroidspec.so because unable to locate the objcopy executable for the armeabi-v7a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/armeabi-v7a/libcrashlytics.so because unable to locate the objcopy executable for the armeabi-v7a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/armeabi-v7a/libfolly_futures.so because unable to locate the objcopy executable for the armeabi-v7a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/armeabi-v7a/libhermes-executor-debug.so because unable to locate the objcopy executable for the armeabi-v7a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/armeabi-v7a/libc++_shared.so because unable to locate the objcopy executable for the armeabi-v7a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/armeabi-v7a/libhermes-executor-release.so because unable to locate the objcopy executable for the armeabi-v7a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/armeabi-v7a/libhermes-executor-common-debug.so because unable to locate the objcopy executable for the armeabi-v7a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/armeabi-v7a/libfb.so because unable to locate the objcopy executable for the armeabi-v7a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/armeabi-v7a/libcrashlytics-handler.so because unable to locate the objcopy executable for the armeabi-v7a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/armeabi-v7a/libreact_nativemodule_core.so because unable to locate the objcopy executable for the armeabi-v7a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/armeabi-v7a/libjscexecutor.so because unable to locate the objcopy executable for the armeabi-v7a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/armeabi-v7a/libreanimated.so because unable to locate the objcopy executable for the armeabi-v7a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/armeabi-v7a/libreactnativejni.so because unable to locate the objcopy executable for the armeabi-v7a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/armeabi-v7a/libcrashlytics-trampoline.so because unable to locate the objcopy executable for the armeabi-v7a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/armeabi-v7a/libyoga.so because unable to locate the objcopy executable for the armeabi-v7a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86/libhermes-inspector.so because unable to locate the objcopy executable for the x86 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86/libreactperfloggerjni.so because unable to locate the objcopy executable for the x86 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86/libnative-filters.so because unable to locate the objcopy executable for the x86 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86/libfbjni.so because unable to locate the objcopy executable for the x86 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86/libhermes-executor-common-release.so because unable to locate the objcopy executable for the x86 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86/libcrashlytics-common.so because unable to locate the objcopy executable for the x86 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86/libreactnativeblob.so because unable to locate the objcopy executable for the x86 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86/libreactnativeutilsjni.so because unable to locate the objcopy executable for the x86 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86/libnative-imagetranscoder.so because unable to locate the objcopy executable for the x86 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86/libjsc.so because unable to locate the objcopy executable for the x86 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86/libjsijniprofiler.so because unable to locate the objcopy executable for the x86 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86/libjsinspector.so because unable to locate the objcopy executable for the x86 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86/libfolly_json.so because unable to locate the objcopy executable for the x86 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86/libglog.so because unable to locate the objcopy executable for the x86 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86/libimagepipeline.so because unable to locate the objcopy executable for the x86 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86/libglog_init.so because unable to locate the objcopy executable for the x86 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86/libturbomodulejsijni.so because unable to locate the objcopy executable for the x86 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86/libreact_codegen_reactandroidspec.so because unable to locate the objcopy executable for the x86 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86/libcrashlytics.so because unable to locate the objcopy executable for the x86 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86/libfolly_futures.so because unable to locate the objcopy executable for the x86 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86/libhermes-executor-debug.so because unable to locate the objcopy executable for the x86 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86/libc++_shared.so because unable to locate the objcopy executable for the x86 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86/libhermes-executor-release.so because unable to locate the objcopy executable for the x86 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86/libhermes-executor-common-debug.so because unable to locate the objcopy executable for the x86 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86/libfb.so because unable to locate the objcopy executable for the x86 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86/libcrashlytics-handler.so because unable to locate the objcopy executable for the x86 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86/libreact_nativemodule_core.so because unable to locate the objcopy executable for the x86 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86/libjscexecutor.so because unable to locate the objcopy executable for the x86 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86/libreanimated.so because unable to locate the objcopy executable for the x86 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86/libreactnativejni.so because unable to locate the objcopy executable for the x86 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86/libcrashlytics-trampoline.so because unable to locate the objcopy executable for the x86 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86/libyoga.so because unable to locate the objcopy executable for the x86 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/arm64-v8a/libhermes-inspector.so because unable to locate the objcopy executable for the arm64-v8a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/arm64-v8a/libreactperfloggerjni.so because unable to locate the objcopy executable for the arm64-v8a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/arm64-v8a/libnative-filters.so because unable to locate the objcopy executable for the arm64-v8a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/arm64-v8a/libfbjni.so because unable to locate the objcopy executable for the arm64-v8a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/arm64-v8a/libhermes-executor-common-release.so because unable to locate the objcopy executable for the arm64-v8a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/arm64-v8a/libcrashlytics-common.so because unable to locate the objcopy executable for the arm64-v8a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/arm64-v8a/libreactnativeblob.so because unable to locate the objcopy executable for the arm64-v8a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/arm64-v8a/libreactnativeutilsjni.so because unable to locate the objcopy executable for the arm64-v8a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/arm64-v8a/libnative-imagetranscoder.so because unable to locate the objcopy executable for the arm64-v8a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/arm64-v8a/libjsc.so because unable to locate the objcopy executable for the arm64-v8a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/arm64-v8a/libjsijniprofiler.so because unable to locate the objcopy executable for the arm64-v8a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/arm64-v8a/libjsinspector.so because unable to locate the objcopy executable for the arm64-v8a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/arm64-v8a/libfolly_json.so because unable to locate the objcopy executable for the arm64-v8a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/arm64-v8a/libglog.so because unable to locate the objcopy executable for the arm64-v8a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/arm64-v8a/libimagepipeline.so because unable to locate the objcopy executable for the arm64-v8a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/arm64-v8a/libglog_init.so because unable to locate the objcopy executable for the arm64-v8a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/arm64-v8a/libturbomodulejsijni.so because unable to locate the objcopy executable for the arm64-v8a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/arm64-v8a/libreact_codegen_reactandroidspec.so because unable to locate the objcopy executable for the arm64-v8a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/arm64-v8a/libcrashlytics.so because unable to locate the objcopy executable for the arm64-v8a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/arm64-v8a/libfolly_futures.so because unable to locate the objcopy executable for the arm64-v8a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/arm64-v8a/libhermes-executor-debug.so because unable to locate the objcopy executable for the arm64-v8a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/arm64-v8a/libc++_shared.so because unable to locate the objcopy executable for the arm64-v8a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/arm64-v8a/libhermes-executor-release.so because unable to locate the objcopy executable for the arm64-v8a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/arm64-v8a/libhermes-executor-common-debug.so because unable to locate the objcopy executable for the arm64-v8a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/arm64-v8a/libfb.so because unable to locate the objcopy executable for the arm64-v8a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/arm64-v8a/libcrashlytics-handler.so because unable to locate the objcopy executable for the arm64-v8a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/arm64-v8a/libreact_nativemodule_core.so because unable to locate the objcopy executable for the arm64-v8a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/arm64-v8a/libjscexecutor.so because unable to locate the objcopy executable for the arm64-v8a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/arm64-v8a/libreanimated.so because unable to locate the objcopy executable for the arm64-v8a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/arm64-v8a/libreactnativejni.so because unable to locate the objcopy executable for the arm64-v8a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/arm64-v8a/libcrashlytics-trampoline.so because unable to locate the objcopy executable for the arm64-v8a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/arm64-v8a/libyoga.so because unable to locate the objcopy executable for the arm64-v8a ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86_64/libhermes-inspector.so because unable to locate the objcopy executable for the x86_64 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86_64/libreactperfloggerjni.so because unable to locate the objcopy executable for the x86_64 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86_64/libnative-filters.so because unable to locate the objcopy executable for the x86_64 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86_64/libfbjni.so because unable to locate the objcopy executable for the x86_64 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86_64/libhermes-executor-common-release.so because unable to locate the objcopy executable for the x86_64 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86_64/libcrashlytics-common.so because unable to locate the objcopy executable for the x86_64 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86_64/libreactnativeblob.so because unable to locate the objcopy executable for the x86_64 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86_64/libreactnativeutilsjni.so because unable to locate the objcopy executable for the x86_64 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86_64/libnative-imagetranscoder.so because unable to locate the objcopy executable for the x86_64 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86_64/libjsc.so because unable to locate the objcopy executable for the x86_64 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86_64/libjsijniprofiler.so because unable to locate the objcopy executable for the x86_64 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86_64/libjsinspector.so because unable to locate the objcopy executable for the x86_64 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86_64/libfolly_json.so because unable to locate the objcopy executable for the x86_64 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86_64/libglog.so because unable to locate the objcopy executable for the x86_64 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86_64/libimagepipeline.so because unable to locate the objcopy executable for the x86_64 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86_64/libglog_init.so because unable to locate the objcopy executable for the x86_64 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86_64/libturbomodulejsijni.so because unable to locate the objcopy executable for the x86_64 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86_64/libreact_codegen_reactandroidspec.so because unable to locate the objcopy executable for the x86_64 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86_64/libcrashlytics.so because unable to locate the objcopy executable for the x86_64 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86_64/libfolly_futures.so because unable to locate the objcopy executable for the x86_64 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86_64/libhermes-executor-debug.so because unable to locate the objcopy executable for the x86_64 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86_64/libc++_shared.so because unable to locate the objcopy executable for the x86_64 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86_64/libhermes-executor-release.so because unable to locate the objcopy executable for the x86_64 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86_64/libhermes-executor-common-debug.so because unable to locate the objcopy executable for the x86_64 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86_64/libfb.so because unable to locate the objcopy executable for the x86_64 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86_64/libcrashlytics-handler.so because unable to locate the objcopy executable for the x86_64 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86_64/libreact_nativemodule_core.so because unable to locate the objcopy executable for the x86_64 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86_64/libjscexecutor.so because unable to locate the objcopy executable for the x86_64 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86_64/libreanimated.so because unable to locate the objcopy executable for the x86_64 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86_64/libreactnativejni.so because unable to locate the objcopy executable for the x86_64 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86_64/libcrashlytics-trampoline.so because unable to locate the objcopy executable for the x86_64 ABI.
+Unable to extract native debug metadata from /Users/toandev/SourceCode/NIC.VN/AYASAN/MOBILE_APP/android/app/build/intermediates/merged_native_libs/release/out/lib/x86_64/libyoga.so because unable to locate the objcopy executable for the x86_64 ABI.
+
+> Task :app:mergeDexRelease
+> Task :app:buildReleasePreBundle
+> Task :app:packageReleaseBundle
+> Task :app:signReleaseBundle
+> Task :app:produceReleaseBundleIdeListingFile
+> Task :app:bundleRelease
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 7.0.
+Use '--warning-mode all' to show the individual deprecation warnings.
+See https://docs.gradle.org/6.9/userguide/command_line_interface.html#sec:command_line_warnings
+
+BUILD SUCCESSFUL in 1m 35s
+996 actionable tasks: 961 executed, 35 up-to-date

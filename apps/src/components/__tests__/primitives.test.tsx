@@ -4,6 +4,7 @@ import {
   StyleSheet,
   StatusBar,
   Text as RNText,
+  View,
 } from "react-native";
 import { act, create, textNodes, hostTouchables } from "../../test-utils/helpers";
 import { Text } from "../Text";
@@ -114,7 +115,7 @@ describe("Container", () => {
   });
 
   it("passes statusBarColor through to the StatusBar", () => {
-    const { root } = create(<Container statusBarColor="#123456" />);
+    const { root } = create(<Container statusBarColor="#123456"><View /></Container>);
     expect(root.findByType(StatusBar).props.backgroundColor).toBe("#123456");
   });
 });

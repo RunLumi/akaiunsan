@@ -393,7 +393,7 @@ function RootNavigator() {
           <NavStack.Screen
             options={defaultHeader}
             name={Constants.SCREENS.OTHER.ADD_FIX_PLAN}
-            component={AddFixPlan}
+            component={AddFixPlan as any}
           />
           <NavStack.Screen
             options={defaultHeader}

@@ -41,7 +41,7 @@ export const CameraLibrary = ({
       name: "photo.png",
       filename: "imageName.png",
       type: "image/png",
-    });
+    } as any);
     bodyFormData.append("Content-Type", "image/png");
 
     return await axios({

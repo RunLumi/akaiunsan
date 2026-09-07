@@ -45,7 +45,7 @@ export const PositionSelect = ({
   type,
   ...props
 }: Props) => {
-  const mapView = useRef<MapView>();
+  const mapView = useRef<any>(null);
   const [isDefaultAddress, setIsDefaultAddress] = useState(false);
   const [itemId, setItemId] = useState(null);
   const [bedroomNumber, setBedroomNumber] = useState(0);

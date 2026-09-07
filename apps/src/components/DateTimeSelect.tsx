@@ -162,7 +162,7 @@ export const DateTimeSelect = ({
               // hideArrows
               renderArrow={(direction: any) => (
                 <FontAwesome
-                  name={`chevron-${direction}`}
+                  name={`chevron-${direction}` as any}
                   size={24}
                   color={colors.main_color}
                 />

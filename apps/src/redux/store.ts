@@ -29,7 +29,7 @@ class Store {
 		const composeEnhancers = compose;
 
 		// Create store
-		const enhancer = composeEnhancers(applyMiddleware(...[sagaMiddleware, logger]));
+		const enhancer = composeEnhancers(applyMiddleware(...([sagaMiddleware, logger] as any[])));
 		this.store = createStore(reducer, enhancer);
 		// Create persistor
 		this.persistor = persistStore(this.store);

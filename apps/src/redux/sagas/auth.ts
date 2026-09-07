@@ -5,9 +5,9 @@ function* login(value: { payload: any; type: string }) {
 	yield put({ type: success(TYPES.AUTH.LOGIN), payload: value.payload });
 }
 
-function* logout(callback) {
+function* logout(action: { callback?: () => void }) {
 	yield put({ type: success(TYPES.AUTH.LOG_OUT) });
-	if (callback) callback();
+	if (typeof action?.callback === 'function') action.callback();
 }
 
-export default [takeLatest(TYPES.AUTH.LOG_OUT, logout)];
+export default [takeLatest(TYPES.AUTH.LOG_OUT, logout as any)];

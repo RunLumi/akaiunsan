@@ -44,7 +44,7 @@ const PickerModal = () => {
     dispatch({ type: TYPES.TOOLS.CLOSE_PICKER });
   };
 
-  const renderItem = (item, idx) => (
+  const renderItem = (item: any, idx: any) => (
     <TouchableOpacity key={idx} onPress={() => handleEventValue(item)}>
       <Text
         style={{

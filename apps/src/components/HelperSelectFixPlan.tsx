@@ -129,7 +129,7 @@ export const HelperSelectFixPlan = ({
       Alert.alert(i18n.t("auth.error"), i18n.t("home.select_your_helper"));
     }
   };
-  const searchNameHelper = (value) => {
+  const searchNameHelper = (value: any) => {
     setSearchHelper(value);
     requestListHelper({
       data: {
@@ -141,7 +141,7 @@ export const HelperSelectFixPlan = ({
       },
     });
   };
-  const onSelectHelper = (value, idx) => {
+  const onSelectHelper = (value: any, idx: any) => {
     let valueHelpers: any = [...dataHelper];
     let valueHelperSuggest: any = [...dataHelperSuggest];
     for (let index = 0; index < valueHelpers.length; index++) {
@@ -175,7 +175,7 @@ export const HelperSelectFixPlan = ({
     setDataHelperSuggest(valueHelperSuggest);
     setDataHelper(valueHelpers);
   };
-  const renderItem = (item, idx) => (
+  const renderItem = (item: any, idx: any) => (
     <View key={idx} style={styles.viewImage}>
       <TouchableOpacity onPress={() => showDetail(item, idx, 1)}>
         <ImageBackground
@@ -601,13 +601,23 @@ export const HelperSelectFixPlan = ({
           </Text>
           <SearchBar
             placeholder={i18n.t("home.search_helper")}
-            onChangeText={(value) => searchNameHelper(value)}
+            onChangeText={searchNameHelper as any}
             value={searchHelper}
             // containerStyle={{backgroundColor:"transparent"}}
             showLoading={loadingListHelper}
             loadingProps={{ color: colors.blue_link }}
             platform="ios"
             onCancel={() => console.log("Cancel")}
+            lightTheme={false}
+            round={false}
+            onClear={() => {}}
+            onFocus={() => {}}
+            onBlur={() => {}}
+            searchIcon={{ name: "search", color: "#86939e" }}
+            clearIcon={{ name: "clear", color: "#86939e" }}
+            showCancel={false}
+            cancelButtonTitle=""
+            cancelButtonProps={{}}
           />
           <View style={{ flex: 1 }}>
             <FlatList

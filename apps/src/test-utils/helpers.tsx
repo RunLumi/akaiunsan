@@ -5,7 +5,7 @@ import TestRenderer, { act } from "react-test-renderer";
 import { Text as RNText, TouchableOpacity as RNTouchableOpacity } from "react-native";
 import reducers from "../redux/reducers";
 
-export const makeStore = (preloaded?: any) => createStore(reducers as any, preloaded);
+export const makeStore = (preloaded?: any): any => createStore(reducers as any, preloaded);
 
 // Flushes the resolved axios mocks so useApi callbacks run their setState.
 export const flush = async () => {

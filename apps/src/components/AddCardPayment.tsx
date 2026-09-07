@@ -141,7 +141,7 @@ export const AddCardPayment = ({
                 cacheEnabled={false}
                 injectedJavaScript={injectedToHtml()}
                 originWhitelist={['*']}
-                source={{ uri: Config.OMISEADDCARD }}
+                source={{ uri: Config.OMISEADDCARD as string }}
                 allowFileAccess
                 allowUniversalAccessFromFileURLs
                 scalesPageToFit

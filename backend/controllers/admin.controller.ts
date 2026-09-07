@@ -1,3 +1,4 @@
+import fs from 'fs';
 import { Admin, Role, ErrorLog } from '../models/index.ts';
 import { genTxt, getAdminData } from '../helpers/util.ts';
 import { encryptPassword } from '../helpers/security.ts';

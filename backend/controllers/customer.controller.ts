@@ -1,3 +1,4 @@
+import fs from 'fs';
 import { Customer, ErrorLog } from '../models/index.ts';
 import { genTxt, getCustomerData, json2csv, writeCsvFile } from '../helpers/util.ts';
 import { encryptPassword } from '../helpers/security.ts';

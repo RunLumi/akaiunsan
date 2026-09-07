@@ -7,11 +7,6 @@
     "icon": "./src/assets/images/App.png",
     "scheme": "com.akaiunsan.customer",
     "userInterfaceStyle": "automatic",
-    "splash": {
-      "image": "./src/assets/images/Splash-screen.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#F48120"
-    },
     "updates": {
       "fallbackToCacheTimeout": 0,
       "checkAutomatically": "ON_ERROR_RECOVERY"
@@ -75,6 +70,7 @@
     },
     "plugins": [
       "./plugins/withFirebaseDisableSpm",
+      "./plugins/withAndroidGradleProps",
       "@react-native-firebase/app",
       "@react-native-firebase/crashlytics",
       "@react-native-google-signin/google-signin",

@@ -1,0 +1,198 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Colors characterization golden file: palette 1`] = `
+{
+  "background": "#ffffff",
+  "black": "#000000",
+  "black_text": "rgb(51,51,51)",
+  "blue_link": "rgb(57,163,255)",
+  "grab_orange": "rgb(244, 129, 32)",
+  "gray": "#808080",
+  "gray_hidden_text": "rgba(179,179,179, 1)",
+  "gray_light": "#f0f0f0",
+  "gray_normal_text": "rgb(153,153,153)",
+  "green": "#34a853",
+  "main_blue": "rgb(4,97,178)",
+  "main_color": "#F48120",
+  "main_orange": "rgb(247,147,30)",
+  "main_orange_light": "rgba(247,147,30,0.15)",
+  "pinky": "rgba(255, 190, 190, 0.3)",
+  "red": "#FF0000",
+  "white": "#ffffff",
+  "yellow": "#fcb813",
+}
+`;
+
+exports[`Enum characterization golden file: full enum catalogue (backend contract values) 1`] = `
+{
+  "GENDER": [
+    {
+      "label": "Female",
+      "value": 0,
+    },
+    {
+      "label": "Male",
+      "value": 1,
+    },
+    {
+      "label": "Miss",
+      "value": 2,
+    },
+  ],
+  "HelperStatus": {
+    "ACTIVE": 1,
+    "INACTIVE": 2,
+  },
+  "InboxType": {
+    "NEWS": 2,
+    "ORDER": 0,
+    "PROMOTION": 1,
+    "SUBSCRIPTIONORDER": 3,
+  },
+  "OrderStatus": {
+    "CANCEL": 3,
+    "COMPLETED": 2,
+    "MATCH": 1,
+    "ON_PROCESS": 4,
+    "PENDING": 0,
+    "RECEIVED": 6,
+    "WAITING_CONFIRM": 5,
+  },
+  "OrderStatusDetail": {
+    "Cancel": 3,
+    "Completed": 2,
+    "Match": 1,
+    "On process": 4,
+    "Pending": 0,
+    "Waiting confirm": 5,
+  },
+  "OrderStatusDetailColor": {
+    "#00bcd4": 5,
+    "#03a9f4": 4,
+    "#4caf50": 2,
+    "#4caf51": 1,
+    "#f44336": 3,
+    "#ffeb3b": 0,
+  },
+  "PLAN_RANK": {
+    "GOLD": 2,
+    "PLATINUM": 3,
+    "SILVER": 1,
+  },
+  "PLAN_TYPE": {
+    "FIX_PLAN": 2,
+    "FLEXIBLE_PLAN": 1,
+  },
+  "POINT": {
+    "MONEY_CONVERT_POINT": 1,
+    "POINT_CONVERT_DISCOUNT": 2,
+    "REWARD_POINT": 3,
+  },
+  "PRICES": {
+    "ElderService": 5,
+    "ElderService_Eng": 6,
+    "MaidService": 1,
+    "MaidService_Eng": 2,
+    "NanyService": 3,
+    "NanyService_Eng": 4,
+    "PetcareService": 7,
+    "PetcareService_Eng": 8,
+  },
+  "PaymentStatusDetail": {
+    "": 0,
+    "Done": 1,
+    "Not": 2,
+  },
+  "PlanType": {
+    "FIX": 2,
+    "FLEXIBLE": 1,
+  },
+  "PlatformType": {
+    "ANDROID": "2",
+    "IOS": "1",
+    "WEBSITE": "3",
+  },
+  "PriceSpecialRequest": {
+    "COSTSP": 1,
+    "LANGUAGE": 2,
+  },
+  "PromotionStatus": {
+    "ACTIVE": 1,
+    "EXPIRED": 4,
+    "INACTIVE": 2,
+    "PROGRESSING": 3,
+    "STOPPED": 5,
+  },
+  "PromotionType": {
+    "EXTRA_SERVICES": 4,
+    "GIFT_MONEY": 2,
+    "GIFT_PERCENT": 1,
+    "GIFT_POINT": 3,
+  },
+  "PromotionTypeText": {
+    "": 0,
+    "Extra Services": 4,
+    "Gift Money": 2,
+    "Gift Percent": 1,
+    "Gift Point": 3,
+  },
+  "RoleMember": {
+    "Admin": {
+      "label": "Admin",
+      "value": 0,
+    },
+    "Member": {
+      "label": "Member",
+      "value": 1,
+    },
+  },
+  "SERVICE_TYPE": {
+    "CleaningService": 4,
+    "ElderService": 3,
+    "MaidService": 1,
+    "NanyService": 2,
+    "PetcareService": 5,
+  },
+  "SETTING": {
+    "PAYMENT_METHOD_CASH": 1,
+    "PAYMENT_METHOD_CREDIT_CARD": 2,
+  },
+  "SubscriptionStatus": {
+    "ACTIVE": 2,
+    "CANCEL": 4,
+    "EXPIRED": 3,
+    "NEW": 1,
+  },
+  "Type": {
+    "Order": 0,
+    "Promotion": 1,
+  },
+}
+`;
+
+exports[`Styles characterization golden file: spacing/shadow/typography scale 1`] = `
+{
+  "margin": {
+    "horizontal": 20,
+    "vertical": 10,
+  },
+  "shadow": {
+    "elevation": 3,
+    "shadowColor": "#808080",
+    "shadowOffset": {
+      "height": 0,
+      "width": 0,
+    },
+    "shadowOpacity": 0.2,
+    "shadowRadius": 6,
+  },
+  "typography": {
+    "footnode": 10,
+    "h1": 32,
+    "h2": 24,
+    "h3": 18,
+    "normal": 14,
+    "title": 16,
+  },
+}
+`;

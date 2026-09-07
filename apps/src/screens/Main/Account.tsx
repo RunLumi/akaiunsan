@@ -26,8 +26,8 @@ import { Divider } from "react-native-elements";
 import useApi from "../../hooks/useApi";
 import { useIsFocused } from "@react-navigation/native";
 import DeviceInfo from "react-native-device-info";
+import notifee from "@notifee/react-native";
 import { ModalVersion } from "./components";
-import PushNotification from "react-native-push-notification";
 
 export default function Account(props: any) {
   const [loadingRemove, requestRemove] = useApi({
@@ -171,7 +171,7 @@ export default function Account(props: any) {
     setModalVisible(false);
     // dispatch({ type: success(TYPES.AUTH.LOG_OUT) });
     if (Platform.OS === "ios") {
-      Linking.openURL("https://apps.apple.com/us/app/ayasan/id1025748222");
+      Linking.openURL("https://apps.apple.com/us/app/akaiunsan/id6809336835");
     }
     if (Platform.OS === "android") {
       Linking.openURL(
@@ -199,7 +199,7 @@ export default function Account(props: any) {
     requestAddDeviceNotification({
       data: { token: "had_remove" },
     });
-    PushNotification.setApplicationIconBadgeNumber(0);
+    notifee.setBadgeCount(0);
   };
 
   const renderItem = ({ item, index }: { item: any; index: number }) => {

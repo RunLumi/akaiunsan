@@ -31,12 +31,13 @@ patchModule('omise', () => ({
   },
 }));
 
-let factories;
+let factories, subscriptionHelper;
 
 beforeAll(async () => {
   const helpers = await import('../helpers/db');
   const truncateAll = helpers.truncateAll;
   factories = await import('../helpers/factories');
+  subscriptionHelper = await import('../../helpers/subscription.ts');
   await truncateAll();
 });
 
@@ -51,7 +52,6 @@ function dayjsStr(d) {
 
 describe('helpers/subscription — remaining branches', () => {
   it('skips subscriptions whose next_payment is not today (already processed guard path)', async () => {
-    const subscriptionHelper = require('../../helpers/subscription.ts');
     const customer = await factories.createCustomer({ email: 'skip@test.local' });
     await db.Subscription.create({
       customer_id: customer.id,
@@ -68,7 +68,6 @@ describe('helpers/subscription — remaining branches', () => {
   });
 
   it('marks already-processed subscriptions and skips a re-charge the same day', async () => {
-    const subscriptionHelper = require('../../helpers/subscription.ts');
     const customer = await factories.createCustomer({ email: 'dup@test.local' });
     const sub = await db.Subscription.create({
       customer_id: customer.id,
@@ -93,7 +92,6 @@ describe('helpers/subscription — remaining branches', () => {
   });
 
   it('processes multiple due subscriptions in one pass', async () => {
-    const subscriptionHelper = require('../../helpers/subscription.ts');
     const c1 = await factories.createCustomer({ email: 'multi1@test.local', omise_customer_id: 'cust_m1' });
     const c2 = await factories.createCustomer({ email: 'multi2@test.local', omise_customer_id: 'cust_m2' });
     await db.Subscription.create({

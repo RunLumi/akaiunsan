@@ -1,4 +1,5 @@
-const db = require('../../models/index.ts');
+const loaded = require('../../models/index.ts');
+const db = loaded.default ?? loaded;
 
 /**
  * Truncate every application table between test files so suites start clean.

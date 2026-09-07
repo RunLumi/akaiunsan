@@ -1,3 +1,14 @@
+jest.mock("react-native-gesture-handler", () => {
+  const ReactNative = require("react-native");
+  return {
+    FlatList: ReactNative.FlatList,
+    ScrollView: ReactNative.ScrollView,
+    TouchableOpacity: ReactNative.TouchableOpacity,
+    TouchableWithoutFeedback: ReactNative.TouchableWithoutFeedback,
+    GestureHandlerRootView: ReactNative.View,
+  };
+});
+
 // Global native-module mocks for the component characterization suite
 // (docs/mobile-app-upgrade-plan.md Phase 1). jest-expo auto-mocks the *native*
 // half of the Expo SDK, but several JS layers render heavy native UI or hit

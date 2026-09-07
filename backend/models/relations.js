@@ -30,6 +30,11 @@ module.exports = (models) => {
   models.Customer.hasMany(models.Charge, { foreignKey: 'customer_id' });
   models.Customer.hasMany(models.JobReview, { foreignKey: 'customer_id' });
   models.Customer.hasOne(models.RequestHelper, { foreignKey: 'customer_id' });
+  // job.controller matchSupporter includes Customer on Job — the association
+  // existed in the production schema but was missing here, making every
+  // match attempt fail with "Customer is not associated to Job!".
+  models.Customer.hasMany(models.Job, { foreignKey: 'customer_id' });
+  models.Job.belongsTo(models.Customer, { foreignKey: 'customer_id' });
 
   //credit card
   models.CreditCard.belongsTo(models.Customer, { foreignKey: 'customer_id' });

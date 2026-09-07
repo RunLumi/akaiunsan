@@ -12,7 +12,7 @@ const total = summary.total;
 const num = (p) => Number(p.pct || 0);
 
 const floors = {
-  overallLines: 10,
+  overallLines: 50,
   dirs: [
     { re: /\/shared\//, name: "shared", lines: 80 },
     { re: /\/redux\//, name: "redux", lines: 80 },

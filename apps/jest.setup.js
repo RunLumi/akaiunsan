@@ -1,3 +1,19 @@
+// The legacy screens enqueue VirtualizedList state updates that land after the
+// suite finishes; React's act() warning then tries to log post-run, which jest
+// turns into "Cannot log after tests are done" and fails the CI process even
+// though every test passed. Suppress exactly that warning class.
+const originalConsoleError = console.error;
+console.error = (...args) => {
+  const message = typeof args[0] === "string" ? args[0] : String(args[0] ?? "");
+  if (
+    message.includes("not wrapped in act") ||
+    message.includes("Cannot log after tests are done")
+  ) {
+    return;
+  }
+  originalConsoleError(...args);
+};
+
 jest.mock("react-native-gesture-handler", () => {
   const ReactNative = require("react-native");
   return {
@@ -66,6 +82,15 @@ jest.mock("react-native-stars", () => ({
   __esModule: true,
   default: () => null,
 }));
+
+// google-places-autocomplete fires debounced XHR fetches on text change; there
+// is no XHR in the Node env, so provide a controlled TextInput stand-in.
+jest.mock("react-native-google-places-autocomplete", () => {
+  const React = require("react");
+  const GooglePlacesAutocomplete = (props) =>
+    React.createElement("TextInput", props);
+  return { __esModule: true, GooglePlacesAutocomplete };
+});
 
 // react-native-action-button reads its Stylesheet at import time in a way the
 // Node env chokes on; the smoke suite only needs a renderable stand-in.
@@ -331,6 +356,17 @@ jest.mock("axios", () => {
   request.put = jest.fn();
   request.default = request;
   return request;
+});
+
+// The expo fetch shim resolves with an empty body in the Node test env, so any
+// un-caught response.json() parse (Geocoding flows inside screens) rejects
+// after the suite finishes and fails the CI process. Stub a well-formed
+// response; suites that characterize fetch (Geocoding) override this per test.
+globalThis.fetch = jest.fn().mockResolvedValue({
+  ok: true,
+  status: 200,
+  json: async () => ({ results: [], status: "OK" }),
+  text: async () => "{}",
 });
 
 // RN 0.64 + jest-expo run components in the Node env, which has no global

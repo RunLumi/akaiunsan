@@ -1,16 +1,20 @@
 import { clearCookies } from '@/test-utils/cookies'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import type { AdminUser } from './auth-store'
 
 async function importAuthStore() {
   const { useAuthStore } = await import('./auth-store')
   return useAuthStore
 }
 
-const sampleUser = {
-  accountNo: 'ACC-1',
-  email: 'user@example.com',
-  role: ['user'],
-  exp: 1_700_000_000,
+const sampleUser: AdminUser = {
+  id: 1,
+  firstname: 'Akai',
+  lastname: 'Unsan',
+  username: 'admin@akaiunsan.com',
+  email: 'admin@akaiunsan.com',
+  role: 'admin',
+  permission: ['User', 'Banner'],
 }
 
 describe('useAuthStore', () => {
@@ -19,48 +23,49 @@ describe('useAuthStore', () => {
     vi.resetModules()
   })
 
-  it('starts with an empty access token when nothing is persisted', async () => {
+  it('starts with an empty session when nothing is persisted', async () => {
     const useAuthStore = await importAuthStore()
 
     expect(useAuthStore.getState().auth.accessToken).toBe('')
     expect(useAuthStore.getState().auth.user).toBeNull()
   })
 
-  it('persists access token so a new store instance reads it back', async () => {
+  it('setSession persists user and token so a new store instance reads them back', async () => {
     const useAuthStore = await importAuthStore()
-    useAuthStore.getState().auth.setAccessToken('session-token')
+    useAuthStore.getState().auth.setSession({ ...sampleUser }, 'jwt-token')
 
     vi.resetModules()
     const useAuthStoreAfterReload = await importAuthStore()
 
     expect(useAuthStoreAfterReload.getState().auth.accessToken).toBe(
-      'session-token'
+      'jwt-token'
     )
+    expect(useAuthStoreAfterReload.getState().auth.user).toEqual(sampleUser)
   })
 
-  it('clears persisted access token when resetAccessToken is used', async () => {
+  it('setAccessToken keeps the signed-in user while rotating the token', async () => {
     const useAuthStore = await importAuthStore()
-    useAuthStore.getState().auth.setAccessToken('to-clear')
-    useAuthStore.getState().auth.resetAccessToken()
+    useAuthStore.getState().auth.setSession({ ...sampleUser }, 'old-token')
 
-    vi.resetModules()
-    const useAuthStoreAfterReload = await importAuthStore()
+    useAuthStore.getState().auth.setAccessToken('new-token')
 
-    expect(useAuthStoreAfterReload.getState().auth.accessToken).toBe('')
+    expect(useAuthStore.getState().auth.accessToken).toBe('new-token')
+    expect(useAuthStore.getState().auth.user).toEqual(sampleUser)
   })
 
   it('updates the signed-in user via setUser', async () => {
     const useAuthStore = await importAuthStore()
+    useAuthStore.getState().auth.setSession({ ...sampleUser }, 'jwt-token')
 
-    useAuthStore.getState().auth.setUser({ ...sampleUser })
+    const updated = { ...sampleUser, firstname: 'Renamed' }
+    useAuthStore.getState().auth.setUser(updated)
 
-    expect(useAuthStore.getState().auth.user).toEqual(sampleUser)
+    expect(useAuthStore.getState().auth.user).toEqual(updated)
   })
 
   it('reset clears user and access token and drops persistence', async () => {
     const useAuthStore = await importAuthStore()
-    useAuthStore.getState().auth.setAccessToken('will-be-cleared')
-    useAuthStore.getState().auth.setUser({ ...sampleUser })
+    useAuthStore.getState().auth.setSession({ ...sampleUser }, 'will-be-cleared')
 
     useAuthStore.getState().auth.reset()
 

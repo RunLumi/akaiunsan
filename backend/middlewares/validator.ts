@@ -68,14 +68,17 @@ const validators = {
     }
   },
   headerValidator: (req, res, next) => {
-    let { app_key } = req.headers;
+    // Some proxies (e.g. Caddy >= 2.8) strip request headers whose names
+    // contain underscores, so also accept the dash-named spelling. Clients
+    // behind such proxies send `x-app-key` instead of `app_key`.
+    let app_key = req.headers.app_key ?? req.headers['x-app-key'];
     if (app_key == key.app_key)
       next();
     else {
       ErrorLog.create({ location: 'app use', message: `Unauthorized due to app key (${app_key})` })
      .then(() => {
-        let message = "frontend: " + app_key + " -- api: " + key.app_key;
-        return res.status(401).send({ message: message });
+        // Never echo the configured key back to the caller.
+        return res.status(401).send({ message: 'Unauthorized: invalid app key.' });
       });
     }
   },

@@ -49,7 +49,9 @@ describe('public tier — app_key gate (headerValidator)', () => {
   it('rejects /guest routes with a wrong app_key with 401', async () => {
     const res = await request(app).get('/guest/provinces').set('app_key', 'wrong-key');
     expect(res.status).toBe(401);
-    expect(res.body.message).toContain('wrong-key');
+    expect(res.body.message).toBe('Unauthorized: invalid app key.');
+    // the response must not leak the configured or received key
+    expect(res.body.message).not.toContain('wrong-key');
   });
 });
 

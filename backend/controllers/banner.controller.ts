@@ -1,8 +1,12 @@
-const { Banner, BannerLanguage, ErrorLog } = require('../models/index.ts');
+import moment from 'moment';
+import fs from 'fs';
+import path from 'path';
+import db from '../models/index.ts';
+const { Banner, BannerLanguage, ErrorLog } = db;
 let error_status = 500;
 let error_message = 'Unexpected error';
 const NODE_ENV = process.env.NODE_ENV || 'local';
-const config = require(`../config/${NODE_ENV}.json`);
+const config = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '', 'config', `${NODE_ENV}.json`), 'utf8'));
 const IMAGE_BASE_URL = config.image_base_url;
 
 async function update (req, res) {
@@ -75,7 +79,7 @@ async function update (req, res) {
 }
 
 async function getDisplay (req, res) {
-  const moment = require('moment');
+  
   try {
     const lang_code = req.params.lang_code ? req.params.lang_code.toUpperCase() : null;
     const list = await Banner.findAll({ where: { active: true }, order: [['ordering', 'ASC']], include: [{ model: BannerLanguage }] });
@@ -176,9 +180,4 @@ async function uploadImage (req, res) {
   }
 }
 
-module.exports = {
-  getList,
-  getDisplay,
-  update,
-  uploadImage,
-}
+export { getList, getDisplay, update, uploadImage };

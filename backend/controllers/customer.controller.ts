@@ -1,8 +1,11 @@
-const { Customer, ErrorLog } = require('../models/index.ts');
-const { genTxt, getCustomerData, json2csv, writeCsvFile } = require('../helpers/util.ts');
-const { encryptPassword } = require('../helpers/security.ts');
-const model = require('../models/index.ts').sequelize;
-const { substring, or } = require('sequelize').Op;
+import { substring, or } from 'sequelize';
+import db from '../models/index.ts';
+const { Customer, ErrorLog } = db;
+import { genTxt, getCustomerData, json2csv, writeCsvFile } from '../helpers/util.ts';
+import securityModule from '../helpers/security.ts';
+const { encryptPassword } = securityModule;
+import model from '../models/index.ts';.sequelize;
+.Op;
 let error_status = 500;
 let error_message = 'Unexpected error';
 
@@ -221,14 +224,4 @@ async function exportFile (req, res) {
   }
 }
 
-module.exports = {
-  getDetail: getDetail,
-  getList: getList,
-  create: create,
-  update: update,
-  remove: remove,
-  count: count,
-  uploadProfile: uploadProfile,
-  removeProfile: removeProfile,
-  exportFile,
-}
+export { getDetail as getDetail, getList as getList, create as create, update as update, remove as remove, count as count, uploadProfile as uploadProfile, removeProfile as removeProfile, exportFile };

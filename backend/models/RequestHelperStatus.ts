@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) =>{
+export default (sequelize, DataTypes) =>{
   const RequestHelperStatus = sequelize.define('RequestHelperStatus', {
     id: {
       type: DataTypes.INTEGER,

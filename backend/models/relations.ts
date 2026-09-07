@@ -1,4 +1,4 @@
-module.exports = (models) => {
+export default (models) => {
   //supporter
   models.Supporter.hasMany(models.SupporterSkill, { foreignKey: 'supporter_id' });
   models.Supporter.hasMany(models.SupporterExperience, { foreignKey: 'supporter_id' });

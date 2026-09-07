@@ -1,5 +1,7 @@
-const { RequestHelperStatus, ErrorLog } = require('../../models/index.ts');
-const { substring } = require('sequelize').Op;
+import { substring } from 'sequelize';
+import db from '../../models/index.ts';
+const { RequestHelperStatus, ErrorLog } = db;
+.Op;
 let error_status = 500;
 let error_message = 'Unexpected error';
 
@@ -104,11 +106,4 @@ async function remove (req, res) {
   }
 }
 
-module.exports = {
-  create,
-  update,
-  getDetail,
-  getList,
-  getCount,
-  remove
-}
+export { create, update, getDetail, getList, getCount, remove };

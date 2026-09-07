@@ -50,10 +50,6 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
-	<key>FacebookAppID</key>
-	<string>1552681784990344</string>
-	<key>FacebookDisplayName</key>
-	<string>Akaiunsan Service</string>
 	<key>GMSApiKey</key>
 	<string>AIzaSyC8um-ALVzMHt5KetZF-UXcyijGTprnidY</string>
 	<key>LSApplicationQueriesSchemes</key>

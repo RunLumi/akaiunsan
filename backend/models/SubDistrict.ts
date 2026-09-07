@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) =>{
+export default (sequelize, DataTypes) =>{
   const SubDistrict = sequelize.define('SubDistrict', {
     id: {
       type: DataTypes.INTEGER,

@@ -1,10 +1,13 @@
-const { Supporter, SupporterViewCount, SupporterSkill, SupporterExperience,
-  SupporterLanguage, ErrorLog } = require('../../models/index.ts');
-const { substring, and, eq, ne, gte, lte } = require('sequelize').Op;
+import { substring, and, eq, ne, gte, lte } from 'sequelize';
+import fs from 'fs';
+import path from 'path';
+import db from '../../models/index.ts';
+const { Supporter, SupporterViewCount, SupporterSkill, SupporterExperience, SupporterLanguage, ErrorLog } = db;
+.Op;
 let error_status = 500;
 let error_message = 'Unexpected error';
 const NODE_ENV = process.env.NODE_ENV || 'local';
-const config = require(`../../config/${NODE_ENV}.json`);
+const config = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', '', 'config', `${NODE_ENV}.json`), 'utf8'));
 const IMAGE_BASE_URL = config.image_base_url;
 let DEFAULT_PROFILE_IMAGE_URL = config.default_image_url;
 
@@ -249,8 +252,4 @@ async function updateInterest (req, res) {
   }
 }
 
-module.exports = {
-  getDetail,
-  getList,
-  updateInterest
-}
+export { getDetail, getList, updateInterest };

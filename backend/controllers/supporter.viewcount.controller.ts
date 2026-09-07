@@ -1,12 +1,14 @@
-const { Supporter, SupporterViewCount, ErrorLog } = require('../models/index.ts');
-const model = require('../models/index.ts').sequelize;
-// const { substring, and, or, not, eq, ne, gte, lte } = require('sequelize').Op;
-const { sequelize } = require('../models/index.ts');
+import moment from 'moment';
+import fs from 'fs';
+import path from 'path';
+import db from '../models/index.ts';
+const { Supporter, SupporterViewCount, ErrorLog } = db;
+import model from '../models/index.ts';.sequelize;
+// import { substring, and, or, not, eq, ne, gte, lte } = require('sequelize').Op; const { sequelize } from '../models/index.ts';
 let error_status = 500;
 let error_message = 'Unexpected error';
-const fs = require('fs');
 const NODE_ENV = process.env.NODE_ENV || 'local';
-const config = require(`../config/${NODE_ENV}.json`);
+const config = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '', 'config', `${NODE_ENV}.json`), 'utf8'));
 
 async function createCount (req, res) {
   try {
@@ -23,7 +25,7 @@ async function createCount (req, res) {
     for (let item of view_count_list) {
       let maid_id = Number(item.id);
       const supporter = await Supporter.findOne({ where: { maid_id }});
-      const moment = require('moment');
+      
       if (supporter) {
         sql += '(' + supporter.id + ', ' + item.count + ', "' + moment(String(maid_date)).format('YYYY-MM-DD hh:mm:ss');
         sql += '", "' + moment(String(maid_date)).format('YYYY-MM-DD hh:mm:ss') + '"),\n';
@@ -53,6 +55,4 @@ async function createCount (req, res) {
   }
 }
 
-module.exports = {
-  createCount
-}
+export { createCount };

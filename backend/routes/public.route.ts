@@ -1,17 +1,18 @@
 // public route is for accessing data without the need of authorization
 // but it is still needs key in header
-const { headerValidator } = require('./../middlewares/validator.ts');
+import middlewareValidators from './../middlewares/validator.ts';
+const { headerValidator } = middlewareValidators;
 
-const AccountController = require('../controllers/account/account.controller.ts');
-const BlogController = require('./../controllers/blog.controller.ts');
-const SupporterController = require('../controllers/supporter.controller.ts');
-const BannerController = require('./../controllers/banner.controller.ts');
-const MailController = require('./../controllers/mail.controller.ts');
-const ErrorController = require('./../controllers/error.controller.ts');
-const SupporterViewCountController = require('./../controllers/supporter.viewcount.controller.ts');
-const AddressJsonController = require('./../controllers/address.json.controller.ts');
+import AccountController from '../controllers/account/account.controller.ts';
+import BlogController from './../controllers/blog.controller.ts';
+import SupporterController from '../controllers/supporter.controller.ts';
+import BannerController from './../controllers/banner.controller.ts';
+import MailController from './../controllers/mail.controller.ts';
+import ErrorController from './../controllers/error.controller.ts';
+import SupporterViewCountController from './../controllers/supporter.viewcount.controller.ts';
+import AddressJsonController from './../controllers/address.json.controller.ts';
 
-module.exports = app => {
+export default app => {
   // authentication
   app.use('/auth/*s', headerValidator);
   app.post('/auth/admin/forget-password', AccountController.admin.requestForgetPassword);

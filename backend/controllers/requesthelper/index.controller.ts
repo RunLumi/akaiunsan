@@ -1,10 +1,12 @@
-const { RequestHelper, RequestHelperStatus, RequestMaid, RequestDriver, ErrorLog, Customer } = require('../../models/index.ts');
-const requestHelper = require('../../helpers/requestHelper.helper.ts');
+import fs from 'fs';
+import db from '../../models/index.ts';
+const { RequestHelper, RequestHelperStatus, RequestMaid, RequestDriver, ErrorLog, Customer } = db;
+import requestHelper from '../../helpers/requestHelper.helper.ts';
 let error_status = 500;
 let error_message = 'Unexpected error';
-const fs = require('fs');
-const { sendMail } = require('../../helpers/mail.ts');
-const requestHelperStatus = require('./status.controller.ts');
+
+import { sendMail } from '../../helpers/mail.ts';
+import requestHelperStatus from './status.controller.ts';
 
 async function create (req, res) {
   try {
@@ -458,35 +460,4 @@ async function getRequestDriverIsOTStatistics (req, res) {
     return res.status(error_status).json({ message: error_message });
   }
 }
-module.exports = {
-  create,
-  update,
-  getDetail,
-  getList,
-  getHistory,
-  getCountHistory,
-  getCount,
-  remove,
-  getLastItem,
-  updateStatus,
-  getRequestStatistics,
-  getRequestScheduleStatistics,
-  getRequestNationalStatistics,
-  getRequestDayStatistics,
-  getRequestLanguageStatistics,
-  getRequestDriverLanguageStatistics,
-  getRequestDriverAgeStatistics,
-  getRequestDriverScheduleStatistics,
-  getRequestDriverSalaryStatistics,
-  getRequestDriverHiringStatistics,
-  getRequestDriverInterviewStatistics,
-  getRequestDriverReplacementGuranteeStatistics,
-  getRequestCookingStatistics,
-  getRequesKidStatistics,
-  getRequesPetStatistics,
-  getRequesCurrentHelperStatistics,
-  getRequestDriverOwnCarStatistics,
-  getRequestDriverCurrentDriverStatistics,
-  getRequestDriverIsOTStatistics,
-  status: requestHelperStatus
-}
+export { create, update, getDetail, getList, getHistory, getCountHistory, getCount, remove, getLastItem, updateStatus, getRequestStatistics, getRequestScheduleStatistics, getRequestNationalStatistics, getRequestDayStatistics, getRequestLanguageStatistics, getRequestDriverLanguageStatistics, getRequestDriverAgeStatistics, getRequestDriverScheduleStatistics, getRequestDriverSalaryStatistics, getRequestDriverHiringStatistics, getRequestDriverInterviewStatistics, getRequestDriverReplacementGuranteeStatistics, getRequestCookingStatistics, getRequesKidStatistics, getRequesPetStatistics, getRequesCurrentHelperStatistics, getRequestDriverOwnCarStatistics, getRequestDriverCurrentDriverStatistics, getRequestDriverIsOTStatistics, requestHelperStatus as status };

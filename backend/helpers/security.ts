@@ -1,11 +1,16 @@
-const bcrypt = require('bcrypt');
-const saltRounds = 10;
-const jwt = require('jsonwebtoken');
-const NODE_ENV = process.env.NODE_ENV || 'local';
-const key = require(`../config/${NODE_ENV}.json`);
-const { Customer, Admin } = require('./../models/index.ts');
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import fs from 'fs';
+import path from 'path';
 
-module.exports = {
+const saltRounds = 10;
+
+const NODE_ENV = process.env.NODE_ENV || 'local';
+const key = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '', 'config', `${NODE_ENV}.json`), 'utf8'));
+import db from './../models/index.ts';
+const { Customer, Admin } = db;
+
+const securityModule = {
   encryptPassword: async (_password) => {
     const salt = await bcrypt.genSaltSync(saltRounds);
     return await bcrypt.hashSync(_password, salt);
@@ -46,4 +51,7 @@ module.exports = {
       algorithm: 'HS256'
     });
   }
-}
+
+};
+
+export default securityModule;

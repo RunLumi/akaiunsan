@@ -1,14 +1,19 @@
-const { ErrorLog } = require('../models/index.ts');
+import scrape from 'html-metadata';
+import rssConverter from 'rss-converter';
+import cheerio from 'cheerio';
+import rssConverter from 'rss-converter';
+import db from '../models/index.ts';
+const { ErrorLog } = db;
 let error_status = 500;
 let error_message = 'Unexpected error';
 const BLOG_URL = 'https://blog.ayasan-service.com/'
 const BLOG_RSS_URL = 'https://blog.ayasan-service.com/feed/?paged=';
 const BLOG_RSS_SEARCH_URL = 'https://blog.ayasan-service.com/?feed=rss2';
-const scrape = require('html-metadata');
+
 
 async function getList (req, res) {
   try {
-    const rssConverter = require('rss-converter');
+    
     let { page = 1 } = req.query;
     let feed = await rssConverter.toJson(`${BLOG_RSS_URL}${page}`);
 
@@ -54,7 +59,7 @@ async function getContent (req, res) {
       throw { message: 'Request blog error' };
     const result = await response.text();
 
-    const cheerio = require('cheerio');
+    
     let $ = cheerio.load(result);
 
     let blog_content = $('.entry-content').html();
@@ -91,7 +96,7 @@ async function getContent (req, res) {
 
 async function getSearch (req, res) {
   try {
-    const rssConverter = require('rss-converter');
+    
     let { page = 1, keyword = '' } = req.query;
     console.log(keyword)
     let feed = await rssConverter.toJson(`${BLOG_RSS_SEARCH_URL}&s=${keyword}&paged=${page}`);
@@ -119,8 +124,4 @@ async function getSearch (req, res) {
   }
 }
 
-module.exports = {
-  getList,
-  getContent,
-  getSearch
-}
+export { getList, getContent, getSearch };

@@ -1,4 +1,4 @@
-module.exports = (sequelize, DataTypes) =>{
+export default (sequelize, DataTypes) =>{
     const RequestDriver = sequelize.define('RequestDriver', {
     id: {
       type: DataTypes.INTEGER,

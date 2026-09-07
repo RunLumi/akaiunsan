@@ -7,9 +7,6 @@
     "icon": "./src/assets/images/App.png",
     "scheme": "com.akaiunsan.customer",
     "userInterfaceStyle": "automatic",
-    "facebookAppId": "1552681784990344",
-    "facebookScheme": "fb1552681784990344",
-    "facebookDisplayName": "Akaiunsan Service",
     "splash": {
       "image": "./src/assets/images/Splash-screen.png",
       "resizeMode": "cover",

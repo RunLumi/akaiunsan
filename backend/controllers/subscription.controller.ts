@@ -1,7 +1,8 @@
-const { Subscription, ErrorLog } = require('../models/index.ts');
-const SubscriptionHelper = require("./../helpers/subscription.ts");
-const OmiseHelper = require("./../helpers/omise.ts");
-const PaymentHelper = require("./../helpers/payment.ts");
+import db from '../models/index.ts';
+const { Subscription, ErrorLog } = db;
+import SubscriptionHelper from "./../helpers/subscription.ts";
+import OmiseHelper from "./../helpers/omise.ts";
+import PaymentHelper from "./../helpers/payment.ts";
 let error_status = 500;
 let error_message = 'Unexpected error';
 
@@ -171,10 +172,4 @@ const processSubscriptionsPayment = async (req, res) => {
   await SubscriptionHelper.processSubscriptionsPayment();
 };
 
-module.exports = {
-  getList,
-  findSubscription,
-  createSubscription,
-  cancelSubscription,
-  processSubscriptionsPayment,
-};
+export { getList, findSubscription, createSubscription, cancelSubscription, processSubscriptionsPayment };

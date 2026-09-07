@@ -1,7 +1,10 @@
+import omise from 'omise';
+import fs from 'fs';
+import path from 'path';
 const NODE_ENV = process.env.NODE_ENV || 'local';
-const key = require(`../config/${NODE_ENV}.json`);
+const key = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '', 'config', `${NODE_ENV}.json`), 'utf8'));
 
-const omise = require('omise')({
+({
     omiseVersion: key.omise.omiseVersion,
     secretKey: key.omise.secretKey
 })
@@ -85,11 +88,4 @@ const removeOmiseCard = async (omise_customer_id, omise_card_id) => {
     }
 }
 
-module.exports = {
-    createOmiseCustomer,
-    findOmiseCustomerById,
-    chargeCustomerCardById,
-    getCustomerCardsById,
-    attachOmiseCard,
-    removeOmiseCard
-}
+export { createOmiseCustomer, findOmiseCustomerById, chargeCustomerCardById, getCustomerCardsById, attachOmiseCard, removeOmiseCard };

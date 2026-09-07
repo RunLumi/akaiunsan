@@ -1,7 +1,7 @@
-const { RequestHelper, RequestMaid, RequestDriver, Province, District, SubDistrict,
-} = require("../models/index.ts");
-const { substring, or, and, eq, between } = require("sequelize").Op;
-const { sendMail } = require("./mail.ts");
+import { RequestHelper, RequestMaid, RequestDriver, Province, District, SubDistrict, } from "../models/index.ts";
+import { Op } from 'sequelize';
+const { substring, or, and, eq, between } = (Op as any);
+import { sendMail } from './mail.ts';
 
 async function newRequestEmail(data1, data2) {
   let request_type = data1.request_type == "driver" ? "Driver" : "Helper";
@@ -1290,32 +1290,4 @@ async function countRequestDriverIsOTStatistics(
     throw new Error(e.message);
   }
 }
-module.exports = {
-  create,
-  update,
-  getDetail,
-  getList,
-  getHistory,
-  getCountHistory,
-  remove,
-  count,
-  countRequestStatistics,
-  countRequestScheduleStatistics,
-  countRequestNationalStatistics,
-  countRequestDayStatistics,
-  countRequestLanguageStatistics,
-  countRequestDriverLanguageStatistics,
-  countRequestDriverAgeStatistics,
-  countRequestDriverScheduleStatistics,
-  countRequestDriveSalaryStatistics,
-  countRequestDriverHiringStatistics,
-  countRequestDriverInterviewStatistics,
-  countRequestDriveReplacementGuaranteeStatistics,
-  countRequestCookingStatistics,
-  countRequesKidStatistics,
-  countRequesPetStatistics,
-  countRequesCurrentHelperStatistics,
-  countRequestDriverOwnCarStatistics,
-  countRequestDriverCurrentDriverStatistics,
-  countRequestDriverIsOTStatistics
-};
+export { create, update, getDetail, getList, getHistory, getCountHistory, remove, count, countRequestStatistics, countRequestScheduleStatistics, countRequestNationalStatistics, countRequestDayStatistics, countRequestLanguageStatistics, countRequestDriverLanguageStatistics, countRequestDriverAgeStatistics, countRequestDriverScheduleStatistics, countRequestDriveSalaryStatistics, countRequestDriverHiringStatistics, countRequestDriverInterviewStatistics, countRequestDriveReplacementGuaranteeStatistics, countRequestCookingStatistics, countRequesKidStatistics, countRequesPetStatistics, countRequesCurrentHelperStatistics, countRequestDriverOwnCarStatistics, countRequestDriverCurrentDriverStatistics, countRequestDriverIsOTStatistics };

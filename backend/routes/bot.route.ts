@@ -1,6 +1,6 @@
-const BotController = require('../controllers/bot/index.controller.ts');
+import BotController from '../controllers/bot/index.controller.ts';
 
-module.exports = app => {
+export default app => {
   //ayasan bot route
   app.get('/bot/profile/:helper_id', BotController.getDetail);
   app.get('/bot/profile', BotController.getList);

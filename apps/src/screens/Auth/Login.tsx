@@ -34,7 +34,6 @@ import Constants from "../../shared/Constants";
 import i18n from "../../shared/I18n";
 import Styles from "../../shared/Styles";
 import { FontAwesome5 } from "@expo/vector-icons";
-import * as Facebook from "expo-facebook";
 import * as AppleAuthentication from "expo-apple-authentication";
 import * as WebBrowser from "expo-web-browser";
 import * as Linking from "expo-linking";
@@ -167,36 +166,6 @@ export default function Login(props: any) {
             });
           } catch (error) {
             Alert.alert("account", JSON.stringify(error));
-          }
-        }
-      }
-    },
-  });
-  const [loadingFacebook, requestFacebook] = useApi({
-    method: "post",
-    url: Constants.API.face_login,
-    callback: async ({ error, response }) => {
-      if (error) {
-        setTimeout(() => {
-          Alert.alert(i18n.t("auth.error"), error);
-        }, 100);
-      } else {
-        if (response && response.auth_token) {
-          try {
-            sendFCMToken(response.auth_token);
-            i18n.locale = currentLanguage;
-            requestUpdateLanguage({
-              data: { language: currentLanguage == "th" ? 1 : 2 },
-              headers: { Authorization: `Bearer ${response.auth_token}` },
-            });
-            dispatch({
-              type: success(TYPES.AUTH.LOGIN),
-              payload: {
-                token: response.auth_token,
-              },
-            });
-          } catch (error) {
-            Alert.alert("face", JSON.stringify(error));
           }
         }
       }
@@ -364,30 +333,6 @@ export default function Login(props: any) {
     props.navigation.navigate(Constants.SCREENS.AUTH.SIGNUP);
   };
 
-  const loginFacebook = async () => {
-    setLoadingSignIn(true);
-    try {
-      await Facebook.initializeAsync({
-        appId: Constants.FACEBOOKID,
-      });
-      const { type, token }: any = await Facebook.logInWithReadPermissionsAsync(
-        {
-          permissions: ["public_profile", "email"],
-        }
-      );
-
-      if (type === "success" && token) {
-        await analytics().logEvent("login", { token: token });
-        setLoadingSignIn(false);
-        requestFacebook({ data: { token } });
-      } else {
-        setLoadingSignIn(false);
-      }
-    } catch (err: any) {
-      setLoadingSignIn(false);
-      Alert.alert(err?.message);
-    }
-  };
   const loginApple = async () => {
     setLoadingSignIn(true);
     try {
@@ -450,7 +395,6 @@ export default function Login(props: any) {
       <Loading
         loading={
           loadingLanguage ||
-          loadingFacebook ||
           loadingApple ||
           loadingLine ||
           loadingSignIn ||
@@ -535,16 +479,6 @@ export default function Login(props: any) {
             <Text style={s.or}>{i18n.t("auth.or")}</Text>
             <Text style={s.loginWith}>{i18n.t("auth.login_with")}</Text>
             <View style={s.row}>
-              <TouchableOpacity
-                onPress={loginFacebook}
-                style={{ marginRight: 12 }}
-              >
-                <FontAwesome5
-                  name="facebook-square"
-                  size={48}
-                  color="#4165AE"
-                />
-              </TouchableOpacity>
               {Platform.OS === "ios" && (
                 <TouchableOpacity
                   onPress={loginApple}

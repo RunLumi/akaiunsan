@@ -84,7 +84,6 @@ export default {
     check_otp: "/users/check-otp-forget-password",
     change_password: "/users/change-password",
     reset_password: "/users/reset-password",
-    face_login: "/users/face-login",
     line_login: "/users/line-login",
     google_login: "/users/google-login",
     apple_login: "/users/apple-login",
@@ -186,8 +185,6 @@ export default {
     services_suggest_fixplan: "/services-management/suggest-fixplan",
     services_helper_fixplan: "/services-management/helper-fix-plan",
   },
-  //ID App Facbook login
-  FACEBOOKID: "1552681784990344",
   //stg
   LOGINLINE:
     "https://admin-ayasan.stg.nichietsuvn.com/assets/html/PageRedirectLineLogin.html",

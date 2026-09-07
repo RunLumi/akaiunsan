@@ -1,5 +1,7 @@
-const { Role, ErrorLog } = require('../models/index.ts');
-const { substring, and, or, not, eq, ne, gte, lte, is } = require('sequelize').Op;
+import { substring, and, or, not, eq, ne, gte, lte, is } from 'sequelize';
+import db from '../models/index.ts';
+const { Role, ErrorLog } = db;
+.Op;
 let error_status = 500;
 let error_message = 'Unexpected error';
 
@@ -144,11 +146,4 @@ async function count (req, res) {
   }
 }
 
-module.exports = {
-  create,
-  update,
-  remove,
-  getDetail,
-  getList,
-  count
-}
+export { create, update, remove, getDetail, getList, count };

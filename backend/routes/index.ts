@@ -1,13 +1,21 @@
-const path = require('path');
-const SupporterController = require('../controllers/supporter.controller.ts');
-const InstallController = require('../controllers/install.controller.ts');
-const AgencyController = require('../controllers/agency/index.controller.ts');
+import r_public_route from './public.route.ts';
+import r_bot_route from './bot.route.ts';
+import r_agency_route from './agency.route.ts';
+import r_backoffice_route from './backoffice.route.ts';
+import r_client_route from './client.route.ts';
+import r_error from './error.ts';
+const routeModules: any = { 'public': r_public_route, 'bot': r_bot_route, 'agency': r_agency_route, 'backoffice': r_backoffice_route, 'client': r_client_route, 'error': r_error };
+import path from 'path';
+import db from '../models/index.ts';
 
-module.exports = (app) => {
+import SupporterController from '../controllers/supporter.controller.ts';
+import InstallController from '../controllers/install.controller.ts';
+import AgencyController from '../controllers/agency/index.controller.ts';
+
+export default (app) => {
   // infrastructure health check (load balancers / orchestrators) — no auth
   app.get('/health', async (req, res) => {
     try {
-      const db = require('../models/index.ts');
       await db.sequelize.query('SELECT 1');
       return res.status(200).json({ status: 'ok', env: process.env.NODE_ENV, db: 'up' });
     } catch (err) {
@@ -34,16 +42,16 @@ module.exports = (app) => {
   })
 
   // Un-authentication routes
-  require('./public.route.ts')(app);
+  routeModules['public'](app);
   
   //ayasan bot api routes
-  require('./bot.route.ts')(app);
+  routeModules['bot'](app);
 
-  require('./agency.route.ts')(app);
+  routeModules['agency'](app);
 
   // authentication required
-  require('./backoffice.route.ts')(app);
-  require('./client.route.ts')(app);
+  routeModules['backoffice'](app);
+  routeModules['client'](app);
 
-  require('./error.ts')(app);
+  routeModules['error'](app);
 }

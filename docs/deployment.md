@@ -30,6 +30,24 @@ ENVFILE=.env.production  ./gradlew app:assembleRelease
 ENVFILE=.env.dev         ./gradlew app:assembleRelease
 ```
 
+### API-based mobile store deployment
+
+Use `apps/scripts/deploy-stores.sh` to build the production Android AAB and iOS IPA, then upload them through the Google Play and App Store Connect APIs. The script does not submit an iOS build for App Review, and defaults Google Play to the `internal` track.
+
+```bash
+export GOOGLE_PLAY_SERVICE_ACCOUNT_JSON=/secure/path/play-service-account.json
+export ASC_API_KEY_JSON=/secure/path/app-store-connect-api-key.json
+export APPLE_TEAM_ID=7MBXZKYSY4
+
+# Build and validate only.
+./apps/scripts/deploy-stores.sh
+
+# Build and upload both artifacts.
+./apps/scripts/deploy-stores.sh --confirm
+```
+
+The API credential files must stay outside git. `--confirm` is required for uploads; `--build-only`, `--android-only`, and `--ios-only` are available for narrower runs. Set `PLAY_TRACK=closed` or `open` only when that release destination is intentional. Production uploads additionally require `ALLOW_PLAY_PRODUCTION=YES`.
+
 Android variants: `dev|staging|production` × `debug|release` (`yarn android:*` scripts).
 iOS schemes: `AyasanProduction`, `AysanStaging` (note the typo — it's the real scheme name).
 

@@ -1,7 +1,4 @@
-const maid = require('./maid.controller.ts');
-const driver = require('./driver.controller.ts');
+import maid from './maid.controller.ts';
+import driver from './driver.controller.ts';
 
-module.exports = {
-  maid,
-  driver
-}
+export { maid, driver };

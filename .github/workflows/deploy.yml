@@ -3,7 +3,15 @@ name: Build & Deploy to VPS
 on:
   push:
     branches:
+      - main
       - prod
+  pull_request:
+    branches:
+      - main
+      - prod
+    paths:
+      - 'backend/**'
+      - '.github/workflows/deploy.yml'
   workflow_dispatch:
 
 jobs:
@@ -13,6 +21,22 @@ jobs:
   test:
     name: Test & Validate
     runs-on: ubuntu-latest
+
+    services:
+      mariadb:
+        image: mariadb:12
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: akaiunsan_db_test
+          MYSQL_USER: akaiunsan_test
+          MYSQL_PASSWORD: akaiunsan_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -32,12 +56,22 @@ jobs:
         working-directory: ./backend
         run: npm run typecheck || true # tracked strictness ramp
 
+      - name: Run Backend Test Suite (vitest + migrations)
+        working-directory: ./backend
+        env:
+          NODE_ENV: test
+        run: npx vitest run
+
+      - name: Verify Dockerfile exists for image build
+        run: test -f backend/Dockerfile
+
   # ----------------------------------------------------------------------------
   # Stage 2: Build & Push Multi-Stage Docker Images to GitHub Container Registry
   # ----------------------------------------------------------------------------
   build-and-push:
     name: Build & Push Images
     needs: test
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -92,6 +126,27 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository }}-admin:latest
             ghcr.io/${{ github.repository }}-admin:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # PR-time image build validation (no push) — mirrors deploy.yml's backend image
+  backend-image-build:
+    name: Backend Docker Build
+    needs: test
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build Backend Image (no push)
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: false
+          tags: akaiunsan-backend:pr-${{ github.event.number }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 

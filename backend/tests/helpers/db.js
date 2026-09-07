@@ -2,8 +2,9 @@ const db = require('../../models');
 
 /**
  * Truncate every application table between test files so suites start clean.
- * FOREIGN_KEY_CHECKS=0 makes order irrelevant; Sequelize sync() has already
- * created the schema when the app module was imported.
+ * The FK-checks toggle and every TRUNCATE must run on the SAME connection —
+ * the sequelize pool would otherwise serve them from different connections
+ * and MariaDB would still enforce the FK constraints (intermittent flakes).
  */
 async function truncateAll() {
   const tableNames = Object.keys(db)
@@ -12,13 +13,18 @@ async function truncateAll() {
 
   if (tableNames.length === 0) return;
 
-  await db.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
+  const raw = await db.sequelize.connectionManager.getConnection({
+    type: 'write',
+  });
+  const connection = raw.promise();
   try {
+    await connection.query('SET FOREIGN_KEY_CHECKS = 0');
     for (const table of tableNames) {
-      await db.sequelize.query(`TRUNCATE TABLE \`${table}\``);
+      await connection.query(`TRUNCATE TABLE \`${table}\``);
     }
+    await connection.query('SET FOREIGN_KEY_CHECKS = 1');
   } finally {
-    await db.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
+    await db.sequelize.connectionManager.releaseConnection(raw);
   }
 }
 

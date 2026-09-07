@@ -1,7 +1,9 @@
-const { Supplier, ErrorLog, SupplierProduct, CleaningSupply } = require('../models/index.ts');
-const model = require('../models/index.ts').sequelize;
-const { substring, or, and } = require('sequelize').Op;
-const { json2csv, writeCsvFile } = require('../helpers/util.ts');
+import { Supplier, ErrorLog, SupplierProduct, CleaningSupply } from '../models/index.ts';
+import __interop_model from '../models/index.ts';
+import __esModuleChain_Op from 'sequelize';
+import { json2csv, writeCsvFile } from '../helpers/util.ts';
+const model = (__interop_model as any).sequelize;
+const { substring, or, and } = (__esModuleChain_Op as any).Op;
 let error_status = 500;
 let error_message = 'Unexpected error';
 
@@ -77,7 +79,7 @@ async function getList (req, res) {
         fields[prop] = filter[prop];
       });
     } else if (keyword) {
-      field_list = ['name', 'branch'];
+      let field_list = ['name', 'branch'];
       fields = {
         [or]: []
       };
@@ -120,7 +122,7 @@ async function count (req, res) {
         fields[prop] = filter[prop];
       });
     } else if (keyword) {
-      field_list = ['name', 'branch'];
+      let field_list = ['name', 'branch'];
       fields = {
         [or]: []
       };
@@ -213,13 +215,6 @@ async function exportFile (req, res) {
   }
 }
 
-module.exports = {
-  getDetail: getDetail,
-  getList: getList,
-  create: create,
-  update: update,
-  remove: remove,
-  count: count,
-  updateProduct: updateProduct,
-  exportFile,
-}
+export { getDetail as getDetail, getList as getList, create as create, update as update, remove as remove, count as count, updateProduct as updateProduct, exportFile };
+const defaultExport = { getDetail, getList, create, update, remove, count, updateProduct, exportFile };
+export default defaultExport;

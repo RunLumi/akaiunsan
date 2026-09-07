@@ -1,13 +1,15 @@
-const { Admin, Role, ErrorLog } = require('../models/index.ts');
-const model = require('../models/index.ts').sequelize;
-const { genTxt } = require('../helpers/util.ts');
-const { encryptPassword } = require('../helpers/security.ts');
+import fs from 'fs';
+import { Admin, Role, ErrorLog } from '../models/index.ts';
+import __interop_model from '../models/index.ts';
+import { genTxt } from '../helpers/util.ts';
+import { encryptPassword } from '../helpers/security.ts';
+import nodemailer from 'nodemailer';
+const model = (__interop_model as any).sequelize;
 const NODE_ENV = process.env.NODE_ENV || 'local';
-const key = require(`../config/${NODE_ENV}.json`);
+const key = JSON.parse(fs.readFileSync(`config/${NODE_ENV}.json`, 'utf8'));
 let error_message = 'Unexpected error';
-const nodemailer = require('nodemailer');
 
-module.exports = async (req, res) => {
+export default async (req, res) => {
   const t = await model.transaction();
   try {
     const count = await Admin.count();

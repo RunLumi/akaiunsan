@@ -1,8 +1,10 @@
-const { Customer, CreditCard, ErrorLog } = require('../models/index.ts');
-const model = require('../models/index.ts').sequelize;
-const { substring, or, and } = require('sequelize').Op;
-const { findCustomerById } = require('../helpers/customer.ts');
-const { createOmiseCustomer, attachOmiseCard, removeOmiseCard } = require('../helpers/omise.ts');
+import { Customer, CreditCard, ErrorLog } from '../models/index.ts';
+import __interop_model from '../models/index.ts';
+import __esModuleChain_Op from 'sequelize';
+import { findCustomerById } from '../helpers/customer.ts';
+import { createOmiseCustomer, attachOmiseCard, removeOmiseCard } from '../helpers/omise.ts';
+const model = (__interop_model as any).sequelize;
+const { substring, or, and } = (__esModuleChain_Op as any).Op;
 let error_status = 500;
 let error_message = 'Unexpected error';
 
@@ -143,10 +145,6 @@ async function remove (req, res) {
   }
 }
 
-module.exports = {
-  getDetail: getDetail,
-  getList: getList,
-  create: create,
-  remove: remove,
-  count: count,
-}
+export { getDetail as getDetail, getList as getList, create as create, remove as remove, count as count };
+const defaultExport = { getDetail, getList, create, remove, count };
+export default defaultExport;

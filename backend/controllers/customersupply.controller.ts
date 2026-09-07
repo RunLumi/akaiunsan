@@ -1,7 +1,9 @@
-const { CustomerSupply, CustomerSupplyDetail, ErrorLog } = require('../models/index.ts');
-const { getCustomerSupplyData } = require('../helpers/util.ts');
-const model = require('../models/index.ts').sequelize;
-const { substring, or } = require('sequelize').Op;
+import { CustomerSupply, CustomerSupplyDetail, ErrorLog } from '../models/index.ts';
+import { getCustomerSupplyData } from '../helpers/util.ts';
+import __interop_model from '../models/index.ts';
+import __esModuleChain_Op from 'sequelize';
+const model = (__interop_model as any).sequelize;
+const { substring, or } = (__esModuleChain_Op as any).Op;
 let error_status = 500;
 let error_message = 'Unexpected error';
 
@@ -83,7 +85,7 @@ async function getList (req, res) {
         fields[prop] = filter[prop];
       });
     } else if (keyword) {
-      field_list = ['biz_customer_name'];
+      let field_list = ['biz_customer_name'];
       fields = {
         [or]: []
       };
@@ -122,7 +124,7 @@ async function count (req, res) {
         fields[prop] = filter[prop];
       });
     } else if (keyword) {
-      field_list = ['biz_customer_name'];
+      let field_list = ['biz_customer_name'];
       fields = {
         [or]: []
       };
@@ -167,11 +169,6 @@ async function remove (req, res) {
   }
 }
 
-module.exports = {
-  create,
-  update,
-  getDetail,
-  getList,
-  count,
-  remove
-}
+export { create, update, getDetail, getList, count, remove };
+const defaultExport = { create, update, getDetail, getList, count, remove };
+export default defaultExport;

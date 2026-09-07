@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeAll } from 'vitest';
 import request from 'supertest';
+import * as PaymentHelper from '../../helpers/payment.ts';
 import app from '../../app';
 import { truncateAll, APP_KEY, db } from '../helpers/db';
 import { createAdmin, createCustomer, adminToken } from '../helpers/factories';
@@ -360,7 +361,6 @@ describe('/back-office/jobs', () => {
     // omise interactions are exercised end-to-end in client.commerce tests via
     // module patching; here pin the DB effect using the cash path already
     // covered and the known 888 constant through a direct helper call.
-    const PaymentHelper = require('../../helpers/payment.ts');
     const chargeCustomer = await createCustomer({ email: 'chargeholder@test.local' });
     const charge = await PaymentHelper.recordChargeDetail(
       'chrg_x', 100, 'credit_card', 'Job', 888, chargeCustomer.id, 'successful'

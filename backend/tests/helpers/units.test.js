@@ -34,7 +34,7 @@ afterAll(() => {
   nodemailer.createTransport = originalCreateTransport;
 });
 
-const security = require('../../helpers/security.ts');
+import * as security from '../../helpers/security.ts';
 const adminHelper = require('../../helpers/admin.ts');
 const validatorHelper = require('../../helpers/validator.ts');
 
@@ -227,13 +227,11 @@ describe('back-office admin password + profile management', () => {
     expect(upload.status).toBe(200);
     expect(upload.body).toMatch(/\/uploads\/admins\//);
 
-    // pins current behavior: removeProfile references fs which the controller
-    // never imports — always 500 "fs is not defined"
     const fileName = upload.body.split('/').pop();
     const remove = await authed(
       request(app).delete(`/back-office/user/profile-image/${fileName}`)
     );
-    expect(remove.status).toBe(500);
-    expect(remove.body.message).toBe('fs is not defined');
+    // ESM conversion fixed the missing fs import: remove now returns 200
+    expect(remove.status).toBe(200);
   });
 });

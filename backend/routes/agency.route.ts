@@ -1,8 +1,9 @@
-const { headerValidator } = require('./../middlewares/validator.ts');
+import middlewareValidators from './../middlewares/validator.ts';
+const { headerValidator } = middlewareValidators;
+import AgencyController from '../controllers/agency/index.controller.ts';
 
-const AgencyController = require('../controllers/agency/index.controller.ts');
 
-module.exports = app => {
+export default app => {
   app.use('/agency-back-office/*s', headerValidator);
 
   //driver

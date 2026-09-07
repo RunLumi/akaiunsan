@@ -50,6 +50,20 @@ echo "======================================================================"
 # Pull latest commits
 git pull origin "$BRANCH"
 
+# Generate version.json with git commit and build timestamp
+COMMIT_HASH=$(git rev-parse --short HEAD)
+BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
+BUILD_ISO=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+
+cat << VEOF > "$REPO_DIR/backend/version.json"
+{
+  "version": "1.0.0",
+  "commit": "$COMMIT_HASH",
+  "branch": "$BRANCH_NAME",
+  "buildTime": "$BUILD_ISO"
+}
+VEOF
+
 # Rebuild and start containers
 cd "$REPO_DIR/deploy"
 docker compose --env-file .env up -d --build

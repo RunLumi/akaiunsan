@@ -11,7 +11,7 @@
     "postinstall": "patch-package",
     "test:watch": "NODE_ENV=test vitest",
     "test:coverage": "NODE_ENV=test vitest run --coverage",
-    "build": "tsc; node scripts/fix-dist-requires.js",
+    "build": "(tsc || true) && node scripts/fix-dist-requires.js",
     "typecheck": "tsc --noEmit"
   },
   "betterScripts": {
@@ -37,6 +37,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@sentry/node": "10.72.0",
     "bcrypt": "6.0.0",
     "better-npm-run": "^0.1.1",
     "body-parser": "1.20.6",

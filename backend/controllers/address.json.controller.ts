@@ -1,4 +1,4 @@
-const { Province, District, SubDistrict, ErrorLog } = require('../models/index.ts');
+import { Province, District, SubDistrict, ErrorLog } from '../models/index.ts';
 let error_status = 500;
 let error_message = 'Unexpected error';
 
@@ -40,8 +40,6 @@ async function getSubDistrictList (req, res) {
   }
 }
 
-module.exports = {
-  getProvinceList,
-  getDistrictList,
-  getSubDistrictList
-}
+export { getProvinceList, getDistrictList, getSubDistrictList };
+const defaultExport = { getProvinceList, getDistrictList, getSubDistrictList };
+export default defaultExport;

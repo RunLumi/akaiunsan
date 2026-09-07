@@ -1,8 +1,10 @@
-const { Customer, Address, ErrorLog } = require('../models/index.ts');
-const { getAddressData } = require('../helpers/util.ts');
-const { findCustomerById } = require('./../helpers/customer.ts')
-const model = require('../models/index.ts').sequelize;
-const { substring, or, and } = require('sequelize').Op;
+import { Customer, Address, ErrorLog } from '../models/index.ts';
+import { getAddressData } from '../helpers/util.ts';
+import { findCustomerById } from './../helpers/customer.ts';
+import __interop_model from '../models/index.ts';
+import __esModuleChain_Op from 'sequelize';
+const model = (__interop_model as any).sequelize;
+const { substring, or, and } = (__esModuleChain_Op as any).Op;
 let error_status = 500;
 let error_message = 'Unexpected error';
 
@@ -93,7 +95,7 @@ async function getList (req, res) {
         fields[prop] = filter[prop];
       });
     } else if (keyword) {
-      field_list = ['firstname', 'lastname', 'company_name', 'company_branch', 'tax_id',
+      let field_list = ['firstname', 'lastname', 'company_name', 'company_branch', 'tax_id',
         'address_detail', 'address_sub_district', 'address_district', 'address_province',
         'address_country', 'address_postal_code', 'phone_number'];
       fields = {
@@ -138,7 +140,7 @@ async function count (req, res) {
         fields[prop] = filter[prop];
       });
     } else if (keyword) {
-      field_list = ['firstname', 'lastname', 'company_name', 'company_branch', 'tax_id',
+      let field_list = ['firstname', 'lastname', 'company_name', 'company_branch', 'tax_id',
         'address_detail', 'address_sub_district', 'address_district', 'address_province',
         'address_country', 'address_postal_code', 'phone_number'];
       fields = {
@@ -194,11 +196,6 @@ async function remove (req, res) {
   }
 }
 
-module.exports = {
-  getDetail: getDetail,
-  getList: getList,
-  create: create,
-  update: update,
-  remove: remove,
-  count: count,
-}
+export { getDetail as getDetail, getList as getList, create as create, update as update, remove as remove, count as count };
+const defaultExport = { getDetail, getList, create, update, remove, count };
+export default defaultExport;

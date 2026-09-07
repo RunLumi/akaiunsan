@@ -33,7 +33,8 @@ if [ ! -f "$TARGET_CONFIG" ]; then
     "password": "${AGENCY_DB_PASSWORD:-}",
     "database": "${AGENCY_DB_NAME:-}"
   },
-  "app_key": "${APP_KEY:-}"
+  "app_key": "${APP_KEY:-}",
+  "sentry-dsn": "${SENTRY_DSN:-}"
 }
 EOF
   echo "[entrypoint] Synthesized $TARGET_CONFIG from environment variables."

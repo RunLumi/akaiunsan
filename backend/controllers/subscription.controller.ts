@@ -1,7 +1,7 @@
-const { Subscription, ErrorLog } = require('../models/index.ts');
-const SubscriptionHelper = require("./../helpers/subscription.ts");
-const OmiseHelper = require("./../helpers/omise.ts");
-const PaymentHelper = require("./../helpers/payment.ts");
+import { Subscription, ErrorLog } from '../models/index.ts';
+import * as SubscriptionHelper from './../helpers/subscription.ts';
+import * as OmiseHelper from './../helpers/omise.ts';
+import * as PaymentHelper from './../helpers/payment.ts';
 let error_status = 500;
 let error_message = 'Unexpected error';
 
@@ -20,7 +20,7 @@ async function getList (req, res) {
         fields[prop] = filter[prop];
       });
     } else if (keyword) {
-      field_list = ['status', 'job_type', 'total_hour'];
+      let field_list = ['status', 'job_type', 'total_hour'];
       fields = {
         [or]: []
       };
@@ -171,10 +171,6 @@ const processSubscriptionsPayment = async (req, res) => {
   await SubscriptionHelper.processSubscriptionsPayment();
 };
 
-module.exports = {
-  getList,
-  findSubscription,
-  createSubscription,
-  cancelSubscription,
-  processSubscriptionsPayment,
-};
+export { getList, findSubscription, createSubscription, cancelSubscription, processSubscriptionsPayment };
+const defaultExport = { getList, findSubscription, createSubscription, cancelSubscription, processSubscriptionsPayment };
+export default defaultExport;

@@ -23,6 +23,7 @@ afterAll(() => {
 });
 
 import request from 'supertest';
+import * as securityExports from '../../helpers/security.ts';
 import app from '../../app';
 import { truncateAll, APP_KEY, db } from '../helpers/db';
 import { createCustomer, CUSTOMER_PASSWORD } from '../helpers/factories';
@@ -207,7 +208,7 @@ describe('POST /auth/forget-password → /auth/reset-password (customer)', () =>
   it('refuses reset-password with mismatched confirmation', async () => {
     const email = uniqueEmail();
     const customer = await createCustomer({ email });
-    const { requestForgetPasswordToken } = require('../../helpers/security.ts');
+    const { requestForgetPasswordToken } = securityExports;
     const token = await requestForgetPasswordToken(email, 'test-host');
 
     const res = await request(app)

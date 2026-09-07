@@ -4,4 +4,6 @@ const RESET_PASSWORD = ['brand', 'new', 'pass'].join('-');
 const WRONG_PASSWORD = ['not', 'the', 'password'].join('-');
 const NEW_PASSWORD = ['changed', 'pass'].join('-');
 
-module.exports = { RESET_PASSWORD, WRONG_PASSWORD, NEW_PASSWORD };
+const UNKNOWN_PASSWORD = ['cannot', 'know', 'it'].join('-');
+
+module.exports = { RESET_PASSWORD, WRONG_PASSWORD, NEW_PASSWORD, UNKNOWN_PASSWORD };

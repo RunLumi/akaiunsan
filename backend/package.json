@@ -37,13 +37,12 @@
   "dependencies": {
     "bcrypt": "6.0.0",
     "better-npm-run": "^0.1.1",
-    "body-parser": "^1.19.0",
+    "body-parser": "1.20.6",
     "cheerio": "^1.0.0-rc.5",
     "cors": "^2.8.5",
     "dayjs": "^1.9.6",
     "dotenv": "^16.3.1",
-    "express": "^4.17.1",
-    "fs": "0.0.1-security",
+    "express": "4.22.2",
     "html-metadata": "^1.7.1",
     "image-downloader": "^4.0.2",
     "image-size": "^0.9.3",
@@ -56,7 +55,6 @@
     "nodemailer": "^6.4.17",
     "omise": "^0.8.4",
     "passport-facebook": "^3.0.0",
-    "path": "^0.12.7",
     "request": "^2.88.2",
     "rss-converter": "^1.1.6",
     "sequelize": "^6.3.3",
@@ -69,5 +67,8 @@
     "patch-package": "8.0.1",
     "supertest": "7.2.2",
     "vitest": "4.1.11"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }

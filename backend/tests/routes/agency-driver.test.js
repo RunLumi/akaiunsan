@@ -1,5 +1,7 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import request from 'supertest';
+import * as utilNS from '../../helpers/util.ts';
+const util = utilNS.default ?? utilNS;
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -140,7 +142,6 @@ describe('DELETE /agency-back-office/driver/:driver_id', () => {
 
 describe('helpers/util remaining exports', () => {
   it('genAgencyData maps a supporter to the legacy agency shape', async () => {
-    const util = require('../../helpers/util.ts');
     const agency = await util.genAgencyData(77, {
       internal_code: 'A1',
       job_roles: 'maid,nanny',
@@ -174,7 +175,7 @@ describe('helpers/util remaining exports', () => {
   });
 
   it('genAgencyData handles missing optional fields', async () => {
-    const util = require('../../helpers/util.ts');
+
     const agency = await util.genAgencyData(78, {
       firstname: 'Bare',
       job_roles: 'driver',
@@ -188,7 +189,7 @@ describe('helpers/util remaining exports', () => {
   });
 
   it('bulkCreateOnAgency resolves immediately for empty input', async () => {
-    const util = require('../../helpers/util.ts');
+
     await expect(util.bulkCreateOnAgency('maid', [])).resolves.toBe(true);
   });
 });

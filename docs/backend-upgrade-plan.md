@@ -162,6 +162,20 @@ Order chosen so leaf/utility code converts first, entrypoint last. Each converte
 
 **DoD:** security headers present, rate limits active in staging, container boots and passes `/health`.
 
+### Phase 7 — PostgreSQL migration (enabler: PostGIS + JSONB) (≈5–10 days; own milestone, after Phase 5+)
+
+**Why:** the product roadmap needs geospatial queries (helper/customer distance, service-area matching → PostGIS) and structured JSON storage/querying (supporter profiles, payloads now stored as TEXT/JSON strings → JSONB). Postgres is the right long-term home; do it *only after* Phases 0–5 give us the safety net.
+
+1. **Dialect audit (test-first):** inventory MySQL-specific semantics before touching anything — case-insensitive collation (affects `keyword` LIKE searches and unique constraints on emails/usernames — Postgres is case-sensitive by default; plan `citext`/`lower()` indexes and `ILIKE`), `FIND_IN_SET`/`GROUP_CONCAT` (→ array ops/`string_agg`), `ON DUPLICATE KEY` (→ `ON CONFLICT`), unsigned/auto-increment vs sequences, timezone handling, raw SQL in export/CSV paths. Encode each finding as a characterization test that must stay green on both dialects.
+2. **Dialect switch in code:** Sequelize stays (dialect: `'postgres'`, `pg` driver added alongside mysql2 — never instead, until cutover). Config gains a `dialect` field; keep the legacy agency connection on MySQL (external system).
+3. **Schema translation:** fresh migration chain targeting Postgres, generated from the Phase 5 migration chain (never from `sync()`); geography/JSONB types introduced here.
+4. **Data migration:** `pgloader` for the bulk move; verify per-table row counts + checksums against MariaDB.
+5. **Cutover:** maintenance-window dump-and-verify (DB is small enough); dual-write + backfill only if downtime proves unacceptable.
+6. **Post-deploy:** `CREATE EXTENSION postgis` — Address lat/lng → `geography(Point)`, distance queries move to ST_DWithin/ST_Distance; JSON-string columns promoted to JSONB where queried.
+7. **Rollback:** keep the MariaDB backup/replica for a burn-in period.
+
+**DoD:** full characterization suite green on Postgres; row-count + checksum parity; PostGIS and JSONB live with the first real use-case shipped.
+
 ### Backlog (explicitly out of scope for this plan)
 - Payment controller TODO (link charge → purchase order) — needs product input.
 - Deleting the legacy `/import/*` + agency sync once the team confirms it's done (removes the SFTP dependency entirely).
@@ -186,6 +200,7 @@ Order chosen so leaf/utility code converts first, entrypoint last. Each converte
 | `verifyToken` behavior changes in jsonwebtoken 9 | Explicit algorithm pinning + auth-tier tests written in Phase 1 |
 | `sync()`→migrations drift (prod schema ≠ models) | Generate initial migration *from prod schema dump*, diff against models, reconcile before cutover |
 | pm2 deploys run `npm install --development` on the server (fragile) | Phase 6 container/ci step removes server-side installs |
+| MySQL collation semantics change on Postgres (keyword search, unique constraints) | Phase 7 starts with a dialect audit encoded as tests; `citext`/`ILIKE` decisions made per-case before any data moves |
 | Team muscle memory (CommonJS) | Phases land `tsx` dev runner early so day-to-day DX stays `npm run dev` |
 
 ## 7. Suggested sequencing & effort
@@ -199,5 +214,6 @@ Order chosen so leaf/utility code converts first, entrypoint last. Each converte
 | 4 Config/logging/validation | 3–4 d | yes |
 | 5 Migrations | 3–4 d | yes |
 | 6 Hardening/deploy | 2–3 d | yes |
+| 7 PostgreSQL (PostGIS/JSONB) | 5–10 d | yes, after 5 |
 
-Total ≈ **22–33 focused days**. Phases 0–2 alone (≈2 weeks) already remove every high-risk dependency — recommended as the first milestone even if TS is deferred.
+Total ≈ **27–43 focused days**. Phases 0–2 alone (≈2 weeks) already remove every high-risk dependency — recommended as the first milestone even if TS is deferred.

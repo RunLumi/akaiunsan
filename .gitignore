@@ -75,3 +75,6 @@ ios/Pods/
 
 # --- Testing / coverage ---
 coverage/
+
+# Sentry upload credentials (see apps/sentry.properties.example)
+/apps/sentry.properties

@@ -1,0 +1,8 @@
+# Copy to sentry.properties (gitignored) for local symbol/source-map uploads on
+# release builds, or set SENTRY_AUTH_TOKEN in the environment instead.
+# Token: create at https://sentry.io/settings/account/api/auth-tokens/ with
+# org:read, project:releases and project:write scopes. Never commit it.
+defaults.url=https://sentry.io/
+defaults.org=akaiunsan
+defaults.project=react-native
+auth.token=

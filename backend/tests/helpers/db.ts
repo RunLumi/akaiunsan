@@ -1,5 +1,6 @@
 import db from '../../models/index.ts';
 import { loadConfig } from '../../helpers/config.ts';
+import { runMigrations } from '../../helpers/migrator.ts';
 
 /**
  * Truncate every application table between test files so suites start clean.
@@ -8,9 +9,8 @@ import { loadConfig } from '../../helpers/config.ts';
  * and MariaDB would still enforce the FK constraints (intermittent flakes).
  */
 export async function truncateAll() {
-  // Ensure every model table exists before truncating (fresh DBs race the
-  // async boot-time sync otherwise).
-  await db.sequelize.sync();
+  // Phase 5: schema comes from migrations, not boot-time sync().
+  await runMigrations();
 
   const tableNames = Object.keys(db)
     .filter((k) => !['sequelize', 'Sequelize'].includes(k))

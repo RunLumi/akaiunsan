@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import Constants from "../../shared/Constants";
 import moment from "moment";
 import {
   create,
@@ -9,6 +10,7 @@ import {
   pressAll,
   typeAll,
 } from "../../test-utils/helpers";
+import { installApiRoutes } from "../../test-utils/api-mock";
 
 // useIsFocused/useNavigation require a navigation context; the smoke suite
 // renders screens standalone with a shared navigation stand-in.
@@ -133,59 +135,116 @@ const listItem = (over: Record<string, any> = {}) => ({
 // App defaults resolved by the axios mock: a 200 envelope whose inner data
 // carries both `items` and `data` arrays, so `useApi` responses shape-check
 // for the screens that read either. Individual tests can still override.
-(axios as any).mockResolvedValue({
-  status: 200,
-  data: {
-    data: {
-      items: [listItem(),
+// Per-endpoint response shapes (see test-utils/api-mock.ts).
+// Generic fallback envelope (items carry the full renderer surface).
+const fallbackData = {
+  items: [
+    listItem(),
+    {
+      id: "noti-news",
+      type: 2,
+      data: JSON.stringify({ NotificationId: "n-1", PromotionId: "p-1" }),
+      title: "News",
+      content: "news content",
+      status: 1,
+      image: "",
+      listImage: [{ image: "" }],
+      bookDetail: [
         {
-          id: "noti-news",
-          type: 2,
-          data: JSON.stringify({ NotificationId: "n-1", PromotionId: "p-1" }),
-          title: "News",
-          content: "news content",
-          status: 1,
-          image: "",
-          listImage: [{ image: "" }],
-          bookDetail: [
-            {
-              bookingDate: "2026-01-01T00:00:00.000Z",
-              bookingHour: "2026-01-01T01:00:00.000Z",
-              hour: 2,
-              label: "Mon",
-              serviceName: "Test service",
-            },
-          ],
-          isAutoRenew: 1,
+          bookingDate: "2026-01-01T00:00:00.000Z",
+          bookingHour: "2026-01-01T01:00:00.000Z",
+          hour: 2,
+          label: "Mon",
           serviceName: "Test service",
         },
+      ],
+      isAutoRenew: 1,
+      serviceName: "Test service",
+    },
+    {
+      id: "noti-promo",
+      type: 1,
+      data: JSON.stringify({ PromotionId: "p-1" }),
+      title: "Promo",
+      content: "promo content",
+      status: 1,
+      image: "",
+      listImage: [{ image: "" }],
+      bookDetail: [
         {
-          id: "noti-promo",
-          type: 1,
-          data: JSON.stringify({ PromotionId: "p-1" }),
-          title: "Promo",
-          content: "promo content",
-          status: 1,
-          image: "",
-          listImage: [{ image: "" }],
-          bookDetail: [
-            {
-              bookingDate: "2026-01-01T00:00:00.000Z",
-              bookingHour: "2026-01-01T01:00:00.000Z",
-              hour: 2,
-              label: "Mon",
-              serviceName: "Test service",
-            },
-          ],
-          isAutoRenew: 1,
+          bookingDate: "2026-01-01T00:00:00.000Z",
+          bookingHour: "2026-01-01T01:00:00.000Z",
+          hour: 2,
+          label: "Mon",
           serviceName: "Test service",
-        },],
-      data: [listItem()],
-      errors: [],
-      results: [listItem()],
+        },
+      ],
+      isAutoRenew: 1,
+      serviceName: "Test service",
+    },
+  ],
+  data: [listItem()],
+  results: [listItem()],
+};
+
+installApiRoutes(axios as any, {
+  // AllSubscriptionPlan reads the plan map keys (Flexible/Fix)
+  [Constants.API.get_subscription]: {
+    Flexible: [listItem({ id: "plan-flex", serviceName: "Flexible" })],
+    Fix: [listItem({ id: "plan-fix", serviceName: "Fix" })],
+  },
+  // the booking wizards + FixPlan parse these JSON strings
+  [Constants.API.services_management_item]: {
+    serviceDetail: { id: "svc-1", name: "Test service", price: 100 },
+    banner: [],
+    extraService: JSON.stringify([
+      {
+        id: "es-1",
+        name: "Ironing",
+        code: "COSTSP",
+        pricePerUnit: 20,
+        unit: 1,
+        perHour: 10,
+        perTime: 0,
+        acType: "",
+      },
+      {
+        id: "es-2",
+        name: "Walking",
+        code: "PETWALK",
+        pricePerUnit: 15,
+        unit: 1,
+        perHour: 0,
+        perTime: 15,
+        acType: "",
+      },
+    ]),
+  },
+  [Constants.API.config_price]: {
+    items: [
+      {
+        serviceType: 1,
+        pricesModel: JSON.stringify({ one: 150, two: 100, twoPlus: 120, threePlus: 90 }),
+      },
+    ],
+  },
+  [Constants.API.languages]: {
+    items: [
+      { name: "English", code: "en" },
+      { name: "Thai", code: "th" },
+    ],
+  },
+  [Constants.API.booking_detail]: {
+    customerInfo: {
+      addressId: "addr-1",
+      address: "Test address",
+      phoneNumber: "0123456789",
+      remark: "",
+      roomNo: "",
     },
   },
-});
+}, fallbackData);
+
 
 // `auth.user` starts null in the real store; several account screens assume a
 // logged-in user is present (they are only reachable behind the auth gate).

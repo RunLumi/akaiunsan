@@ -103,7 +103,6 @@ import Signup from "../Auth/Signup";
             },
           ],
           isAutoRenew: 1,
-          serviceName: "Test service",
         },
       ],
       data: [],

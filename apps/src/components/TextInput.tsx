@@ -7,6 +7,7 @@ import {
 
 interface Props {
 	style: StyleProp<TextStyle>;
+	[key: string]: any;
 }
 
 export const TextInput = (props: Props) => {

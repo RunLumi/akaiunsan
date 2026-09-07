@@ -31,7 +31,7 @@ export const ListCardPayment = ({
   handleIdCard,
   navigation,
 }: Props) => {
-  const childRef = React.useRef();
+  const childRef = React.useRef<any>(null);
   const [modalListCard, setModalListCard] = React.useState(false);
   const [listPayment, setListPayment] = React.useState([]);
   const [idDefaultCard, setIdDefaultCard] = React.useState("");

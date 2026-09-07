@@ -2,7 +2,7 @@ import { success, TYPES } from '../actions';
 
 const INITIAL_STATE = {
 	token: '',
-	user: null,
+	user: null as any,
 	loading: false
 };
 

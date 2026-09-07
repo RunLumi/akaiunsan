@@ -30,7 +30,7 @@ beforeEach(() => {
 
 describe("updateSource characterization", () => {
   it("starts with an incomplete load state and completes when no update is available", async () => {
-    mockedUpdates.checkForUpdateAsync.mockResolvedValue({ isAvailable: false });
+    mockedUpdates.checkForUpdateAsync.mockResolvedValue({ isAvailable: false } as any);
     renderHook();
     expect(hookResult).toBe(false);
 
@@ -44,7 +44,7 @@ describe("updateSource characterization", () => {
   });
 
   it("downloads and reloads when an update is available", async () => {
-    mockedUpdates.checkForUpdateAsync.mockResolvedValue({ isAvailable: true });
+    mockedUpdates.checkForUpdateAsync.mockResolvedValue({ isAvailable: true } as any);
     mockedUpdates.fetchUpdateAsync.mockResolvedValue(undefined as any);
     mockedUpdates.reloadAsync.mockResolvedValue(undefined as any);
     renderHook();

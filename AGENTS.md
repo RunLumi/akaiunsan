@@ -21,6 +21,7 @@ akaiunsan/
 | [docs/conventions.md](docs/conventions.md) | code patterns to follow when editing |
 | [docs/deployment.md](docs/deployment.md) | GitLab CI, pm2 servers, mobile release builds |
 | [docs/security.md](docs/security.md) | **read first**: committed secrets; what never to commit or print |
+| [docs/backend-upgrade-plan.md](docs/backend-upgrade-plan.md) | proposed phased migration: TS + TDD + dependency upgrades (not started) |
 
 ## Quick facts
 

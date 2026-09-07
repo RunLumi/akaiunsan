@@ -67,6 +67,15 @@ module.exports = (sequelize, DataTypes) =>{
     },
     payment_method: {
       type: DataTypes.STRING
+    },
+    // These columns exist in the production `job` table (and every controller
+    // filters on them) but were missing from the model — fresh sync()'d
+    // databases failed with "Unknown column 'Job.customer_id'".
+    customer_id: {
+      type: DataTypes.INTEGER
+    },
+    supporter_id: {
+      type: DataTypes.INTEGER
     }
   }, {
     tableName: 'job'

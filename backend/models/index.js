@@ -28,7 +28,10 @@ if (NODE_ENV == 'production') {
     host: config["db-connection"].host,
     dialect: "mysql",
     pool: {
-      max: 5,
+      // Tests hit endpoints that leak transactions (pinned bugs like
+      // job.createReview never committing); a larger pool keeps the suite
+      // from starving while those connections drain on teardown.
+      max: NODE_ENV === 'test' ? 40 : 5,
       min: 0,
       acquire: 30000,
       idle: 60000

@@ -11,6 +11,12 @@ module.exports = (sequelize, DataTypes) =>{
     status: {
       type: DataTypes.STRING
     },
+    // job.controller filters subscriptions on `active` (legacy flag) while
+    // subscription.controller uses `status` — the model needs both to match
+    // the production table and keep job creation testable.
+    active: {
+      type: DataTypes.BOOLEAN
+    },
     job_type: {
       type: DataTypes.STRING
     },

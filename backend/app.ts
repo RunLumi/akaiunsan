@@ -23,12 +23,10 @@ registerRoutes(app);
 // any other error middleware.
 Sentry.setupExpressErrorHandler(app);
 
-// Test harnesses (supertest) import the app without binding a port; pm2 and
-// local dev run `node dist/app.js` and expect it to listen.
-// Use require.main === module (CJS) — this project compiles to CommonJS.
-const isMain = require.main === module;
-if (isMain) {
-  app.listen(PORT, async () => {
+// Shared boot path: pm2/dev entry and tests call this. Returns the bound
+// server so callers can close it.
+export function startServer (port = PORT) {
+  return app.listen(port, async () => {
     console.log('================================================');
     console.log(' .d88b. 888d888 8888b. 88888b.  .d88b.  .d88b.  ');
     console.log('d88""88b888P"      "88b888 "88bd88P"88bd8P  Y8b ');
@@ -41,10 +39,18 @@ if (isMain) {
     console.log('================================================');
     let current_date = new Date();
     console.log('run datetime:', current_date);
-    console.log('port:', PORT);
+    console.log('port:', port);
     console.log('env:', process.env.NODE_ENV);
     console.log('================================================');
   });
+}
+
+// Test harnesses (supertest) import the app without binding a port; pm2 and
+// local dev run `node dist/app.js` and expect it to listen.
+// Use require.main === module (CJS) — this project compiles to CommonJS.
+const isMain = require.main === module;
+if (isMain) {
+  startServer(PORT);
 }
 
 export default app;

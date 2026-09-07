@@ -3,6 +3,11 @@
 const fs = require('fs');
 const path = require('path');
 
+const distDir = path.join(__dirname, '..', 'dist');
+if (!fs.existsSync(distDir)) {
+  fs.mkdirSync(distDir, { recursive: true });
+}
+
 (function walk(dir) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);
@@ -13,7 +18,7 @@ const path = require('path');
       if (out !== src) fs.writeFileSync(full, out);
     }
   }
-})(path.join(__dirname, '..', 'dist'));
+})(distDir);
 // runtime assets tsc does not emit
 for (const asset of ['config', 'mail-template']) {
   fs.cpSync(path.join(__dirname, '..', asset), path.join(__dirname, '..', 'dist', asset), { recursive: true });

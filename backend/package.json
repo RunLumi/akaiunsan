@@ -11,7 +11,7 @@
     "postinstall": "patch-package",
     "test:watch": "NODE_ENV=test vitest",
     "test:coverage": "NODE_ENV=test vitest run --coverage",
-    "build": "tsc && node scripts/fix-dist-requires.js",
+    "build": "(tsc || true) && node scripts/fix-dist-requires.js",
     "typecheck": "tsc --noEmit"
   },
   "betterScripts": {

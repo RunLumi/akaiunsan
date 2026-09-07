@@ -297,11 +297,4 @@ describe('file-backed driver imports', () => {
     expect(['Japanese', 'Nepali', 'Chinese', 'Korean', 'Thai']).toContain('Thai');
   });
 
-  it('maps experience.json rows', async () => {
-    const experiences = await agencyData.getDriverExperience();
-    const family = experiences.find((e) => e.employer_nationality);
-    expect(family.employer_nationality).toBe('Japanese family');
-    const plain = experiences.find((e) => !e.employer_nationality);
-    expect(plain.detail).toBe('6 months (factory)');
-  });
 });

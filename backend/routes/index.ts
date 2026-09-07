@@ -13,6 +13,12 @@ import { getHealthInfo } from '../helpers/version.ts';
 
 export default (app) => {
 
+  // intentional-error route from the Sentry quick-start — hit once to confirm
+  // events arrive in the Sentry project, then remove
+  app.get('/debug-sentry', function mainHandler(req, res) {
+    throw new Error('My first Sentry error!');
+  });
+
   // infrastructure health check (load balancers / orchestrators) — no auth
   app.get('/health', async (req, res) => {
     const health = getHealthInfo();

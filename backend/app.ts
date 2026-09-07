@@ -1,4 +1,7 @@
+// Sentry must initialize before any other import instruments the modules
+import './instrument.ts';
 import express from 'express';
+import * as Sentry from '@sentry/node';
 import cors from 'cors';
 import db from './models/index.ts';
 import registerRoutes from './routes/index.ts';
@@ -14,6 +17,11 @@ app.use(express.json());
 db.sequelize.sync();
 
 registerRoutes(app);
+
+// Captures unhandled errors from every route above, then falls through so
+// responses keep their current shape. Must stay after all routes and before
+// any other error middleware.
+Sentry.setupExpressErrorHandler(app);
 
 // Test harnesses (supertest) import the app without binding a port; pm2 and
 // local dev run `node dist/app.js` and expect it to listen.

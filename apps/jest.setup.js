@@ -342,6 +342,17 @@ jest.mock("axios", () => {
   return request;
 });
 
+// The expo fetch shim resolves with an empty body in the Node test env, so any
+// un-caught response.json() parse (Geocoding flows inside screens) rejects
+// after the suite finishes and fails the CI process. Stub a well-formed
+// response; suites that characterize fetch (Geocoding) override this per test.
+globalThis.fetch = jest.fn().mockResolvedValue({
+  ok: true,
+  status: 200,
+  json: async () => ({ results: [], status: "OK" }),
+  text: async () => "{}",
+});
+
 // RN 0.64 + jest-expo run components in the Node env, which has no global
 // FormData despite CameraLibrary.postImage building a multipart body at runtime.
 if (typeof globalThis.FormData === "undefined") {

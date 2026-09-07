@@ -34,6 +34,7 @@ export const ConfigSchema = z
     'app_key': z.string().min(1),
     'mail-config': MailConfigSchema.optional(),
     'omise': OmiseSchema.optional(),
+    'dialect': z.enum(['mysql', 'postgres']).optional(),
   })
   .passthrough(); // agency-connection, sftp-connection, image_base_url, sentry-dsn, ...
 

@@ -41,18 +41,6 @@ async function getList (req, res) {
       Object.keys(filter).forEach(prop => {
         fields[prop] = filter[prop];
       });
-    } else if (keyword) {
-      let field_list = ['rating'];
-      fields = {
-        [or]: []
-      };
-      field_list.forEach(item => {
-        fields[or].push({
-          [item]: {
-            [substring]: keyword
-          }
-        });
-      });
     }
     if (req.customer) {
       fields[and] = [{ customer_id: req.customer.id }]
@@ -83,18 +71,6 @@ async function count (req, res) {
     if (filter) {
       Object.keys(filter).forEach(prop => {
         fields[prop] = filter[prop];
-      });
-    } else if (keyword) {
-      let field_list = ['rating'];
-      fields = {
-        [or]: []
-      };
-      field_list.forEach(item => {
-        fields[or].push({
-          [item]: {
-            [substring]: keyword
-          }
-        });
       });
     }
     if (req.customer) {

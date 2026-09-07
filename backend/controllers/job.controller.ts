@@ -113,9 +113,8 @@ async function getList (req, res) {
         fields[prop] = filter[prop];
       });
     } else if (keyword) {
-      let field_list = ['status', 'schedule', 'job_type',
-        'address_sub_district', 'address_district', 'address_province',
-        'address_glat', 'address_glng'];
+      let field_list = ['status', 'job_type',
+        'address_sub_district', 'address_district', 'address_province'];
       fields = {
         [or]: []
       };

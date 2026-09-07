@@ -18,6 +18,13 @@ export async function truncateAll() {
 
   if (tableNames.length === 0) return;
 
+  const dialect = db.sequelize.getDialect();
+  if (dialect === 'postgres') {
+    // PG: TRUNCATE ... CASCADE handles FKs natively in one statement
+    const tableList = tableNames.map((t) => `"${t}"`).join(', ');
+    await db.sequelize.query(`TRUNCATE TABLE ${tableList} CASCADE`);
+    return;
+  }
   const raw = await db.sequelize.connectionManager.getConnection({
     type: 'write',
   });

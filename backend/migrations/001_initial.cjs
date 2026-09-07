@@ -163,6 +163,11 @@ const tables = [
 ];
 
 async function up({ context: sequelize }) {
+  const dialect = sequelize.getDialect();
+  if (dialect === 'postgres') {
+    await sequelize.sync();
+    return;
+  }
   await sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
   try {
     for (const { name, ddl } of tables) {

@@ -6,6 +6,7 @@ import { loadConfig } from '../helpers/config.ts';
 const NODE_ENV = process.env.NODE_ENV || 'local';
 // resolved from cwd (backend/): works for tsx, vitest, dist and pm2 alike
 const config = loadConfig(NODE_ENV);
+const DIALECT = config['dialect'] || process.env.DB_DIALECT || 'mysql';
 
 const db: any = {};
 
@@ -14,7 +15,7 @@ let sequelize_config;
 if (NODE_ENV == 'production') {
   sequelize_config = {
     host: config["db-connection"].host,
-    dialect: "mysql",
+    dialect: DIALECT,
     pool: {
       max: 50,
       min: 0,
@@ -28,7 +29,7 @@ if (NODE_ENV == 'production') {
 } else {
   sequelize_config = {
     host: config["db-connection"].host,
-    dialect: "mysql",
+    dialect: DIALECT,
     pool: {
       // Tests hit endpoints that leak transactions (pinned bugs like
       // job.createReview never committing); a larger pool keeps the suite

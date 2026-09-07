@@ -4,7 +4,7 @@
     "user": "akaiunsan_test",
     "password": "akaiunsan_test",
     "host": "127.0.0.1",
-    "port": 3306
+    "port": 5432
   },
   "jwt-secret": "test-jwt-secret",
   "omise": {
@@ -31,5 +31,6 @@
     "username": "sftp_test",
     "password": "sftp_test"
   },
-  "default_image_url": "https://cdn.test.local/default-profile.png"
+  "default_image_url": "https://cdn.test.local/default-profile.png",
+  "dialect": "postgres"
 }

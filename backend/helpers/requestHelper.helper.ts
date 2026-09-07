@@ -585,7 +585,7 @@ async function countRequestStatistics(start_date, end_date) {
       };
       fields[and].push({
         [field_list[0]]: {
-          [substring]: lst_type[i],
+          [eq]: lst_type[i],
         },
       });
       fields[and].push({
@@ -667,7 +667,7 @@ async function countRequestNationalStatistics(start_date, end_date) {
       };
       fields[and].push({
         [field_list[0]]: {
-          [substring]: lst_type[i],
+          [eq]: lst_type[i],
         },
       });
       fields[and].push({
@@ -707,7 +707,7 @@ async function countRequestDayStatistics(start_date, end_date) {
       };
       fields[and].push({
         [field_list[0]]: {
-          [substring]: lst_type[i],
+          [eq]: lst_type[i],
         },
       });
       fields[and].push({
@@ -740,7 +740,7 @@ async function countRequestLanguageStatistics(start_date, end_date) {
       };
       fields[and].push({
         [field_list[0]]: {
-          [substring]: lst_type[i],
+          [eq]: lst_type[i],
         },
       });
       fields[and].push({
@@ -773,7 +773,7 @@ async function countRequestDriverLanguageStatistics(start_date, end_date) {
       };
       fields[and].push({
         [field_list[0]]: {
-          [substring]: lst_type[i],
+          [eq]: lst_type[i],
         },
       });
       fields[and].push({
@@ -812,7 +812,7 @@ async function countRequestDriverAgeStatistics(start_date, end_date) {
       };
       fields[and].push({
         [field_list[0]]: {
-          [substring]: lst_type[i],
+          [eq]: lst_type[i],
         },
       });
       fields[and].push({
@@ -853,7 +853,7 @@ async function countRequestDriverScheduleStatistics(start_date, end_date) {
       };
       fields[and].push({
         [field_list[0]]: {
-          [substring]: lst_type[i],
+          [eq]: lst_type[i],
         },
       });
       fields[and].push({
@@ -930,7 +930,7 @@ async function countRequestDriverHiringStatistics(start_date, end_date) {
       };
       fields[and].push({
         [field_list[0]]: {
-          [substring]: lst_type[i],
+          [eq]: lst_type[i],
         },
       });
       fields[and].push({
@@ -968,7 +968,7 @@ async function countRequestDriverInterviewStatistics(start_date, end_date) {
       };
       fields[and].push({
         [field_list[0]]: {
-          [substring]: lst_type[i],
+          [eq]: lst_type[i],
         },
       });
       fields[and].push({
@@ -1008,7 +1008,7 @@ async function countRequestDriveReplacementGuaranteeStatistics(
       };
       fields[and].push({
         [field_list[0]]: {
-          [substring]: lst_type[i],
+          [eq]: lst_type[i],
         },
       });
       fields[and].push({
@@ -1046,9 +1046,7 @@ async function countRequestCookingStatistics(
         [and]: [],
       };
       fields[and].push({
-        [field_list[0]]: {
-          [substring]: lst_type[i],
-        },
+        [field_list[0]]: { [eq]: !!lst_type[i] },
       });
       fields[and].push({
         [field_list[1]]: {
@@ -1084,9 +1082,7 @@ async function countRequesKidStatistics(
         [and]: [],
       };
       fields[and].push({
-        [field_list[0]]: {
-          [substring]: lst_type[i],
-        },
+        [field_list[0]]: { [eq]: !!lst_type[i] },
       });
       fields[and].push({
         [field_list[1]]: {
@@ -1122,9 +1118,7 @@ async function countRequesPetStatistics(
         [and]: [],
       };
       fields[and].push({
-        [field_list[0]]: {
-          [substring]: lst_type[i],
-        },
+        [field_list[0]]: { [eq]: !!lst_type[i] },
       });
       fields[and].push({
         [field_list[1]]: {
@@ -1161,7 +1155,7 @@ async function countRequesCurrentHelperStatistics(
       };
       fields[and].push({
         [field_list[0]]: {
-          [substring]: lst_type[i],
+          [eq]: lst_type[i],
         },
       });
       fields[and].push({
@@ -1199,7 +1193,7 @@ async function countRequestDriverOwnCarStatistics(
       };
       fields[and].push({
         [field_list[0]]: {
-          [substring]: lst_type[i],
+          [eq]: !!lst_type[i],
         },
       });
       fields[and].push({
@@ -1237,7 +1231,7 @@ async function countRequestDriverCurrentDriverStatistics(
       };
       fields[and].push({
         [field_list[0]]: {
-          [substring]: lst_type[i],
+          [eq]: !!lst_type[i],
         },
       });
       fields[and].push({
@@ -1275,7 +1269,7 @@ async function countRequestDriverIsOTStatistics(
       };
       fields[and].push({
         [field_list[0]]: {
-          [substring]: lst_type[i],
+          [eq]: !!lst_type[i],
         },
       });
       fields[and].push({

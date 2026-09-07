@@ -164,27 +164,31 @@ describe('back-office request-helpers', () => {
     expect([200, 500]).toContain(updated.status); // controller robustness varies
   });
 
-  it('manages request-helper-status CRUD', async () => {
+  it('manages request-helper-status CRUD (via model lookups — create returns true)', async () => {
     const created = await adminAuthed(request(app).post('/back-office/request-helper-status')).send({
-      status: 'interview',
+      status_name: 'interview',
     });
     expect(created.status).toBe(200);
+    expect(created.body).toBe(true); // pins current shape — returns true not the object
+
+    const row = await db.RequestHelperStatus.findOne({ where: { status_name: 'interview' } });
+    expect(row).not.toBeNull();
 
     const detail = await adminAuthed(
-      request(app).get(`/back-office/request-helper-status/${created.body.id}`)
+      request(app).get(`/back-office/request-helper-status/${row.id}`)
     );
     expect(detail.status).toBe(200);
 
     const updated = await adminAuthed(
-      request(app).put(`/back-office/request-helper-status/${created.body.id}`)
-    ).send({ status: 'hired' });
+      request(app).put(`/back-office/request-helper-status/${row.id}`)
+    ).send({ status_name: 'hired' });
     expect(updated.status).toBe(200);
 
     const count = await adminAuthed(request(app).get('/back-office/request-helper-status/count'));
     expect(count.status).toBe(200);
 
     const removed = await adminAuthed(
-      request(app).delete(`/back-office/request-helper-status/${created.body.id}`)
+      request(app).delete(`/back-office/request-helper-status/${row.id}`)
     );
     expect(removed.status).toBe(200);
   });

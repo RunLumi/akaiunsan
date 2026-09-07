@@ -30,15 +30,26 @@ export function runMigrations() {
 
 /** Names of tables present in the database right now. */
 export async function listTables(): Promise<string[]> {
+  const dialect = db.sequelize.getDialect();
+  if (dialect === 'postgres') {
+    const [rows] = await db.sequelize.query(
+      "SELECT tablename AS name FROM pg_tables WHERE schemaname = 'public'"
+    );
+    return (rows as any[]).map((r) => r.name);
+  }
   const [rows] = await db.sequelize.query('SHOW TABLES');
-  return rows.map((r: any) => Object.values(r)[0] as string);
+  return (rows as any[]).map((r: any) => Object.values(r)[0] as string);
 }
 
-/** Drops every table (incl. the migrations bookkeeping) for fresh-rebuild tests. */
 export async function dropAllTables() {
+  const dialect = db.sequelize.getDialect();
+  if (dialect === 'postgres') {
+    await db.sequelize.query('DROP SCHEMA public CASCADE; CREATE SCHEMA public;');
+    return;
+  }
   await db.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
   const [rows] = await db.sequelize.query('SHOW TABLES');
-  for (const row of rows) {
+  for (const row of rows as any[]) {
     const table = Object.values(row)[0];
     await db.sequelize.query(`DROP TABLE IF EXISTS \`${table}\``);
   }

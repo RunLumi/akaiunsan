@@ -4,6 +4,17 @@ const InstallController = require('../controllers/install.controller');
 const AgencyController = require('../controllers/agency/index.controller');
 
 module.exports = (app) => {
+  // infrastructure health check (load balancers / orchestrators) — no auth
+  app.get('/health', async (req, res) => {
+    try {
+      const db = require('../models');
+      await db.sequelize.query('SELECT 1');
+      return res.status(200).json({ status: 'ok', env: process.env.NODE_ENV, db: 'up' });
+    } catch (err) {
+      return res.status(503).json({ status: 'error', env: process.env.NODE_ENV, db: 'down' });
+    }
+  });
+
   //test route
   app.get('/import/supporter-agency-profile-image', SupporterController.matchAgencyProfileImage);
   app.get('/import/supporter-agency-stat', AgencyController.maid.updateAllStat);

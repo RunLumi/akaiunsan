@@ -66,7 +66,6 @@ module.exports = {
     }
   },
   headerValidator: (req, res, next) => {
-    console.log(req.headers); // Log thông tin headers
     let { app_key } = req.headers;
     if (app_key == key.app_key)
       next();

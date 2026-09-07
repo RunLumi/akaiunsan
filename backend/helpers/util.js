@@ -234,7 +234,7 @@ async function uploadSupporterProfileImage (image_url) {
         resolve(true);
       });
     }).catch(err => {
-      erject(err);
+      reject(err);
     });
   });
 }

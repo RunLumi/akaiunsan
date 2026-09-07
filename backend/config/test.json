@@ -1,0 +1,33 @@
+{
+  "db-connection": {
+    "database": "ayasan_db_test",
+    "user": "ayasan_test",
+    "password": "ayasan_test",
+    "host": "127.0.0.1",
+    "port": 3306
+  },
+  "jwt-secret": "test-jwt-secret",
+  "omise": {
+    "secretKey": "skey_test_dummy",
+    "omiseVersion": "2019-05-29"
+  },
+  "agency-connection": {
+    "host": "127.0.0.1",
+    "user": "agency_test",
+    "password": "agency_test",
+    "database": "agency_test"
+  },
+  "app_key": "test-app-key",
+  "mail-config": {
+    "host": "127.0.0.1",
+    "port": 1025,
+    "secure": false,
+    "user": "mail_test",
+    "password": "mail_test"
+  },
+  "sftp-connection": {
+    "host": "127.0.0.1",
+    "username": "sftp_test",
+    "password": "sftp_test"
+  }
+}

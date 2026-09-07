@@ -59,10 +59,12 @@
     "omise": "1.1.0",
     "passport-facebook": "^3.0.0",
     "patch-package": "8.0.1",
+    "pino": "10.3.1",
     "rss-converter": "^1.1.6",
     "sequelize": "6.37.8",
     "sharp": "0.33.5",
-    "ssh2-sftp-client": "^5.3.2"
+    "ssh2-sftp-client": "^5.3.2",
+    "zod": "4.5.4"
   },
   "devDependencies": {
     "@types/cookie-parser": "1.4.10",

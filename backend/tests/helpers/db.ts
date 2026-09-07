@@ -1,5 +1,5 @@
-const loaded = require('../../models/index.ts');
-const db = loaded.default ?? loaded;
+import db from '../../models/index.ts';
+import { loadConfig } from '../../helpers/config.ts';
 
 /**
  * Truncate every application table between test files so suites start clean.
@@ -7,7 +7,7 @@ const db = loaded.default ?? loaded;
  * the sequelize pool would otherwise serve them from different connections
  * and MariaDB would still enforce the FK constraints (intermittent flakes).
  */
-async function truncateAll() {
+export async function truncateAll() {
   const tableNames = Object.keys(db)
     .filter((k) => !['sequelize', 'Sequelize'].includes(k))
     .map((model) => db[model].getTableName());
@@ -30,9 +30,9 @@ async function truncateAll() {
 }
 
 /** The app_key every frontend must send (see middlewares/validator.js). */
-const APP_KEY = require('../../config/test.json').app_key;
+export const APP_KEY = loadConfig('test').app_key;
 
 /** Minimal headers a public route expects. */
-const publicHeaders = { app_key: APP_KEY };
+export const publicHeaders = { app_key: APP_KEY };
 
-module.exports = { db, truncateAll, APP_KEY, publicHeaders };
+export { db };

@@ -1,10 +1,10 @@
-const db = require('../../models/index.ts');
-const { encryptPassword, generateToken } = require('../../helpers/security.ts');
+import db from '../../models/index.ts';
+import { encryptPassword, generateToken } from '../../helpers/security.ts';
 
-const ADMIN_PASSWORD = 'adminPassw0rd';
-const CUSTOMER_PASSWORD = 'customerPassw0rd';
+export const ADMIN_PASSWORD = 'adminPassw0rd';
+export const CUSTOMER_PASSWORD = 'customerPassw0rd';
 
-async function createRole(overrides = {}) {
+export async function createRole(overrides = {}) {
   return db.Role.create({
     role_name: 'Test Role',
     permission: 'User,Banner,Request,Supporter',
@@ -12,11 +12,11 @@ async function createRole(overrides = {}) {
   });
 }
 
-async function createAdmin(overrides = {}) {
-  let role_id = overrides.role_id;
-  if (role_id === undefined) {
+export async function createAdmin(overrides = {}) {
+  let roleId = overrides.role_id;
+  if (roleId === undefined) {
     const role = await createRole();
-    role_id = role.id;
+    roleId = role.id;
   }
   return db.Admin.create({
     firstname: 'Ada',
@@ -25,13 +25,13 @@ async function createAdmin(overrides = {}) {
     email: 'admin@test.local',
     password: await encryptPassword(ADMIN_PASSWORD),
     role: 'admin',
-    role_id,
+    role_id: roleId,
     active: true,
     ...overrides,
   });
 }
 
-async function createCustomer(overrides = {}) {
+export async function createCustomer(overrides = {}) {
   return db.Customer.create({
     firstname: 'Custy',
     lastname: 'Custerson',
@@ -42,7 +42,7 @@ async function createCustomer(overrides = {}) {
   });
 }
 
-async function createAddress(customer_id, overrides = {}) {
+export async function createAddress(customer_id: number, overrides = {}) {
   return db.Address.create({
     customer_id,
     firstname: 'Custy',
@@ -54,22 +54,11 @@ async function createAddress(customer_id, overrides = {}) {
 }
 
 /** A customer JWT the clientValidator middleware will accept. */
-async function customerToken(customer) {
+export async function customerToken(customer) {
   return generateToken(customer.email, 'test-host');
 }
 
 /** An admin JWT the backofficeValidator middleware will accept. */
-async function adminToken(admin) {
+export async function adminToken(admin) {
   return generateToken(admin.username, 'test-host');
 }
-
-module.exports = {
-  ADMIN_PASSWORD,
-  CUSTOMER_PASSWORD,
-  createRole,
-  createAdmin,
-  createCustomer,
-  createAddress,
-  customerToken,
-  adminToken,
-};

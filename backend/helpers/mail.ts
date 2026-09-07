@@ -1,7 +1,8 @@
 import fs from 'fs';
 import nodemailer from 'nodemailer';
+import { loadConfig } from '../helpers/config.ts';
 const NODE_ENV = process.env.NODE_ENV || 'local';
-const key = JSON.parse(fs.readFileSync(`config/${NODE_ENV}.json`, 'utf8'));
+const key = loadConfig(NODE_ENV);
 
 async function sendMail (topic, body, receiver = 'sale@ayasan.vn', isBcc = false) {
   var transporter = await nodemailer.createTransport({

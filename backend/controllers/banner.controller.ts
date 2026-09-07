@@ -5,10 +5,11 @@ import * as cheerio from 'cheerio';
 import rssConverter from 'rss-converter';
 import fs from 'fs';
 import { Banner, BannerLanguage, ErrorLog } from '../models/index.ts';
+import { loadConfig } from '../helpers/config.ts';
 let error_status = 500;
 let error_message = 'Unexpected error';
 const NODE_ENV = process.env.NODE_ENV || 'local';
-const config = JSON.parse(fs.readFileSync(`config/${NODE_ENV}.json`, 'utf8'));
+const config = loadConfig(NODE_ENV);
 const IMAGE_BASE_URL = config.image_base_url;
 
 async function update (req, res) {

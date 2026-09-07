@@ -6,6 +6,7 @@ import {
   createRole,
   createAdmin,
   createCustomer,
+  customerToken,
   adminToken,
   ADMIN_PASSWORD,
 } from '../helpers/factories';
@@ -50,7 +51,6 @@ describe('back-office tier — auth gate (backofficeValidator + recordHistory)',
 
   it('rejects a customer token on the admin tier', async () => {
     const customer = await createCustomer({ email: 'intruder@test.local' });
-    const { customerToken } = require('../helpers/factories');
     const customerJwt = await customerToken(customer);
 
     const res = await request(app)

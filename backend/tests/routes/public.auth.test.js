@@ -23,6 +23,7 @@ afterAll(() => {
 });
 
 import request from 'supertest';
+import * as factories from '../helpers/factories';
 import * as securityExports from '../../helpers/security.ts';
 import app from '../../app';
 import { truncateAll, APP_KEY, db } from '../helpers/db';
@@ -223,7 +224,7 @@ describe('POST /auth/forget-password → /auth/reset-password (customer)', () =>
 
 describe('POST /auth/admin/signin', () => {
   it('returns admin profile with permission array for valid credentials', async () => {
-    const admin = await require('../helpers/factories').createAdmin({
+    const admin = await factories.createAdmin({
       username: 'backoffice@test.local',
       email: 'backoffice@test.local',
     });
@@ -231,7 +232,7 @@ describe('POST /auth/admin/signin', () => {
     const res = await request(app)
       .post('/auth/admin/signin')
       .set('app_key', APP_KEY)
-      .send({ username: 'backoffice@test.local', password: require('../helpers/factories').ADMIN_PASSWORD });
+      .send({ username: 'backoffice@test.local', password: factories.ADMIN_PASSWORD });
 
     expect(res.status).toBe(200);
     expect(res.body.username).toBe('backoffice@test.local');
@@ -240,7 +241,7 @@ describe('POST /auth/admin/signin', () => {
   });
 
   it('rejects a wrong admin password', async () => {
-    await require('../helpers/factories').createAdmin({ username: 'wrongpw@test.local' });
+    await factories.createAdmin({ username: 'wrongpw@test.local' });
 
     const res = await request(app)
       .post('/auth/admin/signin')

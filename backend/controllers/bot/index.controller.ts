@@ -1,11 +1,12 @@
 import fs from 'fs';
 import { Supporter, SupporterViewCount, SupporterSkill, SupporterExperience, SupporterLanguage, ErrorLog } from '../../models/index.ts';
 import __esModuleChain_Op from 'sequelize';
+import { loadConfig } from '../../helpers/config.ts';
 const { substring, and, eq, ne, gte, lte } = (__esModuleChain_Op as any).Op;
 let error_status = 500;
 let error_message = 'Unexpected error';
 const NODE_ENV = process.env.NODE_ENV || 'local';
-const config = JSON.parse(fs.readFileSync(`config/${NODE_ENV}.json`, 'utf8'));
+const config = loadConfig(NODE_ENV);
 const IMAGE_BASE_URL = config.image_base_url;
 let DEFAULT_PROFILE_IMAGE_URL = config.default_image_url;
 

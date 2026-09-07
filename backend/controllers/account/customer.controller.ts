@@ -5,11 +5,12 @@ import { encryptPassword, comparePassword, generateToken, requestForgetPasswordT
 import __interop_model from '../../models/index.ts';
 import nodemailer from 'nodemailer';
 import { sendMail } from '../../helpers/mail.ts';
+import { loadConfig } from '../../helpers/config.ts';
 const model = (__interop_model as any).sequelize;
 let error_status = 500;
 let error_message = 'Unexpected error';
 const NODE_ENV = process.env.NODE_ENV || 'local';
-const key = JSON.parse(fs.readFileSync(`config/${NODE_ENV}.json`, 'utf8'));
+const key = loadConfig(NODE_ENV);
 
 async function signup (req, res) {
   const t = await model.transaction();

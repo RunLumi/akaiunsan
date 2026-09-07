@@ -3,12 +3,13 @@ import { Supporter, SupporterExperience, SupporterSkill, SupporterEducation, Sup
 import { QueryTypes,Sequelize } from 'sequelize';
 import __esModuleChain_Op from 'sequelize';
 import db from '../models/index.ts';
+import { loadConfig } from '../helpers/config.ts';
 declare var fields: any;
 declare var field_list: any;
 const { substring, and, or, not, eq, ne, gte, lte } = (__esModuleChain_Op as any).Op;
 const NODE_ENV = process.env.NODE_ENV || "local";
-const key = JSON.parse(fs.readFileSync(`config/${NODE_ENV}.json`, 'utf8'));
-const config = JSON.parse(fs.readFileSync(`config/${NODE_ENV}.json`, 'utf8'));
+const key = loadConfig(NODE_ENV);
+const config = loadConfig(NODE_ENV);
 
 const IMAGE_BASE_URL = config.image_base_url;
 const DEFAULT_PROFILE_IMAGE_URL = config.default_image_url;

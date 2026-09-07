@@ -2,10 +2,11 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import fs from 'fs';
 import db from './../models/index.ts';
+import { loadConfig } from '../helpers/config.ts';
 
 const saltRounds = 10;
 const NODE_ENV = process.env.NODE_ENV || 'local';
-const key = JSON.parse(fs.readFileSync(`config/${NODE_ENV}.json`, 'utf8'));
+const key = loadConfig(NODE_ENV);
 const { Customer, Admin } = db;
 
 export const encryptPassword = async (_password) => {

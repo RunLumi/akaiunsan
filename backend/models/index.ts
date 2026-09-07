@@ -1,10 +1,11 @@
 import fs from 'fs';
 import Sequelize from 'sequelize';
 import relations from './relations.ts';
+import { loadConfig } from '../helpers/config.ts';
 
 const NODE_ENV = process.env.NODE_ENV || 'local';
 // resolved from cwd (backend/): works for tsx, vitest, dist and pm2 alike
-const config = JSON.parse(fs.readFileSync(`config/${NODE_ENV}.json`, 'utf8'));
+const config = loadConfig(NODE_ENV);
 
 const db: any = {};
 

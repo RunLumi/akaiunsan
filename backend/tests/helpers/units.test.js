@@ -7,6 +7,7 @@ import {
   createAdmin,
   createCustomer,
   customerToken,
+  adminToken,
   ADMIN_PASSWORD,
 } from './factories';
 import { RESET_PASSWORD, WRONG_PASSWORD } from './credentials';
@@ -179,7 +180,7 @@ describe('back-office admin password + profile management', () => {
 
   beforeAll(async () => {
     const boAdmin = await createAdmin({ username: 'pw-admin@test.local' });
-    boToken = await require('./factories').adminToken(boAdmin);
+    boToken = await adminToken(boAdmin);
   });
 
   const authed = (test) => test.set('app_key', APP_KEY).set('Authorization', `Bearer ${boToken}`);

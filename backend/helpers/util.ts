@@ -2,8 +2,9 @@ import { parseAsync } from 'json2csv';
 import fs from 'fs';
 import mysql from 'mysql';
 import Client from 'ssh2-sftp-client';
+import { loadConfig } from '../helpers/config.ts';
 const NODE_ENV = process.env.NODE_ENV || 'local';
-const key = JSON.parse(fs.readFileSync(`config/${NODE_ENV}.json`, 'utf8'));
+const key = loadConfig(NODE_ENV);
 const agency_connection = mysql.createConnection(key['agency-connection']);
 // SFTP credentials come from config ("sftp-connection") or env vars — never hardcode them here.
 const sftpConfig = Object.assign(

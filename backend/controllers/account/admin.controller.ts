@@ -4,11 +4,12 @@ import { genTxt, getAdminData } from '../../helpers/util.ts';
 import { encryptPassword, comparePassword, generateToken, requestForgetPasswordToken, verifyToken } from '../../helpers/security.ts';
 import __interop_model from '../../models/index.ts';
 import nodemailer from 'nodemailer';
+import { loadConfig } from '../../helpers/config.ts';
 const model = (__interop_model as any).sequelize;
 let error_status = 500;
 let error_message = 'Unexpected error';
 const NODE_ENV = process.env.NODE_ENV || 'local';
-const key = JSON.parse(fs.readFileSync(`config/${NODE_ENV}.json`, 'utf8'));
+const key = loadConfig(NODE_ENV);
 
 async function signin (req, res) {
   try {

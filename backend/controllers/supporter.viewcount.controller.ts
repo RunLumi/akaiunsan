@@ -7,12 +7,13 @@ import fs from 'fs';
 import { Supporter, SupporterViewCount, ErrorLog } from '../models/index.ts';
 import __interop_model from '../models/index.ts';
 import { sequelize } from '../models/index.ts';
+import { loadConfig } from '../helpers/config.ts';
 const model = (__interop_model as any).sequelize;
 // const { substring, and, or, not, eq, ne, gte, lte } = require('sequelize').Op;
 let error_status = 500;
 let error_message = 'Unexpected error';
 const NODE_ENV = process.env.NODE_ENV || 'local';
-const config = JSON.parse(fs.readFileSync(`config/${NODE_ENV}.json`, 'utf8'));
+const config = loadConfig(NODE_ENV);
 
 async function createCount (req, res) {
   let obj;

@@ -1,8 +1,9 @@
 import fs from 'fs';
 const NODE_ENV = process.env.NODE_ENV || 'local';
-const key = JSON.parse(fs.readFileSync(`config/${NODE_ENV}.json`, 'utf8'));
+const key = loadConfig(NODE_ENV);
 
 import omiseFactory from 'omise';
+import { loadConfig } from '../helpers/config.ts';
 const omise = (omiseFactory as any)({
     omiseVersion: key.omise.omiseVersion,
     secretKey: key.omise.secretKey

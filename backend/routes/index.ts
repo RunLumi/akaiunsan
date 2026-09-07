@@ -1,17 +1,26 @@
-const path = require('path');
-const SupporterController = require('../controllers/supporter.controller.ts');
-const InstallController = require('../controllers/install.controller.ts');
-const AgencyController = require('../controllers/agency/index.controller.ts');
+import r_public from './public.route.ts';
+import r_bot from './bot.route.ts';
+import r_agency from './agency.route.ts';
+import r_backoffice from './backoffice.route.ts';
+import r_client from './client.route.ts';
+import r_error from './error.ts';
+import path from 'path';
+import db from '../models/index.ts';
+import * as SupporterController from '../controllers/supporter.controller.ts';
+import InstallController from '../controllers/install.controller.ts';
+import AgencyController from '../controllers/agency/index.controller.ts';
+import { getHealthInfo } from '../helpers/version.ts';
 
-module.exports = (app) => {
+export default (app) => {
+
   // infrastructure health check (load balancers / orchestrators) — no auth
   app.get('/health', async (req, res) => {
+    const health = getHealthInfo();
     try {
-      const db = require('../models/index.ts');
       await db.sequelize.query('SELECT 1');
-      return res.status(200).json({ status: 'ok', env: process.env.NODE_ENV, db: 'up' });
-    } catch (err) {
-      return res.status(503).json({ status: 'error', env: process.env.NODE_ENV, db: 'down' });
+      return res.status(200).json({ ...health, db: 'up' });
+    } catch (err: any) {
+      return res.status(503).json({ ...health, status: 'error', db: 'down', dbError: err?.message });
     }
   });
 
@@ -34,16 +43,16 @@ module.exports = (app) => {
   })
 
   // Un-authentication routes
-  require('./public.route.ts')(app);
+  r_public(app);
   
   //ayasan bot api routes
-  require('./bot.route.ts')(app);
+  r_bot(app);
 
-  require('./agency.route.ts')(app);
+  r_agency(app);
 
   // authentication required
-  require('./backoffice.route.ts')(app);
-  require('./client.route.ts')(app);
+  r_backoffice(app);
+  r_client(app);
 
-  require('./error.ts')(app);
+  r_error(app);
 }

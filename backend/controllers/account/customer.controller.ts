@@ -38,7 +38,7 @@ async function signup (req, res) {
     let email_lang = 'en';
     let email_topic = 'Welcome to Ayasan Service';
     const mail_template = await new Promise((resolve, reject) => {
-      fs.readFile(`${__dirname}/../../mail-template/${email_lang}/account.html`, 'utf8', function (err, data) {
+      fs.readFile(`mail-template/${email_lang}/account.html`, 'utf8', function (err, data) {
         if (err) {
           reject(err)
         }
@@ -165,7 +165,7 @@ async function uploadProfile (req, res) {
 async function removeProfile (req, res) {
   try {
     let { profile_image } = req.params;
-    fs.unlinkSync(`${__dirname}/../uploads/customers/${profile_image}`);
+    fs.unlinkSync(`uploads/customers/${profile_image}`);
     return res.status(200).json(true);
   } catch (err) {
     console.log(err);
@@ -205,7 +205,7 @@ async function requestForgetPassword (req, res) {
       email_topic = 'Reset Password';
     }
     const mail_template = await new Promise((resolve, reject) => {
-      fs.readFile(`${__dirname}/../../mail-template/${email_lang}/forget-password.html`, 'utf8', function (err, data) {
+      fs.readFile(`mail-template/${email_lang}/forget-password.html`, 'utf8', function (err, data) {
         if (err) {
           reject(err)
         }

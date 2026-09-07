@@ -1,19 +1,14 @@
+import fs from 'fs';
+import { Supporter, SupporterExperience, SupporterSkill, SupporterEducation, SupporterLanguage, SupporterViewCount, } from '../models/index.ts';
+import { QueryTypes,Sequelize } from 'sequelize';
+import __esModuleChain_Op from 'sequelize';
+import db from '../models/index.ts';
 declare var fields: any;
 declare var field_list: any;
-const {
-  Supporter,
-  SupporterExperience,
-  SupporterSkill,
-  SupporterEducation,
-  SupporterLanguage,
-  SupporterViewCount,
-} = require("../models/index.ts");
-const { QueryTypes,Sequelize } = require('sequelize');
-const { substring, and, or, not, eq, ne, gte, lte } = require("sequelize").Op;
+const { substring, and, or, not, eq, ne, gte, lte } = (__esModuleChain_Op as any).Op;
 const NODE_ENV = process.env.NODE_ENV || "local";
-const key = require(`../config/${NODE_ENV}.json`);
-const config = require(`../config/${NODE_ENV}.json`);
-const db = require('../models/index.ts');
+const key = JSON.parse(fs.readFileSync(`config/${NODE_ENV}.json`, 'utf8'));
+const config = JSON.parse(fs.readFileSync(`config/${NODE_ENV}.json`, 'utf8'));
 
 const IMAGE_BASE_URL = config.image_base_url;
 const DEFAULT_PROFILE_IMAGE_URL = config.default_image_url;
@@ -684,15 +679,4 @@ async function increaseViewCount(supporter_id) {
   }
 }
 
-module.exports = {
-  create,
-  update,
-  getDetail,
-  getList,
-  count,
-  getPublicDetail,
-  getPublicList,
-  getPublicCount,
-  remove,
-  increaseViewCount,
-};
+export { create, update, getDetail, getList, count, getPublicDetail, getPublicList, getPublicCount, remove, increaseViewCount };

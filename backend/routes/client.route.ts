@@ -4,7 +4,7 @@ const multer = require('multer');
 const { genTxt } = require('../helpers/util.ts');
 const customerStorage = multer.diskStorage(
   {
-      destination: __dirname + '/../uploads/customers',
+      destination: 'uploads/customers',
       filename: function ( req, file, cb ) {
         let file_name = genTxt(20);
         let original_file_name = file.originalname.split('.');

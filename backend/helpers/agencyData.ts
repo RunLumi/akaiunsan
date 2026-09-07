@@ -1,10 +1,10 @@
-const { Supporter, ErrorLog } = require('../models/index.ts');
+import fs from 'fs';
+import { Supporter, ErrorLog } from '../models/index.ts';
+import mysql from 'mysql';
+import Client from 'ssh2-sftp-client';
 const NODE_ENV = process.env.NODE_ENV || 'local';
-const key = require(`../config/${NODE_ENV}.json`);
-const mysql = require('mysql');
+const key = JSON.parse(fs.readFileSync(`config/${NODE_ENV}.json`, 'utf8'));
 const agency_connection = mysql.createConnection(key['agency-connection']);
-const fs = require('fs');
-let Client = require('ssh2-sftp-client');
 // SFTP credentials come from config ("sftp-connection") or env vars — never hardcode them here.
 const sftpConfig = Object.assign(
   {},
@@ -730,17 +730,17 @@ async function getAllStat () {
 
 async function getMaidProfile (maid_id) {
   return new Promise((resolve, reject) => {
-    const fs = require('fs');
+
     const remoteDir = `/var/www/vhosts/ayasan-service.com/httpdocs/assets/uploads/profilepicture/${maid_id}/1.jpg`;
 
-    let Client = require('ssh2-sftp-client');
+
     let sftp = new Client();
     const config = Object.assign({ port: '22' }, sftpConfig);
 
     // get file
     sftp.connect(config).then(() => {
       sftp.get(remoteDir).then((data) => {
-        fs.writeFile(`${__dirname}/../uploads/supporters/maid_${maid_id}.jpg`, data, (err) => {
+        fs.writeFile(`uploads/supporters/maid_${maid_id}.jpg`, data, (err) => {
           if (err) throw err;
           resolve(`maid_${maid_id}.jpg`)
         });
@@ -755,9 +755,9 @@ async function getMaidProfile (maid_id) {
 
 async function getDriverProfile (driver_id) {
   return new Promise((resolve, reject) => {
-    const fs = require('fs');
+
     const driver_uri = `https://www.ayasan-driver.com/profilepicture/${driver_id}/1.jpg`;
-    const new_driver_uri = `${__dirname}/../uploads/supporters/driver_${driver_id}.jpg`;
+    const new_driver_uri = `uploads/supporters/driver_${driver_id}.jpg`;
 
     (async () => {
       const response = await fetch(driver_uri, { method: 'HEAD' });
@@ -801,18 +801,4 @@ async function getDriverProfile (driver_id) {
  * //do the same as supporter
  */
 
-module.exports = {
-  getSuppoterFromAgency,
-  getSkillFromAgency,
-  getExperienceFromAgency,
-  getDriver,
-  getDriverSkill,
-  getDriverExperience,
-  pairSkill,
-  pairExperience,
-  getMaidNannyList,
-  getAllStat,
-  getMaidProfile,
-  getDriverProfile,
-  correctNationality
-}
+export { getSuppoterFromAgency, getSkillFromAgency, getExperienceFromAgency, getDriver, getDriverSkill, getDriverExperience, pairSkill, pairExperience, getMaidNannyList, getAllStat, getMaidProfile, getDriverProfile, correctNationality };

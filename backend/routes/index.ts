@@ -30,7 +30,7 @@ module.exports = (app) => {
 
   // images and files access
   app.get('/uploads/*s', (req, res, next) => {
-    res.sendFile(path.resolve(`${__dirname}/..${req.originalUrl}`));
+    res.sendFile(path.resolve(`.${req.originalUrl}`));
   })
 
   // Un-authentication routes

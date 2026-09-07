@@ -1,6 +1,9 @@
+import { parseAsync } from 'json2csv';
+import fs from 'fs';
+import mysql from 'mysql';
+import Client from 'ssh2-sftp-client';
 const NODE_ENV = process.env.NODE_ENV || 'local';
-const key = require(`../config/${NODE_ENV}.json`);
-const mysql = require('mysql');
+const key = JSON.parse(fs.readFileSync(`config/${NODE_ENV}.json`, 'utf8'));
 const agency_connection = mysql.createConnection(key['agency-connection']);
 // SFTP credentials come from config ("sftp-connection") or env vars — never hardcode them here.
 const sftpConfig = Object.assign(
@@ -12,7 +15,6 @@ const sftpConfig = Object.assign(
     password: process.env.SFTP_PASSWORD || (key['sftp-connection'] || {}).password
   }
 );
-const Client = require('ssh2-sftp-client');
 const sftp = new Client();
 
 async function getCustomerData (data) {
@@ -226,7 +228,7 @@ async function genAgencyData (supporter_id, supporter) {
 
 async function uploadSupporterProfileImage (image_url) {
   return new Promise((resolve, reject) => {
-    let origin_url = `${__dirname}/../uploads/supporters/${image_url}`;
+    let origin_url = `uploads/supporters/${image_url}`;
     let destination_url = `/var/www/vhosts/ayasan-service.com/httpdocs/assets/uploads/profilepicture/${image_url}`;
     sftp.connect(Object.assign({ port: '22' }, sftpConfig)).then(() => {
       sftp.put(origin_url, destination_url).then(() => {
@@ -241,7 +243,7 @@ async function uploadSupporterProfileImage (image_url) {
 
 async function json2csv (header, data) {
   return new Promise((resolve, reject) => {
-    const { parseAsync } = require('json2csv');
+
     const opts = { fields: header };
     parseAsync(data, opts)
       .then(csv => resolve(csv))
@@ -251,7 +253,7 @@ async function json2csv (header, data) {
 
 async function writeCsvFile(file_name, data){
   return new Promise(function(resolve, reject){
-    var fs = require('fs');
+
     fs.writeFile(`./exports/${file_name}`, data,  function(err){
       if (err)
         reject(err);
@@ -261,19 +263,4 @@ async function writeCsvFile(file_name, data){
   });
 }
 
-module.exports = {
-  getCustomerData: getCustomerData,
-  genTxt: genTxt,
-  findOnAgency: findOnAgency,
-  createOnAgency: createOnAgency,
-  updateOnAgency: updateOnAgency,
-  removeOnAgency: removeOnAgency,
-  genAgencyData: genAgencyData,
-  bulkCreateOnAgency: bulkCreateOnAgency,
-  getAdminData: getAdminData,
-  uploadSupporterProfileImage: uploadSupporterProfileImage,
-  getAddressData: getAddressData,
-  json2csv,
-  writeCsvFile,
-  getCustomerSupplyData
-}
+export { getCustomerData as getCustomerData, genTxt as genTxt, findOnAgency as findOnAgency, createOnAgency as createOnAgency, updateOnAgency as updateOnAgency, removeOnAgency as removeOnAgency, genAgencyData as genAgencyData, bulkCreateOnAgency as bulkCreateOnAgency, getAdminData as getAdminData, uploadSupporterProfileImage as uploadSupporterProfileImage, getAddressData as getAddressData, json2csv, writeCsvFile, getCustomerSupplyData };

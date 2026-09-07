@@ -1,7 +1,7 @@
-const { RequestHelper, RequestMaid, RequestDriver, Province, District, SubDistrict,
-} = require("../models/index.ts");
-const { substring, or, and, eq, between } = require("sequelize").Op;
-const { sendMail } = require("./mail.ts");
+import { RequestHelper, RequestMaid, RequestDriver, Province, District, SubDistrict, } from '../models/index.ts';
+import __esModuleChain_Op from 'sequelize';
+import { sendMail } from './mail.ts';
+const { substring, or, and, eq, between } = (__esModuleChain_Op as any).Op;
 
 async function newRequestEmail(data1, data2) {
   let request_type = data1.request_type == "driver" ? "Driver" : "Helper";
@@ -576,8 +576,11 @@ async function countRequestStatistics(start_date, end_date) {
       "Driver",
     ];
     let field_list = ["type_of_worker", "createdAt"];
+    let fields = {
+      [and]: [],
+    };
     for (let i = 0; i < lst_type.length - 1; i++) {
-      let fields = {
+      fields = {
         [and]: [],
       };
       fields[and].push({
@@ -1290,32 +1293,4 @@ async function countRequestDriverIsOTStatistics(
     throw new Error(e.message);
   }
 }
-module.exports = {
-  create,
-  update,
-  getDetail,
-  getList,
-  getHistory,
-  getCountHistory,
-  remove,
-  count,
-  countRequestStatistics,
-  countRequestScheduleStatistics,
-  countRequestNationalStatistics,
-  countRequestDayStatistics,
-  countRequestLanguageStatistics,
-  countRequestDriverLanguageStatistics,
-  countRequestDriverAgeStatistics,
-  countRequestDriverScheduleStatistics,
-  countRequestDriveSalaryStatistics,
-  countRequestDriverHiringStatistics,
-  countRequestDriverInterviewStatistics,
-  countRequestDriveReplacementGuaranteeStatistics,
-  countRequestCookingStatistics,
-  countRequesKidStatistics,
-  countRequesPetStatistics,
-  countRequesCurrentHelperStatistics,
-  countRequestDriverOwnCarStatistics,
-  countRequestDriverCurrentDriverStatistics,
-  countRequestDriverIsOTStatistics
-};
+export { create, update, getDetail, getList, getHistory, getCountHistory, remove, count, countRequestStatistics, countRequestScheduleStatistics, countRequestNationalStatistics, countRequestDayStatistics, countRequestLanguageStatistics, countRequestDriverLanguageStatistics, countRequestDriverAgeStatistics, countRequestDriverScheduleStatistics, countRequestDriveSalaryStatistics, countRequestDriverHiringStatistics, countRequestDriverInterviewStatistics, countRequestDriveReplacementGuaranteeStatistics, countRequestCookingStatistics, countRequesKidStatistics, countRequesPetStatistics, countRequesCurrentHelperStatistics, countRequestDriverOwnCarStatistics, countRequestDriverCurrentDriverStatistics, countRequestDriverIsOTStatistics };

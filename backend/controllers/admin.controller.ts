@@ -221,7 +221,7 @@ async function uploadProfile (req, res) {
 async function removeProfile (req, res) {
   try {
     let { profile_image } = req.params;
-    fs.unlinkSync(`${__dirname}/../uploads/admins/${profile_image}`);
+    fs.unlinkSync(`uploads/admins/${profile_image}`);
     return res.status(200).json(true);
   } catch (err) {
     console.log(err);

@@ -1,6 +1,7 @@
-const nodemailer = require('nodemailer');
+import fs from 'fs';
+import nodemailer from 'nodemailer';
 const NODE_ENV = process.env.NODE_ENV || 'local';
-const key = require(`../config/${NODE_ENV}.json`);
+const key = JSON.parse(fs.readFileSync(`config/${NODE_ENV}.json`, 'utf8'));
 
 async function sendMail (topic, body, receiver = 'sale@ayasan.vn', isBcc = false) {
   var transporter = await nodemailer.createTransport({
@@ -35,6 +36,4 @@ async function sendMail (topic, body, receiver = 'sale@ayasan.vn', isBcc = false
   // return true;
 }
 
-module.exports = {
-  sendMail
-}
+export { sendMail };

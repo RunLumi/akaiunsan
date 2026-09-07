@@ -170,7 +170,7 @@ async function uploadProfile (req, res) {
         let outputImage = `./uploads/supporters/crop_${req.file.filename}`;
 
         await sharp(originalImage).extract({ width: width, height: height, left: left, top: 0 }).toFile(outputImage);
-        fs.unlinkSync(`${__dirname}/../uploads/supporters/${req.file.filename}`);
+        fs.unlinkSync(`uploads/supporters/${req.file.filename}`);
 
         return res.status(200).json({
           width: width,
@@ -185,7 +185,7 @@ async function uploadProfile (req, res) {
         let outputImage = `./uploads/supporters/crop_${req.file.filename}`;
 
         await sharp(originalImage).extract({ width: width, height: height, left: 0, top: 0 }).toFile(outputImage);
-        fs.unlinkSync(`${__dirname}/../uploads/supporters/${req.file.filename}`);
+        fs.unlinkSync(`uploads/supporters/${req.file.filename}`);
 
         return res.status(200).json({
           width: width,
@@ -206,7 +206,7 @@ async function uploadProfile (req, res) {
 async function removeProfile (req, res) {
   try {
     let { profile_image } = req.params;
-    fs.unlinkSync(`${__dirname}/../uploads/supporters/${profile_image}`);
+    fs.unlinkSync(`uploads/supporters/${profile_image}`);
     return res.status(200).json(true);
   } catch (err) {
     console.log(err);

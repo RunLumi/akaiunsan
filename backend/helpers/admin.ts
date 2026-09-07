@@ -1,4 +1,4 @@
-const { Admin }  = require('./../models/index.ts');
+import { Admin } from './../models/index.ts';
 
 async function findAdminByUsername (username) {
   const found = await Admin.findOne({ where: { username }});
@@ -16,7 +16,4 @@ async function findAdminById (admin_id) {
   return found;
 }
 
-module.exports = { 
-  findAdminByUsername,
-  findAdminById
-}
+export { findAdminByUsername, findAdminById };

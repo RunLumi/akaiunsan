@@ -5,7 +5,7 @@ const multer = require('multer');
 const { genTxt } = require('../helpers/util.ts');
 const adminStorage = multer.diskStorage(
   {
-    destination: __dirname + '/../uploads/admins',
+    destination: 'uploads/admins',
     filename: function (req, file, cb) {
       let file_name = genTxt(20);
       let original_file_name = file.originalname.split('.');
@@ -16,7 +16,7 @@ const adminStorage = multer.diskStorage(
 const adminUpload = multer({ storage: adminStorage });
 const customerStorage = multer.diskStorage(
   {
-    destination: __dirname + '/../uploads/customers',
+    destination: 'uploads/customers',
     filename: function (req, file, cb) {
       let file_name = genTxt(20);
       let original_file_name = file.originalname.split('.');
@@ -27,7 +27,7 @@ const customerStorage = multer.diskStorage(
 const customerUpload = multer({ storage: customerStorage });
 const supporterStorage = multer.diskStorage(
   {
-    destination: __dirname + '/../uploads/supporters',
+    destination: 'uploads/supporters',
     filename: function (req, file, cb) {
       let file_name = genTxt(20);
       let original_file_name = file.originalname.split('.');
@@ -38,7 +38,7 @@ const supporterStorage = multer.diskStorage(
 const supporterUpload = multer({ storage: supporterStorage });
 const bannerStorage = multer.diskStorage(
   {
-    destination: __dirname + '/../uploads/banners',
+    destination: 'uploads/banners',
     filename: function (req, file, cb) {
       let file_name = genTxt(20);
       let original_file_name = file.originalname.split('.');

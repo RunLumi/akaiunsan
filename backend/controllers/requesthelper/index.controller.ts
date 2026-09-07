@@ -25,7 +25,7 @@ async function create (req, res) {
     }
     const customer = await Customer.findOne({ where: { id: customer_id }});
     const mail_template = await new Promise((resolve, reject) => {
-      fs.readFile(`${__dirname}/../../mail-template/${email_lang}/request-success.html`, 'utf8', function (err, data) {
+      fs.readFile(`mail-template/${email_lang}/request-success.html`, 'utf8', function (err, data) {
         if (err) {
           reject(err)
         }

@@ -1,9 +1,9 @@
-const dayjs = require("dayjs");
-const { Subscription, SubscriptionTransaction } = require("./../models/index.ts");
-const { Op } = require("sequelize");
-const OmiseHelper = require("./../helpers/omise.ts");
-const PaymentHelper = require("./../helpers/payment.ts");
-const CustomerHelper = require("./../helpers/customer.ts");
+import dayjs from 'dayjs';
+import { Subscription, SubscriptionTransaction } from './../models/index.ts';
+import { Op } from 'sequelize';
+import * as OmiseHelper from './../helpers/omise.ts';
+import * as PaymentHelper from './../helpers/payment.ts';
+import * as CustomerHelper from './../helpers/customer.ts';
 
 const findSubscriptionByCustomerId = async (customerId, status = "active") => {
   return await Subscription.findOne({
@@ -145,10 +145,4 @@ const processSubscriptionsPayment = async () => {
   }
 };
 
-module.exports = {
-  findSubscriptionByCustomerId,
-  createSubscription,
-  createSubscriptionTransaction,
-  findSubscriptionById,
-  processSubscriptionsPayment,
-};
+export { findSubscriptionByCustomerId, createSubscription, createSubscriptionTransaction, findSubscriptionById, processSubscriptionsPayment };

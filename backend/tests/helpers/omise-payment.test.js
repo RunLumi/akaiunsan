@@ -181,21 +181,11 @@ describe('controllers/payment (unrouted; unit-driven)', () => {
   it('maps omise failures to a 400 envelope', async () => {
     const customer = await factories.createCustomer({
       email: 'pay4@test.local',
-      omise_customer_id: 'cust_pay4',
+      omise_customer_id: 'cust_cronfail', // the omise mock declines this customer
     });
     const { req, res } = stubReqRes({ user: customer.toJSON(), body: {} });
 
-    // force a charge failure through the shared helper module object
-    const omiseHelperModule = require('../../helpers/omise.ts');
-    const originalCharge = omiseHelperModule.chargeCustomerCardById;
-    omiseHelperModule.chargeCustomerCardById = async () => {
-      throw new Error('card declined');
-    };
-    try {
-      await paymentController.makePayment(req, res);
-    } finally {
-      omiseHelperModule.chargeCustomerCardById = originalCharge;
-    }
+    await paymentController.makePayment(req, res);
     expect(res.statusCode).toBe(400);
     expect(res.body.message).toBe('card declined');
   });

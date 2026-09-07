@@ -1,4 +1,5 @@
 import { describe, it, expect } from 'vitest';
+import { readFileSync } from 'fs';
 import * as migrator from '../helpers/migrator.ts';
 import db from '../models/index.ts';
 
@@ -8,6 +9,22 @@ import db from '../models/index.ts';
 const EXPECTED_TABLES = Object.keys(db)
   .filter((k) => !['sequelize', 'Sequelize'].includes(k))
   .map((k) => db[k].getTableName());
+
+// Production runs mariadb:10.9, so the baseline DDL must not use collations
+// introduced in MariaDB 11 (utf8mb4_uca1400_ai_ci) and must stay idempotent
+// for adopting an existing populated database (IF NOT EXISTS baseline).
+const BASELINE_DDL = readFileSync('migrations/001_initial.cjs', 'utf8');
+
+describe('baseline migration compatibility (mariadb:10.9 prod)', () => {
+  it('contains no MariaDB-11-only collations', () => {
+    expect(BASELINE_DDL).not.toContain('uca1400');
+    expect(BASELINE_DDL).toContain('utf8mb4_unicode_ci');
+  });
+
+  it('baseline DDL is IF NOT EXISTS so adoption on an existing DB is a no-op', () => {
+    expect(BASELINE_DDL).toContain('CREATE TABLE IF NOT EXISTS');
+  });
+});
 
 describe('umzug migrations (Phase 5)', () => {
   it('runMigrations rebuilds the full schema on a wiped database', async () => {

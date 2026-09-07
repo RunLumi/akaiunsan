@@ -107,14 +107,9 @@ ENVFILE=.env.dev         ./gradlew app:assembleRelease
 Use `apps/scripts/deploy-stores.sh` to build the production Android AAB and iOS IPA, then upload them through the Google Play and App Store Connect APIs. The script does not submit an iOS build for App Review, and defaults Google Play to the `internal` track.
 
 ```bash
-# Reuse the ignored Lumi release env files without copying their credentials.
-set -a
-source /Volumes/SSD/imc/lcn-lumi/lumi/android/keystore.env
-source /Volumes/SSD/imc/lcn-lumi/lumi/ios/scripts/release.env
-set +a
-
-export PLAY_UPLOADER=/Volumes/SSD/imc/lcn-lumi/lumi/android/scripts/play_upload.sh
-export APPLE_TEAM_ID="$TEAM_ID"
+# The script automatically loads these ignored local release files when present:
+# apps/android/keystore.env, apps/android/release.jks,
+# apps/ios/scripts/release.env, and apps/ios/scripts/AuthKey_<ASC_KEY_ID>.p8
 
 # Build and validate only.
 ./apps/scripts/deploy-stores.sh
@@ -125,8 +120,8 @@ export APPLE_TEAM_ID="$TEAM_ID"
 
 The API credential files must stay outside git. `--confirm` is required for uploads; `--build-only`, `--android-only`, and `--ios-only` are available for narrower runs. Set `PLAY_TRACK=closed` or `open` only when that release destination is intentional. Production uploads additionally require `ALLOW_PLAY_PRODUCTION=YES`.
 
-Android variants: `dev|staging|production` × `debug|release` (`yarn android:*` scripts).
-iOS schemes: `AkaiunsanProduction`, `AysanStaging` (note the typo — it's the real scheme name).
+Android release task: `:app:bundleRelease` (Expo CNG-generated Gradle project).
+iOS scheme: `Akaiunsan` (Expo CNG-generated Xcode project/workspace).
 
 Signing: Android release keystores and iOS certs/profiles live in `apps/` (gitignored since the root `.gitignore` was added — see security.md for what must be provisioned manually on a fresh clone). OTA updates go through `expo-updates` (see the `updateSource` hook in `App.tsx`).
 

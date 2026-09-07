@@ -78,3 +78,9 @@ coverage/
 
 # Sentry upload credentials (see apps/sentry.properties.example)
 /apps/sentry.properties
+
+# Local mobile release credentials (never commit)
+/apps/android/keystore.env
+/apps/android/release.jks
+/apps/ios/scripts/release.env
+/apps/ios/scripts/*.p8

@@ -1,0 +1,180 @@
+# ==============================================================================
+# Master Docker Compose — Production Stack (2026)
+# ==============================================================================
+# Services:
+#   - caddy: Reverse proxy with automatic Let's Encrypt / ZeroSSL TLS & HTTP/3
+#   - backend: Express 5 + TypeScript API (Ayasan Admin / Customer API)
+#   - frontend: Customer Web Portal
+#   - admin: Back-Office Management Dashboard
+#   - mariadb: Production Database (internal network only)
+# ==============================================================================
+
+networks:
+  ingress_net:
+    driver: bridge
+  db_net:
+    driver: bridge
+
+volumes:
+  mariadb_data:
+    name: ayasan_mariadb_data
+  backend_uploads:
+    name: ayasan_backend_uploads
+  backend_exports:
+    name: ayasan_backend_exports
+  caddy_data:
+    name: ayasan_caddy_data
+  caddy_config:
+    name: ayasan_caddy_config
+
+services:
+  # ----------------------------------------------------------------------------
+  # Caddy Reverse Proxy (Ingress & SSL)
+  # ----------------------------------------------------------------------------
+  caddy:
+    image: caddy:2-alpine
+    container_name: ayasan_caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp" # HTTP/3 (QUIC)
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - ingress_net
+    depends_on:
+      - backend
+      - frontend
+      - admin
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"
+
+  # ----------------------------------------------------------------------------
+  # Backend API (Node 22 / Express 5)
+  # ----------------------------------------------------------------------------
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    image: ${IMAGE_BACKEND:-ayasan-backend:latest}
+    container_name: ayasan_backend
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+    volumes:
+      - backend_uploads:/app/uploads
+      - backend_exports:/app/exports
+    networks:
+      - ingress_net
+      - db_net
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    deploy:
+      resources:
+        limits:
+          memory: 1024M
+          cpus: "1.0"
+        reservations:
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"
+
+  # ----------------------------------------------------------------------------
+  # Frontend Service (Customer Portal)
+  # ----------------------------------------------------------------------------
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    image: ${IMAGE_FRONTEND:-ayasan-frontend:latest}
+    container_name: ayasan_frontend
+    restart: unless-stopped
+    networks:
+      - ingress_net
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: "0.5"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "3"
+
+  # ----------------------------------------------------------------------------
+  # Admin Service (Back-Office Portal)
+  # ----------------------------------------------------------------------------
+  admin:
+    build:
+      context: ../admin
+      dockerfile: Dockerfile
+    image: ${IMAGE_ADMIN:-ayasan-admin:latest}
+    container_name: ayasan_admin
+    restart: unless-stopped
+    networks:
+      - ingress_net
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: "0.5"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "3"
+
+  # ----------------------------------------------------------------------------
+  # MariaDB Database
+  # ----------------------------------------------------------------------------
+  mariadb:
+    image: mariadb:10.9.6
+    container_name: ayasan_mariadb
+    restart: unless-stopped
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?DB_ROOT_PASSWORD is required}
+      MYSQL_DATABASE: ${DB_NAME:-ayasan_db_prod}
+      MYSQL_USER: ${DB_USER:-ayasan}
+      MYSQL_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is required}
+    networks:
+      - db_net
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    deploy:
+      resources:
+        limits:
+          memory: 1536M
+          cpus: "1.0"
+        reservations:
+          memory: 512M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"

@@ -40,7 +40,10 @@ jobs:
         run: yarn lint
 
       - name: Jest (characterization suite + coverage)
-        run: yarn test --ci --coverage --coverageReporters=json-summary --coverageReporters=text
+        # React Native/Sentry leaves a non-critical async handle open after
+        # the suite completes. Force Jest to exit after writing coverage so
+        # CI does not fail ten minutes after all tests have passed.
+        run: yarn test --ci --coverage --coverageReporters=json-summary --coverageReporters=text --forceExit
         env:
           CI: "true"
 

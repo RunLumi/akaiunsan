@@ -547,7 +547,7 @@ describe("screens interaction sweep (Phase 3 coverage harness)", () => {
       for (let round = 0; round < rounds; round++) {
         typeAll(root);
         await flush();
-        pressAll(root);
+        pressAll(root, ["onPressLogin"]);
         await flush();
       }
       expect(renderer.toJSON()).not.toBeNull();

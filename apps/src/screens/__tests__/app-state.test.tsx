@@ -196,7 +196,7 @@ describe("app-state refresh flows (Phase 3 characterization)", () => {
       // a full sweep after the transitions keeps later mounts covered too
       typeAll(renderer.root);
       await flush();
-      pressAll(renderer.root);
+      pressAll(renderer.root, ["onPressLogin"]);
       await flush();
       emitAppState("background");
       await flush();

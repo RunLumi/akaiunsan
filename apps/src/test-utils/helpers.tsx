@@ -107,7 +107,9 @@ const syntheticEvent = () => ({
   nativeEvent: {},
 });
 
-export const pressAll = (root: any) => {
+// skipPatterns: handler source substrings to skip (e.g. flows whose async
+// chains outlive the suite and are covered by dedicated contracts instead).
+export const pressAll = (root: any, skipPatterns: string[] = []) => {
   const pressed: any[] = [];
   root.findAll((n: any) => {
     if (typeof n.props?.onPress !== "function") return false;
@@ -128,6 +130,9 @@ export const pressAll = (root: any) => {
     return true;
   });
   for (const onPress of pressed) {
+    if (skipPatterns.some((pat) => String(onPress).includes(pat))) {
+      continue;
+    }
     act(() => {
       try {
         // Handlers may be async (request flows); rejections (native-ref

@@ -5,6 +5,7 @@ import {
   createWithStore,
   makeApiStore,
   flush,
+  pressText,
 } from "../../../test-utils/helpers";
 
 // Phase 5 strangler contract for the Login port (docs/mobile-app-upgrade-plan.md
@@ -108,24 +109,13 @@ describe("Login (Phase 5 RTK port contract)", () => {
     await flush();
     typeAt(1, "secret-1");
     await flush();
-    // press the login button (any onPress that flips state on filled form)
-    const buttons = renderer.root.findAll(
-      (n: any) => typeof n.props?.onPress === "function"
-    );
-    for (const b of buttons) {
-      act(() => {
-        try {
-          const result = b.props.onPress();
-          if (result && typeof result.catch === "function")
-            result.catch(() => {});
-        } catch {
-          // tolerated
-        }
-      });
-    }
+    // Press only the login action. Pressing every button also triggers social
+    // login handlers and leaves multiple FCM debounce timers after unmount.
+    pressText(renderer.root, "Sign In");
     await flush();
-    await flush();
-    await flush();
+    // Let Login's 900ms FCM registration debounce and its mocked request
+    // settle before the renderer is unmounted.
+    await new Promise((resolve) => setTimeout(resolve, 1100));
     await flush();
     const token = (store.getState() as any)?.auth?.token;
     expect(token).toBeTruthy();

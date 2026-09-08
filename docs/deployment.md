@@ -72,7 +72,50 @@ Accept only when the public response is HTTP 200 with `status: "ok"`, `db: "up"`
 
 ---
 
-## Legacy Backend (PM2)
+## Production database: PostgreSQL (2026-09-08 cutover)
+
+The production database is now **PostgreSQL 16 with PostGIS** (`postgis/postgis:16-3.5-alpine`,
+volume `akaiunsan_postgres_data`). The legacy MariaDB container (`akaiunsan_mariadb`, database
+`ayasan_db_dev`) is kept running as a read-only fallback and can be removed after a soak period.
+
+Selection is per-environment: the backend entrypoint synthesizes `config/production.json` from
+`.env`, where `DB_DIALECT=postgres` + `DB_HOST=postgres` + `DB_PORT=5432` selects PostgreSQL
+(`DB_DIALECT=mysql` or unset selects the legacy MySQL/MariaDB path).
+
+### Rollback to MariaDB (kept available)
+
+```bash
+ssh ubuntu@15.235.202.219
+cd /opt/akaiunsan/deploy
+# .env: DB_HOST=mariadb, DB_PORT=3306, DB_DIALECT=mysql
+sudo docker compose --env-file .env up -d --force-recreate backend
+curl -s https://akai-api.cjs.vn/health   # accept only on 200 / db:up
+```
+
+### PostGIS / JSONB promotion (migration 003)
+
+`backend/migrations/003_postgis_jsonb_promotion.cjs` runs on boot (PG-only, every step guarded so
+vanilla postgres images and legacy data cannot break boot):
+
+- `CREATE EXTENSION IF NOT EXISTS postgis` / `pg_trgm` (skipped when the image lacks them),
+- promotes `job.address_meta` / `address.address_meta` text or json → `jsonb`,
+- adds `address.geog geography(Point,4326)` generated from the legacy varchar lat/lng columns.
+
+### Cutover record (2026-09-08)
+
+1. PG volume reset and recreated on the PostGIS image (old volume was unused).
+2. Backend flipped to Postgres via `.env` (`DB_DIALECT=postgres`); boot migrations created the
+   schema (`001` sync branch + `002` + `003`).
+3. Data carried over row-by-row (`role`, `admin`, `customer` — production data is minimal;
+   counts verified equal on both databases, sequences reset via `setval`).
+4. `error_log` rows (22 legacy lines) intentionally not migrated.
+5. Acceptance: public `/health` HTTP 200, `db: "up"`, `git.commit` = deployed SHA; reads verified
+   against loaded data.
+
+pgloader was attempted first (container + native) but its state-file handling made it unusable
+here; for future bulk migrations prefer `COPY FROM STDIN` with column-intersection TSVs as above.
+
+
 
 **Development** (automated): `.gitlab-ci.yml` — on push to `develop`, a gitlab-runner tagged `dev-api.akaiunsan.vn`:
 1. rsyncs the repo to `/home/dev-api.akaiunsan.vn`

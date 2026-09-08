@@ -1,5 +1,10 @@
 # Testing Guide
 
+Store and production smoke-test accounts are documented separately:
+
+- [Google Play customer reviewer account](play-reviewer-account.md)
+- [Admin portal login-only reviewer account](admin-reviewer-account.md)
+
 ## Overview
 
 The backend uses **Vitest** + **supertest** against a real database (PostgreSQL or MariaDB).

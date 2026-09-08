@@ -259,6 +259,55 @@ installApiRoutes(axios as any, {
     promotionType: 2, // GIFT_MONEY
     content: JSON.stringify({ money: 50 }),
   },
+  [Constants.API.get_notification]: {
+    // page-1 branch: replace the notification list, badge count via notifee
+    page: 1,
+    totalUnRead: 5,
+    items: [
+      {
+        id: "noti-1",
+        type: 2,
+        data: JSON.stringify({ NotificationId: "n-1", PromotionId: "p-1" }),
+        title: "News",
+        content: "news content",
+        status: 1,
+        image: "",
+        listImage: [{ image: "" }],
+        bookDetail: [
+          {
+            bookingDate: "2026-01-01T00:00:00.000Z",
+            bookingHour: "2026-01-01T01:00:00.000Z",
+            hour: 2,
+            label: "Mon",
+            serviceName: "Test service",
+          },
+        ],
+        isAutoRenew: 1,
+        serviceName: "Test service",
+      },
+      {
+        id: "noti-2",
+        type: 1,
+        data: JSON.stringify({ PromotionId: "p-1" }),
+        title: "Promo",
+        content: "promo content",
+        status: 1,
+        image: "",
+        listImage: [{ image: "" }],
+        bookDetail: [
+          {
+            bookingDate: "2026-01-01T00:00:00.000Z",
+            bookingHour: "2026-01-01T01:00:00.000Z",
+            hour: 2,
+            label: "Mon",
+            serviceName: "Test service",
+          },
+        ],
+        isAutoRenew: 1,
+        serviceName: "Test service",
+      },
+    ],
+  },
 }, fallbackData);
 
 

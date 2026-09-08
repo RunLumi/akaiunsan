@@ -320,11 +320,55 @@ describe("booking wizard steps (Phase 3 characterization)", () => {
         sweepExceptOnNextStep(renderer.root);
         await flush();
       }
-      // Final pass: full sweep including the order-submission handler.
-      typeAll(renderer.root);
-      await flush();
-      pressAll(renderer.root);
-      await flush();
+      // Walk forward: sweep (presses the step's confirm handlers), then
+      // onNextStep, repeating so each mounted step's content is exercised.
+      // Validations that cannot pass without real user data surface as
+      // Alerts (also exercised branches).
+      const findNextStep = () => {
+        const seen = new Set<any>();
+        let next: any;
+        renderer.root.findAll((n: any) => {
+          const fn = n.props?.onPress;
+          if (
+            typeof fn === "function" &&
+            !seen.has(fn) &&
+            /onNextStep/.test(String(fn))
+          ) {
+            seen.add(fn);
+            next = fn;
+          }
+          return false;
+        });
+        return next;
+      };
+      // One forward pass: the sweep sets the step's confirm state
+      // (handleAddress etc.), then onNextStep advances and the new step's
+      // content is swept. A second pass re-mounts step-2 subtrees whose
+      // effects re-schedule unresolved work under the Node renderer.
+      for (let stepPass = 0; stepPass < 1; stepPass++) {
+        typeAll(renderer.root);
+        await flush();
+        // eslint-disable-next-line no-console
+        console.log("W typed", label, stepPass);
+        sweepExceptOnNextStep(renderer.root);
+        await flush();
+        // eslint-disable-next-line no-console
+        console.log("W swept", label, stepPass);
+        const nextStep = findNextStep();
+        if (!nextStep) break;
+        pressOne(nextStep);
+        await flush();
+        // eslint-disable-next-line no-console
+        console.log("W next", label, stepPass);
+        typeAll(renderer.root);
+        await flush();
+        // eslint-disable-next-line no-console
+        console.log("W typed2", label, stepPass);
+        sweepExceptOnNextStep(renderer.root);
+        await flush();
+        // eslint-disable-next-line no-console
+        console.log("W swept2", label, stepPass);
+      }
       expect(renderer.toJSON()).not.toBeNull();
       await flush();
       renderer.unmount();

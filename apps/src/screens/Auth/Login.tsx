@@ -271,7 +271,7 @@ export default function Login(props: any) {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status == Location.PermissionStatus.DENIED) {
         Alert.alert(i18n.t("address.permission_location"));
-      } else {
+      } else if (Platform.OS === "android") {
         await Location.enableNetworkProviderAsync();
       }
     }

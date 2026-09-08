@@ -70,7 +70,7 @@ Local credential files loaded automatically when present:
 
 Important environment:
   ANDROID_VARIANT=Release       Gradle bundle task suffix.
-  PLAY_TRACK=internal            internal|closed|open|production
+  PLAY_TRACK=internal            internal|closed|open|production|all
   PLAY_STATUS=completed          Google Play release status.
   PLAY_SERVICE_ACCOUNT_JSON      or GOOGLE_PLAY_SERVICE_ACCOUNT_JSON
   ASC_KEY_ID, ASC_ISSUER_ID, ASC_KEY_PATH
@@ -150,15 +150,32 @@ if ((TARGET_ANDROID == 0 && TARGET_IOS == 0)); then
 fi
 
 case "$PLAY_TRACK" in
-  internal|closed|open|production) ;;
-  *) die "PLAY_TRACK must be internal, closed, open, or production" ;;
+  internal|closed|open|production|all) ;;
+  *) die "PLAY_TRACK must be internal, closed, open, production, or all" ;;
 esac
 
 ENVFILE_PATH="$(absolute_path "$ENVFILE")"
+require_command node
+
+APP_VERSION="$(cd "$APP_ROOT" && node -p 'require("./app.json").expo.version')"
+ANDROID_VERSION_CODE="$(cd "$APP_ROOT" && node -p 'require("./app.json").expo.android.versionCode')"
+IOS_BUILD_NUMBER="$(cd "$APP_ROOT" && node -p 'require("./app.json").expo.ios.buildNumber')"
 
 require_command find
 require_command mkdir
 require_command cp
+
+if [[ "${PREBUILD_NATIVE:-YES}" == "YES" ]]; then
+  EXPO_CLI="$APP_ROOT/node_modules/.bin/expo"
+  require_file "$EXPO_CLI"
+  echo "==> Syncing generated native metadata from app.json"
+  if ((TARGET_IOS == 1)); then
+    (cd "$APP_ROOT" && "$EXPO_CLI" prebuild --platform ios --no-install)
+  fi
+  if ((TARGET_ANDROID == 1)); then
+    (cd "$APP_ROOT" && "$EXPO_CLI" prebuild --platform android --no-install)
+  fi
+fi
 
 if ((TARGET_ANDROID == 1)); then
   require_command java
@@ -171,6 +188,10 @@ if ((TARGET_ANDROID == 1)); then
   require_env ANDROID_SIGNING_KEY_ALIAS
   require_env ANDROID_SIGNING_KEY_PASSWORD
   require_file "$ANDROID_SIGNING_STORE_FILE"
+  grep -Fq "versionCode $ANDROID_VERSION_CODE" "$ANDROID_ROOT/app/build.gradle" || \
+    die "Android native metadata is not synced to versionCode $ANDROID_VERSION_CODE"
+  grep -Fq "versionName \"$APP_VERSION\"" "$ANDROID_ROOT/app/build.gradle" || \
+    die "Android native metadata is not synced to version $APP_VERSION"
   keytool -list -keystore "$ANDROID_SIGNING_STORE_FILE" \
     -storepass "$ANDROID_SIGNING_STORE_PASSWORD" \
     -alias "$ANDROID_SIGNING_KEY_ALIAS" >/dev/null 2>&1 || \
@@ -186,6 +207,10 @@ if ((TARGET_IOS == 1)); then
   require_command plutil
   require_file "$IOS_ROOT/Akaiunsan.xcodeproj/project.pbxproj"
   require_file "$IOS_ROOT/Podfile"
+  grep -Fq "MARKETING_VERSION = $APP_VERSION;" "$IOS_ROOT/Akaiunsan.xcodeproj/project.pbxproj" || \
+    die "iOS native metadata is not synced to version $APP_VERSION"
+  grep -Fq "CURRENT_PROJECT_VERSION = $IOS_BUILD_NUMBER;" "$IOS_ROOT/Akaiunsan.xcodeproj/project.pbxproj" || \
+    die "iOS native metadata is not synced to build $IOS_BUILD_NUMBER"
   require_env APPLE_TEAM_ID
   if ((CONFIRM_UPLOAD == 1)); then
     require_env ASC_KEY_ID
@@ -198,8 +223,8 @@ if ((TARGET_IOS == 1)); then
   fi
 fi
 
-if ((CONFIRM_UPLOAD == 1)) && [[ "$PLAY_TRACK" == "production" && "${ALLOW_PLAY_PRODUCTION:-NO}" != "YES" ]]; then
-  die "PLAY_TRACK=production requires ALLOW_PLAY_PRODUCTION=YES"
+if ((CONFIRM_UPLOAD == 1)) && [[ "$PLAY_TRACK" == "production" || "$PLAY_TRACK" == "all" ]] && [[ "${ALLOW_PLAY_PRODUCTION:-NO}" != "YES" ]]; then
+  die "PLAY_TRACK=$PLAY_TRACK requires ALLOW_PLAY_PRODUCTION=YES"
 fi
 
 mkdir -p "$BUILD_ROOT"
@@ -338,26 +363,33 @@ echo "==> Upload plan"
 
 if ((TARGET_ANDROID == 1)); then
   echo "==> Uploading Android through Google Play API"
-  if [[ -n "${PLAY_UPLOADER:-}" ]]; then
-    require_file "$PLAY_UPLOADER"
-    "$PLAY_UPLOADER" \
-      --aab "$ANDROID_AAB" \
-      --package "$ANDROID_PACKAGE" \
-      --service-account "$PLAY_SERVICE_ACCOUNT_JSON" \
-      --track "$PLAY_TRACK" \
-      --status "$PLAY_STATUS"
-  else
-    fastlane supply \
-      --aab "$ANDROID_AAB" \
-      --package_name "$ANDROID_PACKAGE" \
-      --track "$PLAY_TRACK" \
-      --release_status "$PLAY_STATUS" \
-      --json_key "$PLAY_SERVICE_ACCOUNT_JSON" \
-      --skip_upload_metadata true \
-      --skip_upload_images true \
-      --skip_upload_screenshots true \
-      --skip_upload_changelogs true
+  PLAY_TRACKS=("$PLAY_TRACK")
+  if [[ "$PLAY_TRACK" == "all" ]]; then
+    PLAY_TRACKS=(internal closed open production)
   fi
+  for play_track in "${PLAY_TRACKS[@]}"; do
+    echo "    track: $play_track"
+    if [[ -n "${PLAY_UPLOADER:-}" ]]; then
+      require_file "$PLAY_UPLOADER"
+      "$PLAY_UPLOADER" \
+        --aab "$ANDROID_AAB" \
+        --package "$ANDROID_PACKAGE" \
+        --service-account "$PLAY_SERVICE_ACCOUNT_JSON" \
+        --track "$play_track" \
+        --status "$PLAY_STATUS"
+    else
+      fastlane supply \
+        --aab "$ANDROID_AAB" \
+        --package_name "$ANDROID_PACKAGE" \
+        --track "$play_track" \
+        --release_status "$PLAY_STATUS" \
+        --json_key "$PLAY_SERVICE_ACCOUNT_JSON" \
+        --skip_upload_metadata true \
+        --skip_upload_images true \
+        --skip_upload_screenshots true \
+        --skip_upload_changelogs true
+    fi
+  done
 fi
 
 if ((TARGET_IOS == 1)); then

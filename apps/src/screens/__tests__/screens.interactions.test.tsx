@@ -254,6 +254,55 @@ installApiRoutes(axios as any, {
     promotionType: 1, // GIFT_PERCENT
     content: JSON.stringify({ percent: 10 }),
   },
+  [Constants.API.get_notification]: {
+    // page-2 branch: merge into the existing list
+    page: 2,
+    totalUnRead: 3,
+    items: [
+      {
+        id: "noti-1",
+        type: 2,
+        data: JSON.stringify({ NotificationId: "n-1", PromotionId: "p-1" }),
+        title: "News",
+        content: "news content",
+        status: 1,
+        image: "",
+        listImage: [{ image: "" }],
+        bookDetail: [
+          {
+            bookingDate: "2026-01-01T00:00:00.000Z",
+            bookingHour: "2026-01-01T01:00:00.000Z",
+            hour: 2,
+            label: "Mon",
+            serviceName: "Test service",
+          },
+        ],
+        isAutoRenew: 1,
+        serviceName: "Test service",
+      },
+      {
+        id: "noti-2",
+        type: 1,
+        data: JSON.stringify({ PromotionId: "p-1" }),
+        title: "Promo",
+        content: "promo content",
+        status: 1,
+        image: "",
+        listImage: [{ image: "" }],
+        bookDetail: [
+          {
+            bookingDate: "2026-01-01T00:00:00.000Z",
+            bookingHour: "2026-01-01T01:00:00.000Z",
+            hour: 2,
+            label: "Mon",
+            serviceName: "Test service",
+          },
+        ],
+        isAutoRenew: 1,
+        serviceName: "Test service",
+      },
+    ],
+  },
 }, fallbackData);
 
 
@@ -453,8 +502,9 @@ describe("screens interaction sweep (Phase 3 coverage harness)", () => {
       const root = renderer.root;
       // Multiple rounds: presses that advance wizard steps mount gated
       // sub-components (Options/Payment), whose handlers then get exercised in
-      // the following rounds. A few screens loop their late-round async work
-      // forever under act, so they stay at a single round.
+      // the following rounds. Three screens loop late-round async work
+      // forever under act (their gated sub-components are covered by the
+      // dedicated step-components suite instead).
       const rounds = SINGLE_ROUND.has(label) ? 1 : 3;
       for (let round = 0; round < rounds; round++) {
         typeAll(root);

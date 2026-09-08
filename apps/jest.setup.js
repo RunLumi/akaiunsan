@@ -115,30 +115,14 @@ jest.mock("react-native-action-button", () => {
 });
 
 // Same import-time issue as action-button (deprecated upstream, Phase 4 sweep
-// will replace it); carousel drives a ScrollView under the hood.
-// Home mounts <Swiper autoplay>; its scrollBy interval reads Platform and
-// keeps firing after tests end, hanging CI workers for 10+ minutes. Render
-// children statically suite-wide (same stand-in philosophy as above).
-jest.mock("react-native-swiper", () => {
+// react-native-pager-view (the AutoPager host): render pages statically so
+// the characterization suites inspect the rendered banners without native
+// scroll machinery.
+jest.mock("react-native-pager-view", () => {
   const React = require("react");
-  const Swiper = ({ children, ...props }) =>
+  const PagerView = ({ children, ...props }) =>
     React.createElement("View", props, children);
-  Swiper.defaultProps = { autoplay: false, loop: false, showsPagination: false };
-  return { __esModule: true, default: Swiper };
-});
-
-jest.mock("react-native-snap-carousel", () => {
-  const React = require("react");
-  const Carousel = ({ children, renderItem, ...props }) =>
-    React.createElement(
-      "View",
-      props,
-      typeof renderItem === "function"
-        ? null
-        : children
-    );
-  Carousel.defaultProps = { parallaxScrollingScale: 1 };
-  return { __esModule: true, default: Carousel };
+  return { __esModule: true, PagerView, default: PagerView };
 });
 
 jest.mock("react-native-webview", () => {

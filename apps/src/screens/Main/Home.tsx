@@ -16,9 +16,8 @@ import {
 import DeviceInfo from "react-native-device-info";
 import { Image as ExpoImage } from "expo-image";
 import messaging from "@react-native-firebase/messaging";
-import Swiper from "react-native-swiper";
 import { useDispatch, useSelector } from "react-redux";
-import { Container, Header, Loading, Text } from "../../components";
+import { AutoPager, Container, Header, Loading, Text } from "../../components";
 import { success, TYPES } from "../../redux/actions";
 import { NavigationRoot } from "../../navigation/root";
 import Constants from "../../shared/Constants";
@@ -467,16 +466,10 @@ export default function Home(props: any) {
             backgroundColor: Colors.grab_orange,
           }}
         >
-          <Swiper
-            showsButtons={false}
-            showsPagination={false}
-            autoplay
-            autoplayTimeout={4}
-            loop
-            removeClippedSubviews={false}
-          >
-            {items.map((item, index) => renderItem({ item, index }))}
-          </Swiper>
+          <AutoPager
+            data={items}
+            renderItem={(item, index) => renderItem({ item, index })}
+          />
         </View>
         {!isEmpty(listService) && (
           <Text
@@ -623,16 +616,10 @@ export default function Home(props: any) {
     if (isEmpty(items)) return null;
     return (
       <View style={{ alignSelf: "center", maxHeight: (width - 24) / 1.5 }}>
-        <Swiper
-          showsButtons={false}
-          showsPagination={false}
-          autoplay
-          autoplayTimeout={4}
-          loop
-          removeClippedSubviews={false}
-        >
-          {items.map((item, index) => renderItemSubBanner({ item, index }))}
-        </Swiper>
+        <AutoPager
+          data={items}
+          renderItem={(item, index) => renderItemSubBanner({ item, index })}
+        />
       </View>
     );
   };

@@ -1,4 +1,3 @@
-import Carousel from "react-native-snap-carousel";
 import React, { useEffect, useState } from "react";
 import {
   Dimensions,
@@ -9,7 +8,7 @@ import {
   ScrollView,
 } from "react-native";
 import RenderHtml from "react-native-render-html";
-import { Container, Loading, Text } from "../../components";
+import { AutoPager, Container, Loading, Text } from "../../components";
 import useApi from "../../hooks/useApi";
 import Colors from "../../shared/Colors";
 import Constants from "../../shared/Constants";
@@ -182,14 +181,10 @@ export default function PromotionDetail(props: any) {
           contentContainerStyle={{ paddingBottom: 12 }}
         >
           <View style={s.container}>
-            <Carousel
-              layout={"default"}
+            <AutoPager
               data={imageBanner}
-              sliderWidth={width}
-              itemWidth={Layout.window.width}
-              renderItem={renderItem}
-              autoplay
-              loop
+              renderItem={(item, index) => renderItem({ item, index })}
+              style={{ height: width }}
             />
           </View>
           <View style={{ flex: 2, marginHorizontal: 12 }}>

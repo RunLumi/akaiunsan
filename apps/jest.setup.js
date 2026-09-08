@@ -364,20 +364,31 @@ jest.mock("axios", () => {
 // un-caught response.json() parse (Geocoding flows inside screens) rejects
 // after the suite finishes and fails the CI process. Stub a well-formed
 // response; suites that characterize fetch (Geocoding) override this per test.
-globalThis.fetch = jest.fn().mockResolvedValue({
-  ok: true,
-  status: 200,
-  json: async () => ({
-    // one geocoder result so results.reduce-style flows execute
-    results: [
-      {
-        formatted_address: "Test address",
-        address_components: [{ long_name: "Test", types: ["locality"] }],
-      },
-    ],
-    status: "OK",
-  }),
-  text: async () => "{}",
+// URL-aware: the login endpoint returns an auth token for the RTK Auth
+// port contract; geocoding returns one result so reduce-style flows execute.
+globalThis.fetch = jest.fn((url, opts) => {
+  const normalized = typeof url === "string" ? url : url?.url || "";
+  const body = normalized.includes("/auth/signin")
+    ? { auth_token: "rtk-test-token", user: { id: 1, fullName: "Test User" } }
+    : {
+        results: [
+          {
+            formatted_address: "Test address",
+            address_components: [{ long_name: "Test", types: ["locality"] }],
+          },
+        ],
+        status: "OK",
+      };
+  // fetchBaseQuery clones the response internally for cache snapshots
+  const response = {
+    ok: true,
+    status: 200,
+    json: async () => body,
+    text: async () => JSON.stringify(body),
+    headers: { get: () => "application/json" },
+  };
+  response.clone = () => response;
+  return Promise.resolve(response);
 });
 
 // RN 0.64 + jest-expo run components in the Node env, which has no global

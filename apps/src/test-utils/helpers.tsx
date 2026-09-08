@@ -4,8 +4,14 @@ import { Provider } from "react-redux";
 import TestRenderer, { act } from "react-test-renderer";
 import { Text as RNText, TouchableOpacity as RNTouchableOpacity } from "react-native";
 import reducers from "../redux/reducers";
+import { setupListenerMiddleware } from "../redux/listenerMiddleware";
 
 export const makeStore = (preloaded?: any): any => createStore(reducers as any, preloaded);
+
+// Phase 5 strangler store: legacy reducers (auth/language/tools) plus the RTK
+// Query api slice, for suites that mount ported screens.
+export const makeApiStore = (preloaded?: any): any =>
+  setupListenerMiddleware(preloaded);
 
 // Flushes the resolved axios mocks so useApi callbacks run their setState.
 export const flush = async () => {
@@ -35,6 +41,12 @@ export const create = (ui: React.ReactElement, preloaded?: any) =>
 // Renders against a specific store instance (so dispatch assertions observe it).
 export const createWithStore = (ui: React.ReactElement, store: any) =>
   doCreate(ui, store);
+
+// Renders against the Phase 5 strangler store (legacy slices + RTK api).
+export const createWithApiStore = (
+  ui: React.ReactElement,
+  preloaded?: any
+) => doCreate(ui, makeApiStore(preloaded));
 
 // ---- Host-level finders -----------------------------------------------------
 // react-test-renderer reports BOTH composite component instances and their host

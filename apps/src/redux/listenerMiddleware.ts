@@ -1,6 +1,8 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
-import reducers from "./reducers";
+import auth from "./reducers/auth";
+import tools from "./reducers/tools";
+import language from "./reducers/language";
 import { apiSlice } from "./apiSlice";
 
 // Phase 5 RTK Query strangler: the API slice mounts ALONGSIDE the legacy
@@ -12,10 +14,12 @@ export const setupListenerMiddleware = (preloadedState?: any) =>
     // The legacy reducers and the RTK api slice coexist during the strangler
     // migration; their redux typings come from separate copies, so the
     // combined reducer is cast to keep TS quiet (RTK is typed internally).
-    reducer: {
-      ...reducers,
+    reducer: combineReducers({
+      auth,
+      tools,
+      language,
       [apiSlice.reducerPath]: apiSlice.reducer,
-    } as any,
+    }) as any,
     middleware: (getDefaultMiddleware: any) =>
       getDefaultMiddleware({
         serializableCheck: false,

@@ -58,8 +58,10 @@ describe('not-found / validation branches', () => {
   });
 
   it('job endpoints for missing rows', async () => {
-    expect((await admin(request(app).get('/back-office/jobs/999999'))).status).toBe(500);
-    expect((await client(request(app).get('/client/jobs/999999'))).status).toBe(500);
+    // not-found carries 404 now (getDetail throws { status: 404 } on the
+    // shared controller, so both tiers benefit); match stays 500 for now
+    expect((await admin(request(app).get('/back-office/jobs/999999'))).status).toBe(404);
+    expect((await client(request(app).get('/client/jobs/999999'))).status).toBe(404);
     expect(
       (await admin(request(app).put('/back-office/jobs/999999/match/1'))).status
     ).toBe(500);
@@ -80,8 +82,8 @@ describe('not-found / validation branches', () => {
   });
 
   it('address endpoints for missing rows', async () => {
-    expect((await client(request(app).get('/client/addresses/999999'))).status).toBe(500);
-    expect((await admin(request(app).get('/back-office/addresses/999999'))).status).toBe(500);
+    expect((await client(request(app).get('/client/addresses/999999'))).status).toBe(404); // scoped miss → 404
+    expect((await admin(request(app).get('/back-office/addresses/999999'))).status).toBe(404);
   });
 
   it('credit card detail for a missing row', async () => {
@@ -90,11 +92,11 @@ describe('not-found / validation branches', () => {
 
   it('upload endpoints without a file', async () => {
     const customerUpload = await client(request(app).post('/client/user/profile-image'));
-    expect(customerUpload.status).toBe(500); // pins current behavior
+    expect(customerUpload.status).toBe(400); // validation carries 400 now
     expect(customerUpload.body.message).toBe('No file uploaded');
 
     const adminUpload = await admin(request(app).post('/back-office/supporters/profile-image'));
-    expect(adminUpload.status).toBe(500);
+    expect(adminUpload.status).toBe(400);
   });
 
   it('request-helper details tolerate missing rows (null body)', async () => {
@@ -112,7 +114,7 @@ describe('not-found / validation branches', () => {
   });
 
   it('role detail for a missing row', async () => {
-    expect((await admin(request(app).get('/back-office/roles/999999'))).status).toBe(500);
+    expect((await admin(request(app).get('/back-office/roles/999999'))).status).toBe(404);
   });
 
   it('subscription find for a missing row (400 envelope)', async () => {

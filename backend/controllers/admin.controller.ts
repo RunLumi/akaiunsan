@@ -48,6 +48,12 @@ async function update (req, res) {
   try {
     let { admin_id } = req.params;
     let data = req.body;
+    // fall back to the current username when the body omits it
+    // (a missing username used to query WHERE username = undefined → 500)
+    if (!data.username) {
+      const current = await Admin.findByPk(admin_id, { attributes: ['username'] });
+      data.username = current ? current.username : undefined;
+    }
     const exist_admin = await Admin.findOne({ where: { username: data.username }});
     if (exist_admin && admin_id != exist_admin.id)
       throw { message: 'This username is already in used.' };

@@ -249,11 +249,13 @@ async function getSuppoterFromAgency (start_id, max_id): Promise<any> {
           let birthday = maid.birthday.split('-');
           if (birthday && birthday.length && maid.birthday[0] != '-'
             && maid.birthday != '0000-00-00' && maid.birthday != '') {
-            let birthday = new Date();
-            birthday.setFullYear(birthday[0]);
-            birthday.setMonth(birthday[1]-1);
-            birthday.setDate(birthday[2]);
-            supporter.birthday = birthday;
+            // inner `let birthday = new Date()` used to shadow the split array,
+            // producing Invalid Date for every real birthday
+            const born = new Date();
+            born.setFullYear(Number(birthday[0]));
+            born.setMonth(Number(birthday[1]) - 1);
+            born.setDate(Number(birthday[2]));
+            supporter.birthday = born;
           }
           if (supporter.remark) {
             const remark = supporter.remark.toLowerCase();

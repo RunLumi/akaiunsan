@@ -101,21 +101,21 @@ describe('checkPermission role matrix', () => {
     }
   });
 
-  it('pins current behavior: list endpoints bypass checkPermission (gate mounts on /* sub-paths only)', async () => {
+  it('guards the collection routes too (gate now mounts on the section prefix)', async () => {
     const role = await createRole({ permission: 'Nothing' });
     const denied = await createAdmin({ username: 'denied2@test.local', role_id: role.id });
     const t = await adminToken(denied);
 
-    // /back-office/<section> (no trailing segment) does not match the
-    // app.use('/back-office/<section>/*', checkPermission) mount, so the
-    // list route answers 200 regardless of role. pins current behavior —
-    // fix deliberately in the hardening phase, not silently.
+    // the gate used to mount on '/back-office/<section>/*s' only, so the
+    // collection route itself (no trailing segment) bypassed checkPermission.
+    // The mount is now the section prefix, covering both shapes.
     for (const section of sections) {
       const res = await request(app)
         .get(section.path)
         .set('app_key', APP_KEY)
         .set('Authorization', `Bearer ${t}`);
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(401);
+      expect(res.body.message).toBe('Access denied');
     }
   });
 });
@@ -156,13 +156,13 @@ describe('/back-office/admins CRUD', () => {
     expect(res.body.username).toBe('bo@test.local');
   });
 
-  it('updates an admin (username required in body — pins current behavior)', async () => {
-    // Omitting username makes the controller query WHERE username = undefined → 500.
+  it('updates an admin (omitted username falls back to the existing one)', async () => {
+    // Omitting username used to query WHERE username = undefined → 500; the
+    // controller now keeps the current username in that case.
     const broken = await authed(request(app).put(`/back-office/admins/${admin.id}`)).send({
       firstname: 'Renamedmin',
     });
-    expect(broken.status).toBe(500); // pins current behavior
-    expect(broken.body.message).toContain('undefined');
+    expect(broken.status).toBe(200);
 
     const res = await authed(request(app).put(`/back-office/admins/${admin.id}`)).send({
       firstname: 'Renamedmin',
@@ -214,9 +214,9 @@ describe('/back-office/roles CRUD', () => {
     expect(await db.Role.findByPk(created.body.id)).toBeNull();
   });
 
-  it('returns 500 for a missing role detail', async () => {
+  it('returns 404 for a missing role detail', async () => {
     const res = await authed(request(app).get('/back-office/roles/999999'));
-    expect(res.status).toBe(500); // pins current behavior
+    expect(res.status).toBe(404);
     expect(res.body.message).toBe('Role not found');
   });
 });
@@ -242,7 +242,7 @@ describe('/back-office/user (self-service)', () => {
     const res = await authed(request(app).put('/back-office/user')).send({
       username: 'taken@test.local',
     });
-    expect(res.status).toBe(500); // pins current behavior
+    expect(res.status).toBe(400);
     expect(res.body.message).toBe('This username is already in used.');
   });
 });

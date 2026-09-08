@@ -122,6 +122,6 @@ describe('customer back-office create flow', () => {
 
     const signin = await request(app).post('/auth/signin').set('app_key', APP_KEY)
       .send({ email: 'genpass@test.local', password: UNKNOWN_PASSWORD });
-    expect(signin.status).toBe(500); // generated password is unknown — good
+    expect(signin.status).toBe(400); // generated password is unknown — good
   });
 });

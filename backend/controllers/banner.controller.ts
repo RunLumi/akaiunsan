@@ -5,7 +5,9 @@ import * as cheerio from 'cheerio';
 import rssConverter from 'rss-converter';
 import fs from 'fs';
 import { Banner, BannerLanguage, ErrorLog } from '../models/index.ts';
+import __interop_model from '../models/index.ts';
 import { loadConfig } from '../helpers/config.ts';
+const model = (__interop_model as any).sequelize;
 let error_status = 500;
 let error_message = 'Unexpected error';
 const NODE_ENV = process.env.NODE_ENV || 'local';
@@ -13,13 +15,16 @@ const config = loadConfig(NODE_ENV);
 const IMAGE_BASE_URL = config.image_base_url;
 
 async function update (req, res) {
+  // bulk rewrite now runs in one transaction: a failure no longer leaves
+  // half-applied banner/language rows behind
+  const t = await model.transaction();
   try {
     let { banner_list = [], remove_banner_list = [], remove_banner_language_list = [] } = req.body;
     for (let item of remove_banner_list) {
-      await Banner.destroy({ where: { id: item }})
+      await Banner.destroy({ where: { id: item }, transaction: t })
     }
     for (let item of remove_banner_language_list) {
-      await BannerLanguage.destroy({ where: { id: item }})
+      await BannerLanguage.destroy({ where: { id: item }, transaction: t })
     }
     for (let [index, item] of banner_list.entries()) {
       let banner_id = item.id;
@@ -33,7 +38,7 @@ async function update (req, res) {
           start_date: item.start_date,
           end_date: item.end_date,
           ordering: index
-        }, { where: { id: item.id }});
+        }, { where: { id: item.id }, transaction: t });
       } else {
         const banner = await Banner.create({
           active: item.active,
@@ -44,10 +49,10 @@ async function update (req, res) {
           start_date: item.start_date,
           end_date: item.end_date,
           ordering: index
-        })
+        }, { transaction: t })
         banner_id = banner.id;
       }
-      if (item.banner_language || item.banner_language.length > 0) {
+      if (item.banner_language && item.banner_language.length > 0) {
         for (let banner_lang of item.banner_language) {
           if (banner_lang.id) {
             await BannerLanguage.update({
@@ -57,7 +62,7 @@ async function update (req, res) {
               mobile_image_url: banner_lang.mobile_image_url,
               lang_code: banner_lang.lang_code,
               banner_id: banner_id
-            }, { where: { id: banner_lang.id }});
+            }, { where: { id: banner_lang.id }, transaction: t });
           } else {
             await BannerLanguage.create({
               link: banner_lang.link,
@@ -66,14 +71,16 @@ async function update (req, res) {
               mobile_image_url: banner_lang.mobile_image_url,
               lang_code: banner_lang.lang_code,
               banner_id: banner_id
-            })
+            }, { transaction: t })
           }
         }
       }
     }
+    await t.commit();
     return res.status(200).json(true);
   } catch (err) {
-    // console.log(err)
+    if (t.finished !== 'commit')
+      await t.rollback();
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
     await ErrorLog.create({ location: 'banner.controller.update', message: error_message });
@@ -107,9 +114,11 @@ async function getDisplay (req, res) {
       }
       let image_url = element.image_url;
       let mobile_image_url = element.mobile_image_url;
-      if (element.BannerLanguages || element.BannerLanguages.length > 0) {
+      if (element.BannerLanguages && element.BannerLanguages.length > 0) {
         element.BannerLanguages.forEach(banner_lang => {
-          if (banner_lang.lang_code == lang_code) {
+          // compare case-insensitively: rows stored lowercase ('th') used to
+          // never match the uppercased request param
+          if (banner_lang.lang_code && banner_lang.lang_code.toUpperCase() == lang_code) {
             image_url = banner_lang.image_url
             mobile_image_url = banner_lang.mobile_image_url
           }

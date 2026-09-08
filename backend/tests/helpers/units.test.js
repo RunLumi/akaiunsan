@@ -160,10 +160,14 @@ describe('admin account flows (routes)', () => {
         new_password: RESET_PASSWORD,
         confirm_password: RESET_PASSWORD,
       });
-    // pins current behavior: requestForgetPassword signs the token with the
-    // whole admin instance as username, so reset can never match a row.
-    expect(reset.status).toBe(500);
-    expect(reset.body.message).toBeTruthy();
+    // was pinned: requestForgetPassword was called with the whole admin
+    // instance as the username, so the token could never match a row (and the
+    // payload embedded the password hash). Fixed: sign the username string.
+    expect(reset.status).toBe(200);
+    const { db: testDb } = await import('../helpers/db');
+    const admin = await testDb.Admin.findOne({ where: { username: 'unit@test.local' } });
+    const bcrypt = (await import('bcrypt')).default;
+    expect(await bcrypt.compare(RESET_PASSWORD, admin.password)).toBe(true);
   });
 
   it('admin forget-password rejects unknown usernames', async () => {
@@ -171,7 +175,7 @@ describe('admin account flows (routes)', () => {
       .post('/auth/admin/forget-password')
       .set('app_key', APP_KEY)
       .send({ username: 'ghost-admin@test.local' });
-    expect(res.status).toBe(500); // pins current behavior
+    expect(res.status).toBe(404); // not registered carries 404 now
   });
 });
 
@@ -205,7 +209,7 @@ describe('back-office admin password + profile management', () => {
       new_password: RESET_PASSWORD,
       confirm_password: RESET_PASSWORD,
     });
-    expect(wrongCurrent.status).toBe(500); // pins current behavior
+    expect(wrongCurrent.status).toBe(400); // thrown { status: 400 } is honored
     expect(wrongCurrent.body.message).toBe('Current password is incorrect.');
 
     const res = await authed(request(app).put('/back-office/user/password')).send({

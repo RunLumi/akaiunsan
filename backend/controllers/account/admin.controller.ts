@@ -16,7 +16,7 @@ async function signin (req, res) {
     let { username, password } = req.body;
     const admin = await Admin.findOne({ where: { username, active: true }, include: [{ model: Role }]});
     if (!admin)
-      throw { message: 'User not found.' };
+      throw { status: 401, message: 'User not found.' };
     const compare_result = await comparePassword(password, admin.password);
     if (!compare_result)
       throw { status: 400, message: 'Username/Password is incorrect.' };
@@ -37,8 +37,10 @@ async function signin (req, res) {
   } catch (err) {
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    // an explicit numeric status on a thrown object is honored (legacy ignored it)
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'admin.controller.signin', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -48,7 +50,7 @@ async function register (req, res) {
     let data = req.body;
     const count = await Admin.count();
     if (count)
-      throw { message: 'Please login to create new account.' };
+      throw { status: 400, message: 'Please login to create new account.' };
     let { admin }: { admin: any } = await getAdminData(data);
     admin.password = data.password;
     admin.password = await encryptPassword(admin.password);
@@ -67,8 +69,9 @@ async function register (req, res) {
       await t.rollback();
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'admin.controller.register', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -77,9 +80,13 @@ async function update (req, res) {
   try {
     let admin_info = req.admin;
     let data = req.body;
+    // fall back to the admin's existing username when the body omits it
+    // (a missing username used to query WHERE username = undefined → 500)
+    if (data.username === undefined)
+      data.username = admin_info.username;
     const exist_admin = await Admin.findOne({ where: { username: data.username }});
     if (exist_admin && admin_info.id != exist_admin.id)
-      throw { message: 'This username is already in used.' };
+      throw { status: 400, message: 'This username is already in used.' };
     await Admin.update(data, { where: { id: admin_info.id }, transaction: t });
     await t.commit();
     return res.status(200).json(true);
@@ -89,8 +96,9 @@ async function update (req, res) {
       await t.rollback();
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'admin.controller.update', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -102,11 +110,11 @@ async function updatePassword (req, res) {
     const admin = await Admin.findOne({ where: { username: admin_info.username }});
     const compare_result = await comparePassword(password, admin.password);
     if (!compare_result)
-      throw { status: 500, message: 'Current password is incorrect.' };
+      throw { status: 400, message: 'Current password is incorrect.' };
     if (new_password.length < 8)
-      throw { message: 'Password must be at least 8 characters.' };
+      throw { status: 400, message: 'Password must be at least 8 characters.' };
     if (new_password != confirm_password)
-      throw { message: 'New passsword and confirm password are not matched.' };
+      throw { status: 400, message: 'New passsword and confirm password are not matched.' };
     const hashed_password = await encryptPassword(new_password);
     await Admin.update({ password: hashed_password }, { where: { id: admin_info.id }, transaction: t });
     await t.commit();
@@ -117,8 +125,10 @@ async function updatePassword (req, res) {
       await t.rollback();
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    // an explicit numeric status on a thrown object is honored (legacy ignored it)
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'admin.controller.updatePassword', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -128,8 +138,9 @@ async function getAdminFromToken (req, res) {
   } catch (err) {
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'customer.controller.getCustomerFromToken', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -142,8 +153,9 @@ async function uploadProfile (req, res) {
   } catch (err) {
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'admin.controller.uploadProfile', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -156,8 +168,9 @@ async function removeProfile (req, res) {
     console.log(err);
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'admin.controller.removeProfile', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -166,10 +179,12 @@ async function requestForgetPassword (req, res) {
     let { username } = req.body;
     const admin = await Admin.findOne({ where: { username }});
     if (!admin)
-      throw { message: 'This email is not registered.' };
+      throw { status: 404, message: 'This email is not registered.' };
     if (!admin.email)
-      throw { message: 'Unable to reset password.' };
-    const token = await requestForgetPasswordToken(admin, req.hostname);
+      throw { status: 400, message: 'Unable to reset password.' };
+    // pass the username string, not the admin instance: the instance
+    // leaked the password hash into the JWT payload and could never match a row on reset
+    const token = await requestForgetPasswordToken(admin.username, req.hostname);
     var transporter = nodemailer.createTransport({
       host: key['mail-config'].host,
       port: key['mail-config'].port,
@@ -195,8 +210,9 @@ async function requestForgetPassword (req, res) {
   } catch (err) {
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'customer.controller.requestForgetPassword', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -207,9 +223,9 @@ async function resetPassword (req, res) {
     const decoded = await verifyToken(_forget_token);
     const admin = await Admin.findOne({ where: { username: (decoded as any)._user.username }})
     if (!admin)
-      throw { message: 'This account doesn\'t exist.' };
+      throw { status: 404, message: 'This account doesn\'t exist.' };
     if (new_password != confirm_password)
-      throw { message: 'New password and confirm password are not matched.' };
+      throw { status: 400, message: 'New password and confirm password are not matched.' };
     let encrypted_password = await encryptPassword(new_password);
     await Admin.update({ password: encrypted_password }, { where: { username: (decoded as any)._user.username }, transaction: t });
     await t.commit();
@@ -219,8 +235,9 @@ async function resetPassword (req, res) {
       await t.rollback();
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'admin.controller.resetPassword', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 

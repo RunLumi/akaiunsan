@@ -17,16 +17,20 @@ export default async (req, res) => {
     if (!count) {
       let temp_pwd = genTxt(12);
       const hashed_pwd = await encryptPassword(temp_pwd);
-      await Role.create({
+      // create the role first so the admin row can reference it; active is
+      // required for signin's `active: true` filter (was NULL → unusable admin)
+      const role = await Role.create({
         role_name: 'Super Admin'
-      });
+      }, { transaction: t });
       await Admin.create({
         email: 'sale@akaiunsan.vn',
         firstname: 'Akaiunsan',
         lastname: 'IT',
         role: 'Super admin',
         username: 'sale@akaiunsan.vn',
-        password: hashed_pwd
+        password: hashed_pwd,
+        active: true,
+        role_id: role.id
       }, { transaction: t })
       await t.commit();
       

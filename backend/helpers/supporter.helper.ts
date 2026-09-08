@@ -506,12 +506,13 @@ async function getPublicList(query) {
       LIMIT ${limit}
       OFFSET ${offset}`;
     }
-    const [rows] = await db.sequelize.query(sql, { type: QueryTypes.SELECT });
+    // QueryTypes.SELECT resolves to the rows array itself (not [rows, meta])
+    const rows = await db.sequelize.query(sql, { type: QueryTypes.SELECT });
     for (let supporter of rows) {
       if (supporter.profile_image_url)
         supporter.profile_image_url = `${IMAGE_BASE_URL}supporters/${supporter.profile_image_url}`;
       else supporter.profile_image_url = DEFAULT_PROFILE_IMAGE_URL;
-      let roles = supporter.job_roles.split(",");
+      let roles = supporter.job_roles ? supporter.job_roles.split(",") : [];
       supporter.job_roles = roles;
     }
     return rows;

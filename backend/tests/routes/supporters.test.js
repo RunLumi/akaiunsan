@@ -35,17 +35,22 @@ const pub = (test) => test.set('app_key', APP_KEY);
 const authed = (test) => test.set('app_key', APP_KEY).set('Authorization', `Bearer ${adminJwt}`);
 
 describe('public supporter endpoints', () => {
-  it('pins current behavior: the public supporter list 500s (rows is not iterable)', async () => {
-    // The helper builds a raw SQL query and maps the result as if it returned
-    // a bare rows iterable; with the installed Sequelize the promise resolves
-    // to [rows, metadata] and the mapping crashes — with or without filters.
-    // pins current behavior — fix deliberately in a later phase.
+  it('lists active supporters publicly (rows destructure crash fixed)', async () => {
+    // The helper destructured the SELECT query result ([rows]) — SELECT
+    // already resolves to the rows array, so `rows` was the first row object
+    // and the mapping loop crashed ("rows is not iterable"). Fixed: use the
+    // resolved array directly.
     const res = await pub(request(app).get('/guest/supporters')).query({
       page: 1,
       limit: 10,
     });
-    expect(res.status).toBe(500);
-    expect(res.body.message).toBe('rows is not iterable');
+    expect(res.status).toBe(200);
+    expect(Array.isArray(res.body)).toBe(true);
+    expect(res.body.length).toBeGreaterThanOrEqual(1);
+    for (const supporter of res.body) {
+      expect(Array.isArray(supporter.job_roles)).toBe(true);
+      expect(supporter.profile_image_url).toBeTruthy();
+    }
   });
 
   it('counts active supporters', async () => {

@@ -30,7 +30,7 @@ describe('/back-office/customers', () => {
     const duplicate = await authed(request(app).post('/back-office/customers')).send({
       email: 'bo-customer@test.local',
     });
-    expect(duplicate.status).toBe(500); // pins current behavior
+    expect(duplicate.status).toBe(400); // business error carries explicit status now
     expect(duplicate.body.message).toBe('This email is already registered.');
 
     const list = await authed(request(app).get('/back-office/customers')).query({ page: 1, limit: 10 });
@@ -92,7 +92,7 @@ describe('/back-office/customers', () => {
     token = await adminToken(admin);
 
     const res = await authed(request(app).post('/back-office/customers/export'));
-    expect(res.status).toBe(500); // pins current behavior
+    expect(res.status).toBe(400);
     expect(res.body.message).toBe('No data to export.');
   });
 });
@@ -284,8 +284,10 @@ describe('/back-office/banners', () => {
     expect(res.status).toBe(200);
     expect(res.body).toBe(true);
 
-    // pins current behavior: a banner without `banner_language` crashes the
-    // whole bulk update ("Cannot read properties of undefined (reading 'length')")
+    // was pinned: a banner without `banner_language` crashed the whole bulk
+    // update (guard read `.length` on undefined). A language-less banner is a
+    // valid request and now answers 200; the bulk rewrite also runs in one
+    // transaction, so a failure can no longer leave partial rows behind.
     const noLang = await authed(request(app).put('/back-office/banners')).send({
       banner_list: [
         { active: true, title: 'Langless', link: 'x', image_url: 'a.jpg', mobile_image_url: 'b.jpg' },
@@ -293,8 +295,8 @@ describe('/back-office/banners', () => {
       remove_banner_list: [],
       remove_banner_language_list: [],
     });
-    expect(noLang.status).toBe(500); // pins current behavior
-    expect(noLang.body.message).toContain('length');
+    expect(noLang.status).toBe(200);
+    expect(await db.Banner.count({ where: { title: 'Langless' } })).toBe(1);
 
     expect((await db.Banner.findByPk(keep.id)).title).toBe('Keep Updated');
     expect(await db.Banner.count({ where: { title: 'New Banner' } })).toBe(1);
@@ -312,9 +314,7 @@ describe('/back-office/banners', () => {
 
     const list = await authed(request(app).get('/back-office/banners'));
     expect(list.status).toBe(200);
-    // Langless above was CREATED before its banner_language check crashed the
-    // request — banner update runs without a transaction. pins current behavior
-    expect(list.body).toHaveLength(2);
+    expect(list.body).toHaveLength(2); // New Banner + Langless
     expect(list.body[0].banner_lang_list).toBeDefined(); // mapped shape, not the raw include
   });
 });

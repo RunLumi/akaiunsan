@@ -62,7 +62,7 @@ describe('seed admin account (auth flows)', () => {
       .set('app_key', APP_KEY)
       .send({ username: admin.username, password: WRONG_PASSWORD });
 
-    expect(res.status).toBe(500);
+    expect(res.status).toBe(400); // thrown { status: 400 } is honored
     expect(res.body.message).toBe('Username/Password is incorrect.');
   });
 
@@ -72,7 +72,7 @@ describe('seed admin account (auth flows)', () => {
       .set('app_key', APP_KEY)
       .send({ username: 'ghost-admin@test.local', password: WRONG_PASSWORD });
 
-    expect(res.status).toBe(500);
+    expect(res.status).toBe(401); // 'User not found.' carries 401 now
   });
 
   it('admin forget-password emails a reset link', async () => {
@@ -99,7 +99,7 @@ describe('seed admin account (auth flows)', () => {
       .set('app_key', APP_KEY)
       .send({ username: 'ghost-admin@test.local' });
 
-    expect(res.status).toBe(500);
+    expect(res.status).toBe(404); // not registered carries 404 now
   });
 });
 
@@ -127,7 +127,7 @@ describe('seed customer account (auth flows)', () => {
       .set('app_key', APP_KEY)
       .send({ email: customer.email, password: WRONG_PASSWORD });
 
-    expect(res.status).toBe(500);
+    expect(res.status).toBe(400); // thrown { status: 400 } is honored
     expect(res.body.message).toBe('Email/password is incorrect.');
   });
 
@@ -137,7 +137,7 @@ describe('seed customer account (auth flows)', () => {
       .set('app_key', APP_KEY)
       .send({ email: 'nobody@test.local', password: WRONG_PASSWORD });
 
-    expect(res.status).toBe(500);
+    expect(res.status).toBe(400);
     expect(res.body.message).toBe('Email/password is incorrect.');
   });
 });

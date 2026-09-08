@@ -100,7 +100,7 @@ export default app => {
   app.delete('/back-office/addresses/:address_id', AddressController.remove);
 
   //admin
-  app.use('/back-office/admins/*s', checkPermission);
+  app.use('/back-office/admins', checkPermission); // prefix mount also covers the collection route itself
 
   app.get('/back-office/admins', AdminController.getList);
   app.get('/back-office/admins/count', AdminController.count);
@@ -126,7 +126,7 @@ export default app => {
   app.delete('/back-office/user/profile-image/:profile_image', AccountController.admin.removeProfile);
 
   //banner
-  app.use('/back-office/banners/*s', checkPermission);
+  app.use('/back-office/banners', checkPermission); // prefix mount also covers the collection route itself
 
   app.get('/back-office/banners', BannerController.getList);
 
@@ -179,7 +179,7 @@ export default app => {
   app.delete('/back-office/customers/:customer_id', CustomerController.remove);
 
   //request helper
-  app.use('/back-office/request-helpers/*s', checkPermission);
+  app.use('/back-office/request-helpers', checkPermission); // prefix mount also covers the collection route itself
 
   app.get('/back-office/request-helpers', RequestController.getList);
   app.get('/back-office/request-helpers/count', RequestController.getCount);
@@ -191,7 +191,7 @@ export default app => {
   app.delete('/back-office/request-helpers/:request_helper_id', RequestController.remove);
 
   //request helper status
-  app.use('/back-office/request-helper-status/*s', checkPermission);
+  app.use('/back-office/request-helper-status', checkPermission); // prefix mount also covers the collection route itself
 
   app.get('/back-office/request-helper-status', RequestController.status.getList);
   app.get('/back-office/request-helper-status/count', RequestController.status.getCount);
@@ -258,7 +258,7 @@ export default app => {
   app.delete('/back-office/suppliers/:supplier_id', SupplierController.remove);
 
   //supporter
-  app.use('/back-office/supporters/*s', checkPermission);
+  app.use('/back-office/supporters', checkPermission); // prefix mount also covers the collection route itself
 
   app.get('/back-office/supporters', SupporterController.getList);
   app.get('/back-office/supporters/count', SupporterController.count);
@@ -289,7 +289,7 @@ export default app => {
   app.get('/back-office/subscriptions/:subscription_id', SubscriptionController.findSubscription);
 
   //role
-  app.use('/back-office/roles/*s', checkPermission);
+  app.use('/back-office/roles', checkPermission); // prefix mount also covers the collection route itself
 
   app.get('/back-office/roles', RoleController.getList);
   app.get('/back-office/roles/count', RoleController.count);

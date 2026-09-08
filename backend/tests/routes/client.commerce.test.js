@@ -179,7 +179,7 @@ describe('client jobs', () => {
       final_price: 10,
     });
     const denied = await authed(request(app).get(`/client/jobs/${foreign.id}`), token);
-    expect(denied.status).toBe(500); // pins current behavior
+    expect(denied.status).toBe(404); // scoped miss answers 404 now
     expect(denied.body.message).toBe('Job not found');
   });
 
@@ -225,7 +225,7 @@ describe('client jobs', () => {
     expect(reviews).toHaveLength(1);
   });
 
-  it('deletes a job via the back office (details keyed by id remain — pins current behavior)', async () => {
+  it('deletes a job via the back office along with its details', async () => {
     const admin = await factories.createAdmin({ username: 'job-admin@test.local' });
     const adminJwt = await factories.adminToken(admin);
 
@@ -245,8 +245,9 @@ describe('client jobs', () => {
     const res = await authed(request(app).delete(`/back-office/jobs/${job.id}`), adminJwt);
     expect(res.status).toBe(200);
     expect(await db.Job.findByPk(job.id)).toBeNull();
-    // destroy uses where {id: job_id} instead of {job_id} — row survives
-    expect(await db.JobDetail.findByPk(detail.id)).not.toBeNull();
+    // remove() now destroys details BEFORE the job — the FK is ON DELETE SET
+    // NULL, so the old order only detached the rows and they leaked forever
+    expect(await db.JobDetail.findByPk(detail.id)).toBeNull();
   });
 
   it('review detail returns the row (or null) for the customer', async () => {
@@ -267,7 +268,7 @@ describe('client subscriptions', () => {
     token = await factories.customerToken(customer);
   });
 
-  it('lists subscriptions unscoped across customers (pins current data-leak behavior)', async () => {
+  it('lists only the token customer subscriptions (data leak fixed)', async () => {
     const stranger = await factories.createCustomer({ email: 'sub-stranger@test.local' });
     await db.Subscription.create({
       customer_id: stranger.id,
@@ -277,11 +278,19 @@ describe('client subscriptions', () => {
       status: 'active',
       next_payment: '2026-10-10',
     });
+    await db.Subscription.create({
+      customer_id: customer.id,
+      job_type: 'cleaning',
+      total_hour: 12,
+      used_hour: 1,
+      status: 'active',
+      next_payment: '2026-10-11',
+    });
 
     const res = await authed(request(app).get('/client/subscriptions'), token);
     expect(res.status).toBe(200);
     expect(res.body.length).toBeGreaterThanOrEqual(1);
-    expect(res.body.some((s) => s.customer_id === stranger.id)).toBe(true); // leaks
+    expect(res.body.every((s) => s.customer_id === customer.id)).toBe(true);
   });
 
   it('refuses a second active subscription', async () => {
@@ -306,45 +315,68 @@ describe('client subscriptions', () => {
     expect(res.body.message).toContain('running subscription');
   });
 
-  it('pins current behavior: createSubscription crashes on req.user (undefined on client tier)', async () => {
+  it('creates a subscription for the token customer (req.user crash fixed)', async () => {
     const fresh = await factories.createCustomer({ email: 'sub-fresh@test.local' });
     const freshToken = await factories.customerToken(fresh);
+    const address = await db.Address.create({ customer_id: fresh.id, address_detail: '1 Sub Lane' });
+    await db.Customer.update(
+      { omise_customer_id: 'cust_test_9' },
+      { where: { id: fresh.id } }
+    );
 
     const res = await authed(request(app).post('/client/subscriptions'), freshToken).send({
       total_hour: 5,
       job_type: 'cleaning',
       card_id: 'card_1',
       charge_amount: 750,
-      address_id: 1,
+      address_id: address.id,
     });
 
-    // controller reads req.user.omise_customer_id but clientValidator sets
-    // req.customer. pins current behavior
-    expect(res.status).toBe(400);
-    expect(res.body.message).toMatch(/Cannot read propert.*user|undefined/);
+    // controller read req.user.omise_customer_id but clientValidator sets
+    // req.customer — now reads req.customer throughout (fixed)
+    expect(res.status).toBe(201);
+    expect(res.body.result.customer_id).toBe(fresh.id);
+    expect(res.body.result.total_hour).toBe(5);
+    const txn = await db.SubscriptionTransaction.findOne({ where: { action: 'buy' }, order: [['id', 'DESC']] });
+    expect(txn).toBeTruthy();
   });
 
-  it('cancels the first row in the table regardless of id (pins helper findOne bug)', async () => {
-    // findSubscriptionById passes {id} as options, not where — Sequelize warns
-    // and returns the FIRST subscription row, so cancel-by-id cancels whoever
-    // happens to be first (the stranger from the earlier test here).
-    const firstInTable = await db.Subscription.findOne({ order: [['id', 'ASC']] });
-    expect(firstInTable.customer_id).not.toBe(customer.id);
+  it('cancels the requested subscription by id (helper findOne bug fixed)', async () => {
+    // findSubscriptionById passed {id} as options, not where — Sequelize
+    // returned the FIRST subscription row, so cancel-by-id cancelled whoever
+    // happened to be first. Now the id in the URL identifies the row, and a
+    // stranger's subscription is off-limits.
+    const mine = await db.Subscription.create({
+      customer_id: customer.id,
+      job_type: 'cleaning',
+      total_hour: 8,
+      used_hour: 2,
+      status: 'active',
+      next_payment: '2026-10-12',
+    });
+    const strangerSub = await db.Subscription.findOne({
+      where: { customer_id: { [require('sequelize').Op.ne]: customer.id } },
+      order: [['id', 'ASC']],
+    });
 
     const res = await authed(
-      request(app).put('/client/subscriptions/999999/status/cancel'),
+      request(app).put(`/client/subscriptions/${mine.id}/status/cancel`),
       token
     );
 
     expect(res.status).toBe(201);
-    const reloaded = await db.Subscription.findByPk(firstInTable.id);
+    const reloaded = await db.Subscription.findByPk(mine.id);
     expect(reloaded.status).toBe('cancel');
+    if (strangerSub) {
+      const untouched = await db.Subscription.findByPk(strangerSub.id);
+      expect(untouched.status).not.toBe('cancel'); // stranger's row never selected
+    }
 
     const txn = await db.SubscriptionTransaction.findOne({
       where: { action: 'cancel' },
       order: [['id', 'DESC']],
     });
-    expect(txn.amount).toBe(firstInTable.total_hour - firstInTable.used_hour);
+    expect(txn.amount).toBe(mine.total_hour - mine.used_hour);
   });
 });
 

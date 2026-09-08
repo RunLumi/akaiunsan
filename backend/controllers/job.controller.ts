@@ -58,7 +58,8 @@ async function update (req, res) {
     let { schedule, job_details, full_price, total_discount, total_price } = req.body;
     await Job.update({ schedule, full_price, total_discount, total_price },
       { where: { id: job_id }, transaction: t });
-    await JobDetail.destroy({ where: { id: job_id }, transaction: t });
+    // was { id: job_id } — matched nothing, so old details piled up on re-save
+    await JobDetail.destroy({ where: { job_id }, transaction: t });
     for (let detail of job_details) {
       detail.job_id = job_id;
     }
@@ -89,13 +90,14 @@ async function getDetail (req, res) {
       ]
     });
     if (!job)
-      throw { message: 'Job not found' };
+      throw { status: 404, message: 'Job not found' };
     return res.status(200).json(job);
   } catch (err) {
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'job.controller.getDetail', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -194,8 +196,10 @@ async function remove (req, res) {
   const t = await model.transaction();
   try {
     let { job_id } = req.params;
-    await Job.destroy({ where: { id: job_id }, transaction: t });
+    // details first: the job FK is ON DELETE SET NULL, so destroying the job
+    // first only detached the details (job_id → NULL) and they leaked forever
     await JobDetail.destroy({ where: { job_id }, transaction: t });
+    await Job.destroy({ where: { id: job_id }, transaction: t });
     await t.commit();
     return res.status(200).json(true);
   } catch (err) {

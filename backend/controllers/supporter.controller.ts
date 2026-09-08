@@ -23,8 +23,9 @@ async function create (req, res) {
   } catch (err) {
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'supporter.controller.create', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -37,8 +38,9 @@ async function update (req, res) {
   } catch (err) {
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'supporter.controller.update', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -50,8 +52,9 @@ async function getDetail (req, res) {
   } catch (err) {
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'supporter.controller.getDetail', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -64,8 +67,9 @@ async function getPublicDetail (req, res) {
   } catch (err) {
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'supporter.controller.getPublicDetail', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -77,8 +81,9 @@ async function getPublicList (req, res) {
     console.log(err);
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'supporter.controller.getPublicList', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -92,8 +97,9 @@ async function getList (req, res) {
     // console.log(err);
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'supporter.controller.getList', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -105,8 +111,9 @@ async function getPublicCount (req, res) {
     // console.log(error);
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'supporter.controller.getPublicCount', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -119,8 +126,9 @@ async function count (req, res) {
     // console.log(error);
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'supporter.controller.count', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -132,8 +140,9 @@ async function remove (req, res) {
   } catch (err) {
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'supporter.controller.remove', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -190,12 +199,13 @@ async function uploadProfile (req, res) {
         });
       }
     } else
-      throw { message: 'No file uploaded' }
+      throw { status: 400, message: 'No file uploaded' }
   } catch (err) {
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'supporter.controller.uploadProfile', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -208,8 +218,9 @@ async function removeProfile (req, res) {
     console.log(err);
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'supporter.controller.removeProfile', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -232,8 +243,9 @@ async function exportFile (req, res) {
     console.log(err);
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'supporter.controller.exportFile', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -273,65 +285,73 @@ async function getOldSupporterData (req, res) {
     console.log(err);
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'supporter.controller.getOldSupporterData', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
 async function getOldDriverData (req, res) {
   try {
     const supporter_list = await getDriver();
-    supporter_list.forEach(async supporter => {
+    // sequential inserts (was forEach async — a fire-and-forget race)
+    for (const supporter of supporter_list) {
       await Supporter.create(supporter);
-    });
+    }
     return res.status(200).json(true);
   } catch (err) {
     console.log(err);
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'supporter.controller.getOldSupporterData', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
 async function getOldDriverSkillData (req, res) {
   try {
     const driver_skill_list = await getDriverSkill();
-    driver_skill_list.forEach(async language => {
+    // inserts used to be fired-and-forgotten (forEach async); the response now
+    // waits for every row to land
+    for (const language of driver_skill_list) {
       try {
         const result = await SupporterLanguage.create(language);
         console.log('result:', result)
       } catch (err) {
         //do nth
       }
-    });
+    }
     return res.status(200).json(true);
   } catch (err) {
     console.log(err);
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'supporter.controller.getOldDriverSkillData', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
 async function getOldDriverExperienceData (req, res) {
   try {
     const driver_experience_list = await getDriverExperience();
-    driver_experience_list.forEach(async experience => {
+    // sequential inserts (was forEach async — a fire-and-forget race)
+    for (const experience of driver_experience_list) {
       try {
         await SupporterExperience.create(experience);
       } catch (err) {
         //do nth
       }
-    });
+    }
     return res.status(200).json(true);
   } catch (err) {
     console.log(err);
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'supporter.controller.getOldDriverExperienceData', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -359,26 +379,29 @@ async function matchDriverId (req, res) {
     console.log(err);
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'supporter.controller.getOldDriverExperienceData', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
 async function matchAgencyProfileImage (req, res) {
   try {
     const agency = await Supporter.findAll({ where: { maid_id: { [not]: null } }});
-    agency.forEach(async (maid) => {
+    // sequential saves (was forEach async — a fire-and-forget race)
+    for (const maid of agency) {
       let profile_image_url = `/uploads/supporters/0000000000${maid.maid_id}`;
       maid.profile_image_url = `${profile_image_url.slice(-11)}/1.jpg`;
       await maid.save();
-    })
+    }
     return res.status(200).json(true);
   } catch (err) {
     console.log(err);
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'supporter.controller.matchAgencyProfileImage', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -435,8 +458,9 @@ async function matchDriverProfileImage (req, res) {
     console.log(err);
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'supporter.controller.matchDriverProfileImage', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 

@@ -28,8 +28,9 @@ async function create (req, res) {
       await t.rollback();
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'address.controller.create', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -54,8 +55,9 @@ async function update (req, res) {
       await t.rollback();
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'address.controller.update', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -71,13 +73,14 @@ async function getDetail (req, res) {
     }
       const address = await Address.findOne({ where: where_clause });
       if (!address)
-        throw { message: 'Address not found' };
+        throw { status: 404, message: 'Address not found' };
       return res.status(200).json(address);
   } catch (err) {
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'address.controller.getDetail', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -125,8 +128,9 @@ async function getList (req, res) {
     // console.log(error);
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'address.controller.getList', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -191,8 +195,9 @@ async function remove (req, res) {
       await t.rollback();
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'address.controller.remove', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 

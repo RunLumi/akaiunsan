@@ -33,11 +33,13 @@ async function create (req, res) {
     let birthday = (req.body.birthday) ? req.body.birthday.split('-') : null;
     if (birthday && birthday.length && req.body.birthday[0] != '-'
       && req.body.birthday != '0000-00-00' && req.body.birthday != '') {
-      let birthday = new Date();
-      birthday.setFullYear(birthday[0]);
-      birthday.setMonth(birthday[1]-1);
-      birthday.setDate(birthday[2]);
-      maid.birthday = birthday;
+      // inner `let birthday = new Date()` used to shadow the split array,
+      // producing Invalid Date for every real birthday
+      const born = new Date();
+      born.setFullYear(Number(birthday[0]));
+      born.setMonth(Number(birthday[1]) - 1);
+      born.setDate(Number(birthday[2]));
+      maid.birthday = born;
     }
     if (maid.remark) {
       const remark = maid.remark.toLowerCase();
@@ -111,11 +113,13 @@ async function update (req, res) {
     let birthday = (req.body.birthday) ? req.body.birthday.split('-') : null;
     if (birthday && birthday.length && req.body.birthday[0] != '-'
       && req.body.birthday != '0000-00-00' && req.body.birthday != '') {
-      let birthday = new Date();
-      birthday.setFullYear(birthday[0]);
-      birthday.setMonth(birthday[1]-1);
-      birthday.setDate(birthday[2]);
-      maid.birthday = birthday;
+      // inner `let birthday = new Date()` used to shadow the split array,
+      // producing Invalid Date for every real birthday
+      const born = new Date();
+      born.setFullYear(Number(birthday[0]));
+      born.setMonth(Number(birthday[1]) - 1);
+      born.setDate(Number(birthday[2]));
+      maid.birthday = born;
     }
     if (maid.remark) {
       const remark = maid.remark.toLowerCase();

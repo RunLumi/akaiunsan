@@ -118,11 +118,13 @@ async function create (req, res) {
     let birthday = (req.body.birthday) ? req.body.birthday.split('/') : null;
     if (birthday && birthday.length && req.body.birthday[0] != '/'
       && req.body.birthday != '0000-00-00' && req.body.birthday != '') {
-      let birthday = new Date();
-      birthday.setFullYear(birthday[0]);
-      birthday.setMonth(birthday[1]-1);
-      birthday.setDate(birthday[2]);
-      driver.birthday = birthday;
+      // inner `let birthday = new Date()` used to shadow the split array,
+      // producing Invalid Date for every real birthday
+      const born = new Date();
+      born.setFullYear(Number(birthday[0]));
+      born.setMonth(Number(birthday[1]) - 1);
+      born.setDate(Number(birthday[2]));
+      driver.birthday = born;
     }
     
     const driver_id = driver.driver_id;
@@ -189,11 +191,13 @@ async function update (req, res) {
     let birthday = (req.body.birthday) ? req.body.birthday.split('-') : null;
     if (birthday && birthday.length && req.body.birthday[0] != '-'
       && req.body.birthday != '0000-00-00' && req.body.birthday != '') {
-      let birthday = new Date();
-      birthday.setFullYear(birthday[0]);
-      birthday.setMonth(birthday[1]-1);
-      birthday.setDate(birthday[2]);
-      driver.birthday = birthday;
+      // inner `let birthday = new Date()` used to shadow the split array,
+      // producing Invalid Date for every real birthday
+      const born = new Date();
+      born.setFullYear(Number(birthday[0]));
+      born.setMonth(Number(birthday[1]) - 1);
+      born.setDate(Number(birthday[2]));
+      driver.birthday = born;
     }
 
     const supporter_result = await Supporter.findOne({ where: { driver_id }});
@@ -234,6 +238,8 @@ async function remove (req, res) {
   try {
     let { driver_id } = req.params;
     const supporter = await Supporter.findOne({ where: { driver_id }});
+    if (!supporter)
+      throw { status: 404, message: 'Driver not found' }; // was a null deref 500
     await Supporter.destroy({ where: { id: supporter.id }, transaction: t });
     await SupporterExperience.destroy({ where: { supporter_id: supporter.id }, transaction: t });
     await SupporterSkill.destroy({ where: { supporter_id: supporter.id }, transaction: t });
@@ -246,8 +252,9 @@ async function remove (req, res) {
       await t.rollback();
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'agency/driver.controller.remove', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 

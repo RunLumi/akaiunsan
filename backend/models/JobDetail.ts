@@ -13,6 +13,9 @@ export default (sequelize, DataTypes) => {
     },
     price: {
       type: DataTypes.FLOAT
+    },
+    job_id: {
+      type: DataTypes.INTEGER
     }
   }, {
     tableName: 'job_detail'

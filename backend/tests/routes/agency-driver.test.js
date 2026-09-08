@@ -88,12 +88,16 @@ describe('POST /agency-back-office/driver', () => {
     expect(await db.SupporterExperience.count({ where: { supporter_id: supporter.id } })).toBe(1);
   });
 
-  it('pins current behavior: real birthdays fail to import (Invalid Date mapping)', async () => {
+  it('imports real birthdays (Invalid Date mapping fixed)', async () => {
     const res = await pub(request(app).post('/agency-back-office/driver')).send({
       ...driverPayload, driver_id: 602, birthday: '1991/03/03',
     });
-    expect(res.status).toBe(500); // pins current behavior
-    expect(res.body.message).toContain('Invalid date');
+    // the mapper shadowed the split array with `new Date()`, producing an
+    // Invalid Date for every real birthday; the inner variable is renamed
+    expect(res.status).toBe(200);
+    const supporter = await db.Supporter.findOne({ where: { driver_id: 602 } });
+    expect(supporter.birthday).toBeTruthy();
+    expect(new Date(supporter.birthday).getFullYear()).toBe(1991);
   });
 
   it('updates the same driver instead of duplicating on re-post', async () => {
@@ -134,9 +138,10 @@ describe('DELETE /agency-back-office/driver/:driver_id', () => {
     expect(await db.Supporter.findOne({ where: { driver_id: 601 } })).toBeNull();
   });
 
-  it('pins current behavior: removing an unknown driver 500s (findOne null deref)', async () => {
+  it('removing an unknown driver answers 404 (null deref fixed)', async () => {
     const res = await pub(request(app).delete('/agency-back-office/driver/999999'));
-    expect(res.status).toBe(500); // supporter.id accessed without a null check
+    expect(res.status).toBe(404); // supporter.id was accessed without a null check
+    expect(res.body.message).toBe('Driver not found');
   });
 });
 

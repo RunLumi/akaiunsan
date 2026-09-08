@@ -93,7 +93,7 @@ describe('GET /banners/:lang_code', () => {
     });
     await db.BannerLanguage.create({
       banner_id: banner.id,
-      lang_code: 'TH', // request param is uppercased before compare — lowercase rows never match (pins current behavior)
+      lang_code: 'TH', // compare is now case-insensitive, but keep canonical uppercase here
       link: 'https://promo.test/th',
       title: 'โปรโมชั่น',
       image_url: 'desktop-th.jpg',
@@ -109,6 +109,33 @@ describe('GET /banners/:lang_code', () => {
       image_url: 'https://cdn.test.local/banners/desktop-th.jpg',
       mobile_image_url: 'https://cdn.test.local/banners/mobile-th.jpg',
     });
+  });
+
+  it('matches language rows stored in lowercase', async () => {
+    // was pinned: rows stored lowercase never matched the uppercased param
+    const banner = await db.Banner.create({
+      active: true,
+      title: 'Lowercase Lang',
+      link: 'https://promo.test',
+      image_url: 'desktop.jpg',
+      mobile_image_url: 'mobile.jpg',
+      ordering: 2,
+    });
+    await db.BannerLanguage.create({
+      banner_id: banner.id,
+      lang_code: 'th',
+      link: 'https://promo.test/th',
+      title: 'โปรโมชั่น',
+      image_url: 'desktop-th.jpg',
+      mobile_image_url: 'mobile-th.jpg',
+    });
+
+    const res = await pub(request(app).get('/banners/TH'));
+
+    expect(res.status).toBe(200);
+    const row = res.body.find((b) => b.title === 'Lowercase Lang');
+    expect(row).toBeTruthy();
+    expect(row.image_url).toContain('desktop-th.jpg');
   });
 
   it('skips banners missing image urls or outside their date window', async () => {
@@ -214,7 +241,7 @@ describe('mail form endpoints', () => {
 
   it('contact-us validates required fields', async () => {
     const res = await pub(request(app).post('/guest/contact-us')).send({ name: 'OnlyName' });
-    expect(res.status).toBe(500); // pins current behavior
+    expect(res.status).toBe(400); // validation carries 400 now
     expect(res.body.message).toBe('Please fill in contact information.');
   });
 

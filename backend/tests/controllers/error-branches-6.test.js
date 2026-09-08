@@ -202,20 +202,21 @@ describe('catch/rollback/500 envelopes across controllers', () => {
     }
   });
 
-  it('supporter.controller: create/update/getDetail/getList/count/remove/uploadProfile → 500', async () => {
-    for (const [fn, req] of [
-      [supporterController.create, { body: {} }],
-      [supporterController.update, { params: { supporter_id: 1 }, body: {} }],
-      [supporterController.getDetail, { params: { supporter_id: 1 } }],
-      [supporterController.getList, { query: { page: 1, limit: 10 } }],
-      [supporterController.count, { query: {} }],
-      [supporterController.remove, { params: { supporter_id: 1 } }],
-      [supporterController.uploadProfile, { file: null }],
-      [supporterController.exportFile, {}],
+  it('supporter.controller: create/update/getDetail/getList/count/remove/exportFile → 500; uploadProfile → 400', async () => {
+    for (const [fn, req, expected] of [
+      [supporterController.create, { body: {} }, 500],
+      [supporterController.update, { params: { supporter_id: 1 }, body: {} }, 500],
+      [supporterController.getDetail, { params: { supporter_id: 1 } }, 500],
+      [supporterController.getList, { query: { page: 1, limit: 10 } }, 500],
+      [supporterController.count, { query: {} }, 500],
+      [supporterController.remove, { params: { supporter_id: 1 } }, 500],
+      // missing file is a validation error answered before any DB access
+      [supporterController.uploadProfile, { file: null }, 400],
+      [supporterController.exportFile, {}, 500],
     ]) {
       const res = stubRes();
       await fn(req, res);
-      expect(res.statusCode, fn.name).toBe(500);
+      expect(res.statusCode, fn.name).toBe(expected);
     }
   });
 
@@ -263,7 +264,8 @@ describe('catch/rollback/500 envelopes across controllers', () => {
 
     const r4 = stubRes();
     await mailController.contactUs({ body: {} }, r4);
-    expect(r4.statusCode).toBe(500);
+    // missing contact fields are a validation 400 answered before sendMail
+    expect(r4.statusCode).toBe(400);
   });
 
   it('account controllers: error branches 500', async () => {

@@ -35,7 +35,10 @@ async function getList (req, res) {
         });
       });
     }
-    if (customer_id) {
+    if (req.customer) {
+      // client tier: only ever see their own subscriptions
+      fields[and] = [{ customer_id: req.customer.id }]
+    } else if (customer_id) {
       fields[and] = [{ customer_id }]
     }
     const list = await Subscription.findAll({
@@ -59,8 +62,11 @@ async function getList (req, res) {
 const findSubscription = async (req, res) => {
   try {
     let { subscription_id } = req.params;
+    let where: any = { id: subscription_id };
+    if (req.customer)
+      where.customer_id = req.customer.id; // client tier sees only their own
     const subscription = await Subscription.findOne({
-      where: { id: subscription_id }
+      where
     });
     if (!subscription)
       throw { message: 'Subscription not found' };
@@ -102,12 +108,12 @@ const createSubscription = async (req, res) => {
     }
     let chargeDetail = null;
     chargeDetail = await OmiseHelper.chargeCustomerCardById(
-      req.user.omise_customer_id,
+      req.customer.omise_customer_id,
       charge_amount,
       card_id
     );
     const subscriptionData = await SubscriptionHelper.createSubscription(
-      req.user.id,
+      req.customer.id,
       total_hour,
       job_type,
       address_id
@@ -119,7 +125,7 @@ const createSubscription = async (req, res) => {
       "credit_card",
       "subscription",
       subscriptionData.id,
-      req.user.id,
+      req.customer.id,
       chargeDetail.status
     );
 
@@ -147,6 +153,10 @@ const cancelSubscription = async (req, res) => {
     const subscriptionData = await SubscriptionHelper.findSubscriptionById(
       subscriptionId
     );
+    if (!subscriptionData)
+      throw new Error("Subscription not found");
+    if (req.customer && subscriptionData.customer_id !== req.customer.id)
+      throw new Error("You cannot cancel another customer subscription.");
     if (subscriptionData.status !== "active") {
       throw new Error("You cannot cancel subscription that not active.");
     }

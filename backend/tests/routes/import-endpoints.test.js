@@ -126,11 +126,15 @@ describe('GET /import/supporter-agency (full agency → local import)', () => {
     expect(marker.latest_maid_id).toBeGreaterThan(0);
   });
 
-  it('pins current behavior: real birthdays fail to import (Invalid Date mapping)', async () => {
+  it('imports real birthdays (Invalid Date mapping fixed)', async () => {
     maidRows[0].birthday = '1992-02-02';
     const res = await pub(request(app).get('/import/supporter-agency'));
-    expect(res.status).toBe(500); // pins current behavior
-    expect(res.body.message).toContain('Invalid date');
+    // the mapper shadowed the split array with `new Date()`, producing an
+    // Invalid Date for every real birthday; the inner variable is renamed
+    expect(res.status).toBe(200);
+    const supporter = await db.Supporter.findOne({ where: { maid_id: Number(maidRows[0].id) } });
+    expect(supporter).toBeTruthy();
+    expect(new Date(supporter.birthday).getUTCFullYear()).toBe(1992);
     maidRows[0].birthday = '0000-00-00';
   });
 });

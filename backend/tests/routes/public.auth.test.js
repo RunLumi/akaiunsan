@@ -88,7 +88,7 @@ describe('POST /auth/signup (customer)', () => {
       .set('app_key', APP_KEY)
       .send({ firstname: 'Dup', lastname: 'Dup', email, password: 'longenough1' });
 
-    expect(res.status).toBe(500); // pins current behavior: business errors map to 500
+    expect(res.status).toBe(400); // business errors carry an explicit status now
     expect(res.body.message).toBe('This email is already registered.');
   });
 
@@ -98,7 +98,7 @@ describe('POST /auth/signup (customer)', () => {
       .set('app_key', APP_KEY)
       .send({ firstname: 'S', lastname: 'P', email: uniqueEmail(), password: 'short' });
 
-    expect(res.status).toBe(500); // pins current behavior
+    expect(res.status).toBe(400);
     expect(res.body.message).toBe('Password must be at least 8 characters.');
   });
 
@@ -134,7 +134,7 @@ describe('POST /auth/signin (customer)', () => {
       .set('app_key', APP_KEY)
       .send({ email, password: WRONG_PASSWORD });
 
-    expect(res.status).toBe(500); // pins current behavior
+    expect(res.status).toBe(400);
     expect(res.body.message).toBe('Email/password is incorrect.');
   });
 
@@ -144,7 +144,7 @@ describe('POST /auth/signin (customer)', () => {
       .set('app_key', APP_KEY)
       .send({ email: 'ghost@test.local', password: 'whatever123' });
 
-    expect(res.status).toBe(500); // pins current behavior
+    expect(res.status).toBe(400);
     expect(res.body.message).toBe('Email/password is incorrect.');
   });
 
@@ -157,7 +157,7 @@ describe('POST /auth/signin (customer)', () => {
       .set('app_key', APP_KEY)
       .send({ email, password: CUSTOMER_PASSWORD });
 
-    expect(res.status).toBe(500); // pins current behavior
+    expect(res.status).toBe(400);
     expect(res.body.message).toBe('Email/password is incorrect.');
   });
 });
@@ -204,7 +204,7 @@ describe('POST /auth/forget-password → /auth/reset-password (customer)', () =>
       .set('app_key', APP_KEY)
       .send({ email: 'ghost2@test.local' });
 
-    expect(res.status).toBe(500); // pins current behavior
+    expect(res.status).toBe(404);
     expect(res.body.message).toBe('This email is not registered.');
   });
 
@@ -219,7 +219,7 @@ describe('POST /auth/forget-password → /auth/reset-password (customer)', () =>
       .set('app_key', APP_KEY)
       .send({ _forget_token: token, new_password: RESET_PASSWORD, confirm_password: 'different' });
 
-    expect(res.status).toBe(500); // pins current behavior
+    expect(res.status).toBe(400);
     expect(res.body.message).toBe('New password and confirm password are not matched.');
   });
 });
@@ -250,7 +250,7 @@ describe('POST /auth/admin/signin', () => {
       .set('app_key', APP_KEY)
       .send({ username: 'wrongpw@test.local', password: 'nope' });
 
-    expect(res.status).toBe(500); // pins current behavior: thrown { status: 400 } is ignored
+    expect(res.status).toBe(400); // thrown { status: 400 } is now honored
     expect(res.body.message).toBe('Username/Password is incorrect.');
   });
 
@@ -260,7 +260,7 @@ describe('POST /auth/admin/signin', () => {
       .set('app_key', APP_KEY)
       .send({ username: 'ghost-admin@test.local', password: 'nope' });
 
-    expect(res.status).toBe(500); // pins current behavior
+    expect(res.status).toBe(401); // 'User not found.' carries 401 now
     expect(res.body.message).toBe('User not found.');
   });
 });
@@ -281,17 +281,25 @@ describe('GET /back/office/install', () => {
     expect(second.body.message).toBe('Done nothing');
   });
 
-  it('pins current behavior: the installed admin cannot sign in (active flag and role_id are never set)', async () => {
+  it('can sign in after install (active flag and role_id now set)', async () => {
+    const { db: testDb } = await import('../helpers/db');
+
     const res = await request(app)
       .post('/auth/admin/signin')
       .set('app_key', APP_KEY)
       .send({ username: 'sale@akaiunsan.vn', password: 'whatever' });
 
-    // install.controller creates the admin without `active` (NULL → the
-    // `active: true` signin filter misses it) and without role_id (the Role
-    // include would be null). The first failure wins: "User not found."
-    // pins current behavior — fix deliberately in a later phase, not silently.
-    expect(res.status).toBe(500);
-    expect(res.body.message).toBe('User not found.');
+    // install.controller previously created the admin without `active` (NULL →
+    // the `active: true` signin filter missed it) and without role_id. Now the
+    // installed admin is active and bound to the created Super Admin role.
+    expect(await testDb.Admin.count()).toBe(1); // installed by the previous test
+    const installed = await testDb.Admin.findOne({ where: { username: 'sale@akaiunsan.vn' } });
+    expect(installed).not.toBeNull();
+    expect(installed.active).toBe(true);
+    expect(installed.role_id).toBeTruthy();
+
+    // wrong password on a real admin → proper 400 credentials error
+    expect(res.status).toBe(400);
+    expect(res.body.message).toBe('Username/Password is incorrect.');
   });
 });

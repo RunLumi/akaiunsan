@@ -7,7 +7,7 @@ async function contactUs (req, res) {
   try {
     let { name, email, phone_number, message } = req.body;
     if (!name || !email || !phone_number)
-      throw { message: 'Please fill in contact information.' }
+      throw { status: 400, message: 'Please fill in contact information.' }
     let body_message = `
     <h3>There's a new message from contact us form</h3>
     <table>
@@ -32,8 +32,9 @@ async function contactUs (req, res) {
   } catch (err) {
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     ErrorLog.create({ location: 'mail.controller.contactUs', message: error_message });
-    return res.status(500).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -41,7 +42,7 @@ async function contactBiz (req, res) {
   try {
     let { name, package: pkg_name = '-', email, phone_number, company_name, location, message } = req.body;
     if (!name || !email || !phone_number || !company_name || !location)
-      throw { message: 'Please fill in contact information.' }
+      throw { status: 400, message: 'Please fill in contact information.' }
     let body_message = `
     <h3>There's a new request for quotation.</h3>
     <table>
@@ -75,8 +76,9 @@ async function contactBiz (req, res) {
   } catch (err) {
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     ErrorLog.create({ location: 'mail.controller.contactBiz', message: error_message });
-    return res.status(500).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -84,7 +86,7 @@ async function employment (req, res) {
   try {
     let { name, email, phone_number, message } = req.body;
     if (!name || !email || !phone_number)
-      throw { message: 'Please fill in contact information.' }
+      throw { status: 400, message: 'Please fill in contact information.' }
     let body_message = `
     <h3>There's a new message from employment form</h3>
     <table>
@@ -109,8 +111,9 @@ async function employment (req, res) {
   } catch (err) {
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     ErrorLog.create({ location: 'mail.controller.employment', message: error_message });
-    return res.status(500).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 

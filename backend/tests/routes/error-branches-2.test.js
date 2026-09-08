@@ -32,23 +32,23 @@ describe('address.json error branches', () => {
 });
 
 describe('customer.controller remaining branches', () => {
-  it('upload profile without a file pins the error envelope', async () => {
+  it('upload profile without a file answers a 400 validation envelope', async () => {
     const res = await client(request(app).post('/client/user/profile-image'));
-    expect(res.status).toBe(500);
+    expect(res.status).toBe(400); // 'No file uploaded' carries 400 now
     expect(res.body.message).toBe('No file uploaded');
   });
 
-  it('remove profile for a missing file pins current behavior', async () => {
+  it('remove profile for a missing file is an idempotent 200', async () => {
     const res = await admin(request(app).delete('/back-office/customers/profile-image/nope.jpg'));
-    // fs.unlink on a missing file → 500 envelope
-    expect([200, 500]).toContain(res.status);
+    // unlinking a missing file used to throw ENOENT → 500; now a guarded no-op
+    expect(res.status).toBe(200);
   });
 
   it('export after truncation is guarded, create dup-checks email', async () => {
     const dup = await admin(request(app).post('/back-office/customers')).send({
       firstname: 'Dup', email: 'eb2-c@test.local',
     });
-    expect(dup.status).toBe(500);
+    expect(dup.status).toBe(400); // duplicate email carries explicit status now
     expect(dup.body.message).toBe('This email is already registered.');
   });
 });

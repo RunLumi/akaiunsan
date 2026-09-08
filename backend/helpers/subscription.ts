@@ -15,7 +15,7 @@ const findSubscriptionByCustomerId = async (customerId, status = "active") => {
 };
 
 const findSubscriptionById = async (subscriptionId) => {
-  return await Subscription.findOne({ id: subscriptionId });
+  return await Subscription.findOne({ where: { id: subscriptionId } });
 };
 
 const createSubscription = async (customerId, totalHours, jobType, address_id) => {

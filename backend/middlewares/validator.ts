@@ -22,7 +22,7 @@ const validators = {
       return res.status(401).send({ message: 'Provided token is invalid formatted.' })
 
     try {
-      const decoded = await verifyToken(token)
+      const decoded = await verifyToken(token) as any
       const userInstance = await findCustomerByEmail(decoded._user.username)
       const userDetail = userInstance.dataValues
       // remove password from user data.
@@ -52,7 +52,7 @@ const validators = {
       return res.status(401).send({ message: 'Provided token is invalid formatted.' })
 
     try {
-      const decoded = await verifyToken(token)
+      const decoded = await verifyToken(token) as any
       const userInstance = await findAdminByUsername(decoded._user.username)
       const userDetail = userInstance.dataValues
       // remove password from user data.

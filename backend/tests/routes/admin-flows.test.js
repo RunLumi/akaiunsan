@@ -36,7 +36,7 @@ describe('admin register happy path (empty admins table)', () => {
     const second = await request(app).post('/auth/admin/signup').set('app_key', APP_KEY).send({
       firstname: 'Second', username: 'second@test.local', password: ADMIN_PASSWORD,
     });
-    expect(second.status).toBe(500); // pins current behavior
+    expect(second.status).toBe(400);
     expect(second.body.message).toBe('Please login to create new account.');
   });
 });
@@ -56,13 +56,13 @@ describe('account admin profile flows', () => {
     const short = await authed(request(app).put('/back-office/user/password')).send({
       password: ADMIN_PASSWORD, new_password: 'short', confirm_password: 'short',
     });
-    expect(short.status).toBe(500);
+    expect(short.status).toBe(400);
     expect(short.body.message).toBe('Password must be at least 8 characters.');
 
     const mismatch = await authed(request(app).put('/back-office/user/password')).send({
       password: ADMIN_PASSWORD, new_password: 'long-enough-pw', confirm_password: 'different-pw',
     });
-    expect(mismatch.status).toBe(500); // pins current behavior
+    expect(mismatch.status).toBe(400);
     expect(mismatch.body.message).toBe('New passsword and confirm password are not matched.');
 
     const ok = await authed(request(app).put('/back-office/user/password')).send({
@@ -85,7 +85,7 @@ describe('account admin profile flows', () => {
       .post('/auth/admin/forget-password')
       .set('app_key', APP_KEY)
       .send({ username: 'noemail@test.local' });
-    expect(res.status).toBe(500); // pins current behavior
+    expect(res.status).toBe(400);
     expect(res.body.message).toBe('Unable to reset password.');
   });
 

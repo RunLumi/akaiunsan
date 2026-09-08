@@ -59,10 +59,9 @@ describe('bot list enrichment with age window + includes', () => {
 });
 
 describe('customer.controller remaining branches', () => {
-  it('removeProfile for a missing file → 500 (fs import now present, error envelope works)', async () => {
+  it('removeProfile for a missing file is an idempotent 200 (unlink is now guarded)', async () => {
     const res = await admin(request(app).delete('/back-office/customers/profile-image/missing.jpg'));
-    expect(res.status).toBe(500);
-    expect(res.body.message).toContain('no such file');
+    expect(res.status).toBe(200);
   });
 
   it('removeProfile for an existing file → 200', async () => {

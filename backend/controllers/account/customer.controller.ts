@@ -19,10 +19,10 @@ async function signup (req, res) {
     let { customer }: { customer: any } = await getCustomerData(data);
     const exist_customer = await Customer.findOne({ where: { email: customer.email }});
     if (exist_customer)
-      throw { message: 'This email is already registered.' }
+      throw { status: 400, message: 'This email is already registered.' }
     let { password } = req.body;
     if (password.length < 8)
-      throw { message: 'Password must be at least 8 characters.' };
+      throw { status: 400, message: 'Password must be at least 8 characters.' };
     customer.password = await encryptPassword(password);
     customer.active = true;
     const new_customer = await Customer.create(customer, { transaction: t });
@@ -68,8 +68,10 @@ async function signup (req, res) {
       await t.rollback();
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    // an explicit numeric status on a thrown object is honored (legacy ignored it)
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'customer.controller.signup', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -78,10 +80,10 @@ async function signin (req, res) {
     let { email, password } = req.body;
     const customer = await Customer.findOne({ where: { email, active: true }});
     if (!customer)
-      throw { message: 'Email/password is incorrect.' };
+      throw { status: 400, message: 'Email/password is incorrect.' };
     let compare_result = await comparePassword(password, customer.password);
     if (!compare_result)
-      throw { message: 'Email/password is incorrect.' };
+      throw { status: 400, message: 'Email/password is incorrect.' };
     const token = await generateToken(email, req.hostname);
     return res.status(200).json({
       user: {
@@ -96,8 +98,10 @@ async function signin (req, res) {
     console.log(err);
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    // an explicit numeric status on a thrown object is honored (legacy ignored it)
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'customer.controller.signin', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -116,8 +120,10 @@ async function update (req, res) {
       await t.rollback();
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    // an explicit numeric status on a thrown object is honored (legacy ignored it)
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'customer.controller.update', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -129,11 +135,11 @@ async function updatePassword (req, res) {
     const customer = await Customer.findOne({ where: { email: customer_info.email }});
     const compare_result = await comparePassword(current_password, customer.password);
     if (!compare_result)
-      throw { status: 500, message: 'Current password is incorrect.' };
+      throw { status: 400, message: 'Current password is incorrect.' };
     if (new_password.length < 8)
-      throw { message: 'Password must be at least 8 characters.' };
+      throw { status: 400, message: 'Password must be at least 8 characters.' };
     if (new_password != confirm_password)
-      throw { message: 'New passsword and confirm password are not matched.' };
+      throw { status: 400, message: 'New passsword and confirm password are not matched.' };
     const hashed_password = await encryptPassword(new_password);
     await Customer.update({ password: hashed_password }, { where: { id: customer_info.id }, transaction: t });
     await t.commit();
@@ -144,8 +150,10 @@ async function updatePassword (req, res) {
       await t.rollback();
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    // an explicit numeric status on a thrown object is honored (legacy ignored it)
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'customer.controller.update', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -154,12 +162,14 @@ async function uploadProfile (req, res) {
     if (req.file) {
       return res.status(200).json(`/uploads/customers/${req.file.filename}`);
     } else
-      throw { message: 'No file uploaded' }
+      throw { status: 400, message: 'No file uploaded' }
   } catch (err) {
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    // an explicit numeric status on a thrown object is honored (legacy ignored it)
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'customer.controller.uploadProfile', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -172,6 +182,8 @@ async function removeProfile (req, res) {
     console.log(err);
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    // an explicit numeric status on a thrown object is honored (legacy ignored it)
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'customer.controller.removeProfile', message: error_message });
     return res.status(error_status).json({ message: error_message });
   }
@@ -183,6 +195,8 @@ async function getCustomerFromToken (req, res) {
   } catch (err) {
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    // an explicit numeric status on a thrown object is honored (legacy ignored it)
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'customer.controller.getCustomerFromToken', message: error_message });
     return res.status(error_status).json({ message: error_message });
   }
@@ -193,7 +207,7 @@ async function requestForgetPassword (req, res) {
     let { email } = req.body;
     const customer = await Customer.findOne({ where: { email }});
     if (!customer)
-      throw { message: 'This email is not registered.' };
+      throw { status: 404, message: 'This email is not registered.' };
 
     const token = await requestForgetPasswordToken(email, req.hostname);
     
@@ -225,8 +239,10 @@ async function requestForgetPassword (req, res) {
   } catch (err) {
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    // an explicit numeric status on a thrown object is honored (legacy ignored it)
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'customer.controller.requestForgetPassword', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 
@@ -237,9 +253,9 @@ async function resetPassword (req, res) {
     const decoded = await verifyToken(_forget_token);
     const customer = await Customer.findOne({ where: { email: (decoded as any)._user.username }})
     if (!customer)
-      throw { message: 'This account doesn\'t exist.' };
+      throw { status: 404, message: 'This account doesn\'t exist.' };
     if (new_password != confirm_password)
-      throw { message: 'New password and confirm password are not matched.' };
+      throw { status: 400, message: 'New password and confirm password are not matched.' };
     let encrypted_password = await encryptPassword(new_password);
     await Customer.update({ password: encrypted_password }, { where: { email: (decoded as any)._user.username }, transaction: t });
     await t.commit();
@@ -249,8 +265,10 @@ async function resetPassword (req, res) {
       await t.rollback();
     err.message ? error_message = err.message : error_message;
     typeof err == 'string' ? error_message = err : error_message;
+    // an explicit numeric status on a thrown object is honored (legacy ignored it)
+    const respond_status = (err && typeof err == 'object' && typeof err.status == 'number') ? err.status : error_status;
     await ErrorLog.create({ location: 'customer.controller.resetPassword', message: error_message });
-    return res.status(error_status).json({ message: error_message });
+    return res.status(respond_status).json({ message: error_message });
   }
 }
 

@@ -128,7 +128,7 @@ describe('/client/addresses CRUD', () => {
   it('cannot read another customer address (scoped where finds nothing)', async () => {
     const foreign = await createAddress(otherCustomer.id, { address_detail: 'foreign' });
     const res = await authed(request(app).get(`/client/addresses/${foreign.id}`));
-    expect(res.status).toBe(500); // pins current behavior: scoped miss → 500 'Address not found'
+    expect(res.status).toBe(404); // scoped miss → 404 'Address not found'
     expect(res.body.message).toBe('Address not found');
   });
 
@@ -201,7 +201,7 @@ describe('GET /client/user', () => {
       .set('app_key', APP_KEY)
       .set('Authorization', `Bearer ${token}`)
       .send({ current_password: 'nope', new_password: NEW_PASSWORD, confirm_password: NEW_PASSWORD });
-    expect(wrong.status).toBe(500); // pins current behavior
+    expect(wrong.status).toBe(400);
     expect(wrong.body.message).toBe('Current password is incorrect.');
 
     const ok = await request(app)
@@ -229,7 +229,7 @@ describe('GET /client/user', () => {
       .set('Authorization', `Bearer ${token}`)
       .send({ current_password: CUSTOMER_PASSWORD, new_password: 'short', confirm_password: 'short' });
 
-    expect(res.status).toBe(500); // pins current behavior
+    expect(res.status).toBe(400);
     expect(res.body.message).toBe('Password must be at least 8 characters.');
   });
 });

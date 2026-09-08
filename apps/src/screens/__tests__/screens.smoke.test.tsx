@@ -551,6 +551,12 @@ describe("screens smoke render (Phase 3 characterization)", () => {
       await flush();
       expect(renderer).toBeTruthy();
       expect(renderer.toJSON()).not.toBeNull();
+      // Login's success flow arms a 900ms FCM-token debounce; let it fire
+      // inside the test so no post-run console log fails the process.
+      if (label === "Auth/Login") {
+        await new Promise((r) => setTimeout(r, 1100));
+        await flush();
+      }
     }
   );
 });

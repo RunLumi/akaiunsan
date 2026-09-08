@@ -22,7 +22,7 @@ import {
   Loading,
   Text,
 } from "../../components";
-import useApi from "../../hooks/useApi";
+import { useSignupMutation } from "../../redux/apiSlice";
 import { NavigationRoot } from "../../navigation/root";
 import { TYPES } from "../../redux/actions";
 import Colors from "../../shared/Colors";
@@ -89,25 +89,42 @@ export default function Signup(props: any) {
     isError: false,
     msgErr: "",
   });
-  const [loading, request] = useApi({
-    method: "post",
-    url: Constants.API.register,
-    callback: ({ error, response }) => {
-      if (error)
-        setTimeout(() => {
-          Alert.alert(i18n.t("auth.error"), error);
-        }, 100);
-      else {
-        props.navigation.replace(Constants.SCREENS.AUTH.LOGIN, {
-          email: email.value,
-          password: pass.value,
-        });
-        setTimeout(() => {
-          Alert.alert(i18n.t("auth.sign_in"), i18n.t("auth.register_success"));
-        }, 300);
-      }
-    },
-  });
+  // Phase 5 RTK Query port: the register call. The legacy request callback
+  // runs unchanged through the adapter so the success/error contract
+  // (replace to LOGIN, delayed alerts) is identical to the useApi tunnel.
+  const handleRegisterResult = ({ error, response }: any) => {
+    if (error)
+      setTimeout(() => {
+        Alert.alert(i18n.t("auth.error"), error);
+      }, 100);
+    else {
+      props.navigation.replace(Constants.SCREENS.AUTH.LOGIN, {
+        email: email.value,
+        password: pass.value,
+      });
+      setTimeout(() => {
+        Alert.alert(i18n.t("auth.sign_in"), i18n.t("auth.register_success"));
+      }, 300);
+    }
+  };
+  const [signupMutation, { isLoading: loadingRTK }] = useSignupMutation();
+  const loading = loadingRTK;
+  const request = ({ data }: any) => {
+    signupMutation(data)
+      .unwrap()
+      .then((response: any) => handleRegisterResult({ error: "", response }))
+      .catch((e: any) =>
+        handleRegisterResult({
+          // mirrors useApi's 400 translation: axios reported
+          // "Request failed with status code 400" for e.status === 400
+          error:
+            e?.status === 400
+              ? i18n.t("home.error_400")
+              : e?.data?.message || e?.message || "error",
+          response: {},
+        })
+      );
+  };
   const validatePhone = (phone: any) => {
     const re = /^(0)\d{9}$/g;
     return re.test(phone);

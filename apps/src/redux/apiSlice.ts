@@ -12,6 +12,23 @@ export interface LoginResponse {
   user?: Record<string, any>;
 }
 
+export interface SignupPayload {
+  email: string;
+  password: string;
+  fullName: string;
+  phoneNumber: string;
+  referralCode?: string;
+  address?: string;
+  avatar?: string;
+  identityNumber?: string;
+  gender?: any;
+}
+
+export interface SignupResponse {
+  message?: string;
+  user?: Record<string, any>;
+}
+
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
@@ -36,7 +53,14 @@ export const apiSlice = createApi({
         }),
       }
     ),
+    signup: builder.mutation<SignupResponse, SignupPayload>({
+      query: (payload) => ({
+        url: Constants.API.register,
+        method: "post",
+        body: payload,
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation } = apiSlice;
+export const { useLoginMutation, useSignupMutation } = apiSlice;

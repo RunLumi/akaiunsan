@@ -19,7 +19,7 @@ import Layout from "../../shared/Layout";
 import moment from "moment-timezone";
 import WebView from "react-native-webview";
 import { isArray, isEmpty } from "lodash";
-import FastImage from "react-native-fast-image";
+import { Image as ExpoImage } from "expo-image";
 const { width } = Dimensions.get("screen");
 
 export default function PromotionDetail(props: any) {
@@ -99,8 +99,8 @@ export default function PromotionDetail(props: any) {
   const renderItem = ({ item, index }: any) => {
     return (
       <View key={index}>
-        <FastImage
-          // resizeMode="contain"
+        <ExpoImage
+          contentFit="contain"
           style={{ width: width, height: width }}
           source={{ uri: item }}
         />

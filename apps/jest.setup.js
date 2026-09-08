@@ -297,18 +297,14 @@ jest.mock("@notifee/react-native", () => ({
   },
 }));
 
-jest.mock("react-native-fast-image", () => {
+// expo-image renders its native view only; a passthrough keeps the tree
+// inspectable for the characterization suites.
+jest.mock("expo-image", () => {
   const React = require("react");
-  const FastImage = ({ children, ...props }) =>
-    React.createElement("View", props, children);
-  FastImage.priority = { low: "low", normal: "normal", high: "high" };
-  FastImage.cacheControl = {
-    immutable: "immutable",
-    web: "web",
-    cacheOnly: "cacheOnly",
+  return {
+    __esModule: true,
+    Image: ({ children, ...props }) => React.createElement("View", props, children),
   };
-  FastImage.resizeMode = { contain: "contain", cover: "cover", stretch: "stretch", center: "center" };
-  return { __esModule: true, default: FastImage };
 });
 
 jest.mock("@react-native-picker/picker", () => {

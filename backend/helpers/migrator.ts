@@ -23,7 +23,7 @@ let inFlight: Promise<number> | null = null;
  *  run, so concurrent callers can't both INSERT the same meta row. */
 export function runMigrations() {
   if (!inFlight) {
-    inFlight = umzug.up().then(() => umzug.migrations().then((m) => m.length));
+    inFlight = umzug.up().then((applied) => applied.length);
   }
   return inFlight;
 }

@@ -1,4 +1,7 @@
 import { Subscription, ErrorLog } from '../models/index.ts';
+import { Op } from 'sequelize';
+
+const { substring, or, and } = Op;
 import * as SubscriptionHelper from './../helpers/subscription.ts';
 import * as OmiseHelper from './../helpers/omise.ts';
 import * as PaymentHelper from './../helpers/payment.ts';

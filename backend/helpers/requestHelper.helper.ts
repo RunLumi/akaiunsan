@@ -355,7 +355,7 @@ async function getDetail(request_helper_id) {
     const request_helper_result = await RequestHelper.findOne({
       where: { id: request_helper_id },
     });
-    let request_helper = {};
+    let request_helper: any = {};
     for (let prop in request_helper_result.dataValues) {
       request_helper[prop] = request_helper_result[prop];
     }
@@ -432,7 +432,7 @@ async function getList(
       });
     }
     if (keyword) {
-      field_list = [
+      let field_list = [
         "contact_name",
         "phone_number",
         "line_id",
@@ -515,7 +515,7 @@ async function count(filter = null, keyword = null) {
       });
     }
     if (keyword) {
-      field_list = [
+      let field_list = [
         "contact_name",
         "phone_number",
         "line_id",
@@ -593,7 +593,7 @@ async function countRequestStatistics(start_date, end_date) {
           [between]: [start_date, end_date],
         },
       });
-      let object = { type: "", number: 0 };
+      let object: any = { type: "", number: 0 };
       object.type = lst_type[i] == "Pet" ? "Pet Care" : lst_type[i];
       object.number = await RequestMaid.count({ where: fields });
       list.push(object);
@@ -606,7 +606,7 @@ async function countRequestStatistics(start_date, end_date) {
         [between]: [start_date, end_date],
       },
     });
-    let object = { type: "", number: 0 };
+    let object: any = { type: "", number: 0 };
     object.type = lst_type[lst_type.length - 1];
     object.number = await RequestDriver.count({ where: fields });
     list.push(object);
@@ -642,7 +642,7 @@ async function countRequestScheduleStatistics(start_date, end_date) {
           [between]: [start_date, end_date],
         },
       });
-      let object = { type: "", number: 0 };
+      let object: any = { type: "", number: 0 };
       object.type = lst_type[i];
       object.number = await RequestMaid.count({ where: fields });
       list.push(object);
@@ -675,7 +675,7 @@ async function countRequestNationalStatistics(start_date, end_date) {
           [between]: [start_date, end_date],
         },
       });
-      let object = { type: "", number: 0 };
+      let object: any = { type: "", number: 0 };
       object.type = lst_type[i];
       object.number = await RequestMaid.count({ where: fields });
       list.push(object);
@@ -715,7 +715,7 @@ async function countRequestDayStatistics(start_date, end_date) {
           [between]: [start_date, end_date],
         },
       });
-      let object = { type: "", number: 0 };
+      let object: any = { type: "", number: 0 };
       object.type = lst_type[i];
       object.number = await RequestMaid.count({ where: fields });
       list.push(object);
@@ -748,7 +748,7 @@ async function countRequestLanguageStatistics(start_date, end_date) {
           [between]: [start_date, end_date],
         },
       });
-      let object = { type: "", number: 0 };
+      let object: any = { type: "", number: 0 };
       object.type = lst_type[i];
       object.number = await RequestMaid.count({ where: fields });
       list.push(object);
@@ -781,7 +781,7 @@ async function countRequestDriverLanguageStatistics(start_date, end_date) {
           [between]: [start_date, end_date],
         },
       });
-      let object = { type: "", number: 0 };
+      let object: any = { type: "", number: 0 };
       object.type = lst_type[i];
       object.number = await RequestDriver.count({ where: fields });
       list.push(object);
@@ -820,7 +820,7 @@ async function countRequestDriverAgeStatistics(start_date, end_date) {
           [between]: [start_date, end_date],
         },
       });
-      let object = { type: "", number: 0 };
+      let object: any = { type: "", number: 0 };
       object.type = lst_type[i];
       object.number = await RequestDriver.count({ where: fields });
       list.push(object);
@@ -861,7 +861,7 @@ async function countRequestDriverScheduleStatistics(start_date, end_date) {
           [between]: [start_date, end_date],
         },
       });
-      let object = { type: "", number: 0 };
+      let object: any = { type: "", number: 0 };
       object.type = lst_type[i] == "Wednesaday" ? "Wednesday" : lst_type[i] == "Thurday" ? "Thursday" : lst_type[i];;
 
       object.number = await RequestDriver.count({ where: fields });
@@ -900,7 +900,7 @@ async function countRequestDriveSalaryStatistics(start_date, end_date) {
           [between]: [start_date, end_date],
         },
       });
-      let object = { type: "", number: 0 };
+      let object: any = { type: "", number: 0 };
       object.type = lst_type[i];
       object.number = await RequestDriver.count({ where: fields });
       list.push(object);
@@ -938,7 +938,7 @@ async function countRequestDriverHiringStatistics(start_date, end_date) {
           [between]: [start_date, end_date],
         },
       });
-      let object = { type: "", number: 0 };
+      let object: any = { type: "", number: 0 };
       object.type = lst_type[i];
       object.number = await RequestDriver.count({ where: fields });
       list.push(object);
@@ -976,7 +976,7 @@ async function countRequestDriverInterviewStatistics(start_date, end_date) {
           [between]: [start_date, end_date],
         },
       });
-      let object = { type: "", number: 0 };
+      let object: any = { type: "", number: 0 };
       object.type = lst_type[i];
       object.number = await RequestDriver.count({ where: fields });
       list.push(object);
@@ -1016,7 +1016,7 @@ async function countRequestDriveReplacementGuaranteeStatistics(
           [between]: [start_date, end_date],
         },
       });
-      let object = { type: "", number: 0 };
+      let object: any = { type: "", number: 0 };
       object.type = lst_type[i];
       object.number = await RequestDriver.count({ where: fields });
       list.push(object);
@@ -1053,7 +1053,7 @@ async function countRequestCookingStatistics(
           [between]: [start_date, end_date],
         },
       });
-      let object = { type: "", number: 0 };
+      let object: any = { type: "", number: 0 };
       object.type = lst_type[i] == 1 ? "Yes" : "No";
       object.number = await RequestMaid.count({ where: fields });
       list.push(object);
@@ -1089,7 +1089,7 @@ async function countRequesKidStatistics(
           [between]: [start_date, end_date],
         },
       });
-      let object = { type: "", number: 0 };
+      let object: any = { type: "", number: 0 };
       object.type = lst_type[i] == 1 ? "Yes" : "No";
       object.number = await RequestMaid.count({ where: fields });
       list.push(object);
@@ -1125,7 +1125,7 @@ async function countRequesPetStatistics(
           [between]: [start_date, end_date],
         },
       });
-      let object = { type: "", number: 0 };
+      let object: any = { type: "", number: 0 };
       object.type = lst_type[i] == 1 ? "Yes" : "No";
       object.number = await RequestMaid.count({ where: fields });
       list.push(object);
@@ -1163,7 +1163,7 @@ async function countRequesCurrentHelperStatistics(
           [between]: [start_date, end_date],
         },
       });
-      let object = { type: "", number: 0 };
+      let object: any = { type: "", number: 0 };
       object.type = lst_type[i];
       object.number = await RequestMaid.count({ where: fields });
       list.push(object);
@@ -1201,7 +1201,7 @@ async function countRequestDriverOwnCarStatistics(
           [between]: [start_date, end_date],
         },
       });
-      let object = { type: "", number: 0 };
+      let object: any = { type: "", number: 0 };
       object.type = lst_type[i] == 1 ? "Yes" : "No";
       object.number = await RequestDriver.count({ where: fields });
       list.push(object);
@@ -1239,7 +1239,7 @@ async function countRequestDriverCurrentDriverStatistics(
           [between]: [start_date, end_date],
         },
       });
-      let object = { type: "", number: 0 };
+      let object: any = { type: "", number: 0 };
       object.type = lst_type[i] == 1 ? "Yes" : "No";
       object.number = await RequestDriver.count({ where: fields });
       list.push(object);
@@ -1277,7 +1277,7 @@ async function countRequestDriverIsOTStatistics(
           [between]: [start_date, end_date],
         },
       });
-      let object = { type: "", number: 0 };
+      let object: any = { type: "", number: 0 };
       object.type = lst_type[i] == 1 ? "Yes" : "No";
       object.number = await RequestDriver.count({ where: fields });
       list.push(object);

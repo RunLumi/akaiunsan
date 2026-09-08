@@ -167,7 +167,7 @@ async function count (req, res) {
   } catch (error) {
     // console.log(error);
     error.message ? error_message = error.message : error_message;
-    typeof err == 'string' ? error_message = err : error_message;
+    typeof error == 'string' ? error_message = error : error_message;
     await ErrorLog.create({ location: 'address.controller.count', message: error_message });
     return res.status(error_status).json({ message: error_message });
   }

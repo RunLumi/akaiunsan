@@ -24,7 +24,7 @@ async function create (req, res) {
       email_topic = 'Thank you for choosing Akaiunsan Service';
     }
     const customer = await Customer.findOne({ where: { id: customer_id }});
-    const mail_template = await new Promise((resolve, reject) => {
+    const mail_template: any = await new Promise((resolve, reject) => {
       fs.readFile(`mail-template/${email_lang}/request-success.html`, 'utf8', function (err, data) {
         if (err) {
           reject(err)
@@ -148,24 +148,24 @@ async function getLastItem (req, res) {
     if (request_helper_list.length == 0) {
       return res.status(200).json(null);
     } else if (request_helper_list[0].request_type == 'driver') {
-      let request_helper = {};
+      let request_helper: any = {};
       for (let prop in request_helper_list[0].dataValues) {
         request_helper[prop] = request_helper_list[0][prop];
       }
       const request_driver = await RequestDriver.findOne({ where: { request_helper_id: request_helper_list[0].id }});
       for (let prop in request_driver.dataValues) {
-        if (prop != 'id' || prop != 'createdAt' || prop != 'updatedAt')
+        if ((prop as string) != 'id' || (prop as string) != 'createdAt' || (prop as string) != 'updatedAt') // pins current behavior: || tautology copies all columns
           request_helper[prop] = request_driver[prop];
       }
       return res.status(200).json(request_helper);
     } else {
-      let request_helper = {};
+      let request_helper: any = {};
       for (let prop in request_helper_list[0].dataValues) {
         request_helper[prop] = request_helper_list[0][prop];
       }
       const request_maid = await RequestMaid.findOne({ where: { request_helper_id: request_helper_list[0].id }});
       for (let prop in request_maid.dataValues) {
-        if (prop != 'id' || prop != 'createdAt' || prop != 'updatedAt')
+        if ((prop as string) != 'id' || (prop as string) != 'createdAt' || (prop as string) != 'updatedAt') // pins current behavior: || tautology copies all columns
           request_helper[prop] = request_maid[prop];
       }
       return res.status(200).json(request_helper);

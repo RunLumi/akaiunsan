@@ -40,6 +40,10 @@ export default (sequelize, DataTypes) => {
     },
     omise_customer_id: {
       type: DataTypes.STRING
+    },
+    // legacy naming: stores the omise CUSTOMER id, written by creditcard.controller
+    omise_card_id: {
+      type: DataTypes.STRING
     }
   }, {
     tableName: 'customer'

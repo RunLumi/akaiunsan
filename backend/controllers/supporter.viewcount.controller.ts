@@ -25,7 +25,7 @@ async function createCount (req, res) {
         resolve(obj);
       });
     });
-    const view_count_list = await getCount;
+    const view_count_list: any = await getCount;
     let sql = 'INSERT INTO `supporter_view_count` (`supporter_id`, `count`, `createdAt`, `updatedAt`) VALUES\n';
     let maid_date = new Date();
     for (let item of view_count_list) {

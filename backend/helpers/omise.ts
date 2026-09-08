@@ -35,9 +35,9 @@ const findOmiseCustomerById = async (omiseId) => {
 } 
 
 
-const chargeCustomerCardById = async (omiseId, amount, cardId) => {
+const chargeCustomerCardById = async (omiseId, amount, cardId?) => {
     try {
-        const chargeData = {
+        const chargeData: any = {
             amount,
             currency: 'thb',
             customer: omiseId,

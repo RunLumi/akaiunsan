@@ -356,10 +356,10 @@ describe('client credit cards (omise mocked)', () => {
     token = await factories.customerToken(customer);
   });
 
-  it('pins current behavior: first-card creation 500s (createOmiseCustomer returns only the id)', async () => {
-    // createOmiseCustomer returns just the omise id string, so destructuring
-    // `{ card }` from it throws. pins current behavior (the controller now
-    // answers 500 instead of hanging since ErrorLog was imported).
+  it('creates the first card: omise customer created, card row stored (fixed)', async () => {
+    // createOmiseCustomer returns just the omise id string; the controller
+    // now retrieves the omise customer to read the created card (was a
+    // string-destructure crash pinned previously).
     const res = await authed(request(app).post('/client/credit-cards'), token).send({
       name: 'Personal',
       expiration_month: 12,
@@ -369,20 +369,23 @@ describe('client credit cards (omise mocked)', () => {
       card_token: 'tokn_1',
     });
 
-    expect(res.status).toBe(500);
-    expect(res.body.message).toMatch(/Cannot read properties|card/);
-    expect(await db.CreditCard.count({ where: { customer_id: customer.id } })).toBe(0);
+    expect(res.status).toBe(200);
+    const card = await db.CreditCard.findOne({ where: { customer_id: customer.id } });
+    expect(card).toBeTruthy();
+    expect(card.omise_card_id).toMatch(/^card_test_/);
+    const reloaded = await db.Customer.findByPk(customer.id);
+    expect(reloaded.omise_card_id).toMatch(/^cust_test_/); // legacy column stores the omise customer id
   });
 
-  it('pins current behavior: attach path 500s (TDZ shadowing of customer)', async () => {
+  it('attaches a card to an existing omise customer (fixed TDZ shadowing)', async () => {
     await db.Customer.update(
-      { omise_customer_id: 'cust_test_existing' },
+      { omise_customer_id: 'cust_test_1' },
       { where: { id: customer.id } }
     );
 
     // `const customer = await attachOmiseCard(customer.omise_customer_id, ...)`
-    // shadows the outer customer inside its own initializer → ReferenceError
-    // "Cannot access 'customer' before initialization". pins current behavior.
+    // shadowed the outer customer inside its own initializer → ReferenceError
+    // on every attach. The inner variable is now renamed; attach answers 200.
     const res = await authed(request(app).post('/client/credit-cards'), token).send({
       name: 'Business',
       expiration_month: 6,
@@ -392,12 +395,15 @@ describe('client credit cards (omise mocked)', () => {
       card_token: 'tokn_2',
     });
 
-    expect(res.status).toBe(500);
-    expect(res.body.message).toBe("Cannot access 'customer' before initialization");
+    expect(res.status).toBe(200);
+    const cards = await db.CreditCard.findAll({ where: { customer_id: customer.id } });
+    const biz = cards.find((c) => c.name === 'Business'); // first-card test also created one
+    expect(biz).toBeTruthy();
+    expect(biz.omise_card_id).toMatch(/^card_test_/);
   });
 
   it('lists, counts and details cards scoped to the customer', async () => {
-    // both create paths are pinned-broken above, so seed rows directly
+    // seed rows directly (create tests above use a different customer state)
     await db.CreditCard.create({
       name: 'Seed A', expiration_month: 1, expiration_year: 2031,
       brand: 'visa', last_digits: '1111', omise_card_id: 'card_a', customer_id: customer.id,
@@ -414,12 +420,12 @@ describe('client credit cards (omise mocked)', () => {
 
     const list = await authed(request(app).get('/client/credit-cards'), token);
     expect(list.status).toBe(200);
-    expect(list.body).toHaveLength(2);
+    expect(list.body).toHaveLength(4); // Personal + Business from the create tests above, Seed A/B here
     expect(list.body.every((c) => c.customer_id === customer.id)).toBe(true);
 
     const count = await authed(request(app).get('/client/credit-cards/count'), token);
     expect(count.status).toBe(200);
-    expect(count.body).toBe(2);
+    expect(count.body).toBe(4);
 
     const detail = await authed(
       request(app).get(`/client/credit-cards/${list.body[0].id}`),

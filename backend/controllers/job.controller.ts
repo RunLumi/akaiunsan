@@ -79,7 +79,7 @@ async function update (req, res) {
 async function getDetail (req, res) {
   try {
     let { job_id } = req.params;
-    let where_clause = { id: job_id };
+    let where_clause: any = { id: job_id };
     if (req.customer)
       where_clause.customer_id = req.customer.id;
     const job = await Job.findOne({
@@ -184,7 +184,7 @@ async function count (req, res) {
   } catch (error) {
     // console.log(error);
     error.message ? error_message = error.message : error_message;
-    typeof err == 'string' ? error_message = err : error_message;
+    typeof error == 'string' ? error_message = error : error_message;
     await ErrorLog.create({ location: 'job.controller.count', message: error_message });
     return res.status(error_status).json({ message: error_message });
   }
@@ -212,7 +212,7 @@ async function updateStatus (req, res) {
   const t = await model.transaction();
   try {
     let { job_id, status } = req.params;
-    let where_clause = { id: job_id };
+    let where_clause: any = { id: job_id };
     if (req.customer)
       where_clause.customer_id = req.customer.id;
     const job = await Job.findOne({ where: where_clause });
@@ -295,7 +295,7 @@ async function createReview (req, res) {
     const count_job = await Job.count({ where: { supporter_id }});
     let sum = supporter.sum_job_rating || 0;
     if (count_job)
-      sum = parseFloat((sum + rating)/count_job);
+      sum = parseFloat(String((sum + rating)/count_job));
     else
       sum = rating;
     await Supporter.update({ sum_job_rating: sum }, { where: { id: supporter_id }, transaction: t });
@@ -315,7 +315,7 @@ async function createReview (req, res) {
 async function getReviewDetail (req, res) {
   try {
     let { job_review_id, job_id } = req.params;
-    let where_clause = { id: job_review_id };
+    let where_clause: any = { id: job_review_id };
     if (req.customer) {
       where_clause.customer_id = req.customer.id;
       where_clause.job_id = job_id;

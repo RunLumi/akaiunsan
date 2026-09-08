@@ -39,7 +39,7 @@ export default async (req, res) => {
           user: key['mail-config'].user,
           pass: key['mail-config'].password
         }
-      });
+      } as any);
 
       var mailOptions = {
         from: 'sale@akaiunsan.vn',

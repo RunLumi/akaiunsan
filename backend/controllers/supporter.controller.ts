@@ -401,7 +401,7 @@ async function matchDriverProfileImage (req, res) {
       await new Promise((resolve, reject) => {
         imageDownloader.image(options)
         .then(({ filename: file_name }) => {
-          console.log('Saved to', filename)  // saved to /path/to/dest/photo
+          console.log('Saved to', file_name)  // saved to /path/to/dest/photo
           resolve(true);
         })
         .catch((err) => {
@@ -426,7 +426,7 @@ async function matchDriverProfileImage (req, res) {
     //   }
     //   imageDownloader.image(options)
     //     .then(({ filename: file_name }) => {
-    //       console.log('Saved to', filename)  // saved to /path/to/dest/photo
+    //       console.log('Saved to', file_name)  // saved to /path/to/dest/photo
     //     })
     //     .catch((err) => { throw err; });
     // })

@@ -12,6 +12,8 @@ const DbConnectionSchema = z.object({
   password: z.string(),
   host: z.string(),
   port: z.union([z.number(), z.string()]).optional(),
+  // mysql dialect: connect through a unix socket instead of host:port
+  socketPath: z.string().optional(),
 });
 
 const MailConfigSchema = z.object({

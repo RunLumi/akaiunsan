@@ -13,23 +13,16 @@ async function sendMail (topic, body, receiver = 'sale@akaiunsan.vn', isBcc = fa
       user: key['mail-config'].user,
       pass: key['mail-config'].password
     }
-  });
+  } as any);
 
-  if(isBcc) {
-    var mailOptions = {
-      from: 'Akaiunsan Service <sale@akaiunsan.vn>',
-      to: receiver,
-      bcc: 'sale@akaiunsan.vn',
-      subject: `${topic}`,
-      html: body,
-    };
-  } else {
-    var mailOptions = {
-      from: 'Akaiunsan Service <sale@akaiunsan.vn>',
-      to: receiver,
-      subject: `${topic}`,
-      html: body,
-    };
+  var mailOptions: any = {
+    from: 'Akaiunsan Service <sale@akaiunsan.vn>',
+    to: receiver,
+    subject: `${topic}`,
+    html: body,
+  };
+  if (isBcc) {
+    mailOptions.bcc = 'sale@akaiunsan.vn';
   }
 
   

@@ -206,7 +206,7 @@ function correctNationality (maid_nationality) {
   return nationality;
 }
 
-async function getSuppoterFromAgency (start_id, max_id) {
+async function getSuppoterFromAgency (start_id, max_id): Promise<any> {
   let start_id_string = (`0000000000${start_id}`).slice(-11);
   let max_id_string = (`0000000000${max_id}`).slice(-11);
   return new Promise((resolve, reject) => {
@@ -354,7 +354,7 @@ async function getSuppoterFromAgency (start_id, max_id) {
   });
 }
 
-async function getSkillFromAgency (start_id, max_id) {
+async function getSkillFromAgency (start_id, max_id): Promise<any> {
   let start_id_string = (`0000000000${start_id}`).slice(-11);
   let max_id_string = (`0000000000${max_id}`).slice(-11);
   return new Promise((resolve, reject) => {
@@ -453,7 +453,7 @@ async function getExperienceFromAgency (start_id, max_id) {
   });
 }
 
-async function getDriver () {
+async function getDriver (): Promise<any[]> {
   return new Promise((resolve, reject) => {
     var obj;
     fs.readFile('m.json', 'utf8', function (err, data) {
@@ -548,7 +548,7 @@ async function getDriver () {
   });
 }
 
-async function getDriverSkill () {
+async function getDriverSkill (): Promise<any[]> {
   return new Promise((resolve, reject) => {
     var obj;
     fs.readFile('skill.json', 'utf8', function (err, data) {
@@ -615,7 +615,7 @@ async function getDriverSkill () {
   });
 }
 
-async function getDriverExperience () {
+async function getDriverExperience (): Promise<any[]> {
   return new Promise((resolve, reject) => {
     var obj;
     fs.readFile('experience.json', 'utf8', function (err, data) {
@@ -648,7 +648,7 @@ async function getDriverExperience () {
 }
 
 async function pairSkill (skill_array, supporter_id) {
-  return new Promise((resolve, reject) => {
+  return new Promise<any>((resolve, reject) => {
     let skill_list = [], language_list = [];
     for (let item of skill_array) {
       let skill_id = item['skill_ID'];
@@ -675,7 +675,7 @@ async function pairSkill (skill_array, supporter_id) {
 }
 
 async function pairExperience (experience_array, supporter_id) {
-  return new Promise((resolve, reject) => {
+  return new Promise<any>((resolve, reject) => {
     let experience_list = [];
     for (let item of experience_array) {
       let employer_nationality = null;
@@ -716,7 +716,7 @@ async function getMaidNannyList () {
 }
 
 async function getAllStat () {
-  return new Promise((resolve, reject) => {
+  return new Promise<any>((resolve, reject) => {
     agency_connection.query(`SELECT id, count
       FROM view_summary
       ORDER BY id ASC`, function (error, result, fields) {

@@ -70,7 +70,7 @@ async function getSupporterAttribute(data) {
     "app_available_days",
     "app_available_time",
   ];
-  let supporter = {};
+  let supporter: any = {};
   for (let attribute in data) {
     if (attribute_array.includes(attribute))
       supporter[attribute] = data[attribute];

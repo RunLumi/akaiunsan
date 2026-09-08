@@ -2,7 +2,7 @@ import { Customer, CreditCard, ErrorLog } from '../models/index.ts';
 import __interop_model from '../models/index.ts';
 import __esModuleChain_Op from 'sequelize';
 import { findCustomerById } from '../helpers/customer.ts';
-import { createOmiseCustomer, attachOmiseCard, removeOmiseCard } from '../helpers/omise.ts';
+import { createOmiseCustomer, findOmiseCustomerById, attachOmiseCard, removeOmiseCard } from '../helpers/omise.ts';
 const model = (__interop_model as any).sequelize;
 const { substring, or, and } = (__esModuleChain_Op as any).Op;
 let error_status = 500;
@@ -16,15 +16,20 @@ async function create (req, res) {
     let customer_id = req.customer.id;
     const customer = await findCustomerById(customer_id);
     if (customer.omise_customer_id) {
-      const customer = await attachOmiseCard(customer.omise_customer_id, card_token);
-      let card = customer.cards.data.slice(-1)[0];
+      // inner variable previously shadowed `customer` inside its own
+      // initializer (TDZ ReferenceError on every attach)
+      const updated_customer = await attachOmiseCard(customer.omise_customer_id, card_token);
+      let card = updated_customer.cards.data.slice(-1)[0];
       const result = await CreditCard.create({ name, expiration_month, expiration_year,
         brand, last_digits, omise_card_id: card.id, customer_id }, { transaction: t });
       await t.commit();
       return res.status(200).json(result);
     } else {
-      const omise_detail = await createOmiseCustomer(customer.email, `${customer.firstname} ${customer.lastname} (id: ${customer.id})`, card_token);
-      let { card } = omise_detail;
+      // createOmiseCustomer returns only the omise id string (payment
+      // controller depends on that); retrieve the customer to read the card
+      const omise_id = await createOmiseCustomer(customer.email, `${customer.firstname} ${customer.lastname} (id: ${customer.id})`, card_token);
+      const omise_detail = await findOmiseCustomerById(omise_id);
+      let card = omise_detail.cards.data.slice(-1)[0];
       await Customer.update({ omise_card_id: omise_detail.id }, { where: { id: customer_id }, transaction: t });
       const result = await CreditCard.create({ name, expiration_month, expiration_year,
         brand, last_digits, omise_card_id: card.id, customer_id }, { transaction: t });
@@ -114,7 +119,7 @@ async function count (req, res) {
   } catch (error) {
     // console.log(error);
     error.message ? error_message = error.message : error_message;
-    typeof err == 'string' ? error_message = err : error_message;
+    typeof error == 'string' ? error_message = error : error_message;
     await ErrorLog.create({ location: 'creditcard.controller.count', message: error_message });
     return res.status(error_status).json({ message: error_message });
   }

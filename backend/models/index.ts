@@ -1,6 +1,10 @@
 import fs from 'fs';
-import Sequelize from 'sequelize';
-import relations from './relations.ts';
+import SequelizeDefault from 'sequelize';
+// sequelize ships CJS (module.exports = Sequelize); `any` sidesteps the
+// typing-only construct/call complaints while runtime interop is verified by tests
+const Sequelize: any = SequelizeDefault;
+import * as relationsModule from './relations.ts';
+const relations: any = (relationsModule as any).default ?? relationsModule;
 import { loadConfig } from '../helpers/config.ts';
 
 const NODE_ENV = process.env.NODE_ENV || 'local';
@@ -141,7 +145,7 @@ for (const [modelName, factory] of Object.entries(modelFactories)) {
   if (typeof factory !== 'function') {
     console.error('BAD FACTORY:', modelName, typeof factory);
   }
-  db[modelName] = factory(sequelizeClient, Sequelize);
+  db[modelName] = (factory as any)(sequelizeClient, Sequelize);
 }
 
 relations(db);

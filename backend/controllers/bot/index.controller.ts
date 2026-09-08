@@ -93,7 +93,7 @@ async function getList (req, res) {
     let query = req.query;
     let { page = 1 } = req.query;
     page = page - 1;
-    let fields = {
+    let fields: any = {
       [and]: [{
         active: {
           [eq]: true

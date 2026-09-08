@@ -179,7 +179,7 @@ async function requestForgetPassword (req, res) {
         user: key['mail-config'].user,
         pass: key['mail-config'].password,
       }
-    });
+    } as any);
 
     var mailOptions = {
       from: 'Akaiunsan Service IT <sale@akaiunsan.vn>',

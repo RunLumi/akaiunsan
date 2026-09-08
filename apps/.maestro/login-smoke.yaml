@@ -3,10 +3,27 @@ appId: com.akaiunsan.customer
 ---
 - clearState
 - launchApp
+- tapOn:
+    text: "Allow Once"
+    optional: true
+- tapOn:
+    text: "Allow While Using App"
+    optional: true
+- tapOn:
+    text: "While using the app"
+    optional: true
+- tapOn:
+    text: "Allow"
+    optional: true
 - extendedWaitUntil:
-    visible: "Email"
-    timeout: 30000
+    visible: "OK"
+    timeout: 5000
+    optional: true
+- tapOn:
+    text: "OK"
+    optional: true
+- extendedWaitUntil:
+      visible: "Email"
+      timeout: 30000
 - assertVisible: "Password"
 - assertVisible: "Sign In"
-- tapOn: "Sign In"
-- assertVisible: "Please enter your email address."

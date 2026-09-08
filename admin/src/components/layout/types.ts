@@ -36,9 +36,8 @@ type NavGroup = {
 }
 
 type SidebarData = {
-  user: User
   teams: Team[]
   navGroups: NavGroup[]
 }
 
-export type { SidebarData, NavGroup, NavItem, NavCollapsible, NavLink }
+export type { SidebarData, User, NavGroup, NavItem, NavCollapsible, NavLink }

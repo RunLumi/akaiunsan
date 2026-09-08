@@ -19,7 +19,7 @@ mobile app (apps/)
 Express API (backend/app.js)
    │  Sequelize 6
    ▼
-MySQL / MariaDB ("akaiunsan_db")
+PostgreSQL (target) / MySQL/MariaDB (legacy)
    ▲
    │  separate "agency" connection (models/agency*) for legacy data import
 ```

@@ -24,6 +24,7 @@ akaiunsan/
 | [docs/data-model.md](docs/data-model.md) | Sequelize models and relations |
 | [docs/mobile-app.md](docs/mobile-app.md) | App structure, build flavors, state management, `useApi` hook |
 | [docs/conventions.md](docs/conventions.md) | Code patterns to follow when editing |
+| [docs/testing/README.md](docs/testing/README.md) | **Testing guide**: test structure, patterns, fixtures, coverage, CI |
 | [docs/security.md](docs/security.md) | **Read first**: committed secrets; what never to commit or print |
 | [docs/postmortems/2026-09-07-backend-healthcheck-prod-deployment.md](docs/postmortems/2026-09-07-backend-healthcheck-prod-deployment.md) | Production backend crash-loop, build repair, deployment recovery, and evidence |
 | [docs/backend-upgrade-plan.md](docs/backend-upgrade-plan.md) | Phased backend migration: TS + TDD + Express 5 (Phases 0–3 landed) |

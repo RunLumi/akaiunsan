@@ -12,7 +12,7 @@ The platform is deployed to a single VPS using Docker Compose and Caddy for auto
 | **`backend`** | Node 22 slim / Express 5 | 5000 | `akai-api.cjs.vn` (20MB upload limit) |
 | **`admin`** | shadcn-admin / Vite SPA | 80 | `akai-admin.cjs.vn` |
 | **`frontend`** | Customer Web Portal | 80 | Internal stub |
-| **`mariadb`** | MariaDB 10.9.6 | 3306 | Internal only (`db_net`) |
+| **`postgres`** | PostgreSQL 16 Alpine | 5432 | Internal only (`db_net`) |
 
 ### Deployment Directory Layout
 

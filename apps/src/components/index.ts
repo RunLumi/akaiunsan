@@ -14,6 +14,7 @@ import { HelperSelect } from './HelperSelect';
 import { HelperSelectFixPlan } from './HelperSelectFixPlan';
 import { AddCardPayment } from './AddCardPayment';
 import { ListCardPayment } from './ListCardPayment';
+import { AutoPager } from './AutoPager';
 import { DismissKeyboardView } from './DismissKeyboardView';
 export {
   Text,
@@ -30,6 +31,7 @@ export {
   PositionSelect,
 
   ListCardPayment,
+  AutoPager,
   DismissKeyboardView,
   AddCardPayment,
   HelperSelectFixPlan,

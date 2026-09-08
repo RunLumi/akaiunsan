@@ -7,12 +7,11 @@ import {
   Image,
   Alert,
 } from "react-native";
-import { Container, Loading, Text } from "../../components";
+import { AutoPager, Container, Loading, Text } from "../../components";
 import colors from "../../shared/Colors";
 import Constants from "../../shared/Constants";
 import layout from "../../shared/Layout";
 import useApi from "../../hooks/useApi";
-import Carousel from "react-native-snap-carousel";
 import i18n from "../../shared/I18n";
 import { NavigationRoot } from "../../navigation/root";
 
@@ -70,14 +69,10 @@ export default function AllService(props: any) {
       <Loading loading={loadingBanner || loadingServiceManagement} />
       <View style={{ flex: 1 }}>
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
-          <Carousel
-            layout={"default"}
+          <AutoPager
             data={carouselItems}
-            sliderWidth={200}
-            itemWidth={layout.window.width}
-            renderItem={_renderItem}
-            autoplay
-            loop
+            renderItem={(item, index) => _renderItem({ item, index })}
+            style={{ height: layout.window.width }}
           />
         </View>
         <ScrollView style={styles.serviceStyle}>

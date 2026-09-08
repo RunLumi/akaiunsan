@@ -543,14 +543,14 @@ describe("screens interaction sweep (Phase 3 coverage harness)", () => {
       for (let round = 0; round < rounds; round++) {
         typeAll(root);
         await flush();
-        pressAll(root);
+        pressAll(root, ["onPressLogin"]);
         await flush();
       }
       expect(renderer.toJSON()).not.toBeNull();
       // Login's success flow arms a 900ms FCM-token debounce; let it fire
       // inside the test so no post-run console log fails the process.
       if (label === "Auth/Login") {
-        await new Promise((r) => setTimeout(r, 1100));
+        await new Promise((r) => setTimeout(r, 2600));
       }
       // final tick so late-throttled requests settle before unmount
       await flush();

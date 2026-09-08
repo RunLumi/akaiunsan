@@ -196,7 +196,7 @@ describe("app-state refresh flows (Phase 3 characterization)", () => {
       // a full sweep after the transitions keeps later mounts covered too
       typeAll(renderer.root);
       await flush();
-      pressAll(renderer.root);
+      pressAll(renderer.root, ["onPressLogin"]);
       await flush();
       emitAppState("background");
       await flush();
@@ -206,7 +206,7 @@ describe("app-state refresh flows (Phase 3 characterization)", () => {
       // Login's success flow arms a 900ms FCM-token debounce; let it fire
       // inside the test so no post-run console log fails the process.
       if (label === "Auth/Login") {
-        await new Promise((r) => setTimeout(r, 1100));
+        await new Promise((r) => setTimeout(r, 2600));
         await flush();
       }
       await flush();

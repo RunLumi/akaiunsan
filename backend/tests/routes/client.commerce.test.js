@@ -92,7 +92,7 @@ describe('client jobs', () => {
     address_detail: '1 Job Street',
     address_province: 'Bangkok',
     phone_number: '021111111',
-    schedule: '2026-10-01 09:00',
+    schedule: '2026-10-01T09:00:00Z',
     payment_method: 'cash',
     base_price: 100,
     full_price: 450,
@@ -102,17 +102,17 @@ describe('client jobs', () => {
     ...over,
   });
 
-  it('pins current behavior: job create always 500s (omise_card_id never destructured)', async () => {
+  it('creates a job with details in waiting status', async () => {
     const res = await authed(request(app).post('/client/jobs'), token).send(jobPayload());
 
-    // Job.create(...) references omise_card_id, which is not in the
-    // destructured request body — ReferenceError on every create.
-    // pins current behavior — fix deliberately with TDD in a later phase.
-    expect(res.status).toBe(500);
-    expect(res.body.message).toBe('omise_card_id is not defined');
-    expect(await db.Job.count({ where: { customer_id: customer.id } })).toBe(0);
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe('waiting');
+    expect(res.body.customer_id).toBe(customer.id);
+    const details = await db.JobDetail.findAll({ where: { job_id: res.body.id } });
+    expect(details).toHaveLength(1);
+  });
 
-    // the subscription-consume branch is unreachable behind the same error
+  it('routes payment through an active subscription and consumes hours', async () => {
     await db.Subscription.create({
       customer_id: customer.id,
       job_type: 'cleaning',
@@ -122,9 +122,17 @@ describe('client jobs', () => {
       active: true,
       next_payment: '2026-10-10',
     });
-    const withSub = await authed(request(app).post('/client/jobs'), token).send(jobPayload());
-    expect(withSub.status).toBe(500); // pins current behavior
-    expect(await db.SubscriptionTransaction.count({ where: { action: 'consume' } })).toBe(0);
+
+    const res = await authed(request(app).post('/client/jobs'), token).send(jobPayload());
+
+    expect(res.status).toBe(200);
+    const sub = await db.Subscription.findOne({ where: { customer_id: customer.id } });
+    expect(sub.used_hour).toBe(5); // 2 + 3 consumed
+    const txn = await db.SubscriptionTransaction.findOne({
+      where: { action: 'consume' },
+      order: [['id', 'DESC']],
+    });
+    expect(txn.amount).toBe(3);
   });
 
   it('lists and counts only the token customer jobs', async () => {
@@ -143,12 +151,14 @@ describe('client jobs', () => {
 
     const list = await authed(request(app).get('/client/jobs'), token).query({ page: 1, limit: 50 });
     expect(list.status).toBe(200);
-    expect(list.body).toHaveLength(1); // the other-customer job is filtered out
+    // earlier tests in this file also created jobs for this customer
+    const expected = await db.Job.count({ where: { customer_id: customer.id } });
+    expect(list.body).toHaveLength(expected);
     expect(list.body.every((j) => j.customer_id === customer.id)).toBe(true);
 
     const count = await authed(request(app).get('/client/jobs/count'), token);
     expect(count.status).toBe(200);
-    expect(count.body).toBe(1);
+    expect(count.body).toBe(expected); // scoped count matches the list
   });
 
   it('gets job detail scoped to the customer', async () => {

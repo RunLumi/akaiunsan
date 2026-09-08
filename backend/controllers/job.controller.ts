@@ -11,7 +11,7 @@ let error_message = 'Unexpected error';
 async function create (req, res) {
   const t = await model.transaction();
   try {
-    let { job_type, remark, expect_work_hour,
+    let { job_type, remark, expect_work_hour, omise_card_id,
       address_glat, address_glng, address_detail, address_sub_district,
       address_district, address_province, phone_number, schedule, requested_helper_id, base_price,
       full_price, total_discount, final_price, customer_id, payment_method, job_details = [] } = req.body;

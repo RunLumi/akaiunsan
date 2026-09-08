@@ -190,40 +190,6 @@ const fallbackData = {
   ],
   data: [listItem()],
   results: [listItem()],
-  // response fields various screens read directly off the envelope
-  auth_token: "fallback-token",
-  token: "fallback-token",
-  user: { id: 1, fullName: "Test User", email: "test@akaiunsan.com", point: 10 },
-  totalUnRead: 3,
-  page: 1,
-  customerInfo: {
-    addressId: "addr-1",
-    address: "Test address",
-    district: "District",
-    city: "City",
-    province: "Province",
-    phoneNumber: "0123456789",
-    remark: "",
-    roomNo: "",
-  },
-  extraService: JSON.stringify([
-    {
-      id: "es-1",
-      name: "Ironing",
-      code: "COSTSP",
-      pricePerUnit: 20,
-      unit: 1,
-      perHour: 10,
-      perTime: 0,
-      acType: "",
-    },
-  ]),
-  serviceDetail: { id: "svc-1", name: "Test service", price: 100 },
-  banner: [],
-  promotionType: 2,
-  content: JSON.stringify({ money: 50, percent: 10, point: 5 }),
-  version: "1.0.0",
-  status: "OK",
 };
 
 installApiRoutes(axios as any, {
@@ -292,15 +258,6 @@ installApiRoutes(axios as any, {
   [Constants.API.promotion_apply]: {
     promotionType: 2, // GIFT_MONEY
     content: JSON.stringify({ money: 50 }),
-  },
-  [Constants.API.get_version]: {
-    // version equal to the device build -> update dialog stays hidden
-    items: [{ version: "1.0.0" }, { version: "1.0.0" }],
-  },
-  [Constants.API.login]: {
-    // login success: FCM token + language update + AUTH.LOGIN dispatch
-    auth_token: "auth-token-1",
-    user: { id: 1, fullName: "Test User" },
   },
   [Constants.API.get_notification]: {
     // page-1 branch: replace the notification list, badge count via notifee

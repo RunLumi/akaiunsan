@@ -16,7 +16,11 @@ module.exports = defineConfig({
     // poison later suites sharing the worker (observed as random 401/500s).
     isolate: true,
     pool: 'forks',
-    poolOptions: { forks: { singleFork: false } },
+    // Vitest 4 moved these out of poolOptions. Keep one isolated fork at a
+    // time so shared Postgres fixtures cannot overwrite another suite's rows.
+    singleFork: false,
+    maxWorkers: 1,
+    minWorkers: 1,
     testTimeout: 60000,
     hookTimeout: 120000,
     setupFiles: ['tests/setup-env.js'],

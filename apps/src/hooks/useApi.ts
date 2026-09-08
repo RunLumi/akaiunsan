@@ -9,7 +9,7 @@ import Config from "react-native-config";
 import i18n from "../shared/I18n";
 import Constants from "../shared/Constants";
 
-const APP_KEY = Config.APP_KEY || Config.EXPO_PUBLIC_APP_KEY || "";
+const APP_KEY = Config.APP_KEY || Config.EXPO_PUBLIC_APP_KEY || process.env.EXPO_PUBLIC_APP_KEY || "";
 
 const useApi = ({
   method = "get",
@@ -86,7 +86,10 @@ const useApi = ({
           localResponse = responseData.data;
           localError = responseData.data?.errors[0]?.message;
         } else {
-          localResponse = responseData.data.data;
+          // Akaiunsan's Express API returns direct JSON bodies; retain support
+          // for the retired wrapped `{ data: ... }` response shape while the
+          // remaining mobile screens are migrated.
+          localResponse = responseData.data?.data ?? responseData.data;
         }
       } else {
         localError = responseData.statusText;

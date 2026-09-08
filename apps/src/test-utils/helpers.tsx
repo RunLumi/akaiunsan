@@ -123,11 +123,15 @@ export const pressAll = (root: any, skipPatterns: string[] = []) => {
   // findAll above may double-count composite wrappers; dedupe by handler identity
   const seen = new Set<any>();
   root.findAll((n: any) => {
-    const fn = n.props?.onPress;
-    if (typeof fn !== "function" || seen.has(fn)) return false;
-    seen.add(fn);
-    pressed.push(fn);
-    return true;
+    const fns = [n.props?.onPress, n.props?.onDropDown].filter(
+      (fn: any) => typeof fn === "function"
+    );
+    for (const fn of fns) {
+      if (seen.has(fn)) continue;
+      seen.add(fn);
+      pressed.push(fn);
+    }
+    return false;
   });
   for (const onPress of pressed) {
     if (skipPatterns.some((pat) => String(onPress).includes(pat))) {

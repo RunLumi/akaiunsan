@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import Constants from "../../shared/Constants";
 import {
   createWithStore,
   makeStore,
@@ -7,6 +8,7 @@ import {
   pressAll,
   typeAll,
 } from "../../test-utils/helpers";
+import { installApiRoutes } from "../../test-utils/api-mock";
 import { success, TYPES } from "../../redux/actions";
 
 // Several screens drive their list/filter flows through the global picker:
@@ -28,7 +30,7 @@ import EditProfile from "../Other/EditProfile";
 import AllSubscriptionPlan from "../Subscription/AllSubscriptionPlan";
 import Signup from "../Auth/Signup";
 
-(axios as any).mockResolvedValue({
+const fallbackData = {
   status: 200,
   data: {
     data: {
@@ -107,9 +109,52 @@ import Signup from "../Auth/Signup";
       ],
       data: [],
       errors: [],
+      auth_token: "fallback-token",
+      token: "fallback-token",
+      user: { id: 1, fullName: "Test User", email: "test@akaiunsan.com", point: 10 },
+      totalUnRead: 3,
+      customerInfo: {
+        addressId: "addr-1",
+        address: "Test address",
+        district: "District",
+        city: "City",
+        province: "Province",
+        phoneNumber: "0123456789",
+        remark: "",
+        roomNo: "",
+      },
+      extraService: JSON.stringify([
+        {
+          id: "es-1",
+          name: "Ironing",
+          code: "COSTSP",
+          pricePerUnit: 20,
+          unit: 1,
+          perHour: 10,
+          perTime: 0,
+          acType: "",
+        },
+      ]),
+      serviceDetail: { id: "svc-1", name: "Test service", price: 100 },
+      banner: [],
+      promotionType: 2,
+      content: JSON.stringify({ money: 50, percent: 10, point: 5 }),
+      version: "1.0.0",
     },
   },
-});
+};
+
+// AllSubscriptionPlan reads the plan map keys off its response.
+installApiRoutes(
+  axios as any,
+  {
+    [Constants.API.get_subscription]: {
+      Flexible: fallbackData.data.data.items.filter((i: any) => i.id === "li-1"),
+      Fix: fallbackData.data.data.items.filter((i: any) => i.id === "li-1"),
+    },
+  },
+  fallbackData.data.data
+);
 
 const preloadedState = {
   auth: {

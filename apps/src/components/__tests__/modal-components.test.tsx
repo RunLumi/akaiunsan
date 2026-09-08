@@ -142,6 +142,8 @@ const richProps: Record<string, any> = {
     endTime: moment("2026-01-01T09:00:00.000Z"),
     addressId: "addr-1",
     language: "en",
+    // submitHelper invokes valueHelper(id, fullName, old, star, avatar)
+    valueHelper: () => {},
   },
   "components/HelperSelectFixPlan": {
     serviceType: 1,
@@ -149,6 +151,7 @@ const richProps: Record<string, any> = {
     endTime: moment("2026-01-01T09:00:00.000Z"),
     addressId: "addr-1",
     language: "en",
+    valueHelper: () => {},
   },
   "components/PositionSelect": {
     type: 1,

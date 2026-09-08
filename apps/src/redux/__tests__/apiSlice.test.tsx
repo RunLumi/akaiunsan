@@ -60,7 +60,17 @@ describe("apiSlice (Phase 5 RTK Query strangler)", () => {
     // RTK Query uses fetch under the hood (not axios); the legacy transport
     // stays untouched — assert the slice wiring instead.
     expect(store.getState().api?.queries).toBeDefined();
-    renderer.unmount();
+    // Clearing the cache removes the keepUnusedDataFor GC timer that would
+    // otherwise keep the jest worker alive for a minute after the suite.
+    store.dispatch(apiSlice.util.resetApiState());
+    act(() => {
+      renderer.unmount();
+    });
+    // Drain the React scheduler (setImmediate/immediate queue) before the
+    // environment tears down — pending scheduler callbacks would otherwise
+    // fire post-teardown.
+    await new Promise((r) => setImmediate(r));
+    await new Promise((r) => setImmediate(r));
   });
 
   it("keeps the legacy axios transport out of the new slice", () => {

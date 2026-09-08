@@ -1,27 +1,5 @@
-import { FontAwesome, SimpleLineIcons, AntDesign } from '@expo/vector-icons';
-import * as Font from 'expo-font';
-import * as React from 'react';
-
 export default function useCachedResources() {
-	const [isLoadingComplete, setLoadingComplete] = React.useState(false);
-	React.useEffect(() => {
-		async function loadResourcesAndDataAsync() {
-			try {
-				// Load fonts
-				await Font.loadAsync({
-					...FontAwesome.font,
-					...SimpleLineIcons.font,
-					...AntDesign.font,
-				});
-			} catch (e) {
-				console.error('Loading Font Error', e);
-			} finally {
-				setLoadingComplete(true);
-			}
-		}
-
-		loadResourcesAndDataAsync();
-	}, []);
-
-	return isLoadingComplete;
+	// Fonts are bundled into the native binary by the expo-font plugin.
+	// Do not add a runtime font fetch here: startup must remain offline-safe.
+	return true;
 }

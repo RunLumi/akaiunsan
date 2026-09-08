@@ -293,10 +293,6 @@ installApiRoutes(axios as any, {
     promotionType: 2, // GIFT_MONEY
     content: JSON.stringify({ money: 50 }),
   },
-  [Constants.API.get_version]: {
-    // version equal to the device build -> update dialog stays hidden
-    items: [{ version: "1.0.0" }, { version: "1.0.0" }],
-  },
   [Constants.API.login]: {
     // login success: FCM token + language update + AUTH.LOGIN dispatch
     auth_token: "auth-token-1",

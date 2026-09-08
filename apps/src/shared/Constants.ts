@@ -89,7 +89,6 @@ export default {
     apple_login: "",
     remove_account: "",
     // HOME
-    get_version: "/configuration/versions",
     update_language: "/client/user/language",
     get_profile: "/client/user",
     edit_profile: "/client/user",

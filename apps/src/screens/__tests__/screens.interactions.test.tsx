@@ -288,10 +288,6 @@ installApiRoutes(axios as any, {
     promotionType: 1, // GIFT_PERCENT
     content: JSON.stringify({ percent: 10 }),
   },
-  [Constants.API.get_version]: {
-    // newer version available -> update dialog shows
-    items: [{ version: "9.9.9" }, { version: "9.9.9" }],
-  },
   [Constants.API.get_notification]: {
     // page-2 branch: merge into the existing list
     page: 2,

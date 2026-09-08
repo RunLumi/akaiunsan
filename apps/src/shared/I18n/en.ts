@@ -103,10 +103,6 @@ export default {
     error_occurred: "An error occurred",
     register_success: "Account registered successfully",
     token_expired: "Token expired",
-    current_version: "Your current app version",
-    lower_version: "is currently lower than the release version",
-    update_version:
-      "Please MUST update to the latest version to be able to use full features.",
     remove_account: "Are you sure to remove your account?",
   },
   home: {

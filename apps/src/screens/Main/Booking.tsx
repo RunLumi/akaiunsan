@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   TouchableOpacity,
@@ -7,9 +7,6 @@ import {
   Image,
   Alert,
   FlatList,
-  Platform,
-  Linking,
-  AppState,
 } from "react-native";
 import { Container, Loading, Text } from "../../components";
 import Constants from "../../shared/Constants";
@@ -20,9 +17,6 @@ import moment from "moment";
 import Enum from "../../shared/Enum";
 import { getStatus, paramArray } from "../../shared/Utils";
 import Colors from "../../shared/Colors";
-import { useIsFocused } from "@react-navigation/native";
-import DeviceInfo from "react-native-device-info";
-import { ModalVersion } from "./components";
 
 export default function Booking(props: any) {
   const [activeTab, setActiveTab] = useState(0);
@@ -33,35 +27,6 @@ export default function Booking(props: any) {
   const [listHistory, setListHistory] = useState<any>([]);
   const [listBooking, setListBooking] = useState<any>([]);
 
-  const [version, setVersion] = useState();
-  const [modalVisible, setModalVisible] = useState(false);
-  const [loadingVersion, requestGetVersion] = useApi({
-    method: "get",
-    url: Constants.API.get_version,
-    callback: ({ error, response }) => {
-      if (error) Alert.alert(i18n.t("auth.error"), error);
-      else {
-        setVersion(
-          Platform.OS === "android"
-            ? response.items[0].version
-            : response.items[1].version
-        );
-        if (Platform.OS === "android") {
-          if (parseFloat(response.items[0].version.split('.').join("")) > parseFloat(DeviceInfo.getVersion().split('.').join(""))) {
-            setModalVisible(true);
-          } else {
-            setModalVisible(false)
-          }
-        } else {
-          if (parseFloat(response.items[1].version.split('.').join("")) > parseFloat(DeviceInfo.getVersion().split('.').join(""))) {
-            setModalVisible(true);
-          } else {
-            setModalVisible(false)
-          }
-        }
-      }
-    },
-  });
   const [loadingListHistory, requestListHistory] = useApi({
     method: "get",
     url: Constants.API.get_booking,
@@ -95,38 +60,6 @@ export default function Booking(props: any) {
     },
   });
 
-  const appState = useRef(AppState.currentState);
-  const [appStateVisible, setAppStateVisible] = useState(appState.current);
-  const _handleAppStateChange = (nextAppState: any) => {
-    if (
-      appState.current.match(/inactive|background/) &&
-      nextAppState === "active"
-    ) {
-      requestGetVersion();
-    }
-    appState.current = nextAppState;
-    setAppStateVisible(appState.current);
-  };
-  const onPressUpdate = () => {
-    setModalVisible(false);
-    // dispatch({ type: success(TYPES.AUTH.LOG_OUT) });
-    if (Platform.OS === "ios") {
-      Linking.openURL("https://apps.apple.com/us/app/akaiunsan/id1025748222");
-    }
-    if (Platform.OS === "android") {
-      Linking.openURL(
-        "https://play.google.com/store/apps/details?id=com.akaiunsan.customer&hl=en&gl=US"
-      );
-    }
-  };
-  const isFocused = useIsFocused();
-  React.useEffect(() => {
-    if (isFocused) {
-      requestGetVersion();
-    } else {
-      setModalVisible(false);
-    }
-  }, [isFocused]);
   useEffect(() => {
     requestListHistory({
       params: paramArray([
@@ -143,13 +76,6 @@ export default function Booking(props: any) {
         { orderStatus: Enum.OrderStatus.RECEIVED },
       ]),
     });
-    const appStateSubscription = AppState.addEventListener(
-      "change",
-      _handleAppStateChange
-    );
-    return () => {
-      appStateSubscription.remove();
-    };
   }, []);
 
   const onPressCalendar = () => {
@@ -458,11 +384,6 @@ export default function Booking(props: any) {
           />
         </View>
       )}
-      <ModalVersion
-        onPress={onPressUpdate}
-        visible={modalVisible}
-        version={version}
-      />
     </Container>
   );
 }

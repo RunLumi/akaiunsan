@@ -46,7 +46,6 @@ exports[`Constants characterization: endpoint + route-name inventory golden file
   "get_profile": "/client/user",
   "get_promotion": "/promotion/get-promotion",
   "get_subscription": "/client/subscriptions",
-  "get_version": "/configuration/versions",
   "google_login": "/auth/google",
   "languages": "/languages",
   "line_login": "",

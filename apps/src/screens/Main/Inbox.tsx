@@ -1,13 +1,10 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
   TouchableOpacity,
   FlatList,
   Alert,
-  Platform,
-  Linking,
-  AppState
 } from "react-native";
 import { Container, Loading, Text } from "../../components";
 import COLOR from "../../shared/Colors";
@@ -26,9 +23,6 @@ import { paramArray } from "../../shared/Utils";
 import notifee from "@notifee/react-native";
 import Colors from "../../shared/Colors";
 import { TYPES } from "../../redux/actions";
-import DeviceInfo from "react-native-device-info";
-import { ModalVersion } from "./components";
-import { useIsFocused } from "@react-navigation/native";
 
 
 export default function Inbox(props: any) {
@@ -43,35 +37,6 @@ export default function Inbox(props: any) {
   const [pageNoti, setPageNoti] = useState(2);
   const [pagePromo, setPagePromo] = useState(2);
   const [valuePromoDelete, setValuePromoDelete] = useState<any[]>([]);
-  const [version, setVersion] = useState();
-  const [modalVisible, setModalVisible] = useState(false);
-  const [loadingVersion, requestGetVersion] = useApi({
-    method: "get",
-    url: Constants.API.get_version,
-    callback: ({ error, response }) => {
-      if (error) Alert.alert(i18n.t("auth.error"), error);
-      else {
-        setVersion(
-          Platform.OS === "android"
-            ? response.items[0].version
-            : response.items[1].version
-        );
-        if (Platform.OS === "android") {
-          if (parseFloat(response.items[0].version.split('.').join("")) > parseFloat(DeviceInfo.getVersion().split('.').join(""))) {
-            setModalVisible(true);
-          } else {
-            setModalVisible(false)
-          }
-        } else {
-          if (parseFloat(response.items[1].version.split('.').join("")) > parseFloat(DeviceInfo.getVersion().split('.').join(""))) {
-            setModalVisible(true);
-          } else {
-            setModalVisible(false)
-          }
-        }
-      }
-    },
-  });
   const [loadingNotification, requestGetNotification] = useApi({
     method: "get",
     url: Constants.API.get_notification,
@@ -587,49 +552,6 @@ export default function Inbox(props: any) {
       </View>
     );
   };
-  const appState = useRef(AppState.currentState);
-  const [appStateVisible, setAppStateVisible] = useState(appState.current);
-  const _handleAppStateChange = (nextAppState: any) => {
-    if (
-      appState.current.match(/inactive|background/) &&
-      nextAppState === "active"
-    ) {
-      requestGetVersion()
-    }
-    appState.current = nextAppState;
-    setAppStateVisible(appState.current);
-  };
-  const onPressUpdate = () => {
-    setModalVisible(false);
-    // dispatch({ type: success(TYPES.AUTH.LOG_OUT) });
-    if (Platform.OS === "ios") {
-      Linking.openURL(
-        "https://apps.apple.com/us/app/akaiunsan/id6809336835"
-      );
-    }
-    if (Platform.OS === "android") {
-      Linking.openURL(
-        "https://play.google.com/store/apps/details?id=com.akaiunsan.customer&hl=en&gl=US"
-      );
-    }
-  };
-  const isFocused = useIsFocused();
-  React.useEffect(() => {
-    if (isFocused) {
-      requestGetVersion();
-    } else {
-      setModalVisible(false)
-    }
-  }, [isFocused]);
-  useEffect(() => {
-    const appStateSubscription = AppState.addEventListener(
-      "change",
-      _handleAppStateChange
-    );
-    return () => {
-      appStateSubscription.remove();
-    };
-  }, [])
   useEffect(() => {
     if (!user || !token) {
       props.navigation.replace(Constants.SCREENS.AUTH.LOGIN);
@@ -855,7 +777,6 @@ export default function Inbox(props: any) {
           )}
         </View>
       </View>
-      <ModalVersion onPress={onPressUpdate} visible={modalVisible} version={version}/>
     </Container>
   );
 }

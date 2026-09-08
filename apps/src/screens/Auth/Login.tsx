@@ -29,6 +29,7 @@ import {
 import messaging from "@react-native-firebase/messaging";
 import useApi from "../../hooks/useApi";
 import { success, TYPES } from "../../redux/actions";
+import { useLoginMutation } from "../../redux/apiSlice";
 import Colors from "../../shared/Colors";
 import Theme from "../../shared/theme";
 import Constants from "../../shared/Constants";
@@ -148,34 +149,52 @@ export default function Login(props: any) {
       }
     },
   });
-  const [loading, request] = useApi({
-    method: "post",
-    url: Constants.API.login,
-    callback: ({ error, response }) => {
-      if (error) Alert.alert(i18n.t("auth.error"), error);
-      else {
-        const token = tokenFromResponse(response);
-        if (token) {
-          try {
-            sendFCMToken(token);
-            i18n.locale = currentLanguage;
-            requestUpdateLanguage({
-              data: { language: currentLanguage == "th" ? 1 : 2 },
-              headers: { Authorization: `Bearer ${token}` },
-            });
-            dispatch({
-              type: success(TYPES.AUTH.LOGIN),
-              payload: {
-                token,
-              },
-            });
-          } catch (error) {
-            Alert.alert("account", JSON.stringify(error));
-          }
+  // Phase 5 RTK Query port: the email/password login call. The legacy
+  // request callback runs unchanged through the adapter so the success/error
+  // contract (FCM token, language update, LOGIN dispatch, 400 translation)
+  // is identical to the useApi tunnel.
+  const handleLoginResult = ({ error, response }: any) => {
+    if (error) Alert.alert(i18n.t("auth.error"), error);
+    else {
+      const token = tokenFromResponse(response);
+      if (token) {
+        try {
+          sendFCMToken(token);
+          i18n.locale = currentLanguage;
+          requestUpdateLanguage({
+            data: { language: currentLanguage == "th" ? 1 : 2 },
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          dispatch({
+            type: success(TYPES.AUTH.LOGIN),
+            payload: {
+              token,
+            },
+          });
+        } catch (error) {
+          Alert.alert("account", JSON.stringify(error));
         }
       }
-    },
-  });
+    }
+  };
+  const [loginMutation, { isLoading: loadingRTK }] = useLoginMutation();
+  const loading = loadingRTK;
+  const request = ({ data }: any) => {
+    loginMutation({ email: data?.email, password: data?.password })
+      .unwrap()
+      .then((response: any) => handleLoginResult({ error: "", response }))
+      .catch((e: any) =>
+        handleLoginResult({
+          // mirrors useApi's 400 translation: axios reported
+          // "Request failed with status code 400" for e.status === 400
+          error:
+            e?.status === 400
+              ? i18n.t("home.error_400")
+              : e?.data?.message || e?.message || "error",
+          response: {},
+        })
+      );
+  };
   const [loadingApple, requestApple] = useApi({
     method: "post",
     url: Constants.API.apple_login,

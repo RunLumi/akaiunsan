@@ -290,7 +290,13 @@ describe("booking wizard edit-mode (Phase 3 characterization)", () => {
       const renderer = createWithStore(
         <Screen
           navigation={mockNavInstance}
-          route={{ params: { data: editData, isEdit: true } }}
+          route={{
+            params: {
+              data: editData,
+              isEdit: true,
+              subscriptionPlanActive: { serviceType: 1, hourRemain: -1 },
+            },
+          }}
         />,
         makeStore(preloadedState)
       );
@@ -324,7 +330,7 @@ describe("booking wizard steps (Phase 3 characterization)", () => {
               isEdit: false,
               // MaidService plan: unlocks the subscription-aware pricing
               // branches in config_price/handleHour (hour-remain arithmetic)
-              subscriptionPlanActive: { serviceType: 1, hourRemain: 0 },
+              subscriptionPlanActive: { serviceType: 1, hourRemain: -1 },
             },
           }}
         />,

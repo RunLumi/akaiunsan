@@ -19,9 +19,10 @@ if [ ! -f "$TARGET_CONFIG" ]; then
     "database": "${DB_NAME:-akaiunsan_db_prod}",
     "user": "${DB_USER:-akaiunsan}",
     "password": "${DB_PASSWORD:-}",
-    "host": "${DB_HOST:-mariadb}",
-    "port": ${DB_PORT:-3306}
+    "host": "${DB_HOST:-postgres}",
+    "port": ${DB_PORT:-5432}
   },
+  "dialect": "postgres",
   "jwt-secret": "${JWT_SECRET:-}",
   "omise": {
     "secretKey": "${OMISE_SECRET_KEY:-}",

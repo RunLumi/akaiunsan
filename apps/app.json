@@ -4,7 +4,7 @@
     "slug": "akaiunsan",
     "version": "4.0.1",
     "orientation": "portrait",
-    "icon": "./src/assets/images/App.png",
+    "icon": "./src/assets/images/brand-logo-1024.png",
     "scheme": "com.akaiunsan.customer",
     "userInterfaceStyle": "automatic",
     "updates": {
@@ -35,7 +35,7 @@
       "versionCode": 76,
       "softwareKeyboardLayoutMode": "pan",
       "adaptiveIcon": {
-        "foregroundImage": "./src/assets/images/App.png",
+        "foregroundImage": "./src/assets/images/brand-logo-1024.png",
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.akaiunsan.customer",

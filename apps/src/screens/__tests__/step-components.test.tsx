@@ -143,13 +143,13 @@ const richProps = () => ({
   language: "en",
 });
 
-const CASES: [string, any, any?][] = [
+const CASES: [string, any][] = [
   ["ServiceScreen/component/Option", ServiceOption],
   // Cleaning type renders the AC/extra-service rows (check + count handlers)
-  ["ServiceScreen/component/Option cleaning", ServiceOption, 4],
+  ["ServiceScreen/component/Option cleaning", ServiceOption],
   ["ServiceScreen/component/Payment", ServicePayment],
   ["EditAndReOrderServiceScreen/component/Option", EditOption],
-  ["EditAndReOrderServiceScreen/component/Option cleaning", EditOption, 4],
+  ["EditAndReOrderServiceScreen/component/Option cleaning", EditOption],
   ["EditAndReOrderServiceScreen/component/Payment", EditPayment],
   ["EditAndReOrderServiceScreen/component/Service", EditServiceCalendar],
   ["EditAndReOrderServiceScreen/component/Address", EditAddress],
@@ -186,7 +186,10 @@ describe("step-gated wizard components (Phase 3 characterization)", () => {
 
   it.each(CASES)(
     "mounts and exercises %s",
-    async (label, Component, extraType) => {
+    async (label, Component) => {
+    // Cleaning-type variants render the AC/extra-service rows (check/count
+    // handlers); the default is the Maid flow.
+    const extraType = /cleaning/i.test(label) ? 4 : undefined;
     const store = makeStore(preloadedState);
     const renderer = createWithStore(
       <Component

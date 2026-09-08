@@ -373,9 +373,10 @@ describe("booking wizard steps (Phase 3 characterization)", () => {
         return next;
       };
       // One forward pass: the sweep sets the step's confirm state
-      // (handleAddress etc.), then onNextStep advances and the new step's
-      // content is swept. A second pass re-mounts step-2 subtrees whose
-      // effects re-schedule unresolved work under the Node renderer.
+      // (handleAddress etc.), then onNextStep advances and the newly mounted
+      // step's content is swept. A second pass re-mounts the step-2 subtree,
+      // whose effects still re-schedule unresolved work under the Node
+      // renderer (the settle-walk below does not always rescue it).
       for (let stepPass = 0; stepPass < 1; stepPass++) {
         typeAll(renderer.root);
         await flush();
@@ -388,6 +389,11 @@ describe("booking wizard steps (Phase 3 characterization)", () => {
         const nextStep = findNextStep();
         if (!nextStep) break;
         pressOne(nextStep);
+        // Walking the tree between the press and the flush forces the
+        // scheduler to reconcile the freshly mounted step; without it the
+        // pending act work occasionally never settles under the Node
+        // renderer (timing-sensitive race).
+        renderer.root.findAll(() => false);
         await flush();
         // eslint-disable-next-line no-console
         console.log("W next", label, stepPass);

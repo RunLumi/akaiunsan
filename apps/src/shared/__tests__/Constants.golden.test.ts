@@ -21,4 +21,8 @@ describe("Constants characterization: endpoint + route-name inventory", () => {
     );
     expect(Constants.SCREENS.AUTH.LOGIN).toBe("Auth/Login");
   });
+
+  it("production API uses the Akaiunsan backend origin", () => {
+    expect(Constants.API.base).toBe("https://akai-api.cjs.vn");
+  });
 });

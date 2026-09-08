@@ -8,7 +8,10 @@ const mockState = {
   language: { language: "en" },
 };
 
-jest.mock("react-native-config", () => ({ API_URL: "https://api.test.local" }));
+jest.mock("react-native-config", () => ({
+  API_URL: "https://api.test.local",
+  APP_KEY: "test-app-key",
+}));
 jest.mock("react-redux", () => ({
   useSelector: (selector: (s: typeof mockState) => unknown) => selector(mockState),
 }));
@@ -74,6 +77,7 @@ describe("useApi characterization: request config contract", () => {
         headers: expect.objectContaining({
           Authorization: "Bearer tok-123",
           "Accept-Language": "en",
+          "x-app-key": "test-app-key",
         }),
       })
     );

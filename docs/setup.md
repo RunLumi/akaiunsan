@@ -49,6 +49,7 @@ cd ios && pod install && cd ..    # macOS only
 
 ```
 API_URL=https://...            # backend base URL
+APP_KEY=...                   # must match backend APP_KEY; sent as x-app-key
 OMISEKEY=pkey_...              # Omise public key
 OMISELINK=https://...          # hosted card-list page
 OMISEADDCARD=https://...       # hosted add-card page

@@ -9,6 +9,8 @@ import Config from "react-native-config";
 import i18n from "../shared/I18n";
 import Constants from "../shared/Constants";
 
+const APP_KEY = Config.APP_KEY || Config.EXPO_PUBLIC_APP_KEY || "";
+
 const useApi = ({
   method = "get",
   url,
@@ -41,6 +43,7 @@ const useApi = ({
       Authorization: `Bearer ${token}`,
       "Accept-Language": language,
       platform: currentPlatform(),
+      ...(APP_KEY ? { "x-app-key": APP_KEY } : {}),
     },
     params,
     data,

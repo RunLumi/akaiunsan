@@ -60,6 +60,14 @@ android/             # gradle project with dev/staging/production variants
 ## Patterns to follow
 
 - New screen: add a folder under `src/screens/<Feature>/` with an `index.ts`, register it in `src/navigation/` (screen-name constants live in `src/shared/Constants.ts`), use shared components from `src/components` (import via the barrel `components`).
+
+## Production API configuration
+
+The production mobile client must use `https://akai-api.cjs.vn` as `API_URL`.
+Set `APP_KEY` in the ignored mobile environment file to the same value as the
+backend deployment's `APP_KEY`; `useApi` sends it as `x-app-key` so it survives
+the Caddy proxy. Do not restore the retired `api-mobile.akaiunsan.vn` or any
+legacy host.
 - **All HTTP calls go through the `useApi` hook** (`src/hooks/useApi.ts`): it reads the base URL from `react-native-config` (`API_URL`), attaches `Authorization: Bearer <token>` from redux, `Accept-Language`, and `platform` headers, and unwraps the API's `{ data }` envelope (surfacing `errors[0].message` as the error string). Use it (or the sagas that wrap it) rather than raw axios.
 - Data fetching / side effects go through redux-saga (`redux/sagas/`); state via reducers + redux-persist for auth. Action types are declared in `redux/actions.ts` with `success`/`failure` suffix helpers.
 - Use `src/shared/{Colors,Styles,Layout,Constants}` for theming — don't hardcode colors/sizes inline.

@@ -5,7 +5,7 @@ exports[`Constants characterization: endpoint + route-name inventory golden file
   "add_address": "/user-address/add",
   "add_device_notification": "/notification/add-device",
   "apple_login": "/users/apple-login",
-  "base": "https://api-mobile.akaiunsan.vn",
+  "base": "https://akai-api.cjs.vn",
   "booking_detail": "/booking/detail",
   "booking_get": "/booking/get",
   "cancel_flexible_plan": "/subscription-plan/cancel-flexible",

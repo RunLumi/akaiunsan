@@ -74,7 +74,7 @@ export default {
     // base: 'http://api-mobile-akaiunsan.dev.ncs.int:80',
     stg: "https://api-mobile-akaiunsan.stg.nichietsuvn.com",
     //prod
-    base: "https://api-mobile.akaiunsan.vn",
+    base: "https://akai-api.cjs.vn",
     upload_image: "/uploads/image",
 
     // AUTH

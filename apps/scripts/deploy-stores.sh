@@ -177,6 +177,26 @@ if [[ "${PREBUILD_NATIVE:-YES}" == "YES" ]]; then
   fi
 fi
 
+replace_setting() {
+  local file="$1"
+  local pattern="$2"
+  local replacement="$3"
+  if sed -i '' -E "s/${pattern}/${replacement}/g" "$file" 2>/dev/null; then
+    return 0
+  fi
+  sed -i -E "s/${pattern}/${replacement}/g" "$file"
+}
+
+if ((TARGET_ANDROID == 1)) && [[ -f "$ANDROID_ROOT/app/build.gradle" ]]; then
+  replace_setting "$ANDROID_ROOT/app/build.gradle" '(versionCode )[0-9]+' "\\1$ANDROID_VERSION_CODE"
+  replace_setting "$ANDROID_ROOT/app/build.gradle" '(versionName ")[^"]+' "\\1$APP_VERSION"
+fi
+
+if ((TARGET_IOS == 1)) && [[ -f "$IOS_ROOT/Akaiunsan.xcodeproj/project.pbxproj" ]]; then
+  replace_setting "$IOS_ROOT/Akaiunsan.xcodeproj/project.pbxproj" '(MARKETING_VERSION = )[0-9.]+;' "\\1$APP_VERSION;"
+  replace_setting "$IOS_ROOT/Akaiunsan.xcodeproj/project.pbxproj" '(CURRENT_PROJECT_VERSION = )[0-9]+;' "\\1$IOS_BUILD_NUMBER;"
+fi
+
 if ((TARGET_ANDROID == 1)); then
   require_command java
   require_command keytool

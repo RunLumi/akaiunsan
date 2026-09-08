@@ -531,7 +531,7 @@ export default function Payment(props: any) {
                       ? onPressUndoPromotion()
                       : onPressVoucherCode()
                   }
-                  titleStyle={{ color: "black" }}
+                  titleStyle={{ color: colors.black_text }}
                   buttonStyle={{ backgroundColor: colors.gray_hidden_text }}
                   containerStyle={{ width: "30%", borderRadius: 10 }}
                   title={
@@ -542,7 +542,7 @@ export default function Payment(props: any) {
                 />
               </View>
               {textPromotion.isShow ? (
-                <Text style={{ color: "#4caf50" }}>
+                <Text style={{ color: colors.green }}>
                   Your voucher code is {textPromotion.text}
                 </Text>
               ) : null}
@@ -572,7 +572,7 @@ export default function Payment(props: any) {
                 onPress={() =>
                   isDiscount.isTrue ? onPressUndoDiscount() : onPressPoint()
                 }
-                titleStyle={{ color: "black" }}
+                titleStyle={{ color: colors.black_text }}
                 buttonStyle={{ backgroundColor: colors.gray_hidden_text }}
                 containerStyle={{ width: "30%", borderRadius: 10 }}
                 title={
@@ -699,7 +699,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 12,
     marginVertical: 16,
-    shadowColor: colors.black,
+    shadowColor: colors.shadow,
     shadowOffset: {
       width: 0,
       height: 4,

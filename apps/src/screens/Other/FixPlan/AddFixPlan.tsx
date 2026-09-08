@@ -150,7 +150,7 @@ export const AddFixPlan = ({
           
             marginTop: 16,
             backgroundColor: Colors.white,
-            shadowColor: Colors.black,
+            shadowColor: Colors.shadow,
             shadowOffset: {
               width: 0,
               height: 0,
@@ -339,7 +339,7 @@ const TimeItem = ({
         marginHorizontal: 12,
         marginBottom: 12,
         backgroundColor: Colors.white,
-        shadowColor: Colors.black,
+        shadowColor: Colors.shadow,
         shadowOffset: {
           width: 0,
           height: 0,
@@ -479,7 +479,7 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     justifyContent: "space-between",
     alignItems: "center",
-    shadowColor: Colors.black,
+    shadowColor: Colors.shadow,
     shadowOffset: {
       width: 0,
       height: 0,

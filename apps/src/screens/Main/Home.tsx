@@ -26,6 +26,7 @@ import useApi from "../../hooks/useApi";
 import i18n from "../../shared/I18n";
 import _, { isEmpty, isEqual, isNil } from "lodash";
 import Enum from "../../shared/Enum";
+import Theme from "../../shared/theme";
 import Colors from "../../shared/Colors";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { useIsFocused } from "@react-navigation/native";
@@ -563,7 +564,7 @@ export default function Home(props: any) {
       >
         <View
           style={{
-            shadowColor: Colors.black,
+            shadowColor: Colors.shadow,
             shadowOffset: { height: 0, width: 0 },
             shadowOpacity: 0.4,
             shadowRadius: 2,
@@ -737,12 +738,12 @@ export const styles = StyleSheet.create({
   },
   modalView: {
     margin: 16,
-    backgroundColor: "white",
+    backgroundColor: Colors.white,
     borderRadius: 20,
     paddingHorizontal: 16,
     paddingVertical: 24,
     alignItems: "center",
-    shadowColor: "#000",
+    shadowColor: Theme.shadow.float.shadowColor,
     shadowOffset: {
       width: 0,
       height: 0,
@@ -758,13 +759,13 @@ export const styles = StyleSheet.create({
     elevation: 2,
   },
   buttonOpen: {
-    backgroundColor: "#F194FF",
+    backgroundColor: Theme.colors.accent,
   },
   buttonClose: {
     backgroundColor: Colors.main_color,
   },
   textStyle: {
-    color: "white",
+    color: Theme.colors.accentContrast,
     fontWeight: "bold",
     textAlign: "center",
   },

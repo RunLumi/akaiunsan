@@ -13,6 +13,7 @@ import {Text} from './Text'
 import { useSelector } from "react-redux";
 import { Overlay, Slider } from "react-native-elements";
 import colors from "../shared/Colors";
+import Theme from "../shared/theme";
 import { Ionicons } from "@expo/vector-icons";
 import i18n from "../shared/I18n";
 import Constants from "../shared/Constants";
@@ -126,7 +127,7 @@ export const AddCardPayment = ({
                   alignItems: 'center'
                 }}
               >
-                <Ionicons name="close-circle-outline" size={30} color="white" />
+                <Ionicons name="close-circle-outline" size={30} color={colors.white} />
                 <Text style={styles.textClose}>{i18n.t("home.close")}</Text>
               </TouchableOpacity>
             </View>
@@ -186,12 +187,12 @@ const styles = StyleSheet.create({
   },
   textMultiLine:{
     height:100,
-    backgroundColor:"white",
+    backgroundColor: colors.white,
     borderRadius:15,
     padding:10,
     borderColor:colors.gray_light,
     borderWidth:1,
-    shadowColor: '#3E3E3E',
+    shadowColor: Theme.shadow.float.shadowColor,
 		shadowOpacity: 0.2,
 		shadowOffset: { width: 0, height: 2 },
 		shadowRadius: 3,

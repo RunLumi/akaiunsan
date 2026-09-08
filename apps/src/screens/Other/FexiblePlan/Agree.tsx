@@ -5,6 +5,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { Button, Container, Loading, Text } from "../../../components";
 import useApi from "../../../hooks/useApi";
 import Colors from "../../../shared/Colors";
+import Theme from "../../../shared/theme";
 import Constants from "../../../shared/Constants";
 import i18n from "../../../shared/I18n";
 
@@ -62,7 +63,7 @@ export default function Agree(props: any) {
               style={{
                 height: 28,
                 width: 28,
-                borderColor: "#bbb",
+                borderColor: Theme.core.line,
                 borderWidth: 1.5,
                 marginEnd: 10,
                 justifyContent: "center",
@@ -81,7 +82,7 @@ export default function Agree(props: any) {
           >
             <Button
               style={{ flex: 1 }}
-              colorBackground={"#bbb"}
+              colorBackground={Theme.core.stoneDark}
               onPress={() => onPressButton(false)}
             >
               <Text

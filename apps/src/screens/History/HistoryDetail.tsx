@@ -140,7 +140,7 @@ export default function PromotionDetail(props: any) {
               marginTop: 0,
               padding: 14,
               backgroundColor: Colors.white,
-              shadowColor: Colors.black,
+              shadowColor: Colors.shadow,
               shadowOffset: {
                 width: 0,
                 height: 2,
@@ -411,7 +411,7 @@ const s = StyleSheet.create({
     marginTop: 0,
     padding: 14,
     backgroundColor: Colors.white,
-    shadowColor: Colors.black,
+    shadowColor: Colors.shadow,
     shadowOffset: {
       width: 0,
       height: 0,

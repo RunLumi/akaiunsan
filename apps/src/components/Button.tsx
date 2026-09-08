@@ -11,7 +11,7 @@ import {
   ActivityIndicator,
   TextStyle,
 } from "react-native";
-import Colors from "../shared/Colors";
+import Theme from "../shared/theme";
 import Styles from "../shared/Styles";
 import { Text } from "./Text";
 interface Props {
@@ -58,14 +58,16 @@ export const Button = ({
             backgroundColor: colorBackground
               ? colorBackground
               : disabled
-              ? Colors.gray_hidden_text
-              : Colors.grab_orange,
+              ? Theme.core.stoneDark
+              : Theme.colors.accent,
           },
           viewStyle,
         ]}
       >
         <View style={image ? s.loadingCenter : s.loadingText}>
-          {loading ? <ActivityIndicator size="small" color="#ffffff" /> : null}
+          {loading ? (
+            <ActivityIndicator size="small" color={Theme.colors.accentContrast} />
+          ) : null}
         </View>
         {title && <Text style={[s.text, textStyle]}>{title}</Text>}
         {image && <Image source={image} style={[s.image, imageStyle]} />}
@@ -89,7 +91,7 @@ const s = StyleSheet.create({
     flexDirection: "row",
   },
   text: {
-    color: Colors.white,
+    color: Theme.colors.accentContrast,
     fontSize: Styles.typography.normal,
     fontWeight: "bold",
     marginHorizontal: 10,

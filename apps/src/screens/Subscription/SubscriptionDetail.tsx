@@ -46,7 +46,7 @@ export default function SubscriptionDetail(props: any) {
           <View style={{padding:20}}>
             <View style={{flexDirection:"row",justifyContent:"space-between",}}>
               <Text style={s.textBorder}>Silver </Text>
-              <Text style={s.textBorder}> <MaterialCommunityIcons name="currency-btc" size={24} color="black" />651515 </Text>
+      <Text style={s.textBorder}> <MaterialCommunityIcons name="currency-btc" size={24} color={Colors.black_text} />651515 </Text>
             </View>
             <View>
               <Text>2221/month</Text>

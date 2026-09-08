@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Container, Text, Loading, Button } from "../../components";
 import colors from "../../shared/Colors";
+import Theme from "../../shared/theme";
 import Constants from "../../shared/Constants";
 import useApi from "../../hooks/useApi";
 import i18n from "../../shared/I18n";
@@ -361,7 +362,7 @@ export default function InboxDetail(props: any) {
               <Text>Confirm</Text>
             </Button>
             <Button
-              colorBackground={"#ddd"}
+              colorBackground={Theme.core.stoneDark}
               onPress={() => setShowDialog(true)}
             >
               <Text>Cancel</Text>
@@ -417,7 +418,7 @@ export default function InboxDetail(props: any) {
             right: 0,
             bottom: 0,
             left: 0,
-            backgroundColor: "rgba(0,0,0,0.4)",
+            backgroundColor: `${Theme.core.mossBlack}66`,
             zIndex: 99,
           }}
         >
@@ -431,7 +432,7 @@ export default function InboxDetail(props: any) {
             <View
               style={{
                 width: "80%",
-                backgroundColor: "#fff",
+                backgroundColor: colors.white,
                 borderRadius: 4,
                 padding: 16,
               }}
@@ -441,7 +442,7 @@ export default function InboxDetail(props: any) {
                 style={{
                   padding: 10,
                   marginVertical: 16,
-                  borderColor: "#ccc",
+                  borderColor: Theme.core.line,
                   borderWidth: 1,
                   minHeight: 100,
                 }}
@@ -458,11 +459,11 @@ export default function InboxDetail(props: any) {
                   style={{
                     paddingVertical: 4,
                     paddingHorizontal: 10,
-                    backgroundColor: "green",
+                    backgroundColor: colors.main_color,
                     borderRadius: 6,
                   }}
                 >
-                  <Text style={{ color: "white" }}>Yes</Text>
+                  <Text style={{ color: colors.white }}>Yes</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => setShowDialog(false)}
@@ -470,11 +471,11 @@ export default function InboxDetail(props: any) {
                     marginTop: 4,
                     paddingVertical: 4,
                     paddingHorizontal: 10,
-                    backgroundColor: "green",
+                    backgroundColor: colors.main_color,
                     borderRadius: 6,
                   }}
                 >
-                  <Text style={{ color: "white" }}>No</Text>
+                  <Text style={{ color: colors.white }}>No</Text>
                 </TouchableOpacity>
               </View>
             </View>

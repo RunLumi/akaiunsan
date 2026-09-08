@@ -11,8 +11,8 @@ export const Route = createFileRoute('/clerk/(auth)')({
 function ClerkAuthLayout() {
   return (
     <div className='relative container grid h-svh flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0'>
-      <div className='relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-e'>
-        <div className='absolute inset-0 bg-slate-500' />
+      <div className='relative hidden h-full flex-col bg-moss-deep p-10 text-paper lg:flex dark:border-e'>
+        <div className='absolute inset-0 bg-moss-black/20' />
         <Link
           to='/'
           className='relative z-20 flex items-center text-lg font-medium'

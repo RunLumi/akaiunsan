@@ -244,7 +244,7 @@ export default function Service(props: any) {
                 marginHorizontal: 16,
                 marginTop: 12,
                 backgroundColor: Colors.white,
-                shadowColor: Colors.black,
+                shadowColor: Colors.shadow,
                 shadowOffset: {
                   width: 0,
                   height: 0,
@@ -420,7 +420,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     padding: 6,
-    shadowColor: Colors.black,
+    shadowColor: Colors.shadow,
     shadowOffset: {
       width: 0,
       height: 0,

@@ -87,7 +87,7 @@ export default function PickAddress(props: any) {
           style={styles.spaceIcon}
           name="reader-outline"
           size={24}
-          color="black"
+          color={colors.black_text}
         />
       ),
       iconPass: (
@@ -107,7 +107,7 @@ export default function PickAddress(props: any) {
           style={styles.spaceIcon}
           name="location-sharp"
           size={24}
-          color="black"
+          color={colors.black_text}
         />
       ),
       iconPass: (
@@ -127,7 +127,7 @@ export default function PickAddress(props: any) {
           style={styles.spaceIcon}
           name="ellipsis-horizontal"
           size={24}
-          color="black"
+          color={colors.black_text}
         />
       ),
       iconPass: (
@@ -147,7 +147,7 @@ export default function PickAddress(props: any) {
           style={styles.spaceIcon}
           name="id-card-outline"
           size={24}
-          color="black"
+          color={colors.black_text}
         />
       ),
       iconPass: (
@@ -442,7 +442,7 @@ export default function PickAddress(props: any) {
               style={{ marginLeft: 12 }}
               name="arrow-back"
               size={26}
-              color="white"
+              color={colors.white}
             />
           </TouchableOpacity>
         </View>
@@ -727,7 +727,7 @@ export default function PickAddress(props: any) {
                     justifyContent: "center",
                     width: Layout.window.width < 390 ? 20 : 35,
                     height: 30,
-                    borderColor: "#814085",
+                    borderColor: colors.main_color,
                     borderRadius: 15,
                     marginBottom: 10,
                   }}
@@ -744,7 +744,7 @@ export default function PickAddress(props: any) {
                     justifyContent: "center",
                     width: Layout.window.width < 390 ? 20 : 35,
                     height: 30,
-                    borderColor: "#814085",
+                    borderColor: colors.main_color,
                     borderRadius: 15,
                     marginBottom: 10,
                   }}
@@ -765,7 +765,7 @@ export default function PickAddress(props: any) {
                     justifyContent: "center",
                     width: Layout.window.width < 390 ? 20 : 35,
                     height: 30,
-                    borderColor: "#814085",
+                    borderColor: colors.main_color,
                     borderRadius: 15,
                     marginBottom: 10,
                   }}
@@ -971,7 +971,7 @@ const styles = StyleSheet.create({
   borderIcon: {
     borderWidth: 1,
     borderRadius: 20,
-    borderColor: "black",
+    borderColor: colors.black_text,
     height: 40,
     width: 40,
   },
@@ -985,7 +985,7 @@ const styles = StyleSheet.create({
   line: {
     left: -60,
     height: 2,
-    backgroundColor: "black",
+    backgroundColor: colors.black_text,
     width: 50,
     position: "absolute",
     top: 12,

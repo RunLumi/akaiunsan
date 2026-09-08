@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import { Overlay } from "react-native-elements";
 import colors from "../shared/Colors";
+import Theme from "../shared/theme";
 import { Ionicons } from "@expo/vector-icons";
 import { Button, CustomInput, Text } from ".";
 import i18n from "../shared/I18n";
@@ -312,7 +313,7 @@ export const PositionSelect = ({
                 padding: 10,
               }}
             >
-              <Ionicons name="close-circle-outline" size={30} color="white" />
+              <Ionicons name="close-circle-outline" size={30} color={colors.white} />
               <Text style={styles.textClose}>{i18n.t("home.close")}</Text>
             </TouchableOpacity>
           </View>
@@ -525,7 +526,7 @@ export const PositionSelect = ({
                     }
                     name="remove-circle-outline"
                     size={25}
-                    color="black"
+                    color={colors.black_text}
                   />
                   <Text
                     style={{
@@ -541,7 +542,7 @@ export const PositionSelect = ({
                     onPress={() => setBedroomNumber(bedroomNumber + 1)}
                     name="add-circle-outline"
                     size={25}
-                    color="black"
+                    color={colors.black_text}
                   />
                 </View>
                 <View style={styles.selectHome}>
@@ -555,7 +556,7 @@ export const PositionSelect = ({
                     }
                     name="remove-circle-outline"
                     size={25}
-                    color="black"
+                    color={colors.black_text}
                   />
                   <Text
                     style={{
@@ -571,7 +572,7 @@ export const PositionSelect = ({
                     onPress={() => setBathroomNumber(bathroomNumber + 1)}
                     name="add-circle-outline"
                     size={25}
-                    color="black"
+                    color={colors.black_text}
                   />
                 </View>
               </View>
@@ -632,12 +633,12 @@ const styles = StyleSheet.create({
   },
   textMultiLine: {
     height: 100,
-    backgroundColor: "white",
+    backgroundColor: colors.white,
     borderRadius: 15,
     padding: 10,
     borderColor: colors.gray_light,
     borderWidth: 1,
-    shadowColor: "#3E3E3E",
+    shadowColor: Theme.shadow.float.shadowColor,
     shadowOpacity: 0.2,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 3,

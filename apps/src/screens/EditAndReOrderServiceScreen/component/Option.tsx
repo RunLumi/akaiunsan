@@ -797,7 +797,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     flexDirection: "row",
     justifyContent: "space-around",
-    backgroundColor: "white",
+          backgroundColor: colors.white,
   },
   borderExtraService: {
     borderWidth: 1,
@@ -818,7 +818,7 @@ const styles = StyleSheet.create({
   },
   textPetCare: {
     height: 100,
-    backgroundColor: "white",
+          backgroundColor: colors.white,
     borderRadius: 15,
     padding: 10,
   },

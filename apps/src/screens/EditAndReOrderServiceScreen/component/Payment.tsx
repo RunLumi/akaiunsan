@@ -328,10 +328,10 @@ export default function Payment(props: any) {
                   onChangeText={(value) => setVoucherCode({ ...voucherCode, value: value, isError: false })}
                   isError={voucherCode.isError}
                   errorText={voucherCode.msgErr} />
-                <Button onPress={() => isApplyPromotion.isTrue ? onPressUndoPromotion() : onPressVoucherCode()} titleStyle={{ color: "black" }} buttonStyle={{ backgroundColor: colors.gray_hidden_text }} containerStyle={{ width: "30%", borderRadius: 10 }} title={isApplyPromotion.isTrue ? i18n.t('home.undo') : i18n.t('home.apply')} />
+                <Button onPress={() => isApplyPromotion.isTrue ? onPressUndoPromotion() : onPressVoucherCode()} titleStyle={{ color: colors.black_text }} buttonStyle={{ backgroundColor: colors.gray_hidden_text }} containerStyle={{ width: "30%", borderRadius: 10 }} title={isApplyPromotion.isTrue ? i18n.t('home.undo') : i18n.t('home.apply')} />
               </View>
               {textPromotion.isShow ?
-                <Text style={{ color: '#4caf50' }}>Your voucher code is {textPromotion.text}</Text>
+                <Text style={{ color: colors.green }}>Your voucher code is {textPromotion.text}</Text>
                 : null}
             </View>
           }
@@ -346,7 +346,7 @@ export default function Payment(props: any) {
                 onChangeText={(value) => setPoint({ ...point, value: value, isError: false })}
                 isError={point.isError}
                 errorText={point.msgErr} />
-              <Button onPress={() => isDiscount.isTrue ? onPressUndoDiscount() : onPressPoint()} titleStyle={{ color: "black" }} buttonStyle={{ backgroundColor: colors.gray_hidden_text }} containerStyle={{ width: "30%", borderRadius: 10 }} title={isDiscount.isTrue ? i18n.t('home.undo') : i18n.t('home.apply')} />
+              <Button onPress={() => isDiscount.isTrue ? onPressUndoDiscount() : onPressPoint()} titleStyle={{ color: colors.black_text }} buttonStyle={{ backgroundColor: colors.gray_hidden_text }} containerStyle={{ width: "30%", borderRadius: 10 }} title={isDiscount.isTrue ? i18n.t('home.undo') : i18n.t('home.apply')} />
             </View>
           }
           {props.type != Enum.SERVICE_TYPE.PetcareService &&

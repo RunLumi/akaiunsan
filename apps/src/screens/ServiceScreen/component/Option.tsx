@@ -587,7 +587,7 @@ export default function Option(props: any) {
           onPress={() => deletePetProfile(idx)}
           name="trash"
           size={20}
-          color="black"
+          color={colors.black_text}
         />
       </View>
       <View>
@@ -871,7 +871,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     flexDirection: "row",
     justifyContent: "space-around",
-    backgroundColor: "white",
+          backgroundColor: colors.white,
   },
   borderExtraService: {
     backgroundColor: colors.white,
@@ -892,7 +892,7 @@ const styles = StyleSheet.create({
   },
   textPetCare: {
     height: 100,
-    backgroundColor: "white",
+          backgroundColor: colors.white,
     borderRadius: 15,
     padding: 10,
   },

@@ -83,7 +83,7 @@ export default function Address(props: any) {
             style={{ alignSelf: "flex-end" }}
             name="open-outline"
             size={24}
-            color={currentAddress == item.id ? "white" : "black"}
+            color={currentAddress == item.id ? colors.white : colors.black_text}
           />
         </TouchableOpacity>
         <View style={{ flexDirection: "column" }}>
@@ -91,7 +91,7 @@ export default function Address(props: any) {
             <Ionicons
               name="person"
               size={24}
-              color={currentAddress == item.id ? "white" : "black"}
+            color={currentAddress == item.id ? colors.white : colors.black_text}
             />
             <Text style={styles.textItemRender}>{user && user.fullName}</Text>
           </View>
@@ -99,7 +99,7 @@ export default function Address(props: any) {
             <Ionicons
               name="phone-portrait-outline"
               size={24}
-              color={currentAddress == item.id ? "white" : "black"}
+            color={currentAddress == item.id ? colors.white : colors.black_text}
             />
             <Text style={styles.textItemRender}>{item.phoneNumber}</Text>
           </View>
@@ -107,7 +107,7 @@ export default function Address(props: any) {
             <Ionicons
               name="location-sharp"
               size={24}
-              color={currentAddress == item.id ? "white" : "black"}
+            color={currentAddress == item.id ? colors.white : colors.black_text}
             />
             <Text style={styles.textItemRender}>{item.longAddress}</Text>
           </View>

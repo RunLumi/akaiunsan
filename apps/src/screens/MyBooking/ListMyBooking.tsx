@@ -165,10 +165,10 @@ const s = StyleSheet.create({
     fontSize: 20,
   },
   bottomAppBar: {
-    backgroundColor: "#ffffff",
+    backgroundColor: Colors.white,
     flexDirection: "row",
     height: 46,
-    shadowColor: Colors.black,
+    shadowColor: Colors.shadow,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -200,7 +200,7 @@ const s = StyleSheet.create({
     marginBottom: 0,
     padding: 14,
     backgroundColor: Colors.white,
-    shadowColor: Colors.black,
+    shadowColor: Colors.shadow,
     shadowOffset: {
       width: 0,
       height: 2,

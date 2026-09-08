@@ -159,14 +159,14 @@ export function Apps() {
                 <Button
                   variant='outline'
                   size='sm'
-                  className={`${app.connected ? 'border border-blue-300 bg-blue-50 hover:bg-blue-100 dark:border-blue-700 dark:bg-blue-950 dark:hover:bg-blue-900' : ''}`}
+                  className={`${app.connected ? 'border-mint-strong bg-mint hover:bg-mint-strong dark:border-moss-700 dark:bg-moss-800 dark:hover:bg-moss-700' : ''}`}
                 >
                   {app.connected ? 'Connected' : 'Connect'}
                 </Button>
               </div>
               <div>
                 <h2 className='mb-1 font-semibold'>{app.name}</h2>
-                <p className='line-clamp-2 text-gray-500'>{app.desc}</p>
+                <p className='line-clamp-2 text-muted-foreground'>{app.desc}</p>
               </div>
             </li>
           ))}

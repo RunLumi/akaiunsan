@@ -4,6 +4,7 @@ import { View, Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Container } from "../../components";
 import Constants from "../../shared/Constants";
+import Colors from "../../shared/Colors";
 import i18n from "../../shared/I18n";
 
 export default function MenuFavourite(props: any) {
@@ -44,7 +45,7 @@ export default function MenuFavourite(props: any) {
           marginLeft: 10,
           height: 1,
           width: "100%",
-          backgroundColor: "#ddd",
+          backgroundColor: Colors.gray_light,
         }}
       />
       <TouchableOpacity

@@ -100,7 +100,7 @@ export function Chats() {
                   'flex h-10 w-full items-center space-x-0 rounded-md border border-border ps-2'
                 )}
               >
-                <SearchIcon size={15} className='me-2 stroke-slate-500' />
+                <SearchIcon size={15} className='me-2 stroke-muted-foreground' />
                 <span className='sr-only'>Search</span>
                 <input
                   type='text'

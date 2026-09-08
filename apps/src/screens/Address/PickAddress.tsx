@@ -19,6 +19,7 @@ import { Ionicons } from "@expo/vector-icons";
 import * as Location from "expo-location";
 import { Button, IconButton, Container, Text } from "../../components";
 import Colors from "../../shared/Colors";
+import Theme from "../../shared/theme";
 import i18n from "../../shared/I18n";
 import useApi from "../../hooks/useApi";
 import Constants from "../../shared/Constants";
@@ -343,8 +344,8 @@ const PickAddress = (props: any) => {
                 latitude: location.coords.latitude,
                 longitude: location.coords.longitude,
               }}
-              strokeColor={"rgba(0, 0, 0, 0)"}
-              fillColor={"rgba(237, 153, 45, 0.3)"}
+              strokeColor={`${Theme.core.mossBlack}00`}
+              fillColor={`${Theme.core.olive}4D`}
             />
           ) : null}
         </MapView>
@@ -376,10 +377,10 @@ const PickAddress = (props: any) => {
                 children={<Ionicons name="navigate-circle-outline" size={24} />}
                 style={{
                   width: 40,
-                  backgroundColor: "#ffffff",
+                  backgroundColor: Colors.white,
                   padding: 0,
                   borderRadius: 8,
-                  shadowColor: Colors.black,
+                  shadowColor: Colors.shadow,
                   shadowOffset: {
                     width: 0,
                     height: 2,
@@ -404,7 +405,7 @@ const PickAddress = (props: any) => {
         {loadMap && (
           <ActivityIndicator
             size="large"
-            color="black"
+            color={Colors.black_text}
             style={{
               position: "absolute",
               top: 0,
@@ -422,7 +423,7 @@ const PickAddress = (props: any) => {
 const s = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: Colors.white,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -445,7 +446,7 @@ const s = StyleSheet.create({
   info: {
     paddingVertical: 14,
     paddingHorizontal: 18,
-    backgroundColor: "rgba(250, 215, 136, 0.5)",
+    backgroundColor: Colors.main_orange_light,
     borderRadius: 6,
   },
   title: {

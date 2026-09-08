@@ -299,7 +299,7 @@ const styles = StyleSheet.create({
   wrapItem: {
     paddingHorizontal: 16,
     marginTop: 16,
-    shadowColor: colors.black,
+    shadowColor: colors.shadow,
     shadowOffset: {
       width: 0,
       height: 0,
@@ -313,7 +313,7 @@ const styles = StyleSheet.create({
   
     borderRadius: 10,
     overflow: "hidden",
-    shadowColor: colors.black,
+    shadowColor: colors.shadow,
     shadowOffset: {
       width: 0,
       height: 0,

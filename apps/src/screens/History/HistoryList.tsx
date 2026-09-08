@@ -376,7 +376,7 @@ export default function PromotionList(props: any) {
   };
 
   return (
-    <Container style={{ backgroundColor: "white" }}>
+    <Container style={{ backgroundColor: Colors.white }}>
       <Loading loading={loadingListHistory} />
       <View style={{ flex: 1 }}>
         <View style={s.borderBottom}>
@@ -429,7 +429,7 @@ export default function PromotionList(props: any) {
             )}
             {showDate && Platform.OS === "android" && (
               <DateTimePicker
-                style={{ borderRightColor: "red" }}
+                style={{ borderRightColor: Colors.red }}
                 value={date.value}
                 mode="date"
                 display="spinner"
@@ -549,7 +549,7 @@ const s = StyleSheet.create({
     // marginBottom: 0,
     padding: 14,
     backgroundColor: Colors.white,
-    shadowColor: Colors.black,
+    shadowColor: Colors.shadow,
     shadowOffset: {
       width: 0,
       height: 0,
@@ -579,7 +579,7 @@ const s = StyleSheet.create({
   },
   modalViewInput: {
     width: Layout.window.width - 40,
-    backgroundColor: "#ffffff",
+    backgroundColor: Colors.white,
     borderRadius: 10,
   },
   inputButton: {
@@ -596,6 +596,6 @@ const s = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0,0,0,0.7)",
+    backgroundColor: `${Colors.main_blue}B3`,
   },
 });

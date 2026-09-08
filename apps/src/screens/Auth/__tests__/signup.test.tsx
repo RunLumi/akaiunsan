@@ -163,6 +163,10 @@ describe("Signup (Phase 5 RTK port contract)", () => {
     expect(fetchUrls.some((u: string) => u.includes("/auth/signup"))).toBe(
       true
     );
+    // Drain the success callback's 100/300ms Alert timers inside the test so
+    // they cannot fire into a later suite's worker after teardown.
+    await new Promise((r) => setTimeout(r, 500));
+    await flush();
     renderer.unmount();
   }, 30000);
 });

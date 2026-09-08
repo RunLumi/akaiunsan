@@ -43,7 +43,7 @@ src/
     reducers/        # auth, language, tools
     sagas/           # auth saga, root saga
   shared/            # Colors, Constants, Enum, Layout, Styles, Utils, Geocoding, I18n/
-  hooks/             # useCachedResources, updateSource
+  hooks/             # useCachedResources and API hooks
   assets/
 ios/                 # Xcode project "Akaiunsan" (schemes: AkaiunsanProduction, AkaiunsanStaging), CocoaPods
 android/             # gradle project with dev/staging/production variants
@@ -55,6 +55,7 @@ android/             # gradle project with dev/staging/production variants
 - Firebase: `google-services.json` (Android), `GoogleService-Info.plist` (iOS) — Analytics, Crashlytics, Messaging.
 - **Sentry**: `@sentry/react-native@^8` (v8.25.0, Expo 57 / RN 0.86). Initialized in `instrument.ts`, imported first in `index.js`, root component wrapped with `Sentry.wrap()`; route tracking via `Sentry.reactNavigationIntegration()` registered on the `NavigationContainer` in `src/navigation/index.tsx`. DSN has a built-in default compiled in; `EXPO_PUBLIC_SENTRY_DSN` in `apps/.env` (inlined by Expo CLI at bundle time) or the `react-native-config` keys override it. `EXPO_PUBLIC_SENTRY_ENV` (`development`/`staging`/`production`) tags the environment.
 - **Sentry release uploads**: `"@sentry/react-native/plugin"` is registered in `app.json` `plugins` — it wires Android source-map uploads and the iOS dSYM upload build phase during `expo prebuild`. Uploads authenticate with `SENTRY_AUTH_TOKEN` (env var) or `apps/sentry.properties` (copy from `sentry.properties.example`, add an API token; gitignored).
+- **OTA updates**: Not used. The app does not call Expo update APIs and does not ship JavaScript through OTA channels; changes require a native build and store release.
 - i18n via `i18n-js` with translations under `src/shared/I18n` (en/th); language is kept in redux (`reducers/language.ts`).
 
 ## Patterns to follow

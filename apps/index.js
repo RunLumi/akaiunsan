@@ -11,9 +11,15 @@ import notifee, { EventType } from "@notifee/react-native";
 // It also ensures that whether you load the app in Expo Go or in a native build,
 // the environment is set up appropriately
 
-messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-  await notifee.incrementBadgeCount();
-});
+const messagingService =
+  typeof messaging === "function" ? messaging() : undefined;
+if (typeof messagingService?.setBackgroundMessageHandler === "function") {
+  messagingService.setBackgroundMessageHandler(async () => {
+    if (typeof notifee.incrementBadgeCount === "function") {
+      await notifee.incrementBadgeCount();
+    }
+  });
+}
 
 // notifee.onBackgroundEvent(async ({ type, detail }) => {
 //   const { notification, pressAction } = detail;

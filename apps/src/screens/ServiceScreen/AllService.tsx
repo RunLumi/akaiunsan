@@ -10,9 +10,8 @@ import {
 import { Container, Loading, Text } from "../../components";
 import colors from "../../shared/Colors";
 import Constants from "../../shared/Constants";
-import layout from "../../shared/Layout";
 import useApi from "../../hooks/useApi";
-import Carousel from "react-native-snap-carousel";
+import Carousel from "../../components/Carousel";
 import i18n from "../../shared/I18n";
 import { NavigationRoot } from "../../navigation/root";
 
@@ -71,13 +70,8 @@ export default function AllService(props: any) {
       <View style={{ flex: 1 }}>
         <View style={{ flexDirection: "row", justifyContent: "center" }}>
           <Carousel
-            layout={"default"}
             data={carouselItems}
-            sliderWidth={200}
-            itemWidth={layout.window.width}
             renderItem={_renderItem}
-            autoplay
-            loop
           />
         </View>
         <ScrollView style={styles.serviceStyle}>

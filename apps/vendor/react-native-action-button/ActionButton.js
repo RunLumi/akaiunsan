@@ -363,7 +363,12 @@ ActionButton.propTypes = {
   bgColor: PropTypes.string,
   bgOpacity: PropTypes.number,
   buttonColor: PropTypes.string,
-  buttonTextStyle: Text.propTypes.style,
+  // React Native 0.86 no longer exposes Text.propTypes at runtime.
+  buttonTextStyle: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+    PropTypes.number
+  ]),
   buttonText: PropTypes.string,
 
   offsetX: PropTypes.number,

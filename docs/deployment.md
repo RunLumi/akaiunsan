@@ -123,7 +123,7 @@ The API credential files must stay outside git. `--confirm` is required for uplo
 Android release task: `:app:bundleRelease` (Expo CNG-generated Gradle project).
 iOS scheme: `Akaiunsan` (Expo CNG-generated Xcode project/workspace).
 
-Signing: Android release keystores and iOS certs/profiles live in `apps/` (gitignored since the root `.gitignore` was added — see security.md for what must be provisioned manually on a fresh clone). OTA updates go through `expo-updates` (see the `updateSource` hook in `App.tsx`).
+Signing: Android release keystores and iOS certs/profiles live in `apps/` (gitignored since the root `.gitignore` was added — see security.md for what must be provisioned manually on a fresh clone). Akaiunsan does not use Expo OTA updates; mobile changes ship through native builds and the app-store release workflow.
 
 ## Backend config on servers
 

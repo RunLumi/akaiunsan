@@ -14,7 +14,7 @@ import {
   Linking,
 } from "react-native";
 import DeviceInfo from "react-native-device-info";
-import FastImage from "react-native-fast-image";
+import { Image as ExpoImage } from "expo-image";
 import messaging from "@react-native-firebase/messaging";
 import Swiper from "react-native-swiper";
 import { useDispatch, useSelector } from "react-redux";
@@ -396,15 +396,12 @@ export default function Home(props: any) {
         }
         key={index.toString()}
       >
-        <FastImage
-          resizeMode={FastImage.resizeMode.contain}
+        <ExpoImage
+          contentFit="contain"
           style={{
             aspectRatio: 16 / 9,
           }}
-          source={{
-            uri: item.listImage[0].image,
-            priority: FastImage.priority.normal,
-          }}
+          source={{ uri: item.listImage[0].image }}
         />
       </TouchableWithoutFeedback>
     );
@@ -571,7 +568,7 @@ export default function Home(props: any) {
             elevation: 3,
           }}
         >
-          <FastImage
+          <ExpoImage
             style={{
               width: (width - 36) / 2,
               height: (width - 36) / 2,
@@ -608,17 +605,14 @@ export default function Home(props: any) {
         }
         key={index.toString()}
       >
-        <FastImage
-          resizeMode={FastImage.resizeMode.contain}
+        <ExpoImage
+          contentFit="contain"
           style={{
             aspectRatio: 16 / 9,
             marginHorizontal: 12,
             borderRadius: 8,
           }}
-          source={{
-            uri: item.listImage[0].image,
-            priority: FastImage.priority.normal,
-          }}
+          source={{ uri: item.listImage[0].image }}
         />
       </TouchableOpacity>
     );

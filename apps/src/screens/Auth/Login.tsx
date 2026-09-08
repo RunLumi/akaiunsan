@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -7,8 +7,6 @@ import {
   KeyboardAvoidingView,
   Platform,
   TouchableOpacity,
-  Modal,
-  AppState,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import analytics from "@react-native-firebase/analytics";
@@ -17,7 +15,6 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from "@react-native-google-signin/google-signin";
-import DeviceInfo from "react-native-device-info";
 import {
   Button,
   Container,
@@ -37,66 +34,23 @@ import Styles from "../../shared/Styles";
 import { FontAwesome5 } from "@expo/vector-icons";
 import * as AppleAuthentication from "expo-apple-authentication";
 import * as WebBrowser from "expo-web-browser";
-import * as Linking from "expo-linking";
-import { useIsFocused } from "@react-navigation/native";
 import * as Location from "expo-location";
 import Config from "react-native-config";
 
 WebBrowser.maybeCompleteAuthSession();
 
 export default function Login(props: any) {
-  const isFocused = useIsFocused();
   const dispatch = useDispatch();
 
   const params = props.route.params || {};
   const tokenFromResponse = (response: any) => response?.auth_token ?? response?._token;
 
-  const appState = useRef(AppState.currentState);
   const language = useSelector((state: any) => state.language.language);
   // const token = useSelector((state: any) => state.auth.token);
 
   // const [isReady, setIsReady] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState(language);
-  const [isVisible, setIsVisible] = useState(false);
-  const [version, setVersion] = useState();
   const [loadingSignIn, setLoadingSignIn] = useState(false);
-  const [appStateVisible, setAppStateVisible] = useState(appState.current);
-
-  const [loadingVersion, requestGetVersion] = useApi({
-    method: "get",
-    url: Constants.API.get_version,
-    callback: ({ error, response }) => {
-      if (error) {
-        // Version metadata is advisory; it must not block offline login.
-        console.warn("Version check unavailable:", error);
-      } else {
-        setVersion(
-          Platform.OS === "android"
-            ? response.items[0].version
-            : response.items[1].version
-        );
-        if (Platform.OS === "android") {
-          if (
-            parseFloat(response.items[0].version.split(".").join("")) >
-            parseFloat(DeviceInfo.getVersion().split(".").join(""))
-          ) {
-            setIsVisible(true);
-          } else {
-            setIsVisible(false);
-          }
-        } else {
-          if (
-            parseFloat(response.items[1].version.split(".").join("")) >
-            parseFloat(DeviceInfo.getVersion().split(".").join(""))
-          ) {
-            setIsVisible(true);
-          } else {
-            setIsVisible(false);
-          }
-        }
-      }
-    },
-  });
   const [email, setEmail] = useState({
     value: params.email || "",
     isError: false,
@@ -258,15 +212,6 @@ export default function Login(props: any) {
   });
 
   useEffect(() => {
-    if (isFocused) {
-      requestGetVersion();
-    } else {
-      setIsVisible(false);
-    }
-  }, [isFocused]);
-
-  useEffect(() => {
-    requestGetVersion();
     async function permission() {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status == Location.PermissionStatus.DENIED) {
@@ -287,25 +232,7 @@ export default function Login(props: any) {
       },
     });
 
-    const appStateSubscription = AppState.addEventListener(
-      "change",
-      _handleAppStateChange
-    );
-    return () => {
-      appStateSubscription.remove();
-    };
   }, []);
-
-  const _handleAppStateChange = (nextAppState: any) => {
-    if (
-      appState.current.match(/inactive|background/) &&
-      nextAppState === "active"
-    ) {
-      requestGetVersion();
-    }
-    appState.current = nextAppState;
-    setAppStateVisible(appState.current);
-  };
 
   const onPressLogin = () => {
     if (!email.value) {
@@ -532,34 +459,6 @@ export default function Login(props: any) {
           </View>
         </DismissKeyboardView>
       </KeyboardAvoidingView>
-      <Modal animationType="fade" transparent visible={isVisible}>
-        <View style={s.centeredView}>
-          <View style={s.modalView}>
-            <Text style={s.modalText}>
-              {i18n.t("auth.current_version")} ({DeviceInfo.getVersion()}){" "}
-              {i18n.t("auth.lower_version")} ({version}) {"\n"}
-              {i18n.t("auth.update_version")}
-            </Text>
-            <TouchableOpacity
-              style={[s.button, s.buttonClose]}
-              onPress={() => {
-                if (Platform.OS === "ios") {
-                  Linking.openURL(
-                    "https://apps.apple.com/us/app/akaiunsan/id1025748222"
-                  );
-                }
-                if (Platform.OS === "android") {
-                  Linking.openURL(
-                    "https://play.google.com/store/apps/details?id=com.akaiunsan.customer&hl=en&gl=US"
-                  );
-                }
-              }}
-            >
-              <Text style={s.textStyle}>{i18n.t("home.update")}</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
     </Container>
   );
 }

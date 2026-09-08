@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -9,11 +9,7 @@ import {
   FlatList,
   Dimensions,
   RefreshControl,
-  Platform,
-  AppState,
-  Linking,
 } from "react-native";
-import DeviceInfo from "react-native-device-info";
 import { Image as ExpoImage } from "expo-image";
 import messaging from "@react-native-firebase/messaging";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,62 +24,22 @@ import Enum from "../../shared/Enum";
 import Theme from "../../shared/theme";
 import Colors from "../../shared/Colors";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import { useIsFocused } from "@react-navigation/native";
-import { ModalVersion } from "./components";
 import notifee from "@notifee/react-native";
 import { paramArray } from "../../shared/Utils";
 
 const { width } = Dimensions.get("window");
 export default function Home(props: any) {
   const dispatch = useDispatch();
-  const isFocused = useIsFocused();
-  const appState = useRef(AppState.currentState);
   const language = useSelector((state: any) => state.language.language);
   const user = useSelector((state: any) => state.auth.user);
   const token = useSelector((state: any) => state.auth.token);
 
-  const [appStateVisible, setAppStateVisible] = useState(appState.current);
   const [arrUpdate, setArrUpdate] = useState<any[]>([]);
   const [currentLanguage, setCurrentLanguage] = useState(language);
   const [arrService, setArrService] = useState<any[]>([]);
   const [carouselItems, setCarouselItems] = useState<any[]>([]);
   const [listService, setListService] = useState<any>([]);
   const [subscriptionPlanActive, setSubscriptionPlanActive] = useState<any>({});
-  const [modalVisible, setModalVisible] = useState(false);
-  const [version, setVersion] = useState();
-  const [loadingVersion, requestGetVersion] = useApi({
-    method: "get",
-    url: Constants.API.get_version,
-    callback: ({ error, response }) => {
-      if (error) Alert.alert(i18n.t("auth.error"), error);
-      else {
-        setVersion(
-          Platform.OS === "android"
-            ? response.items[0].version
-            : response.items[1].version
-        );
-        if (Platform.OS === "android") {
-          if (
-            parseFloat(response.items[0].version.split(".").join("")) >
-            parseFloat(DeviceInfo.getVersion().split(".").join(""))
-          ) {
-            setModalVisible(true);
-          } else {
-            setModalVisible(false);
-          }
-        } else {
-          if (
-            parseFloat(response.items[1].version.split(".").join("")) >
-            parseFloat(DeviceInfo.getVersion().split(".").join(""))
-          ) {
-            setModalVisible(true);
-          } else {
-            setModalVisible(false);
-          }
-        }
-      }
-    },
-  });
   const [loadingLanguage, requestUpdateLanguage] = useApi({
     method: "put",
     url: Constants.API.update_language,
@@ -270,14 +226,6 @@ export default function Home(props: any) {
     });
   }, [])
 
-  React.useEffect(() => {
-    if (isFocused) {
-      requestGetVersion();
-    } else {
-      setModalVisible(false);
-    }
-  }, [isFocused]);
-
   useEffect(() => {
     if (!token || token === "") {
       props.navigation.replace(Constants.SCREENS.AUTH.LOGIN);
@@ -285,12 +233,6 @@ export default function Home(props: any) {
   }, [user, token]);
 
   useEffect(() => {
-    const appStateSubscription = AppState.addEventListener(
-      "change",
-      _handleAppStateChange
-    );
-    setModalVisible(false);
-    requestGetVersion();
     requestUserMe();
     requestListService();
     requestGetBanner();
@@ -334,7 +276,6 @@ export default function Home(props: any) {
       });
     return () => {
       listen;
-      appStateSubscription.remove();
     };
   }, []);
 
@@ -345,30 +286,6 @@ export default function Home(props: any) {
       });
     }
   }, [currentLanguage]);
-
-  const _handleAppStateChange = (nextAppState: any) => {
-    if (
-      appState.current.match(/inactive|background/) &&
-      nextAppState === "active"
-    ) {
-      requestGetVersion();
-    }
-    appState.current = nextAppState;
-    setAppStateVisible(appState.current);
-  };
-
-  const onPressUpdate = () => {
-    setModalVisible(false);
-    // dispatch({ type: success(TYPES.AUTH.LOG_OUT) });
-    if (Platform.OS === "ios") {
-      Linking.openURL("https://apps.apple.com/us/app/akaiunsan/id6809336835");
-    }
-    if (Platform.OS === "android") {
-      Linking.openURL(
-        "https://play.google.com/store/apps/details?id=com.akaiunsan.customer&hl=en&gl=US"
-      );
-    }
-  };
 
   const selectLanguage = (value: string) => {
     setCurrentLanguage(value);
@@ -698,11 +615,6 @@ export default function Home(props: any) {
           />
         )}
       </View>
-      <ModalVersion
-        onPress={onPressUpdate}
-        visible={modalVisible}
-        version={version}
-      />
     </Container>
   );
 }

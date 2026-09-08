@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -8,8 +8,6 @@ import {
   KeyboardAvoidingView,
   Platform,
   ActivityIndicator,
-  Linking,
-  AppState,
   Alert,
 } from "react-native";
 import { WebView } from "react-native-webview";
@@ -24,10 +22,7 @@ import { success, TYPES } from "../../redux/actions";
 import i18n from "../../shared/I18n";
 import { Divider } from "react-native-elements";
 import useApi from "../../hooks/useApi";
-import { useIsFocused } from "@react-navigation/native";
-import DeviceInfo from "react-native-device-info";
 import notifee from "@notifee/react-native";
-import { ModalVersion } from "./components";
 
 export default function Account(props: any) {
   const [loadingRemove, requestRemove] = useApi({
@@ -108,42 +103,6 @@ export default function Account(props: any) {
   const dispatch = useDispatch();
   const language = useSelector((state: any) => state.language.language);
 
-  const [version, setVersion] = useState();
-  const [modalVisible, setModalVisible] = useState(false);
-  const [loadingVersion, requestGetVersion] = useApi({
-    method: "get",
-    url: Constants.API.get_version,
-    callback: ({ error, response }) => {
-      if (error) Alert.alert(i18n.t("auth.error"), error);
-      else {
-        setVersion(
-          Platform.OS === "android"
-            ? response.items[0].version
-            : response.items[1].version
-        );
-        if (Platform.OS === "android") {
-          if (
-            parseFloat(response.items[0].version.split(".").join("")) >
-            parseFloat(DeviceInfo.getVersion().split(".").join(""))
-          ) {
-            setModalVisible(true);
-          } else {
-            setModalVisible(false);
-          }
-        } else {
-          if (
-            parseFloat(response.items[1].version.split(".").join("")) >
-            parseFloat(DeviceInfo.getVersion().split(".").join(""))
-          ) {
-            setModalVisible(true);
-          } else {
-            setModalVisible(false);
-          }
-        }
-      }
-    },
-  });
-
   const [loadingAddDeviceNotification, requestAddDeviceNotification] = useApi({
     method: "post",
     url: Constants.API.add_device_notification,
@@ -155,48 +114,6 @@ export default function Account(props: any) {
     },
   });
  
-  const appState = useRef(AppState.currentState);
-  const [appStateVisible, setAppStateVisible] = useState(appState.current);
-  const _handleAppStateChange = (nextAppState: any) => {
-    if (
-      appState.current.match(/inactive|background/) &&
-      nextAppState === "active"
-    ) {
-      requestGetVersion();
-    }
-    appState.current = nextAppState;
-    setAppStateVisible(appState.current);
-  };
-  const onPressUpdate = () => {
-    setModalVisible(false);
-    // dispatch({ type: success(TYPES.AUTH.LOG_OUT) });
-    if (Platform.OS === "ios") {
-      Linking.openURL("https://apps.apple.com/us/app/akaiunsan/id6809336835");
-    }
-    if (Platform.OS === "android") {
-      Linking.openURL(
-        "https://play.google.com/store/apps/details?id=com.akaiunsan.customer&hl=en&gl=US"
-      );
-    }
-  };
-  const isFocused = useIsFocused();
-  React.useEffect(() => {
-    if (isFocused) {
-      requestGetVersion();
-    } else {
-      setModalVisible(false);
-    }
-  }, [isFocused]);
-
-  useEffect(() => {
-    const appStateSubscription = AppState.addEventListener(
-      "change",
-      _handleAppStateChange
-    );
-    return () => {
-      appStateSubscription.remove();
-    };
-  }, []);
   const logout = () => {
     // await GoogleSignin.clearCachedAccessToken(token);
     requestAddDeviceNotification({
@@ -387,11 +304,6 @@ export default function Account(props: any) {
             {renderChatBox()}
           </ActionButton.Item>
         </ActionButton>
-        <ModalVersion
-          onPress={onPressUpdate}
-          visible={modalVisible}
-          version={version}
-        />
       </Container>
     </KeyboardAvoidingView>
   );

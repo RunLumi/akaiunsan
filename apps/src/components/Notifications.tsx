@@ -101,7 +101,9 @@ async function registerForPushNotificationsAsync() {
     }
     token = await messaging().getToken();
   } else {
-    alert("Must use physical device for Push Notifications");
+    // Push-token registration is unavailable on simulators. Do not block the
+    // app behind an alert; UI and Maestro flows must remain usable offline.
+    return undefined;
   }
 
   if (Platform.OS === "android") {

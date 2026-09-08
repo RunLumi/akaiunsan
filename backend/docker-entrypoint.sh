@@ -41,6 +41,7 @@ EOF
   echo "[entrypoint] Synthesized $TARGET_CONFIG from environment variables."
 fi
 
+# Seed only when explicitly enabled during a controlled reviewer-account setup.
 if [ "${SEED_REVIEWER_ACCOUNT:-0}" = "1" ]; then
   if [ -z "${REVIEWER_ACCOUNT_PASSWORD:-}" ]; then
     echo "[entrypoint] SEED_REVIEWER_ACCOUNT=1 requires REVIEWER_ACCOUNT_PASSWORD." >&2

@@ -55,6 +55,7 @@ export default function AboutUs(props: any) {
           <Button
             title="Privacy Policy"
             onPress={() => {
+              // Keep store disclosures on the same canonical public domain.
               props.navigation.push(Constants.SCREENS.OTHER.ABOUT_US_VIEW, {
                 url: 'https://akaiunsan.com/privacy-policy',
               });

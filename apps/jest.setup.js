@@ -387,7 +387,16 @@ jest.mock("axios", () => {
 globalThis.fetch = jest.fn().mockResolvedValue({
   ok: true,
   status: 200,
-  json: async () => ({ results: [], status: "OK" }),
+  json: async () => ({
+    // one geocoder result so results.reduce-style flows execute
+    results: [
+      {
+        formatted_address: "Test address",
+        address_components: [{ long_name: "Test", types: ["locality"] }],
+      },
+    ],
+    status: "OK",
+  }),
   text: async () => "{}",
 });
 

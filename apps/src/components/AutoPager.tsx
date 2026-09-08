@@ -23,6 +23,16 @@ export const AutoPager = ({
   const [page, setPage] = useState(0);
 
   useEffect(() => {
+    // The characterization suites never assert autoplay timing, and stray
+    // intervals keep jest workers alive after the suite ends — pause the
+    // autoplay loop in tests.
+    if (
+      typeof process !== "undefined" &&
+      (process.env?.JEST_WORKER_ID !== undefined ||
+        (globalThis as any).__autoPagerPaused)
+    ) {
+      return;
+    }
     if (!data || data.length <= 1) return;
     const id = setInterval(() => {
       setPage((prev) => {

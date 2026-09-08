@@ -29,6 +29,8 @@ import BookingDetail from "../Booking/BookingDetail";
 import EditProfile from "../Other/EditProfile";
 import AllSubscriptionPlan from "../Subscription/AllSubscriptionPlan";
 import Signup from "../Auth/Signup";
+import ServiceOption from "../ServiceScreen/component/Option";
+import EditOption from "../EditAndReOrderServiceScreen/component/Option";
 
 const fallbackData = {
   status: 200,
@@ -247,7 +249,52 @@ const CASES: [string, any][] = [
   ["Other/EditProfile", EditProfile],
   ["Subscription/AllSubscriptionPlan", AllSubscriptionPlan],
   ["Auth/Signup", Signup],
+  ["ServiceScreen/component/Option", ServiceOption],
+  ["EditAndReOrderServiceScreen/component/Option", EditOption],
+  // Nany renders the kid-number picker; Petcare the pet picker
+  ["ServiceScreen/component/Option Nany", ServiceOption],
+  ["ServiceScreen/component/Option Petcare", ServiceOption],
 ];
+
+// The wizard Options read their option lists off props (the parent passes
+// the freshly requested shapes in production).
+const OPTION_PROPS: Record<string, any> = {
+  "ServiceScreen/component/Option Nany": {},
+  "ServiceScreen/component/Option": {
+    type: 1,
+    serviceType: 1,
+    extraService: [
+      { id: "es-1", name: "Extra", price: 10, pricePerUnit: 10, pricePerMore: 12, code: "COSTSP" },
+    ],
+    extraServiceCleaning: [{ id: "es-2", name: "Cleaning", price: 5 }],
+    valueShowHour: [{ label: "Mon", startAt: "07:00", endAt: "09:00" }],
+    numberKids: { numberKids: 1, age: [0] },
+    numberPet: 0,
+    times: [],
+    onSelectNumberKid: () => {},
+    onSelectNumberPet: () => {},
+    onSelectExtraService: () => {},
+    onSetPrice: () => {},
+  },
+  "EditAndReOrderServiceScreen/component/Option": {
+    type: 1,
+    serviceType: 1,
+    valueSpecialHelper: { name: "", old: 0, star: 0, image: "" },
+    valuePreferLanguage: null,
+    extraService: [
+      { id: "es-1", name: "Extra", price: 10, pricePerUnit: 10, pricePerMore: 12, code: "COSTSP" },
+    ],
+    extraServiceCleaning: [{ id: "es-2", name: "Cleaning", price: 5 }],
+    valueShowHour: [{ label: "Mon", startAt: "07:00", endAt: "09:00" }],
+    numberKids: { numberKids: 1, age: [0] },
+    numberPet: 0,
+    times: [],
+    onSelectNumberKid: () => {},
+    onSelectNumberPet: () => {},
+    onSelectExtraService: () => {},
+    onSetPrice: () => {},
+  },
+};
 
 describe("picker-driven flows (Phase 3 characterization)", () => {
   beforeEach(() => {
@@ -259,14 +306,28 @@ describe("picker-driven flows (Phase 3 characterization)", () => {
     async (label, Screen) => {
       const store = makeStore(preloadedState);
       const picked = makeRecordingDispatch(store);
+      // Nany/Petcare variants switch the service type so the kid/pet
+      // picker sections render (the default is the Maid flow)
+      const variantType = / Nany$/.test(label)
+        ? 2
+        : / Petcare$/.test(label)
+          ? 5
+          : undefined;
       const renderer = createWithStore(
-        <Screen navigation={mockNavInstance} route={routeMock(baseParams)} />,
+        <Screen
+          navigation={mockNavInstance}
+          route={routeMock(baseParams)}
+          {...(OPTION_PROPS[label.split(" ")[0]] || {})}
+          {...(variantType ? { type: variantType, serviceType: variantType } : {})}
+        />,
         store
       );
       await flush();
       // press triggers that open the picker, then resolve its callbacks
       pressAll(renderer.root);
       await flush();
+      // eslint-disable-next-line no-console
+      console.log("PICKED", label, picked.length);
       invokePickerCallbacks(picked, 5);
       await flush();
       typeAll(renderer.root);

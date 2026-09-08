@@ -1,9 +1,16 @@
-import { describe, it, expect, beforeAll } from 'vitest';
+import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../app';
 import { truncateAll, APP_KEY, db } from '../helpers/db.ts';
-import { createAdmin, createCustomer, adminToken } from '../helpers/factories.ts';
-import { ADMIN_PASSWORD, CUSTOMER_PASSWORD, WRONG_PASSWORD } from '../helpers/credentials';
+import {
+  createAdmin,
+  createCustomer,
+  adminToken,
+  ADMIN_PASSWORD,
+  CUSTOMER_PASSWORD,
+} from '../helpers/factories.ts';
+import { WRONG_PASSWORD } from '../helpers/credentials';
+import { encryptPassword } from '../../helpers/security.ts';
 
 let admin, customer, adminJwt;
 
@@ -12,6 +19,28 @@ beforeAll(async () => {
   admin = await createAdmin({ username: 'seed-admin@test.local', email: 'seed-admin@test.local' });
   customer = await createCustomer({ email: 'seed-cust@test.local' });
   adminJwt = await adminToken(admin);
+});
+
+// Other characterization files intentionally truncate shared test data. Make
+// these auth assertions self-healing so a valid-password test never depends on
+// another file's teardown timing or a stale row without a password hash.
+beforeEach(async () => {
+  const adminPassword = await encryptPassword(ADMIN_PASSWORD);
+  const customerPassword = await encryptPassword(CUSTOMER_PASSWORD);
+  const storedAdmin = await db.Admin.findOne({ where: { username: admin.username } });
+  const storedCustomer = await db.Customer.findOne({ where: { email: customer.email } });
+
+  if (storedAdmin) {
+    await storedAdmin.update({ password: adminPassword, active: true });
+  } else {
+    admin = await createAdmin({ username: 'seed-admin@test.local', email: 'seed-admin@test.local', password: adminPassword });
+    adminJwt = await adminToken(admin);
+  }
+  if (storedCustomer) {
+    await storedCustomer.update({ password: customerPassword, active: true });
+  } else {
+    customer = await createCustomer({ email: 'seed-cust@test.local', password: customerPassword });
+  }
 });
 
 describe('seed admin account (auth flows)', () => {

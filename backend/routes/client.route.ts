@@ -58,6 +58,22 @@ export default app => {
 
   //customer
   app.get('/client/user', AccountController.customer.getCustomerFromToken);
+  app.put('/client/user/language', async (req, res) => {
+    const { updateLanguage } = await import('../controllers/mobile-compat.controller.ts');
+    return updateLanguage(req, res);
+  });
+  app.get('/client/notifications', async (req, res) => {
+    const { getNotifications } = await import('../controllers/mobile-compat.controller.ts');
+    return getNotifications(req, res);
+  });
+  app.post('/client/notifications/device', async (req, res) => {
+    const { acknowledgeNotification } = await import('../controllers/mobile-compat.controller.ts');
+    return acknowledgeNotification(req, res);
+  });
+  app.delete('/client/notifications', async (req, res) => {
+    const { acknowledgeNotification } = await import('../controllers/mobile-compat.controller.ts');
+    return acknowledgeNotification(req, res);
+  });
 
   app.post('/client/user/profile-image', customerUpload.single('profile'), AccountController.customer.uploadProfile);
 

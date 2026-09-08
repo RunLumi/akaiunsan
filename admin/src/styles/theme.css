@@ -71,6 +71,23 @@
 }
 
 @theme inline {
+  /* Core Living Standard ramps exposed to utility classes. */
+  --color-paper: #f9f8f3;
+  --color-ink: #20251b;
+  --color-muted-ink: #666b5a;
+  --color-line: #dcdecd;
+  --color-lime: #c7dc50;
+  --color-lime-soft: #dce7a2;
+  --color-mint: #f0f2e4;
+  --color-mint-strong: #e0e8c5;
+  --color-olive-dark: #4f601a;
+  --color-moss-deep: #1b2512;
+  --color-moss-black: #12190d;
+  --color-moss-700: #2d4214;
+  --color-moss-800: #1a2906;
+  --color-stone: #f0eee5;
+  --color-stone-dark: #d7d2c2;
+
   --font-be-vietnam-pro: 'Be Vietnam Pro', 'Manrope', 'sans-serif';
   --font-manrope: 'Manrope', 'sans-serif';
 
@@ -93,6 +110,7 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);

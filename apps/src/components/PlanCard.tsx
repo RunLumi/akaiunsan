@@ -9,7 +9,7 @@ export default function PlanCard(props: any) {
         style={{
           flex: 1,
           padding: 16,
-          shadowColor: Colors.black,
+          shadowColor: Colors.shadow,
           shadowOffset: {
             width: 0,
             height: 0,

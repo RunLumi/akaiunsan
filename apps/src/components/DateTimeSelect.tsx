@@ -19,6 +19,7 @@ import moment from "moment";
 import Layout from "../shared/Layout";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import Colors from "../shared/Colors";
+import Theme from "../shared/theme";
 import CustomMarker from "./CustomMarker";
 interface Props {
   style?: StyleProp<ViewStyle>;
@@ -144,7 +145,7 @@ export const DateTimeSelect = ({
         <View style={styles.container}>
           <TouchableOpacity onPress={() => setShowModal(false)}>
             <View style={{ flexDirection: "row", padding: 10 }}>
-              <Ionicons name="close-circle-outline" size={30} color="white" />
+          <Ionicons name="close-circle-outline" size={30} color={Colors.white} />
               <Text style={styles.textClose}>{i18n.t("home.close")}</Text>
             </View>
           </TouchableOpacity>
@@ -173,21 +174,21 @@ export const DateTimeSelect = ({
               onDayPress={(day) => selectDate(day)}
               // Specify theme properties to override specific styles for calendar parts. Default = {}
               theme={{
-                backgroundColor: "#ffffff",
-                calendarBackground: "#ffffff",
-                textSectionTitleColor: "#b6c1cd",
-                textSectionTitleDisabledColor: "#d9e1e8",
-                selectedDayBackgroundColor: "#00adf5",
-                selectedDayTextColor: "black",
-                todayTextColor: "#00adf5",
-                dayTextColor: "#2d4150",
-                textDisabledColor: "#d9e1e8",
-                dotColor: "#00adf5",
-                selectedDotColor: "#ffffff",
-                arrowColor: "black",
-                disabledArrowColor: "#d9e1e8",
-                monthTextColor: "black",
-                indicatorColor: "blue",
+                backgroundColor: Colors.white,
+                calendarBackground: Colors.white,
+                textSectionTitleColor: colors.gray_normal_text,
+                textSectionTitleDisabledColor: colors.gray_light,
+                selectedDayBackgroundColor: Theme.colors.accent,
+                selectedDayTextColor: Theme.colors.accentContrast,
+                todayTextColor: colors.main_color,
+                dayTextColor: colors.black_text,
+                textDisabledColor: colors.gray_light,
+                dotColor: colors.main_color,
+                selectedDotColor: Colors.white,
+                arrowColor: colors.black_text,
+                disabledArrowColor: colors.gray_light,
+                monthTextColor: colors.black_text,
+                indicatorColor: colors.main_color,
                 textDayFontWeight: "300",
                 textMonthFontWeight: "bold",
                 textDayHeaderFontWeight: "300",

@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { useSelector } from "react-redux";
 import colors from "../shared/Colors";
+import Theme from "../shared/theme";
 import Constants from "../shared/Constants";
 import Styles from "../shared/Styles";
 import { Text } from "./Text";
@@ -70,7 +71,7 @@ export const CustomInput = ({
           styles.input,
           !noShawdow && Styles.shadow,
           {
-            backgroundColor: disabled ? colors.gray_hidden_text : colors.white,
+            backgroundColor: disabled ? Theme.core.stoneDark : colors.white,
           },
         ]}
       >
@@ -181,7 +182,7 @@ const styles = StyleSheet.create({
     left: 0,
     paddingTop: PADDING / 2,
     paddingLeft: 0,
-    color: "black",
+    color: colors.black_text,
   },
   textInputMultiline: {
     position: "absolute",
@@ -189,7 +190,7 @@ const styles = StyleSheet.create({
     left: 0,
     paddingTop: PADDING / 2,
     paddingHorizontal: PADDING / 2,
-    color: "black",
+    color: colors.black_text,
     borderWidth: 1,
     borderRadius: 10,
     borderColor: colors.gray,

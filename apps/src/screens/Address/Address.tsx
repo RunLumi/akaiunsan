@@ -113,7 +113,7 @@ const AddressScreen = (props: any) => {
               key={index}
               style={{
                 borderRadius: 10,
-                backgroundColor: "white",
+                backgroundColor: Colors.white,
                 ...Styles.shadow,
                 padding: 15,
                 margin: 15,
@@ -185,7 +185,7 @@ const s = StyleSheet.create({
     fontWeight: "700",
   },
   titleContainer: {
-    backgroundColor: "white",
+    backgroundColor: Colors.white,
     alignItems: "center",
     ...Styles.shadow,
   },
@@ -196,7 +196,7 @@ const s = StyleSheet.create({
     height: 30,
   },
   btnViewStyle: {
-    backgroundColor: "white",
+    backgroundColor: Colors.white,
     borderColor: Colors.grab_orange,
     borderWidth: 2,
     borderRadius: 4,

@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     minWidth: 42,
   },
   disabled: {
-    backgroundColor: "#d3d3d3",
+    backgroundColor: Colors.gray_light,
   },
 });
 

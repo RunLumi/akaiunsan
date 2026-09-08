@@ -94,7 +94,7 @@ export default function DetailHistory(props: any) {
               marginTop: 0,
               padding: 14,
               backgroundColor: Colors.white,
-              shadowColor: Colors.black,
+              shadowColor: Colors.shadow,
               shadowOffset: {
                 width: 0,
                 height: 2,
@@ -313,7 +313,7 @@ export default function DetailHistory(props: any) {
                 marginTop: 0,
                 padding: 14,
                 backgroundColor: Colors.white,
-                shadowColor: Colors.black,
+                shadowColor: Colors.shadow,
                 shadowOffset: {
                   width: 0,
                   height: 2,
@@ -350,12 +350,12 @@ export default function DetailHistory(props: any) {
                     marginLeft: 16,
                     paddingVertical: 10,
                     paddingHorizontal: 16,
-                    backgroundColor: "green",
+                    backgroundColor: Colors.main_color,
                     borderRadius: 3,
                   }}
                   onPress={onPressReview}
                 >
-                  <Text style={{ color: "#fff" }}>{i18n.t("home.review")}</Text>
+                  <Text style={{ color: Colors.white }}>{i18n.t("home.review")}</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -367,7 +367,7 @@ export default function DetailHistory(props: any) {
                 marginBottom: 16,
                 padding: 14,
                 backgroundColor: Colors.white,
-                shadowColor: Colors.black,
+                shadowColor: Colors.shadow,
                 shadowOffset: {
                   width: 0,
                   height: 2,

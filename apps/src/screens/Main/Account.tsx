@@ -226,7 +226,7 @@ export default function Account(props: any) {
           <FontAwesome
             name="angle-right"
             size={24}
-            color={item.disable ? colors.gray_hidden_text : "gray"}
+            color={item.disable ? colors.gray_hidden_text : colors.gray_normal_text}
           />
         </View>
       </TouchableOpacity>
@@ -317,7 +317,7 @@ export default function Account(props: any) {
             >
               <View
                 style={{
-                  backgroundColor: "white",
+                  backgroundColor: colors.white,
                   borderRadius: 100,
                   width: 32,
                   height: 32,
@@ -380,7 +380,7 @@ export default function Account(props: any) {
         >
           <ActionButton.Item
             size={320}
-            buttonColor="#1abc9c"
+            buttonColor={colors.main_color}
             title="All Tasks"
             onPress={() => {}}
           >
@@ -400,7 +400,7 @@ export default function Account(props: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: colors.white,
   },
   actionButtonIcon: {
     height: 112,

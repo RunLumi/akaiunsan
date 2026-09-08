@@ -7,6 +7,7 @@ import AppConstant from "../shared/Constants";
 import messaging from "@react-native-firebase/messaging";
 import { NavigationRoot } from "../navigation/root";
 import _ from "lodash";
+import Colors from "../shared/Colors";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -108,7 +109,7 @@ async function registerForPushNotificationsAsync() {
       name: "default",
       importance: Notifications.AndroidImportance.MAX,
       vibrationPattern: [0, 250, 250, 250],
-      lightColor: "#FF231F7C",
+      lightColor: `${Colors.red}CC`,
     });
   }
 

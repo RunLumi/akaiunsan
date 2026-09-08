@@ -4,8 +4,8 @@
  * Keys are unchanged so all existing consumers keep working; only values moved.
  *
  * Computed contrast (WCAG 2.1):
- * - white on main_color #4F601A   6.95:1 (AA)   — buttons keep white text
- * - main_color on white           6.95:1 (AA)   — safe as text too
+ * - main_color #4F601A is the accessible structural green for legacy surfaces
+ * - primary actions use Theme.colors.accent with ink contrast
  * - black_text #20251B on paper   14.72:1 (AAA)
  * - gray_normal_text on paper      5.18:1 (AA)
  *
@@ -13,7 +13,7 @@
  * Lime #C7DC50 with ink text, leaf-radius geometry, olive-tinted shadows).
  */
 export default {
-  /** Primary brand action color — Olive Dark (was Akaiunsan orange) */
+  /** Structural brand green retained for legacy surfaces */
   main_color: "#4F601A",
   /** Secondary text — Sage Muted */
   gray: "#666B5A",
@@ -39,8 +39,10 @@ export default {
   black_text: "#20251B",
   /** Neutral fills, dividers, skeleton base — Stone */
   gray_light: "#F0EEE5",
-  /** Text and shadowColor — Olive Ink; makes all shadows olive-tinted by law */
+  /** Primary text — Olive Ink */
   black: "#20251B",
+  /** Shadow tint from DESIGN.md §4.4 */
+  shadow: "#252F16",
   /** Errors and destructive actions only — Signal Red */
   red: "#D0202B",
   /** Star ratings / warning utility (retained, out-of-system) */

@@ -12,6 +12,7 @@ import { Button, Container, Loading, Text } from "../../../components";
 import PlanCard from "../../../components/PlanCard";
 import useApi from "../../../hooks/useApi";
 import Colors from "../../../shared/Colors";
+import Theme from "../../../shared/theme";
 import Constants from "../../../shared/Constants";
 import i18n from "../../../shared/I18n";
 import { rankBackground } from "../../../shared/Utils";
@@ -338,7 +339,7 @@ export default function ListPlan(props: any) {
             </TouchableOpacity>
             <View
               style={{
-                backgroundColor: "#bbb",
+                backgroundColor: Theme.core.stoneDark,
                 marginHorizontal: 16,
                 height: 1,
               }}
@@ -362,7 +363,7 @@ export default function ListPlan(props: any) {
               margin: 16,
               padding: 16,
               backgroundColor: Colors.white,
-              shadowColor: Colors.black,
+              shadowColor: Colors.shadow,
               shadowOffset: {
                 width: 0,
                 height: 2,
@@ -425,7 +426,7 @@ export default function ListPlan(props: any) {
                 margin: 16,
                 padding: 16,
                 backgroundColor: Colors.white,
-                shadowColor: Colors.black,
+                shadowColor: Colors.shadow,
                 shadowOffset: {
                   width: 0,
                   height: 2,

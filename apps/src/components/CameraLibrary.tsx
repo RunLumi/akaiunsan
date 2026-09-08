@@ -15,6 +15,8 @@ import * as ImagePicker from "expo-image-picker";
 import Layout from "../shared/Layout";
 import i18n from "../shared/I18n";
 import Constants from "../shared/Constants";
+import Colors from "../shared/Colors";
+import Theme from "../shared/theme";
 import axios from "axios";
 import { Loading } from ".";
 
@@ -128,7 +130,7 @@ const s = StyleSheet.create({
     alignItems: "center",
     flexDirection: "column",
     justifyContent: "space-around",
-    backgroundColor: "#0000001a",
+    backgroundColor: `${Theme.core.mossBlack}1A`,
   },
   activityIndicatorWrapper: {
     backgroundColor: "transparent",
@@ -149,7 +151,7 @@ const s = StyleSheet.create({
     bottom: 0,
     borderTopWidth: 1,
     marginTop: 20,
-    borderColor: "#fff",
+    borderColor: Colors.white,
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
     justifyContent: "center",
@@ -160,7 +162,7 @@ const s = StyleSheet.create({
   },
   modalView: {
     width: Layout.window.width - 40,
-    backgroundColor: "#ffffff",
+    backgroundColor: Colors.white,
     borderRadius: 10,
     padding: 10,
   },

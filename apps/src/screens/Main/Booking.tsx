@@ -282,7 +282,7 @@ export default function Booking(props: any) {
         <Ionicons
           name="calendar"
           size={24}
-          color="white"
+          color={Colors.white}
           onPress={onPressCalendar}
         />
       </View>
@@ -494,10 +494,10 @@ const s = StyleSheet.create({
     fontSize: 20,
   },
   bottomAppBar: {
-    backgroundColor: "#ffffff",
+    backgroundColor: Colors.white,
     flexDirection: "row",
     height: 46,
-    shadowColor: Colors.black,
+    shadowColor: Colors.shadow,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -527,7 +527,7 @@ const s = StyleSheet.create({
   historyItem: {
     padding: 12,
 
-    shadowColor: Colors.black,
+    shadowColor: Colors.shadow,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -536,7 +536,7 @@ const s = StyleSheet.create({
   },
   jobItem: {
     padding: 12,
-    shadowColor: Colors.black,
+    shadowColor: Colors.shadow,
     shadowOffset: {
       width: 0,
       height: 2,

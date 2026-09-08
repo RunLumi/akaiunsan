@@ -12,6 +12,7 @@ import { Divider } from "react-native-elements";
 import { useDispatch, useSelector } from "react-redux";
 import { TYPES } from "../redux/actions";
 import Colors from "../shared/Colors";
+import Theme from "../shared/theme";
 import i18n from "../shared/I18n";
 import {Text} from "./Text";
 
@@ -64,7 +65,7 @@ const PickerModal = () => {
         style={{
           flex: 1,
           justifyContent: "center",
-          backgroundColor: "rgba(0,0,0,0.6)",
+          backgroundColor: `${Theme.core.mossBlack}99`,
           paddingHorizontal: 16,
           paddingVertical: height * 0.05,
         }}

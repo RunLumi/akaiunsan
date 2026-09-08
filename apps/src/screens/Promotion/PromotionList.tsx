@@ -76,7 +76,7 @@ export default function PromotionList(props: any) {
               style={s.iconBell}
               name="notification"
               size={24}
-              color="white"
+              color={Colors.white}
             />
           </View>
           <View style={{ flexDirection: "column" }}>
@@ -98,7 +98,7 @@ export default function PromotionList(props: any) {
             <Text style={s.textDescription}>Using time: {item.usingTimes}</Text>
           </View>
           <View style={{ paddingTop: 15 }}>
-            <Fontisto name="angle-right" size={20} color="black" />
+            <Fontisto name="angle-right" size={20} color={Colors.black_text} />
           </View>
         </View>
       </TouchableOpacity>
@@ -123,7 +123,7 @@ export default function PromotionList(props: any) {
   }, []);
 
   return (
-    <Container style={{ backgroundColor: "white", flex: 1 }}>
+    <Container style={{ backgroundColor: Colors.white, flex: 1 }}>
       <View style={{ flex: 1 }}>
         <Loading loading={loadingListPromotionUsed} />
         <View style={s.borderBottom}>

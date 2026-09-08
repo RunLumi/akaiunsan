@@ -533,7 +533,7 @@ export const HelperSelectFixPlan = ({
                     style={{
                       padding: 6,
                       fontSize: 20,
-                      color: idDetail == i.id ? colors.grab_orange : "black",
+                      color: idDetail == i.id ? colors.grab_orange : colors.black_text,
                     }}
                   >
                     {idx + 1}
@@ -585,7 +585,7 @@ export const HelperSelectFixPlan = ({
             onPress={() => setShowModal(false)}
             style={{ flexDirection: "row", padding: 10 }}
           >
-            <Ionicons name="close-circle-outline" size={30} color="white" />
+            <Ionicons name="close-circle-outline" size={30} color={colors.white} />
             <Text style={styles.textClose}>{i18n.t("home.close")}</Text>
           </TouchableOpacity>
         </View>
@@ -613,8 +613,8 @@ export const HelperSelectFixPlan = ({
             onClear={() => {}}
             onFocus={() => {}}
             onBlur={() => {}}
-            searchIcon={{ name: "search", color: "#86939e" }}
-            clearIcon={{ name: "clear", color: "#86939e" }}
+            searchIcon={{ name: "search", color: colors.gray_hidden_text }}
+            clearIcon={{ name: "clear", color: colors.gray_hidden_text }}
             showCancel={false}
             cancelButtonTitle=""
             cancelButtonProps={{}}

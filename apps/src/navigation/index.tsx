@@ -143,7 +143,7 @@ function RootNavigator() {
             style={{ marginLeft: 12 }}
             name="arrow-back"
             size={26}
-            color="white"
+            color={colors.white}
           />
         </TouchableOpacity>
       );

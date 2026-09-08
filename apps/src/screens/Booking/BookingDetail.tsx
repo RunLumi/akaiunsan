@@ -6,6 +6,7 @@ import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { Container, Button, Loading, Text, TextInput } from "../../components";
 import useApi from "../../hooks/useApi";
 import Colors from "../../shared/Colors";
+import Theme from "../../shared/theme";
 import Constants from "../../shared/Constants";
 import i18n from "../../shared/I18n";
 import Enum from "../../shared/Enum";
@@ -191,7 +192,7 @@ export default function BookingDetail(props: any) {
             right: 0,
             bottom: 0,
             left: 0,
-            backgroundColor: "rgba(0,0,0,0.4)",
+            backgroundColor: `${Theme.core.mossBlack}66`,
             zIndex: 99,
           }}
         >
@@ -205,7 +206,7 @@ export default function BookingDetail(props: any) {
             <View
               style={{
                 width: "80%",
-                backgroundColor: "#fff",
+                backgroundColor: Colors.white,
                 borderRadius: 4,
                 padding: 16,
               }}
@@ -227,7 +228,7 @@ export default function BookingDetail(props: any) {
                     style={{
                       padding: 10,
                       marginVertical: 16,
-                      borderColor: "#ccc",
+                      borderColor: Theme.core.line,
                       borderWidth: 1,
                       minHeight: 100,
                     }}
@@ -268,11 +269,11 @@ export default function BookingDetail(props: any) {
                   style={{
                     paddingVertical: 4,
                     paddingHorizontal: 10,
-                    backgroundColor: "green",
+                    backgroundColor: Colors.main_color,
                     borderRadius: 6,
                   }}
                 >
-                  <Text style={{ color: "white" }}>{i18n.t("home.yes")}</Text>
+                  <Text style={{ color: Colors.white }}>{i18n.t("home.yes")}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
@@ -282,11 +283,11 @@ export default function BookingDetail(props: any) {
                     marginTop: 4,
                     paddingVertical: 4,
                     paddingHorizontal: 10,
-                    backgroundColor: "green",
+                    backgroundColor: Colors.main_color,
                     borderRadius: 6,
                   }}
                 >
-                  <Text style={{ color: "white" }}>{i18n.t("home.no")}</Text>
+                  <Text style={{ color: Colors.white }}>{i18n.t("home.no")}</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -322,7 +323,7 @@ export default function BookingDetail(props: any) {
               marginTop: 0,
               padding: 14,
               backgroundColor: Colors.white,
-              shadowColor: Colors.black,
+              shadowColor: Colors.shadow,
               shadowOffset: {
                 width: 0,
                 height: 2,
@@ -565,7 +566,7 @@ export default function BookingDetail(props: any) {
                 marginBottom: 16,
                 padding: 14,
                 backgroundColor: Colors.white,
-                shadowColor: Colors.black,
+                shadowColor: Colors.shadow,
                 shadowOffset: {
                   width: 0,
                   height: 2,
@@ -670,7 +671,7 @@ export default function BookingDetail(props: any) {
                 marginBottom: 16,
                 padding: 14,
                 backgroundColor: Colors.white,
-                shadowColor: Colors.black,
+                shadowColor: Colors.shadow,
                 shadowOffset: {
                   width: 0,
                   height: 2,
@@ -705,7 +706,7 @@ export default function BookingDetail(props: any) {
             currentDetail.reason == null ? (
               <View style={{ flex: 1 }}>
                 <Button
-                  colorBackground={"#ddd"}
+                  colorBackground={Colors.gray_light}
                   onPress={() => {
                     setShowDialog(true);
                   }}
@@ -717,7 +718,7 @@ export default function BookingDetail(props: any) {
             {currentDetail.orderStatus == Enum.OrderStatus.MATCH &&
             currentDetail.specialRequests == null ? (
               <Button onPress={() => setShowDialog(true)}>
-                <Text style={{ color: "#fff" }}>
+                <Text style={{ color: Colors.white }}>
                   {i18n.t("home.special_request")}
                 </Text>
               </Button>
@@ -730,7 +731,7 @@ export default function BookingDetail(props: any) {
                   );
                 }}
               >
-                <Text style={{ color: "#fff" }}>
+                <Text style={{ color: Colors.white }}>
                   {i18n.t("home.contact_staff")}
                 </Text>
               </Button>

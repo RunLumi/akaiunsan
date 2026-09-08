@@ -90,13 +90,13 @@ export default function ServiceProvider(props: any) {
           ) : (
             <View style={{ flexDirection: "row", paddingEnd: 16 }}>
               <TouchableOpacity onPress={onPressDelete}>
-                <Text style={{ color: "#fff" }}>
+                <Text style={{ color: Colors.white }}>
                 {i18n.t("home.delete")} ({currentDelSelected.length})
                 </Text>
               </TouchableOpacity>
               <View style={{ width: 10 }} />
               <TouchableOpacity onPress={() => setIsDeleting(false)}>
-                <Text style={{ color: "#fff" }}>{i18n.t("home.cancel")}</Text>
+                <Text style={{ color: Colors.white }}>{i18n.t("home.cancel")}</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -165,7 +165,7 @@ export default function ServiceProvider(props: any) {
           justifyContent: "space-between",
           flexDirection: "row",
           backgroundColor: Colors.white,
-          shadowColor: Colors.black,
+          shadowColor: Colors.shadow,
           shadowOffset: {
             width: 0,
             height: 2,
@@ -238,7 +238,7 @@ export default function ServiceProvider(props: any) {
               style={{
                 height: 28,
                 width: 28,
-                borderColor: "#bbb",
+                borderColor: Colors.gray_light,
                 borderWidth: 1.5,
                 marginTop: 10,
                 justifyContent: "center",
@@ -247,10 +247,10 @@ export default function ServiceProvider(props: any) {
               onPress={() => onPressCheck(item.id)}
             >
               {!isDeleting && currentSelected.indexOf(item.id) != -1 && (
-                <Ionicons name="checkmark" size={22} color={"#111"} />
+                <Ionicons name="checkmark" size={22} color={Colors.black_text} />
               )}
               {isDeleting && currentDelSelected.indexOf(item.id) != -1 && (
-                <Ionicons name="checkmark" size={22} color={"red"} />
+                <Ionicons name="checkmark" size={22} color={Colors.red} />
               )}
             </TouchableOpacity>
           </View>

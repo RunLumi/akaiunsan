@@ -1,4 +1,4 @@
-import Colors from "./Colors";
+import Theme from "./theme";
 
 export default {
 	margin: {
@@ -6,7 +6,7 @@ export default {
 		vertical: 10,
 	},
 	shadow: {
-		shadowColor: Colors.gray,
+		shadowColor: Theme.shadow.float.shadowColor,
 		shadowOpacity: 0.2,
 		shadowOffset: { width: 0, height: 0 },
 		shadowRadius: 6,

@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import colors from "../shared/Colors";
+import Theme from "../shared/theme";
 
 interface Props {
   style?: StyleProp<ViewStyle>;
@@ -42,7 +43,7 @@ const s = StyleSheet.create({
     alignItems: "center",
     flexDirection: "column",
     justifyContent: "space-around",
-    backgroundColor: "#0000001a",
+    backgroundColor: `${Theme.core.mossBlack}1A`,
   },
   activityIndicatorWrapper: {
     backgroundColor: "transparent",

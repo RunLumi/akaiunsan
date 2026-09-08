@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Divider } from "react-native-elements";
 import Colors from "../../../../shared/Colors";
+import Theme from "../../../../shared/theme";
 import { Text } from "../../../../components";
 import _ from "lodash";
 import moment from "moment";
@@ -79,7 +80,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "rgba(0,0,0,0.3)",
+    backgroundColor: `${Colors.main_blue}4D`,
   },
   content: {
     backgroundColor: Colors.white,
@@ -87,7 +88,7 @@ const styles = StyleSheet.create({
     width: "80%",
     maxHeight: "50%",
     borderRadius: 12,
-    shadowColor: Colors.black,
+    shadowColor: Theme.shadow.float.shadowColor,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.3,
     shadowRadius: 4,

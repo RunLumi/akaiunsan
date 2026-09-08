@@ -439,7 +439,7 @@ export default function Inbox(props: any) {
               style={styles.iconBell}
               name="bell-alt"
               size={22}
-              color="white"
+              color={COLOR.white}
             />
           </View>
           <View
@@ -536,7 +536,7 @@ export default function Inbox(props: any) {
                 style={styles.iconBell}
                 name="notification"
                 size={22}
-                color="white"
+              color={COLOR.white}
               />
             </View>
             <View
@@ -555,7 +555,7 @@ export default function Inbox(props: any) {
                     width: isDelete
                       ? Layout.window.width - 200
                       : Layout.window.width - 100,
-                    color: item.isRead ? COLOR.gray_normal_text : "black",
+                color: item.isRead ? COLOR.gray_normal_text : COLOR.black_text,
                   },
                 ]}
               >
@@ -564,7 +564,7 @@ export default function Inbox(props: any) {
               <Text
                 style={[
                   styles.textDescription,
-                  { color: item.isRead ? COLOR.gray_normal_text : "black" },
+                { color: item.isRead ? COLOR.gray_normal_text : COLOR.black_text },
                 ]}
               >
                 {moment
@@ -579,7 +579,7 @@ export default function Inbox(props: any) {
               <Fontisto
                 name="angle-right"
                 size={15}
-                color={item.isRead ? COLOR.gray_normal_text : "black"}
+              color={item.isRead ? COLOR.gray_normal_text : COLOR.black_text}
               />
             </View>
           </View>
@@ -708,14 +708,14 @@ export default function Inbox(props: any) {
                 style={[styles.textTitleHeader, { marginRight: 8 }]}
                 name="checkmark-done"
                 size={27}
-                color="white"
+                color={COLOR.white}
               />
               <Ionicons
                 onPress={() => setIsDelete(true)}
                 style={[styles.textTitleHeader, { marginRight: 12 }]}
                 name="trash-sharp"
                 size={27}
-                color="white"
+                color={COLOR.white}
               />
             </View>
           )}

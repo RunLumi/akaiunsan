@@ -51,7 +51,7 @@ const WeeklyCalendar = (props: any) => {
         style={{
           height: 80,
           flexDirection: "row",
-          borderBottomColor: "#eee",
+          borderBottomColor: Colors.gray_hidden_text,
           borderBottomWidth: 1,
         }}
       >
@@ -109,7 +109,7 @@ const WeeklyCalendar = (props: any) => {
                 ...(d != -1
                   ? {
                       flex: 1,
-                      borderLeftColor: "#eee",
+                      borderLeftColor: Colors.gray_hidden_text,
                       borderLeftWidth: 1,
                     }
                   : { width: 30 }),
@@ -124,7 +124,7 @@ const WeeklyCalendar = (props: any) => {
                     alignItems: "center",
                     ...(d != -1
                       ? {
-                          borderBottomColor: "#eee",
+                          borderBottomColor: Colors.gray_hidden_text,
                           borderBottomWidth: 1,
                         }
                       : {}),
@@ -562,6 +562,6 @@ export default (props: any) => {
 const s = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: Colors.white,
   },
 });

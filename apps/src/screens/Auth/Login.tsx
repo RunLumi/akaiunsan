@@ -30,6 +30,7 @@ import messaging from "@react-native-firebase/messaging";
 import useApi from "../../hooks/useApi";
 import { success, TYPES } from "../../redux/actions";
 import Colors from "../../shared/Colors";
+import Theme from "../../shared/theme";
 import Constants from "../../shared/Constants";
 import i18n from "../../shared/I18n";
 import Styles from "../../shared/Styles";
@@ -490,19 +491,19 @@ export default function Login(props: any) {
                     width: 42,
                     justifyContent: "center",
                     alignItems: "center",
-                    backgroundColor: "black",
+                    backgroundColor: Colors.black,
                     borderRadius: 4,
                     marginRight: 8,
                   }}
                 >
-                  <FontAwesome5 name="apple" size={36} color="white" />
+                  <FontAwesome5 name="apple" size={36} color={Colors.white} />
                 </TouchableOpacity>
               )}
               {/* <TouchableOpacity
                 onPress={loginLine}
                 style={{ marginHorizontal: 10 }}
               >
-                <FontAwesome5 name="line" size={40} color="#20C82F" />
+                <FontAwesome5 name="line" size={40} color={Colors.green} />
               </TouchableOpacity> */}
               <TouchableOpacity
                 style={{ width: 48, height: 48 }}
@@ -616,12 +617,12 @@ const s = StyleSheet.create({
   },
   modalView: {
     margin: 16,
-    backgroundColor: "white",
+    backgroundColor: Colors.white,
     borderRadius: 20,
     paddingHorizontal: 16,
     paddingVertical: 24,
     alignItems: "center",
-    shadowColor: "#000",
+    shadowColor: Theme.shadow.float.shadowColor,
     shadowOffset: {
       width: 0,
       height: 0,
@@ -637,13 +638,13 @@ const s = StyleSheet.create({
     elevation: 2,
   },
   buttonOpen: {
-    backgroundColor: "#F194FF",
+    backgroundColor: Theme.colors.accent,
   },
   buttonClose: {
     backgroundColor: Colors.main_color,
   },
   textStyle: {
-    color: "white",
+    color: Theme.colors.accentContrast,
     fontWeight: "bold",
     textAlign: "center",
   },

@@ -18,6 +18,7 @@ exports[`Colors characterization golden file: palette 1`] = `
   "main_orange_light": "rgba(108, 125, 34, 0.15)",
   "pinky": "rgba(224, 232, 197, 0.5)",
   "red": "#D0202B",
+  "shadow": "#252F16",
   "white": "#FFFFFF",
   "yellow": "#FCB813",
 }
@@ -178,7 +179,7 @@ exports[`Styles characterization golden file: spacing/shadow/typography scale 1`
   },
   "shadow": {
     "elevation": 3,
-    "shadowColor": "#666B5A",
+    "shadowColor": "#252F16",
     "shadowOffset": {
       "height": 0,
       "width": 0,

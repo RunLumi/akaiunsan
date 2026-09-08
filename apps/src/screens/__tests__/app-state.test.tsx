@@ -1,7 +1,9 @@
 import React from "react";
 import axios from "axios";
+import Constants from "../../shared/Constants";
 import { AppState } from "react-native";
 import { createWithStore, makeStore, flush, pressAll, typeAll } from "../../test-utils/helpers";
+import { installApiRoutes } from "../../test-utils/api-mock";
 
 // The tab screens register AppState change handlers; the handler bodies
 // (refresh-on-foreground logic) only run when the OS emits a state change.
@@ -43,7 +45,7 @@ import Inbox from "../Main/Inbox";
 import Login from "../Auth/Login";
 import ServiceScreenService from "../ServiceScreen/Service";
 
-(axios as any).mockResolvedValue({
+const fallbackData = {
   status: 200,
   data: {
     data: {
@@ -68,9 +70,52 @@ import ServiceScreenService from "../ServiceScreen/Service";
       ],
       data: [],
       errors: [],
+      auth_token: "fallback-token",
+      token: "fallback-token",
+      user: { id: 1, fullName: "Test User", email: "test@akaiunsan.com", point: 10 },
+      totalUnRead: 3,
+      customerInfo: {
+        addressId: "addr-1",
+        address: "Test address",
+        district: "District",
+        city: "City",
+        province: "Province",
+        phoneNumber: "0123456789",
+        remark: "",
+        roomNo: "",
+      },
+      extraService: JSON.stringify([
+        {
+          id: "es-1",
+          name: "Ironing",
+          code: "COSTSP",
+          pricePerUnit: 20,
+          unit: 1,
+          perHour: 10,
+          perTime: 0,
+          acType: "",
+        },
+      ]),
+      serviceDetail: { id: "svc-1", name: "Test service", price: 100 },
+      banner: [],
+      promotionType: 2,
+      content: JSON.stringify({ money: 50, percent: 10, point: 5 }),
+      version: "1.0.0",
     },
   },
-});
+};
+
+// AllSubscriptionPlan reads the plan map keys off its response.
+installApiRoutes(
+  axios as any,
+  {
+    [Constants.API.get_subscription]: {
+      Flexible: fallbackData.data.data.items.filter((i: any) => i.id === "li-1"),
+      Fix: fallbackData.data.data.items.filter((i: any) => i.id === "li-1"),
+    },
+  },
+  fallbackData.data.data
+);
 
 const preloadedState = {
   auth: {

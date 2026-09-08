@@ -156,7 +156,9 @@ services:
   # PostgreSQL Database
   # ----------------------------------------------------------------------------
   postgres:
-    image: postgres:16-alpine
+    # PostGIS build of PG 16 — same PGDATA layout as postgres:16-alpine; ships
+    # the postgis extension used by migration 003
+    image: postgis/postgis:16-alpine
     container_name: akaiunsan_postgres
     restart: unless-stopped
     volumes:

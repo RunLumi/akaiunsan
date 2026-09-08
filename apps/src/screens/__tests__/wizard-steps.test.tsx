@@ -118,8 +118,39 @@ jest.mock("react-native-swiper", () => {
           { id: "1", code: "COSTSP", name: "Special", pricePerUnit: 100, pricePerMore: 120, image: "" },
           { id: "2", code: "LANGUAGE", name: "English", price: 50, status: 1 },
         ],
-        data: [],
-        errors: [],
+      data: [],
+      errors: [],
+      auth_token: "fallback-token",
+      token: "fallback-token",
+      user: { id: 1, fullName: "Test User", email: "test@akaiunsan.com", point: 10 },
+      totalUnRead: 3,
+      customerInfo: {
+        addressId: "addr-1",
+        address: "Test address",
+        district: "District",
+        city: "City",
+        province: "Province",
+        phoneNumber: "0123456789",
+        remark: "",
+        roomNo: "",
+      },
+      extraService: JSON.stringify([
+        {
+          id: "es-1",
+          name: "Ironing",
+          code: "COSTSP",
+          pricePerUnit: 20,
+          unit: 1,
+          perHour: 10,
+          perTime: 0,
+          acType: "",
+        },
+      ]),
+      serviceDetail: { id: "svc-1", name: "Test service", price: 100 },
+      banner: [],
+      promotionType: 2,
+      content: JSON.stringify({ money: 50, percent: 10, point: 5 }),
+      version: "1.0.0",
       },
     },
   });
@@ -342,9 +373,10 @@ describe("booking wizard steps (Phase 3 characterization)", () => {
         return next;
       };
       // One forward pass: the sweep sets the step's confirm state
-      // (handleAddress etc.), then onNextStep advances and the new step's
-      // content is swept. A second pass re-mounts step-2 subtrees whose
-      // effects re-schedule unresolved work under the Node renderer.
+      // (handleAddress etc.), then onNextStep advances and the newly mounted
+      // step's content is swept. A second pass re-mounts the step-2 subtree,
+      // whose effects still re-schedule unresolved work under the Node
+      // renderer (the settle-walk below does not always rescue it).
       for (let stepPass = 0; stepPass < 1; stepPass++) {
         typeAll(renderer.root);
         await flush();
@@ -357,6 +389,11 @@ describe("booking wizard steps (Phase 3 characterization)", () => {
         const nextStep = findNextStep();
         if (!nextStep) break;
         pressOne(nextStep);
+        // Walking the tree between the press and the flush forces the
+        // scheduler to reconcile the freshly mounted step; without it the
+        // pending act work occasionally never settles under the Node
+        // renderer (timing-sensitive race).
+        renderer.root.findAll(() => false);
         await flush();
         // eslint-disable-next-line no-console
         console.log("W next", label, stepPass);

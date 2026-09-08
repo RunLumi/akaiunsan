@@ -185,6 +185,40 @@ const fallbackData = {
   ],
   data: [listItem()],
   results: [listItem()],
+  // response fields various screens read directly off the envelope
+  auth_token: "fallback-token",
+  token: "fallback-token",
+  user: { id: 1, fullName: "Test User", email: "test@akaiunsan.com", point: 10 },
+  totalUnRead: 3,
+  page: 1,
+  customerInfo: {
+    addressId: "addr-1",
+    address: "Test address",
+    district: "District",
+    city: "City",
+    province: "Province",
+    phoneNumber: "0123456789",
+    remark: "",
+    roomNo: "",
+  },
+  extraService: JSON.stringify([
+    {
+      id: "es-1",
+      name: "Ironing",
+      code: "COSTSP",
+      pricePerUnit: 20,
+      unit: 1,
+      perHour: 10,
+      perTime: 0,
+      acType: "",
+    },
+  ]),
+  serviceDetail: { id: "svc-1", name: "Test service", price: 100 },
+  banner: [],
+  promotionType: 2,
+  content: JSON.stringify({ money: 50, percent: 10, point: 5 }),
+  version: "1.0.0",
+  status: "OK",
 };
 
 installApiRoutes(axios as any, {
@@ -253,6 +287,10 @@ installApiRoutes(axios as any, {
   [Constants.API.promotion_apply]: {
     promotionType: 1, // GIFT_PERCENT
     content: JSON.stringify({ percent: 10 }),
+  },
+  [Constants.API.get_version]: {
+    // newer version available -> update dialog shows
+    items: [{ version: "9.9.9" }, { version: "9.9.9" }],
   },
   [Constants.API.get_notification]: {
     // page-2 branch: merge into the existing list
@@ -513,6 +551,11 @@ describe("screens interaction sweep (Phase 3 coverage harness)", () => {
         await flush();
       }
       expect(renderer.toJSON()).not.toBeNull();
+      // Login's success flow arms a 900ms FCM-token debounce; let it fire
+      // inside the test so no post-run console log fails the process.
+      if (label === "Auth/Login") {
+        await new Promise((r) => setTimeout(r, 1100));
+      }
       // final tick so late-throttled requests settle before unmount
       await flush();
       renderer.unmount();

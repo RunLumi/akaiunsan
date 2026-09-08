@@ -453,8 +453,9 @@ describe("screens interaction sweep (Phase 3 coverage harness)", () => {
       const root = renderer.root;
       // Multiple rounds: presses that advance wizard steps mount gated
       // sub-components (Options/Payment), whose handlers then get exercised in
-      // the following rounds. A few screens loop their late-round async work
-      // forever under act, so they stay at a single round.
+      // the following rounds. Three screens loop late-round async work
+      // forever under act (their gated sub-components are covered by the
+      // dedicated step-components suite instead).
       const rounds = SINGLE_ROUND.has(label) ? 1 : 3;
       for (let round = 0; round < rounds; round++) {
         typeAll(root);

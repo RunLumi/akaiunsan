@@ -8,6 +8,7 @@
     "test": "NODE_ENV=test vitest run",
     "dev": "NODE_ENV=development tsx watch app.ts",
     "prod": "NODE_ENV=production tsx app.ts",
+    "seed:reviewer": "NODE_ENV=production tsx scripts/seed-reviewer-account.ts",
     "postinstall": "patch-package",
     "test:watch": "NODE_ENV=test vitest",
     "test:coverage": "NODE_ENV=test vitest run --coverage",

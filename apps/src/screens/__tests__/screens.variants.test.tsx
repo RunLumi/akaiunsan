@@ -65,7 +65,7 @@ const preloadedState = {
     user: {
       id: 1,
       fullName: "Test User",
-      email: "test@ayasan.com",
+      email: "test@akaiunsan.com",
       phoneNumber: "0123456789",
       address: "Bangkok",
       gender: 0,
@@ -113,7 +113,7 @@ const baseParams = {
   onGoBack: () => {},
   fromThread: "",
   items: [],
-  email: "test@ayasan.com",
+  email: "test@akaiunsan.com",
   password: "",
   hour: 1,
   plan: { id: "plan-1", price: 100, point: 10 },

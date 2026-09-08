@@ -23,17 +23,16 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      mariadb:
-        image: mariadb:12
+      postgres:
+        image: postgres:16-alpine
         env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: akaiunsan_db_test
-          MYSQL_USER: akaiunsan_test
-          MYSQL_PASSWORD: akaiunsan_test
+          POSTGRES_DB: akaiunsan_db_test
+          POSTGRES_USER: akaiunsan_test
+          POSTGRES_PASSWORD: akaiunsan_test
         ports:
-          - 3306:3306
+          - 5432:5432
         options: >-
-          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-cmd="pg_isready -U akaiunsan_test -d akaiunsan_db_test"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=10

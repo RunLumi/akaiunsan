@@ -41,6 +41,14 @@ EOF
   echo "[entrypoint] Synthesized $TARGET_CONFIG from environment variables."
 fi
 
+if [ "${SEED_REVIEWER_ACCOUNT:-0}" = "1" ]; then
+  if [ -z "${REVIEWER_ACCOUNT_PASSWORD:-}" ]; then
+    echo "[entrypoint] SEED_REVIEWER_ACCOUNT=1 requires REVIEWER_ACCOUNT_PASSWORD." >&2
+    exit 1
+  fi
+  node dist/scripts/seed-reviewer-account.js
+fi
+
 # Ensure dist/config also has the config file for relative requires inside dist/
 mkdir -p dist/config
 cp -f "$TARGET_CONFIG" "dist/$TARGET_CONFIG"

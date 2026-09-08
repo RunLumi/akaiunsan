@@ -117,7 +117,7 @@ const preloadedState = {
     user: {
       id: 1,
       fullName: "Test User",
-      email: "test@ayasan.com",
+      email: "test@akaiunsan.com",
       phoneNumber: "0123456789",
       gender: 0,
       loginBy: "email",
@@ -191,7 +191,7 @@ const baseParams = {
   isEdit: false,
   onGoBack: () => {},
   subscriptionPlanActive: null,
-  email: "test@ayasan.com",
+  email: "test@akaiunsan.com",
 };
 
 const routeMock = (params: any) => ({ key: "test-key", name: "Test", params });

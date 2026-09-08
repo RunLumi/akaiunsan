@@ -301,9 +301,8 @@ describe("booking wizard steps (Phase 3 characterization)", () => {
       );
       await flush();
       // Jump through every step header (absolute toStep jumps), sweeping the
-      // freshly mounted step each time. `onNextStep` is block-listed: its
-      // order-submission chain re-schedules unresolved async work under the
-      // Node renderer (characterized instead by the request/saga suites).
+      // freshly mounted step each time. `onNextStep` is pressed once at the
+      // deepest step with shaped endpoint data (order submission flow).
       const seenHandlers = new Set<any>();
       const labels: any[] = [];
       rootfindAll(renderer, (fn: any) => {
@@ -321,6 +320,11 @@ describe("booking wizard steps (Phase 3 characterization)", () => {
         sweepExceptOnNextStep(renderer.root);
         await flush();
       }
+      // Final pass: full sweep including the order-submission handler.
+      typeAll(renderer.root);
+      await flush();
+      pressAll(renderer.root);
+      await flush();
       expect(renderer.toJSON()).not.toBeNull();
       await flush();
       renderer.unmount();

@@ -84,3 +84,4 @@ coverage/
 /apps/android/release.jks
 /apps/ios/scripts/release.env
 /apps/ios/scripts/*.p8
+.DS_Store

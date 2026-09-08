@@ -235,6 +235,13 @@ installApiRoutes(axios as any, {
     ],
   },
   [Constants.API.booking_detail]: {
+    id: "od-1",
+    orderId: "ord-1",
+    orderDetailId: "od-1",
+    // PENDING drives the cancel-order dialog branch (reason picker + confirm)
+    orderStatus: 0,
+    serviceName: "Test service",
+    serviceType: 1,
     customerInfo: {
       addressId: "addr-1",
       address: "Test address",
@@ -242,6 +249,10 @@ installApiRoutes(axios as any, {
       remark: "",
       roomNo: "",
     },
+  },
+  [Constants.API.promotion_apply]: {
+    promotionType: 1, // GIFT_PERCENT
+    content: JSON.stringify({ percent: 10 }),
   },
 }, fallbackData);
 

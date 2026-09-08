@@ -143,10 +143,13 @@ const richProps = () => ({
   language: "en",
 });
 
-const CASES: [string, any][] = [
+const CASES: [string, any, any?][] = [
   ["ServiceScreen/component/Option", ServiceOption],
+  // Cleaning type renders the AC/extra-service rows (check + count handlers)
+  ["ServiceScreen/component/Option cleaning", ServiceOption, 4],
   ["ServiceScreen/component/Payment", ServicePayment],
   ["EditAndReOrderServiceScreen/component/Option", EditOption],
+  ["EditAndReOrderServiceScreen/component/Option cleaning", EditOption, 4],
   ["EditAndReOrderServiceScreen/component/Payment", EditPayment],
   ["EditAndReOrderServiceScreen/component/Service", EditServiceCalendar],
   ["EditAndReOrderServiceScreen/component/Address", EditAddress],
@@ -181,12 +184,15 @@ describe("step-gated wizard components (Phase 3 characterization)", () => {
     mockNavInstance = nav();
   });
 
-  it.each(CASES)("mounts and exercises %s", async (label, Component) => {
+  it.each(CASES)(
+    "mounts and exercises %s",
+    async (label, Component, extraType) => {
     const store = makeStore(preloadedState);
     const renderer = createWithStore(
       <Component
         navigation={mockNavInstance}
         {...richProps()}
+        {...(extraType ? { type: extraType, serviceType: extraType } : {})}
         {...(EXTRA_PROPS[label] || {})}
       />,
       store
@@ -208,5 +214,6 @@ describe("step-gated wizard components (Phase 3 characterization)", () => {
     expect(renderer.toJSON()).not.toBeNull();
     await flush();
     renderer.unmount();
-  });
+    }
+  , 90000);
 });

@@ -1,0 +1,12 @@
+appId: com.akaiunsan.customer
+
+---
+- clearState
+- launchApp
+- extendedWaitUntil:
+    visible: "Email"
+    timeout: 30000
+- assertVisible: "Password"
+- assertVisible: "Sign In"
+- tapOn: "Sign In"
+- assertVisible: "Please enter your email address."

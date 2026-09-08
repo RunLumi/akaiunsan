@@ -14,6 +14,8 @@ WORKDIR /usr/share/caddy
 
 # Copy static assets (or built dist from builder stage)
 COPY index.html /usr/share/caddy/index.html
+COPY privacy-policy /usr/share/caddy/privacy-policy
+COPY terms-of-service /usr/share/caddy/terms-of-service
 
 # Configure Caddy for SPA history routing (fallback to index.html for unknown routes)
 RUN printf ':80 {\n  root * /usr/share/caddy\n  try_files {path} /index.html\n  file_server\n}\n' > /etc/caddy/Caddyfile

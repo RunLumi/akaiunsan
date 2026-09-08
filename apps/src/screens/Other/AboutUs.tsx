@@ -24,9 +24,6 @@ export function AboutUsView(props: any) {
           )}
           source={{
             uri: url,
-            // isTerms !== true
-            //   ? "https://www.akaiunsan-app.com/th-TH/privacy_policy/"
-            //   : "https://www.akaiunsan-app.com/th-TH/terms_of_service/",
           }}
         />
       </View>
@@ -35,8 +32,6 @@ export function AboutUsView(props: any) {
 }
 
 export default function AboutUs(props: any) {
-  // https://www.akaiunsan-app.com/th-TH/privacy_policy/
-
   return (
     <Container>
       <View
@@ -61,7 +56,7 @@ export default function AboutUs(props: any) {
             title="Privacy Policy"
             onPress={() => {
               props.navigation.push(Constants.SCREENS.OTHER.ABOUT_US_VIEW, {
-                url: 'https://www.akaiunsan-app.com/th-TH/privacy_policy/',
+                url: 'https://akaiunsan.com/privacy-policy',
               });
             }}
             textStyle={{ textAlign: "center" }}
@@ -71,7 +66,7 @@ export default function AboutUs(props: any) {
             title="Term of Use"
             onPress={() => {
               props.navigation.push(Constants.SCREENS.OTHER.ABOUT_US_VIEW, {
-                url: 'https://www.akaiunsan-app.com/th-TH/terms_of_service/',
+                url: 'https://akaiunsan.com/terms-of-service',
               });
             }}
             textStyle={{ textAlign: "center" }}

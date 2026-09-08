@@ -19,6 +19,6 @@
     "strictNullChecks": false,
     "types": ["node"]
   },
-  "include": ["app.ts", "routes/**/*", "controllers/**/*", "middlewares/**/*", "models/**/*", "helpers/**/*"],
+  "include": ["app.ts", "routes/**/*", "controllers/**/*", "middlewares/**/*", "models/**/*", "helpers/**/*", "scripts/**/*"],
   "exclude": ["node_modules", "dist", "tests", "coverage", "exports", "uploads"]
 }

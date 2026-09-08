@@ -78,7 +78,7 @@ const preloadedState = {
     user: {
       id: 1,
       fullName: "Test User",
-      email: "test@ayasan.com",
+      email: "test@akaiunsan.com",
       phoneNumber: "0123456789",
       address: "Bangkok",
       gender: 0,
@@ -117,7 +117,7 @@ const baseParams = {
   item: { id: "it-1", orderId: "ord-1", title: "Item", name: "Item", status: 1 },
   id: "id-1",
   isEdit: false,
-  email: "test@ayasan.com",
+  email: "test@akaiunsan.com",
 };
 
 const routeMock = (params: any) => ({ key: "test-key", name: "Test", params });

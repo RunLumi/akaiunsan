@@ -131,7 +131,7 @@ const preloadedState = {
     user: {
       id: 1,
       fullName: "Test User",
-      email: "test@ayasan.com",
+      email: "test@akaiunsan.com",
       phoneNumber: "0123456789",
       gender: 0,
       loginBy: "email",

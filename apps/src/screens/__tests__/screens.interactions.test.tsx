@@ -281,6 +281,103 @@ installApiRoutes(axios as any, {
       { name: "Thai", code: "th" },
     ],
   },
+  [Constants.API.get_current_plan]: {
+    items: [{ id: "p-1", serviceType: 1, name: "Plan", isAutoRenew: 1, price: 100, point: 10, rank: 1 }],
+  },
+  [Constants.API.get_current_fixplan]: {
+    title: "Fix plan",
+    isRenew: true,
+    id: "fp-1",
+    time: [{ bookingDate: "2026-01-01T00:00:00.000Z" }],
+  },
+  // NOTE: get_plan, get_subscription and cancel_subscription share the
+  // same "/client/subscriptions" URL, so one payload must satisfy every
+  // consumer: the AllSubscriptionPlan plan map (Flexible/Fix keys whose
+  // items carry bookDetail) and ListPlan's ranked items list.
+  [Constants.API.get_plan]: {
+    Flexible: [
+      {
+        id: "plan-flex",
+        serviceType: 1,
+        name: "Flexible",
+        serviceName: "Flexible",
+        price: 100,
+        point: 10,
+        rank: 1,
+        isAutoRenew: 1,
+        bookDetail: [
+          {
+            bookingDate: "2026-01-01T00:00:00.000Z",
+            bookingHour: "2026-01-01T01:00:00.000Z",
+            hour: 2,
+            label: "Mon",
+            serviceName: "Flexible",
+          },
+        ],
+      },
+    ],
+    Fix: [
+      {
+        id: "plan-fix",
+        serviceType: 1,
+        name: "Fix",
+        serviceName: "Fix",
+        price: 200,
+        point: 20,
+        rank: 2,
+        isAutoRenew: 0,
+        bookDetail: [
+          {
+            bookingDate: "2026-01-01T00:00:00.000Z",
+            bookingHour: "2026-01-01T01:00:00.000Z",
+            hour: 2,
+            label: "Mon",
+            serviceName: "Fix",
+          },
+        ],
+      },
+    ],
+    items: [
+      {
+        id: "p-1",
+        serviceType: 1,
+        name: "Plan A",
+        serviceName: "Plan A",
+        price: 100,
+        point: 10,
+        rank: 1,
+        isAutoRenew: 1,
+        bookDetail: [
+          {
+            bookingDate: "2026-01-01T00:00:00.000Z",
+            bookingHour: "2026-01-01T01:00:00.000Z",
+            hour: 2,
+            label: "Mon",
+            serviceName: "Plan A",
+          },
+        ],
+      },
+      {
+        id: "p-2",
+        serviceType: 1,
+        name: "Plan B",
+        serviceName: "Plan B",
+        price: 200,
+        point: 20,
+        rank: 2,
+        isAutoRenew: 0,
+        bookDetail: [
+          {
+            bookingDate: "2026-01-01T00:00:00.000Z",
+            bookingHour: "2026-01-01T01:00:00.000Z",
+            hour: 2,
+            label: "Mon",
+            serviceName: "Plan B",
+          },
+        ],
+      },
+    ],
+  },
   [Constants.API.booking_detail]: {
     id: "od-1",
     orderId: "ord-1",

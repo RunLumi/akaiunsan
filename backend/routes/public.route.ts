@@ -23,6 +23,16 @@ export default app => {
   app.post('/auth/reset-password', AccountController.customer.resetPassword);
   app.post('/auth/signin', AccountController.customer.signin);
   app.post('/auth/signup', AccountController.customer.signup);
+  app.post('/auth/google', async (req, res) => {
+    const { signin } = await import('../controllers/account/google.controller.ts');
+    return signin(req, res);
+  });
+
+  // Mobile bootstrap compatibility while the client migrates from the legacy API.
+  app.get('/configuration/versions', async (req, res) => {
+    const { getMobileVersion } = await import('../controllers/mobile-compat.controller.ts');
+    return getMobileVersion(req, res);
+  });
 
   //banner
   app.get('/banners/:lang_code', BannerController.getDisplay);

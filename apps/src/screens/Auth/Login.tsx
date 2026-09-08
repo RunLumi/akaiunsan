@@ -49,6 +49,7 @@ export default function Login(props: any) {
   const dispatch = useDispatch();
 
   const params = props.route.params || {};
+  const tokenFromResponse = (response: any) => response?.auth_token ?? response?._token;
 
   const appState = useRef(AppState.currentState);
   const language = useSelector((state: any) => state.language.language);
@@ -151,18 +152,19 @@ export default function Login(props: any) {
     callback: ({ error, response }) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
-        if (response && response.auth_token) {
+        const token = tokenFromResponse(response);
+        if (token) {
           try {
-            sendFCMToken(response.auth_token);
+            sendFCMToken(token);
             i18n.locale = currentLanguage;
             requestUpdateLanguage({
               data: { language: currentLanguage == "th" ? 1 : 2 },
-              headers: { Authorization: `Bearer ${response.auth_token}` },
+              headers: { Authorization: `Bearer ${token}` },
             });
             dispatch({
               type: success(TYPES.AUTH.LOGIN),
               payload: {
-                token: response.auth_token,
+                token,
               },
             });
           } catch (error) {
@@ -178,19 +180,20 @@ export default function Login(props: any) {
     callback: async ({ error, response }) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
-        if (response && response.auth_token) {
+        const token = tokenFromResponse(response);
+        if (token) {
           try {
-            sendFCMToken(response.auth_token);
+            sendFCMToken(token);
             dispatch({
               type: success(TYPES.AUTH.LOGIN),
               payload: {
-                token: response.auth_token,
+                token,
               },
             });
             i18n.locale = currentLanguage;
             requestUpdateLanguage({
               data: { language: currentLanguage == "th" ? 1 : 2 },
-              headers: { Authorization: `Bearer ${response.auth_token}` },
+              headers: { Authorization: `Bearer ${token}` },
             });
           } catch (error) {
             Alert.alert("apple", JSON.stringify(error));
@@ -205,18 +208,19 @@ export default function Login(props: any) {
     callback: async ({ error, response }) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
-        if (response && response.auth_token) {
+        const token = tokenFromResponse(response);
+        if (token) {
           dispatch({
             type: success(TYPES.AUTH.LOGIN),
             payload: {
-              token: response.auth_token,
+              token,
             },
           });
-          sendFCMToken(response.auth_token);
+          sendFCMToken(token);
           i18n.locale = currentLanguage;
           requestUpdateLanguage({
             data: { language: currentLanguage == "th" ? 1 : 2 },
-            headers: { Authorization: `Bearer ${response.auth_token}` },
+            headers: { Authorization: `Bearer ${token}` },
           });
         }
       }
@@ -228,19 +232,20 @@ export default function Login(props: any) {
     callback: async ({ error, response }) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
-        if (response && response.auth_token) {
+        const token = tokenFromResponse(response);
+        if (token) {
           try {
-            sendFCMToken(response.auth_token);
+            sendFCMToken(token);
             dispatch({
               type: success(TYPES.AUTH.LOGIN),
               payload: {
-                token: response.auth_token,
+                token,
               },
             });
             i18n.locale = currentLanguage;
             requestUpdateLanguage({
               data: { language: currentLanguage == "th" ? 1 : 2 },
-              headers: { Authorization: `Bearer ${response.auth_token}` },
+              headers: { Authorization: `Bearer ${token}` },
             });
           } catch (error) {
             Alert.alert("google", JSON.stringify(error));
@@ -483,7 +488,7 @@ export default function Login(props: any) {
             <Text style={s.or}>{i18n.t("auth.or")}</Text>
             <Text style={s.loginWith}>{i18n.t("auth.login_with")}</Text>
             <View style={s.row}>
-              {Platform.OS === "ios" && (
+              {Platform.OS === "ios" && Constants.API.apple_login && (
                 <TouchableOpacity
                   onPress={loginApple}
                   style={{

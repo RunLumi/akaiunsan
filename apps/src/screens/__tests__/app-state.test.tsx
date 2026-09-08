@@ -162,6 +162,8 @@ const baseParams = {
   item: { id: "it-1", orderId: "ord-1", title: "Item", name: "Item", status: 1 },
   id: "id-1",
   isEdit: false,
+  // FixPlan/PickAddress reads serviceType off the top-level params
+  serviceType: 1,
   email: "test@akaiunsan.com",
 };
 

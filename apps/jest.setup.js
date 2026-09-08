@@ -29,6 +29,7 @@ jest.mock("react-native-gesture-handler", () => {
     GestureHandlerRootView: ReactNative.View,
     PanGestureHandler: makeHandler(),
     NativeViewGestureHandler: makeHandler(),
+    Switch: makeHandler(),
     RawButton: makeHandler(),
     BaseButton: makeHandler(),
     RectButton: makeHandler(),

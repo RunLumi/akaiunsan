@@ -262,6 +262,19 @@ installApiRoutes(axios as any, {
       },
     ],
   },
+  [Constants.API.config_price_subscription]: {
+    // subscription discount tiers: salePriceModel must be an ARRAY
+    // (the screen maps it); priceModel stays an object
+    items: [
+      {
+        serviceType: 1,
+        pricesModel: JSON.stringify([
+          { fromHour: 0, toHour: 2, percent: 0 },
+          { fromHour: 3, toHour: 99, percent: 10 },
+        ]),
+      },
+    ],
+  },
   [Constants.API.languages]: {
     items: [
       { name: "English", code: "en" },
@@ -393,6 +406,8 @@ const baseParams = {
   item: listItem(),
   id: "id-1",
   isEdit: false,
+  // FixPlan/PickAddress reads serviceType off the top-level params
+  serviceType: 1,
   placeName: "Bangkok",
   subscriptionPlanActive: null,
   onReloadNoti: () => {},

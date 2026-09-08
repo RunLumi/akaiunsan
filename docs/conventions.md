@@ -21,7 +21,7 @@ Patterns distilled from the existing codebase. When editing, match the surroundi
 - Redux flow: `actions.ts` → `sagas/` (side effects, axios) → `reducers/`; persisting via redux-persist in `store.ts`.
 - Theming/constants from `src/shared/`; i18n strings in `src/shared/I18n` — no hardcoded user-facing copy.
 - ESLint config exists (`.eslintrc.json`); keep imports ordered as existing files do.
-- Native changes require rebuilding the app (bare workflow — expo updates exist via `expo-updates`, see `updateSource` hook).
+- Native or JavaScript changes require rebuilding the app; Expo OTA updates are intentionally disabled. Ship mobile changes through native builds and the app-store release workflow.
 
 ## Git
 

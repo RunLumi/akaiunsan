@@ -44,7 +44,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { PaymentList } from "../screens/Payment";
 import useApi from "../hooks/useApi";
 import i18n from "../shared/I18n";
-import { useDispatch, useSelector } from "react-redux";
+import * as ReactRedux from "react-redux";
 import { TYPES } from "../redux/actions";
 import { isEmpty } from "lodash";
 import { linkingConfig, deepLinkRoute, gateForToken } from "./contracts";
@@ -94,9 +94,9 @@ export default function Navigation() {
 const NavStack = createStackNavigator();
 
 function RootNavigator() {
-  const dispatch = useDispatch();
-  const user = useSelector((state: any) => state.auth.user);
-  const token = useSelector((state: any) => state.auth.token);
+  const dispatch = ReactRedux.useDispatch();
+  const user = ReactRedux.useSelector((state: any) => state.auth.user);
+  const token = ReactRedux.useSelector((state: any) => state.auth.token);
 
   // const [initRoute, setInitRoute] = useState(Constants.SCREENS.AUTH.LOGIN)
   // const [isReady, setIsReady] = useState(false);
@@ -151,7 +151,13 @@ function RootNavigator() {
   };
 
   useEffect(() => {
-    messaging().onNotificationOpenedApp(async (remoteMessage: any) => {
+    const messagingService =
+      typeof messaging === "function" ? messaging() : undefined;
+    if (typeof messagingService?.onNotificationOpenedApp !== "function") {
+      return;
+    }
+
+    messagingService.onNotificationOpenedApp(async (remoteMessage: any) => {
       const { data } = remoteMessage;
       // Preserved side-effects: each type pre-loads its initialParams state
       // (note: navigation below reads the *stale* render-closure value).

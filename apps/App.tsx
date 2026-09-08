@@ -5,20 +5,21 @@ import { PersistGate } from "redux-persist/lib/integration/react";
 import redux from "./src/redux/store";
 import messaging from '@react-native-firebase/messaging';
 import useCachedResources from "./src/hooks/useCachedResources";
-import updateResources from "./src/hooks/updateSource";
 import notifee, { AndroidImportance } from "@notifee/react-native";
 import analytics from "@react-native-firebase/analytics";
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
-  const isLoadingUpdate = updateResources();
 
   useEffect(() => {
+    const messagingService =
+      typeof messaging === "function" ? messaging() : undefined;
     requestUserPermission()
 
     async function requestUserPermission() {
+      if (typeof messagingService?.requestPermission !== "function") return;
       // await messaging().registerDeviceForRemoteMessages()
-      const authStatus = await messaging().requestPermission();
+      const authStatus = await messagingService.requestPermission();
       const enabled =
         authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
         authStatus === messaging.AuthorizationStatus.PROVISIONAL;
@@ -28,10 +29,13 @@ export default function App() {
       }
     }
 
-    const unsubscribe = messaging().onMessage(async (remoteMessage: any) => {
-      await createNotification(remoteMessage)
-      await analytics().logEvent("notification", remoteMessage);
-    });
+    const unsubscribe =
+      typeof messagingService?.onMessage === "function"
+        ? messagingService.onMessage(async (remoteMessage: any) => {
+            await createNotification(remoteMessage)
+            await analytics().logEvent("notification", remoteMessage);
+          })
+        : undefined;
 
     return unsubscribe;
   }, [])
@@ -58,7 +62,8 @@ export default function App() {
   
 
 
-  if (!isLoadingComplete || !isLoadingUpdate) {
+  // OTA updates are intentionally not part of the Akaiunsan runtime.
+  if (!isLoadingComplete) {
     return null
   }
 

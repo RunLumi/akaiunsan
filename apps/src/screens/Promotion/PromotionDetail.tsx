@@ -1,4 +1,4 @@
-import Carousel from "react-native-snap-carousel";
+import Carousel from "../../components/Carousel";
 import React, { useEffect, useState } from "react";
 import {
   Dimensions,
@@ -183,13 +183,8 @@ export default function PromotionDetail(props: any) {
         >
           <View style={s.container}>
             <Carousel
-              layout={"default"}
               data={imageBanner}
-              sliderWidth={width}
-              itemWidth={Layout.window.width}
               renderItem={renderItem}
-              autoplay
-              loop
             />
           </View>
           <View style={{ flex: 2, marginHorizontal: 12 }}>

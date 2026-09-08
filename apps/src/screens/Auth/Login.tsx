@@ -65,8 +65,10 @@ export default function Login(props: any) {
     method: "get",
     url: Constants.API.get_version,
     callback: ({ error, response }) => {
-      if (error) Alert.alert(i18n.t("auth.error"), error);
-      else {
+      if (error) {
+        // Version metadata is advisory; it must not block offline login.
+        console.warn("Version check unavailable:", error);
+      } else {
         setVersion(
           Platform.OS === "android"
             ? response.items[0].version

@@ -7,10 +7,6 @@
     "icon": "./src/assets/images/brand-logo-1024.png",
     "scheme": "com.akaiunsan.customer",
     "userInterfaceStyle": "automatic",
-    "updates": {
-      "fallbackToCacheTimeout": 0,
-      "checkAutomatically": "ON_ERROR_RECOVERY"
-    },
     "androidStatusBar": {
       "backgroundColor": "#FFFFFF",
       "translucent": false
@@ -75,7 +71,13 @@
       "@react-native-firebase/app",
       "@react-native-firebase/crashlytics",
       "@react-native-google-signin/google-signin",
-      "@sentry/react-native",
+      [
+        "@sentry/react-native",
+        {
+          "organization": "akaiunsan",
+          "project": "react-native"
+        }
+      ],
       [
         "expo-splash-screen",
         {

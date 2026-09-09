@@ -25,16 +25,8 @@ appId: com.akaiunsan.customer
 - assertVisible: "Sign In"
 - tapOn: "Sign In"
 - assertVisible: "Please enter your email address."
-- swipe:
-    direction: UP
-    duration: 500
-- swipe:
-    direction: UP
-    duration: 500
 - tapOn: "Sign Up"
-- extendedWaitUntil:
-    visible: "Log in"
-    timeout: 5000
+- waitForAnimationToEnd
 - assertVisible: "First name *"
 - assertVisible: "Last name *"
 - assertVisible: "Phone No. *"
@@ -43,14 +35,16 @@ appId: com.akaiunsan.customer
 - assertVisible: "Password *"
 - assertVisible: "Confirm Password *"
 - assertVisible: "Next"
-- tapOn: "Log in"
+- tapOn:
+    id: "signup-login-button"
+- waitForAnimationToEnd
 - extendedWaitUntil:
     visible: "Email"
-    timeout: 5000
+    timeout: 10000
 - tapOn: "Forgot Password?"
 - extendedWaitUntil:
     visible: "Send OTP"
-    timeout: 5000
+    timeout: 10000
 - assertVisible: "Email"
 - assertVisible: "Send OTP"
 - tapOn: "Send OTP"

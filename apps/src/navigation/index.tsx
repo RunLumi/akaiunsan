@@ -48,6 +48,7 @@ import * as ReactRedux from "react-redux";
 import { TYPES } from "../redux/actions";
 import { isEmpty } from "lodash";
 import { linkingConfig, deepLinkRoute, gateForToken } from "./contracts";
+import type { RouteName } from "./routes";
 import { reactNavigationIntegration } from "../../instrument";
 
 const { width } = Dimensions.get("window");
@@ -193,8 +194,9 @@ function RootNavigator() {
           break;
       }
       const screenName = deepLinkRoute(data);
+      // isEmpty guards the "" no-op case; the cast restores RouteName
       !isEmpty(screenName) &&
-        NavigationRoot.navigate(screenName, initialParams);
+        NavigationRoot.navigate(screenName as RouteName, initialParams);
     });
   }, []);
 
@@ -308,8 +310,7 @@ function RootNavigator() {
           <NavStack.Screen
             options={{
               ...defaultHeader,
-              headerBackTitle: "",
-              headerBackTitleVisible: false,
+              headerBackButtonDisplayMode: "minimal",
             }}
             name={Constants.SCREENS.ADDRESS.ADDRESS}
             component={Address}
@@ -331,8 +332,7 @@ function RootNavigator() {
           <NavStack.Screen
             options={{
               ...defaultHeader,
-              headerBackTitle: "",
-              headerBackTitleVisible: false,
+              headerBackButtonDisplayMode: "minimal",
             }}
             initialParams={initialParams}
             name={Constants.SCREENS.BOOKING.DETAIL}
@@ -341,8 +341,7 @@ function RootNavigator() {
           <NavStack.Screen
             options={{
               ...defaultHeader,
-              headerBackTitle: "",
-              headerBackTitleVisible: false,
+              headerBackButtonDisplayMode: "minimal",
             }}
             name={Constants.SCREENS.BOOKING.DETAIL_HISTORY}
             component={DetailHistory}
@@ -375,8 +374,7 @@ function RootNavigator() {
           <NavStack.Screen
             options={{
               ...defaultHeader,
-              headerBackTitle: "",
-              headerBackTitleVisible: false,
+              headerBackButtonDisplayMode: "minimal",
             }}
             name={Constants.SCREENS.MYBOOKING.DETAIL_MYBOOKING}
             component={BookingDetail}

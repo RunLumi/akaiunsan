@@ -6,8 +6,9 @@ import { Account, Booking, Home, Inbox } from "../screens/Main";
 import colors from "../shared/Colors";
 import i18n from "../shared/I18n";
 import { useSelector } from "react-redux";
+import { tabLabel, TAB_ROUTES } from "./routes";
 
-const BottomTab = createBottomTabNavigator<any>();
+const BottomTab = createBottomTabNavigator();
 export default function BottomTabNavigator() {
   const tools = useSelector((state: any) => state.tools.notification);
   const language = useSelector((state: any) => state.language.language);
@@ -34,27 +35,30 @@ export default function BottomTabNavigator() {
       initialRouteName={Constants.SCREENS.MAIN.HOME}
     >
       <BottomTab.Screen
-        name={i18n.t("Home")}
+        name={TAB_ROUTES.HOME}
         component={Home}
         options={{
+          tabBarLabel: tabLabel(TAB_ROUTES.HOME),
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="home-outline" color={color} />
           ),
         }}
       />
       <BottomTab.Screen
-        name={i18n.t("Booking")}
+        name={TAB_ROUTES.BOOKING}
         component={Booking}
         options={{
+          tabBarLabel: tabLabel(TAB_ROUTES.BOOKING),
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="clipboard-outline" color={color} />
           ),
         }}
       />
       <BottomTab.Screen
-        name={i18n.t("Inbox")}
+        name={TAB_ROUTES.INBOX}
         component={Inbox}
         options={{
+          tabBarLabel: tabLabel(TAB_ROUTES.INBOX),
           tabBarBadge: tools > 0 ? tools : undefined,
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="chatbubble-outline" color={color} />
@@ -62,9 +66,10 @@ export default function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name={i18n.t("Account")}
+        name={TAB_ROUTES.ACCOUNT}
         component={Account}
         options={{
+          tabBarLabel: tabLabel(TAB_ROUTES.ACCOUNT),
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="person-outline" color={color} />
           ),

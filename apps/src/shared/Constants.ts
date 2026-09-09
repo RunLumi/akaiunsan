@@ -1,4 +1,6 @@
 export default {
+  // `as const` keeps every screen name a literal type so the navigation
+  // ParamList (src/navigation/routes.ts) is derived from this single source.
   SCREENS: {
     AUTH: {
       LOGIN: "Auth/Login",
@@ -67,7 +69,7 @@ export default {
       ABOUT_US: "AboutUs",
       ABOUT_US_VIEW: "AboutUs/View",
     },
-  },
+  } as const,
   API: {
     // dev
     dev: "http://api-mobile-akaiunsan.dev.ncs.int",

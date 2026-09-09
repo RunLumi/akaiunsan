@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { createWithStore, makeApiStore, flush, pressAll, typeAll } from "../../test-utils/helpers";
+import { createWithStore, makeApiStore, flush, pressAll, typeAll, act } from "../../test-utils/helpers";
 
 // The full navigation tree mounts in the Node renderer once the heavy global
 // overlays (NotificationHandler, PickerModal) are stood in and the safe-area
@@ -121,7 +121,13 @@ describe("app navigation tree (Phase 3 characterization)", () => {
         await new Promise((r) => setImmediate(r));
       }
       await flush();
-      renderer.unmount();
+      // v7 elements detach pressable refs via scheduler immediates during
+      // deletion; drain them inside the live environment instead of letting
+      // them fire post-teardown (which crashes the worker).
+      await act(async () => {
+        renderer.unmount();
+        await new Promise((r) => setImmediate(r));
+      });
     },
     30000
   );

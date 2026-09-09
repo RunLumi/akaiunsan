@@ -1,4 +1,5 @@
 import Constants from "../shared/Constants";
+import type { RouteName } from "./routes";
 
 // ---- Testable navigation contracts (Phase 1 characterization) --------------
 // Pure data / pure functions so they survive the Phase 2 replatform (typed
@@ -17,7 +18,7 @@ export const linkingConfig = {
 
 // FCM `data.type` → deep-link route. Types 0..4 are handled, anything else
 // resolves to "" (the app keeps that as "do nothing").
-export const deepLinkRoute = (data: any): string => {
+export const deepLinkRoute = (data: any): RouteName | "" => {
   switch (data && data.type) {
     case "0":
       return Constants.SCREENS.BOOKING.DETAIL;

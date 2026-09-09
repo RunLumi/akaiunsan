@@ -81,7 +81,7 @@ describe("AddFixPlan variants (Phase 3 characterization)", () => {
   it.each(CASES)("mounts and exercises the %s flow", async (_label, over) => {
     const store = makeStore(preloadedState);
     const renderer = createWithStore(
-      <AddFixPlan navigation={mockNavInstance} {...baseProps(over)} />,
+      <AddFixPlan {...baseProps(over)} />,
       store
     );
     await flush();

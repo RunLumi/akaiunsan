@@ -4,6 +4,7 @@ import {
   StyleSheet,
   StatusBar,
   Text as RNText,
+  TextInput as RNTextInput,
   View,
 } from "react-native";
 import { act, create, textNodes, hostTouchables } from "../../test-utils/helpers";

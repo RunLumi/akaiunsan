@@ -87,7 +87,6 @@ export const CustomInput = ({
             style,
           ]}
           underlineColorAndroid="transparent"
-          maxFontSizeMultiplier={Styles.typography.maxFontSizeMultiplier}
           editable={!disabled}
           secureTextEntry={secureText ? showPass.enabled : false}
           value={value}

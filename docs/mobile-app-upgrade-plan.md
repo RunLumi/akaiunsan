@@ -80,8 +80,6 @@ Consequences of the gap: Play Store targetSdk requirements are already unmet for
 | Push | **notifee + @react-native-firebase/messaging only** | Kills deprecated RN-push-notification and the 3 redundant stacks |
 | Testing | **Jest + @testing-library/react-native v14** (unit/integration), **Maestro** (E2E smoke) | RNTL supports modern RN; Maestro is the pragmatic Expo E2E |
 | API mocking | axios adapter mock (or MSW) behind `useApi`/RTK Query fetch | Tests the real unwrap/error contract |
-| OTA | **EAS Update** (or disabled) | Classic updates endpoint is dead already |
-| Builds | **EAS Build** profiles (development / staging / production) | Replaces malformed gradle scripts + README runbook |
 | i18n | i18n-js now; typed keys backlog | No migration cost justified yet |
 | CI | GitHub Actions: typecheck + lint + jest on every PR; Maestro nightly on macOS runner | Repo lives on GitHub since the rebrand PR |
 
@@ -103,7 +101,7 @@ Consequences of the gap: Play Store targetSdk requirements are already unmet for
 Goal: make change cheap and verifiable; remove live credentials from the repo. No app behavior changes.
 
 1. **Secrets out**: gitignore + `git rm --cached` the keystores/`*.p12`/`*.p8`/`.env*` (keep local copies via secure storage); rotate: new upload keystore, new APNs key, Omise keys, README passwords scrubbed. Coordinate with backend (docs/security.md).
-2. Tooling: ESLint 9 (typescript-eslint) + Prettier; delete duplicate `.babelrc`; fix malformed android scripts or delete them (EAS replaces them in Phase 6); `.nvmrc` (22) + `engines`.
+2. Tooling: ESLint 9 (typescript-eslint) + Prettier; delete duplicate `.babelrc`; fix malformed android scripts or delete them; `.nvmrc` (22) + `engines`.
 3. Jest wired for real: `jest-expo` for now (tests must run on the *current* stack), `jest.config.js`, `scripts.test = jest` (not watch), TypeScript 4.3 → 5.x here (low risk, tests are TS).
 4. GitHub Actions: `apps-ci.yml` — typecheck + lint + jest on every PR touching `apps/`.
 5. Pin two latent bugs with tests (`// pins current behavior`): translated tab route names; `redux-logger` in production.
@@ -132,7 +130,7 @@ Goal: RN 0.86 / React 19.2 / Hermes / New Architecture / CNG, carrying all app c
 5. **Boot-critical flows verified with Maestro** (write the flows here, they become the release smoke suite): cold start → splash → login screen renders; login (mock/staging creds) → Home; tab navigation; deep link `akaiunsan://…` opens Login route.
 6. Update `docs/mobile-app.md` + README for the new toolchain.
 
-**DoD:** app boots on iOS + Android simulators with Hermes + New Arch on; full Phase 1 suite green; Maestro smoke green; `expo-doctor` clean; buildable via `eas build --profile development`.
+**DoD:** app boots on iOS + Android simulators with Hermes + New Arch on; full Phase 1 suite green; Maestro smoke green; `expo-doctor` clean.
 
 > Fallback: if prebuild regeneration stalls >3 days on a plugin gap, switch to the ladder (43 → 50 → 53 → 57) — same phases, more rungs. Decision point documented in the execution log.
 
@@ -158,14 +156,8 @@ Goal: RN 0.86 / React 19.2 / Hermes / New Architecture / CNG, carrying all app c
 
 **DoD:** no `useApi` imports outside the RTK Query adapter (or gone entirely); saga dependency removed; auth flows green under tests.
 
-### Phase 6 — Release engineering (≈3–5 days)
-1. `eas.json`: development / preview(staging) / production profiles; credentials managed by EAS (new keystore from Phase 0 rotation); internal distribution for staging.
-2. **EAS Update** channel decision (or OTA disabled — it is dead today anyway).
-3. Version reset to **1.0.0** (new listing, new identity); Android `versionCode`/iOS build number under EAS management.
-4. Maestro smoke suite in CI (nightly + pre-release); store listings, icons, splash with the Akaiunsan branding (the outstanding rebrand follow-ups).
-5. Update [deployment.md](deployment.md); GitLab CI untouched (backend only).
-
-**DoD:** `eas build` produces installable dev + staging builds; production build submitted to internal test tracks; docs current.
+### Phase 6 — REMOVED
+**Phase 6 (EAS/OTA/release engineering) removed from scope by owner decision 2026-09-09.**
 
 ### Backlog (explicitly out of scope)
 - expo-router adoption (would replace React Navigation structure wholesale).
@@ -181,7 +173,7 @@ Goal: RN 0.86 / React 19.2 / Hermes / New Architecture / CNG, carrying all app c
 - **Replatform (Phase 2):** suite must stay green across the jump — that's the definition of done for the environment change; Maestro flows are the runtime gate CI can't give.
 - **Library/data changes (Phases 3–5):** red-green-refactor; a behavior change without a failing-test-first commit is rejected in review.
 - Layout mirrors src: `apps/src/components/__tests__/`, `apps/src/hooks/__tests__/`; Maestro flows in `apps/.maestro/`.
-- CI gate: typecheck + lint + jest on every PR; Maestro nightly; EAS build only after merge to `main`.
+- CI gate: typecheck + lint + jest on every PR; Maestro nightly.
 
 ## 6. Risks & mitigations
 
@@ -192,9 +184,9 @@ Goal: RN 0.86 / React 19.2 / Hermes / New Architecture / CNG, carrying all app c
 | React Native Firebase 14 → 20+ API drift (messaging, crashlytics) | Push flows covered by characterization + Maestro; upgrade guide followed inside Phase 2, not spread out |
 | Reanimated 2 → 4 worklet semantics | Add babel plugin at jump; animations are light in this app (audit found no custom worklets) |
 | `useApi` → RTK Query regression across 48 files | Endpoint golden-file snapshot from Phase 1; module-by-module strangler with per-module PRs |
-| Secrets rotation breaks existing builds mid-flight | Rotate at Phase 0, keep old credentials valid in parallel for one release cycle; EAS takes over in Phase 6 |
-| iOS scheme/provisioning profile chaos (`Akaiunsan*` schemes, committed profiles) | New Apple App ID `com.akaiunsan.customer` (needed anyway for the new listing); EAS-managed credentials |
-| Team muscle memory (gradle scripts, README runbook) | Phase 6 rewrites docs; `eas build` is a single command |
+| Secrets rotation breaks existing builds mid-flight | Rotate at Phase 0, keep old credentials valid in parallel for one release cycle |
+| iOS scheme/provisioning profile chaos (`Akaiunsan*` schemes, committed profiles) | New Apple App ID `com.akaiunsan.customer` (needed anyway for the new listing); credentials managed outside git per docs/security.md |
+| Team muscle memory (gradle scripts, README runbook) | Docs/runbook updates track the new toolchain as phases land |
 
 ## 7. Sequencing & effort
 
@@ -206,9 +198,8 @@ Goal: RN 0.86 / React 19.2 / Hermes / New Architecture / CNG, carrying all app c
 | 3 TypeScript hardening | 3–5 d | yes |
 | 4 Library replacement | 4–6 d | yes, per-PR |
 | 5 RTK Query migration | 6–10 d | yes, per-module |
-| 6 Release engineering | 3–5 d | yes |
 
-Total ≈ **30–47 focused days**. Recommended first milestone: Phases 0–2 (≈3 weeks) — that alone moves the app to a supported platform with a test suite, clearing the store-listing blockers for the Akaiunsan launch.
+Total ≈ **27–42 focused days**. Recommended first milestone: Phases 0–2 (≈3 weeks) — that alone moves the app to a supported platform with a test suite, clearing the store-listing blockers for the Akaiunsan launch.
 
 ## 8. Execution log (updated as phases land)
 
@@ -246,7 +237,7 @@ Total ≈ **30–47 focused days**. Recommended first milestone: Phases 0–2 (�
 
 ## Remaining work (not yet done)
 
-- Phase 2 runtime gate: Maestro smoke flows (cold start → login → Home, tab nav, deep link) on iOS + Android simulators still need a booted simulator session (not available in this environment). `eas build --profile development` also requires EAS project link/credentials — Phase 6 scope.
+- Phase 2 runtime gate: Maestro smoke flows (cold start → login → Home, tab nav, deep link) on iOS + Android simulators still need a booted simulator session (not available in this environment).
 - `yarn typecheck` (`tsc --noEmit`) is intentionally red (~352 errors) — that is Phase 3 work, so the `typecheck` CI step remains red until then (jest + lint are green).
 - GitHub-config secrets: `apps/google-services.json` + `GoogleService-Info.plist` are now gitignored; a fresh clone must restore them from `apps/backup-files/` (or CI envs `GOOGLE_SERVICES_JSON`/`GOOGLESERVICE_INFO_PLIST`).
 - Phase 3 TS hardening is next.

@@ -18,7 +18,8 @@ jest.mock("redux-persist", () => {
 });
 
 import Store from "../store";
-import storeModule from "../store";
+import { buildMiddleware } from "../store";
+import logger from "redux-logger";
 import { success, TYPES } from "../actions";
 
 describe("store characterization", () => {
@@ -28,19 +29,16 @@ describe("store characterization", () => {
     expect(Store.store.getState()).toHaveProperty("auth");
     expect(Store.store.getState()).toHaveProperty("language");
     expect(Store.store.getState()).toHaveProperty("tools");
+    // Phase 5: the RTK Query api slice lives in the persisted root too
+    expect(Store.store.getState()).toHaveProperty("api");
   });
 
-  // pins current behavior (Phase 0 item 5): the `redux-logger` middleware is
-  // applied unconditionally in the production store (no __DEV__ guard), so it
-  // runs in production builds too. Fixed in Phase 5 (dev-only middleware).
-  it("pins: logger middleware is applied to the store regardless of environment", () => {
-    expect(storeModule).toBe(Store);
-    // The reducer is wrapped by persistReducer; asserting the logger is wired
-    // requires the enhancement path — check the store dispatches through the
-    // (mocked) logger middleware without crashing, and that dispatch mutates
-    // state as expected (logger is transparent).
-    Store.store.dispatch({ type: "LOGGER_PIN_TEST", payload: null });
-    expect(Store.store.getState()).toHaveProperty("auth");
+  // pins current behavior (Phase 5): redux-logger is wired ONLY behind the
+  // dev gate now — the pre-Phase-5 store applied it unconditionally.
+  it("pins: redux-logger middleware is dev-only", () => {
+    const getDefaultMiddleware = (() => []) as any;
+    expect(buildMiddleware(true)(getDefaultMiddleware)).toContain(logger);
+    expect(buildMiddleware(false)(getDefaultMiddleware)).not.toContain(logger);
   });
 
   it("dispatching LOGIN success updates auth.token (the navigation gate input)", () => {
@@ -51,11 +49,10 @@ describe("store characterization", () => {
     expect(Store.store.getState().auth.token).toBe("tok-store");
   });
 
-  it("dispatching LOG_OUT triggers the saga's LOG_OUT/SUCCESS put", async () => {
+  it("dispatching LOG_OUT resets auth through the logout middleware", () => {
     const before = Store.store.getState().auth.token;
     expect(before).toBe("tok-store");
     Store.store.dispatch({ type: TYPES.AUTH.LOG_OUT });
-    await new Promise((r) => setTimeout(r, 10));
     expect(Store.store.getState().auth.token).toBe("");
   });
 });

@@ -33,3 +33,6 @@ declare module "@react-native-firebase/analytics" {
   };
   export default analytics;
 }
+
+// React Native's injected development-mode global (store.ts logger gate).
+declare const __DEV__: boolean;

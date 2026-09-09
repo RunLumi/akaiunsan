@@ -1,41 +1,46 @@
-// @flow
-import { applyMiddleware, compose, createStore } from 'redux';
-import { persistReducer, persistStore } from 'redux-persist';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import createSagaMiddleware from 'redux-saga';
-import reducers from './reducers';
-import sagas from './sagas';
-import logger from 'redux-logger';
+import { configureStore } from "@reduxjs/toolkit";
+import { persistReducer, persistStore } from "redux-persist";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import logger from "redux-logger";
+import { apiSlice } from "./apiSlice";
+import { rootReducers } from "./listenerMiddleware";
+import { logoutMiddleware } from "./logoutMiddleware";
 
-class Store {
-	store: any;
-	persistor;
+// Phase 5: the store is an RTK `configureStore` over the same persisted root
+// (whitelist auth+language, blacklist tools) the legacy createStore composed,
+// plus the apiSlice middleware, the logout middleware (replacing the deleted
+// redux-saga watcher) and redux-logger — dev-only now, it ran unconditionally
+// before (docs/mobile-app-upgrade-plan.md §5).
 
-	constructor() {
-		// Config persistStore
-		const config = {
-			key: 'root',
-			keyPrefix: '',
-			storage: AsyncStorage,
-			blacklist: ['tools'],
-			whitelist: ['auth','language'],
-		};
-		const reducer = persistReducer(config, reducers);
+const persistConfig = {
+  key: "root",
+  keyPrefix: "",
+  storage: AsyncStorage,
+  blacklist: ["tools"],
+  whitelist: ["auth", "language"],
+};
 
-		// Redux saga
-		const sagaMiddleware = createSagaMiddleware();
+// Exported so store.test.ts can pin both branches of the logger gate.
+export const buildMiddleware =
+  (dev: boolean) => (getDefaultMiddleware: any) =>
+    getDefaultMiddleware({
+      // persist actions carry non-serializable AsyncStorage handles
+      serializableCheck: false,
+      immutableCheck: false,
+    })
+      .concat(apiSlice.middleware, logoutMiddleware)
+      .concat(dev ? [logger] : []);
 
-		// Connect to DevTools
-		const composeEnhancers = compose;
+const persistedReducer = persistReducer(persistConfig, rootReducers);
 
-		// Create store
-		const enhancer = composeEnhancers(applyMiddleware(...([sagaMiddleware, logger] as any[])));
-		this.store = createStore(reducer, enhancer);
-		// Create persistor
-		this.persistor = persistStore(this.store);
-		// Run saga
-		sagaMiddleware.run(sagas);
-	}
-}
+export const store = configureStore({
+  reducer: persistedReducer as any,
+  middleware: buildMiddleware(__DEV__),
+  enhancers: (getDefaultEnhancers: any) => getDefaultEnhancers(),
+});
 
-export default new Store();
+export const persistor = persistStore(store);
+
+// Same exported shape the app entry has always consumed
+// (`redux.store` / `redux.persistor` in App.tsx).
+export default { store, persistor };

@@ -163,6 +163,8 @@ Use `apps/scripts/deploy-stores.sh` to build the production Android AAB and iOS 
 
 The API credential files must stay outside git. `--confirm` is required for uploads; `--build-only`, `--android-only`, and `--ios-only` are available for narrower runs. Set `PLAY_TRACK=closed` or `open` only when that release destination is intentional. Production uploads additionally require `ALLOW_PLAY_PRODUCTION=YES`.
 
+For iOS distribution, keep the certificate and provisioning profile as a matched pair. Before a release, verify the local identities with `security find-identity -v -p codesigning`, run the script with `ALLOW_PROVISIONING_UPDATES=YES` when the profile is missing or stale, and verify the exported IPA before uploading. If export reports that a profile does not include the signing certificate, do not switch certificates blindly: regenerate the profile for `com.akaiunsan.customer` with the App Store Connect API key, then retry export.
+
 Android release task: `:app:bundleRelease` (Expo CNG-generated Gradle project).
 iOS scheme: `Akaiunsan` (Expo CNG-generated Xcode project/workspace).
 

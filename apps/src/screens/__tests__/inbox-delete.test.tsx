@@ -1,18 +1,18 @@
 import React from "react";
-import axios from "axios";
 import { Alert } from "react-native";
 import {
   createWithStore,
-  makeStore,
+  makeApiStore,
   flush,
-  pressAll,
-  typeAll,
 } from "../../test-utils/helpers";
 import { act } from "react-test-renderer";
 
 // Inbox's delete confirmation lives inside Alert.alert buttons, which never
-// render under jest. This suite spies Alert.alert, presses the selection and
-// confirm controls, then invokes the YES button exactly as a user tap would.
+// render under jest. This suite spies Alert.alert and drives the exact user
+// sequence — trash icon, select-all, "Delete (N)", YES — then invokes the YES
+// button as a tap would. Inbox is ported to RTK Query (Phase 5): requests flow
+// through the global fetch stub's /client/notifications route, not axios, and
+// the delete is asserted as a real DELETE.
 let mockNavInstance: any;
 jest.mock("@react-navigation/native", () => ({
   __esModule: true,
@@ -22,38 +22,6 @@ jest.mock("@react-navigation/native", () => ({
 }));
 
 import Inbox from "../Main/Inbox";
-import Constants from "../../shared/Constants";
-
-(axios as any).mockResolvedValue({
-  status: 200,
-  data: {
-    data: {
-      items: [
-        {
-          id: "noti-1",
-          type: 0,
-          data: JSON.stringify({ NotificationId: "n-1" }),
-          title: "Order",
-          status: 1,
-          image: "",
-          listImage: [{ image: "" }],
-          bookDetail: [
-            {
-              bookingDate: "2026-01-01T00:00:00.000Z",
-              hour: 2,
-              label: "Mon",
-              serviceName: "T",
-            },
-          ],
-          isAutoRenew: 1,
-          serviceName: "T",
-        },
-      ],
-      data: [],
-      errors: [],
-    },
-  },
-});
 
 const preloadedState = {
   auth: {
@@ -94,6 +62,39 @@ const baseParams = {
 
 const routeMock = (params: any) => ({ key: "test-key", name: "Test", params });
 
+// Press the first node whose onPress handler source matches `pattern`.
+// Two-phase like pressAll: pressing re-renders the tree, so walk and press
+// must not interleave (stale fibers throw during findAll).
+const pressHandler = (root: any, pattern: string) => {
+  const found: any[] = [];
+  root.findAll((n: any) => {
+    const fn = n.props?.onPress;
+    if (typeof fn === "function" && String(fn).includes(pattern)) {
+      found.push(fn);
+    }
+    return false;
+  });
+  if (!found.length) throw new Error(`no onPress matching "${pattern}"`);
+  act(() => {
+    try {
+      found[0]();
+    } catch {
+      // tolerated
+    }
+  });
+};
+
+// RTK fetchBaseQuery dispatches a single Request object.
+const fetchRequestMeta = (call: any[]) => {
+  const input = call[0];
+  return {
+    url: typeof input === "string" ? input : input?.url || "",
+    method: String(
+      (typeof input === "string" ? call[1]?.method : input?.method) || "GET"
+    ).toUpperCase(),
+  };
+};
+
 describe("Inbox delete flows (Phase 3 characterization)", () => {
   beforeEach(() => {
     mockNavInstance = nav();
@@ -103,20 +104,29 @@ describe("Inbox delete flows (Phase 3 characterization)", () => {
     const alertSpy = jest
       .spyOn(Alert, "alert")
       .mockImplementation((..._args: any[]) => {});
-    const store = makeStore(preloadedState);
+    const store = makeApiStore(preloadedState);
     const renderer = createWithStore(
       <Inbox navigation={mockNavInstance} route={routeMock(baseParams)} />,
       store
     );
     await flush();
-    // open delete mode, select everything, sweep, then confirm
-    for (let round = 0; round < 3; round++) {
-      typeAll(renderer.root);
-      await flush();
-      pressAll(renderer.root);
-      await flush();
-    }
-    // invoke every YES-style Alert button the sweeps armed
+    expect(renderer.toJSON()).not.toBeNull();
+
+    // enter delete mode (trash icon), select everything, then "Delete (N)"
+    pressHandler(renderer.root, "setIsDelete(true)");
+    await flush();
+    pressHandler(renderer.root, "onDeleteAll");
+    await flush();
+    const deleteText = renderer.root.findAll(
+      (n: any) =>
+        typeof n.props?.onPress === "function" &&
+        String(n.props.onPress).includes("confirmDeleteNotification")
+    )[0];
+    expect(deleteText).toBeTruthy();
+    act(() => deleteText.props.onPress());
+    await flush();
+
+    // the confirm Alert armed, and its non-cancel button performs the delete
     const yesButtons: any[] = [];
     for (const call of alertSpy.mock.calls) {
       const buttons = call.find((a: any) => Array.isArray(a));
@@ -131,6 +141,7 @@ describe("Inbox delete flows (Phase 3 characterization)", () => {
         }
       }
     }
+    expect(yesButtons.length).toBeGreaterThan(0);
     for (const onPress of yesButtons) {
       await act(async () => {
         try {
@@ -142,10 +153,13 @@ describe("Inbox delete flows (Phase 3 characterization)", () => {
     }
     await flush();
     await flush();
-    // the delete request fired (single, bulk, or promo variant)
-    const deleteCalls = (axios as any).mock.calls.filter((c: any) =>
-      String(c[0]?.url || "").includes("notification")
-    );
+    // the delete request fired as a DELETE against /client/notifications
+    const deleteCalls = (globalThis.fetch as jest.Mock).mock.calls
+      .map(fetchRequestMeta)
+      .filter(
+        (meta) =>
+          meta.url.includes("notification") && meta.method === "DELETE"
+      );
     expect(deleteCalls.length).toBeGreaterThan(0);
     await flush();
     renderer.unmount();

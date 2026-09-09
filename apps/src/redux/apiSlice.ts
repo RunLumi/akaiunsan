@@ -158,6 +158,22 @@ export const apiSlice = createApi({
         params: arg?.params,
       }),
     }),
+
+    // ---- Inbox (Phase 5 module port) ---------------------------------------
+    deleteNotification: builder.mutation<any, RequestArg | void>({
+      query: (arg) => ({
+        url: Constants.API.delete_notification,
+        method: "delete",
+        body: arg?.data,
+      }),
+    }),
+    readAllNotifications: builder.mutation<any, RequestArg | void>({
+      query: (arg) => ({
+        url: Constants.API.read_all_notification,
+        method: "post",
+        body: arg?.data,
+      }),
+    }),
   }),
 });
 
@@ -217,4 +233,6 @@ export const {
   useLazyGetNotificationsQuery,
   useGetBookingsQuery,
   useLazyGetBookingsQuery,
+  useDeleteNotificationMutation,
+  useReadAllNotificationsMutation,
 } = apiSlice;

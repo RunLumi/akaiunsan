@@ -165,3 +165,48 @@ describe("apiSlice Phase 5 endpoints — Home", () => {
     expect((history.data.items[0] as any).orderStatus).toBe(2);
   });
 });
+
+describe("apiSlice Phase 5 endpoints — Inbox", () => {
+  it("DELETE delete_notification sends the body the Alert yes-button built", async () => {
+    const store = makeApiStore(preloadedState);
+    await store.dispatch(
+      apiSlice.endpoints.deleteNotification.initiate({
+        data: { notificationIds: ["noti-1"], isDeleteAll: false },
+      })
+    );
+    const req = await lastRequest();
+    expect(req.url).toContain(Constants.API.delete_notification);
+    expect(req.method).toBe("DELETE");
+    expect(JSON.parse(req.bodyText)).toEqual({
+      notificationIds: ["noti-1"],
+      isDeleteAll: false,
+    });
+  });
+
+  it("DELETE delete_notification also carries the bulk deleteAllType shape", async () => {
+    const store = makeApiStore(preloadedState);
+    await store.dispatch(
+      apiSlice.endpoints.deleteNotification.initiate({
+        data: { deleteAllType: [0, 3], isDeleteAll: true, notificationIds: [] },
+      })
+    );
+    expect(JSON.parse((await lastRequest()).bodyText)).toEqual({
+      deleteAllType: [0, 3],
+      isDeleteAll: true,
+      notificationIds: [],
+    });
+  });
+
+  it("POST read_all_notification sends readAllType", async () => {
+    const store = makeApiStore(preloadedState);
+    await store.dispatch(
+      apiSlice.endpoints.readAllNotifications.initiate({
+        data: { readAllType: [0, 3] },
+      })
+    );
+    const req = await lastRequest();
+    expect(req.url).toContain(Constants.API.read_all_notification);
+    expect(req.method).toBe("POST");
+    expect(JSON.parse(req.bodyText)).toEqual({ readAllType: [0, 3] });
+  });
+});

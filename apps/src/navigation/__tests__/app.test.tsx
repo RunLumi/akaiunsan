@@ -6,6 +6,20 @@ import { createWithStore, makeApiStore, flush, pressAll, typeAll } from "../../t
 // overlays (NotificationHandler, PickerModal) are stood in and the safe-area
 // context is available. Sweeping it exercises the root stack, the tab bar and
 // each tab screen inside real navigation contexts.
+// @sentry/react-native's navigation tracing arms a recurring stall-tracking
+// timer (instrument.ts -> Sentry.init) that keeps the jest worker alive after
+// the suite. The suite characterizes navigation, so Sentry stands in.
+jest.mock("@sentry/react-native", () => ({
+  __esModule: true,
+  init: jest.fn(),
+  reactNavigationIntegration: () => ({
+    registerNavigationContainer: jest.fn(),
+    afterAllSetup: jest.fn(),
+    processEvent: (event: any) => event,
+  }),
+  captureException: jest.fn(),
+}));
+
 jest.mock("../../components/Notifications", () => {
   const React = require("react");
   return {
@@ -99,6 +113,13 @@ describe("app navigation tree (Phase 3 characterization)", () => {
         await flush();
       }
       expect(renderer.toJSON()).not.toBeNull();
+      // settle walk: the sweep arms async chains (read-all -> refresh -> GET)
+      // whose RTK query resolution spans more microtask rounds than one flush
+      // drains — leave nothing in flight before the environment tears down.
+      for (let i = 0; i < 4; i++) {
+        await flush();
+        await new Promise((r) => setImmediate(r));
+      }
       await flush();
       renderer.unmount();
     },

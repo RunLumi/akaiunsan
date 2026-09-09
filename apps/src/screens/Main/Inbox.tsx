@@ -11,7 +11,7 @@ import COLOR from "../../shared/Colors";
 import { useDispatch, useSelector } from "react-redux";
 import Constants from "../../shared/Constants";
 import { Fontisto, AntDesign } from "@expo/vector-icons";
-import useApi from "../../hooks/useApi";
+import { apiSlice, portRequest } from "../../redux/apiSlice";
 import { Ionicons } from "@expo/vector-icons";
 import i18n from "../../shared/I18n";
 import { CheckBox } from "react-native-elements";
@@ -37,10 +37,16 @@ export default function Inbox(props: any) {
   const [pageNoti, setPageNoti] = useState(2);
   const [pagePromo, setPagePromo] = useState(2);
   const [valuePromoDelete, setValuePromoDelete] = useState<any[]>([]);
-  const [loadingNotification, requestGetNotification] = useApi({
-    method: "get",
-    url: Constants.API.get_notification,
-    callback: ({ error, response }) => {
+  // Phase 5 RTK Query port: notifications + promotions read the same paged
+  // endpoint (like useApi, two tunnels); delete/read-all run as mutations.
+  // All callbacks are preserved verbatim via portRequest.
+  const [
+    notificationTrigger,
+    { isLoading: loadingNotification },
+  ] = apiSlice.endpoints.getNotifications.useLazyQuery();
+  const requestGetNotification = portRequest(
+    notificationTrigger,
+    ({ error, response }: { error: string; response: any }) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         setRefreshNoti(false);
@@ -79,12 +85,15 @@ export default function Inbox(props: any) {
           setArrNoti(data);
         }
       }
-    },
-  });
-  const [loadingPromotion, requestPromotion] = useApi({
-    method: "get",
-    url: Constants.API.get_notification,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [
+    promotionTrigger,
+    { isLoading: loadingPromotion },
+  ] = apiSlice.endpoints.getNotifications.useLazyQuery();
+  const requestPromotion = portRequest(
+    promotionTrigger,
+    ({ error, response }: { error: string; response: any }) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         notifee.setBadgeCount(response.totalUnRead);
@@ -136,13 +145,16 @@ export default function Inbox(props: any) {
           payload: response && response.totalUnRead,
         });
       }
-    },
-  });
+    }
+  );
 
-  const [loadingDeleteNotification, requestDeleteNotification] = useApi({
-    method: "delete",
-    url: Constants.API.delete_notification,
-    callback: ({ error, response }) => {
+  const [
+    deleteNotificationMutation,
+    { isLoading: loadingDeleteNotification },
+  ] = apiSlice.endpoints.deleteNotification.useMutation();
+  const requestDeleteNotification = portRequest(
+    deleteNotificationMutation,
+    ({ error }: { error: string; response: any }) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         // if (response) {
@@ -158,12 +170,15 @@ export default function Inbox(props: any) {
         }
         // }
       }
-    },
-  });
-  const [loadingReadAll, requestReadAll] = useApi({
-    method: "post",
-    url: Constants.API.read_all_notification,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [
+    readAllMutation,
+    { isLoading: loadingReadAll },
+  ] = apiSlice.endpoints.readAllNotifications.useMutation();
+  const requestReadAll = portRequest(
+    readAllMutation,
+    ({ error }: { error: string; response: any }) => {
       if (error) {
         setTimeout(() => {
           Alert.alert(i18n.t("auth.error"), error);
@@ -173,8 +188,8 @@ export default function Inbox(props: any) {
         //   params.onReloadNoti();
         // }
       }
-    },
-  });
+    }
+  );
   const navigateTo = (value: any) => {
     if (value === 1) {
       setNotificationTabActive(true);

@@ -60,7 +60,7 @@ describe("TextInput", () => {
         onChangeText={onChangeText}
       />
     );
-    const input = root.findByProps({ value: "abc" });
+    const input = root.findByType(RNTextInput);
     act(() => input.props.onChangeText("xyz"));
     expect(onChangeText).toHaveBeenCalledWith("xyz");
     expect(StyleSheet.flatten(input.props.style).color).toBe("red");

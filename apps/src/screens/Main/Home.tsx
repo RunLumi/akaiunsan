@@ -18,7 +18,7 @@ import { AutoPager, Container, Header, Loading, Text } from "../../components";
 import { success, TYPES } from "../../redux/actions";
 import { NavigationRoot } from "../../navigation/root";
 import Constants from "../../shared/Constants";
-import { apiSlice, portRequest } from "../../redux/apiSlice";
+import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
 import i18n from "../../shared/I18n";
 import _, { isEmpty, isEqual, isNil } from "lodash";
 import Enum from "../../shared/Enum";
@@ -27,20 +27,22 @@ import Colors from "../../shared/Colors";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import notifee from "@notifee/react-native";
 import { paramArray } from "../../shared/Utils";
+import type { ApiItem } from "../../redux/apiSlice";
+import type { ScreenProps } from "../../navigation/routes";
 
 const { width } = Dimensions.get("window");
-export default function Home(props: any) {
+export default function Home(props: ScreenProps) {
   const dispatch = useDispatch();
   const language = useAppSelector((state) => state.language.language);
   const user = useAppSelector((state) => state.auth.user);
   const token = useAppSelector((state) => state.auth.token);
 
-  const [arrUpdate, setArrUpdate] = useState<any[]>([]);
+  const [arrUpdate, setArrUpdate] = useState<ApiItem[]>([]);
   const [currentLanguage, setCurrentLanguage] = useState(language);
-  const [arrService, setArrService] = useState<any[]>([]);
-  const [carouselItems, setCarouselItems] = useState<any[]>([]);
-  const [listService, setListService] = useState<any>([]);
-  const [subscriptionPlanActive, setSubscriptionPlanActive] = useState<any>({});
+  const [arrService, setArrService] = useState<ApiItem[]>([]);
+  const [carouselItems, setCarouselItems] = useState<ApiItem[]>([]);
+  const [listService, setListService] = useState<ApiItem>([]);
+  const [subscriptionPlanActive, setSubscriptionPlanActive] = useState<ApiItem>({});
   // Phase 5 RTK Query port: every useApi tunnel keeps its legacy callback
   // verbatim via portRequest (same {error, response} contract, same error
   // strings); only the transport underneath moved to the apiSlice.
@@ -48,7 +50,7 @@ export default function Home(props: any) {
     apiSlice.endpoints.updateLanguage.useMutation();
   const requestUpdateLanguage = portRequest(
     updateLanguageMutation,
-    ({ error }: { error: string; response: any }) => {
+    ({ error }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         dispatch({
@@ -66,7 +68,7 @@ export default function Home(props: any) {
   ] = apiSlice.endpoints.listFavouriteService.useLazyQuery();
   const requestListService = portRequest(
     listFavouriteServiceTrigger,
-    ({ error, response }: { error: string; response: any }) => {
+    ({ error, response }: ApiResult) => {
       if (error) {
         if (error === "Request failed with status code 401") {
         } else {
@@ -75,7 +77,7 @@ export default function Home(props: any) {
       } else {
         setListService(
           _(response.items)
-            .filter((i: any) => i.isSelected)
+            .filter((i: ApiItem) => i.isSelected)
             .value()
         );
       }
@@ -85,7 +87,7 @@ export default function Home(props: any) {
     apiSlice.endpoints.getProfile.useLazyQuery();
   const requestUserMe = portRequest(
     userMeTrigger,
-    ({ error, response }: { error: string; response: any }) => {
+    ({ error, response }: ApiResult) => {
       if (error) {
         if (error === "Request failed with status code 401") {
           dispatch({ type: success(TYPES.AUTH.LOG_OUT) });
@@ -121,7 +123,7 @@ export default function Home(props: any) {
     apiSlice.endpoints.getBanner.useLazyQuery();
   const requestGetBanner = portRequest(
     bannerTrigger,
-    ({ error, response }: { error: string; response: any }) => {
+    ({ error, response }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         setCarouselItems(response && response.items);
@@ -132,7 +134,7 @@ export default function Home(props: any) {
     apiSlice.endpoints.getServicesManagement.useLazyQuery();
   const requestServiceManagement = portRequest(
     serviceManagementTrigger,
-    ({ error, response }: { error: string; response: any }) => {
+    ({ error, response }: ApiResult) => {
       if (error) console.log(i18n.t("auth.error"), error);
       else {
         setArrService(response.items);
@@ -143,7 +145,7 @@ export default function Home(props: any) {
     apiSlice.endpoints.getPromotionUpdates.useLazyQuery();
   const requestGetPromotion = portRequest(
     promotionTrigger,
-    ({ error, response }: { error: string; response: any }) => {
+    ({ error, response }: ApiResult) => {
       if (error) {
         if (error === "Request failed with status code 401") {
         } else {
@@ -151,7 +153,7 @@ export default function Home(props: any) {
         }
       } else {
         if (response && response.items) {
-          let data = response.items.map((x: any) => {
+          let data = response.items.map((x: ApiItem) => {
             if (!isEmpty(x.image)) {
               if (x.type === Enum.InboxType.NEWS) {
                 return { ...x, newsId: x.id, image: x.image };
@@ -174,7 +176,7 @@ export default function Home(props: any) {
     apiSlice.endpoints.getCurrentPlan.useLazyQuery();
   const requestCurrentPlan = portRequest(
     currentPlanTrigger,
-    ({ error, response }: { error: string; response: any }) => {
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
@@ -182,7 +184,7 @@ export default function Home(props: any) {
       // setListCurrentPlan(response.items);
       if (response.items && response.items.length) {
         let getSubscriptionPlanActive = response.items.find(
-          (x: any) => x.subscriptionStatus === Enum.SubscriptionStatus.ACTIVE
+          (x: ApiItem) => x.subscriptionStatus === Enum.SubscriptionStatus.ACTIVE
         );
         setSubscriptionPlanActive(getSubscriptionPlanActive);
       }
@@ -192,7 +194,7 @@ export default function Home(props: any) {
     apiSlice.endpoints.getNotifications.useLazyQuery();
   const requestGetNotification = portRequest(
     notificationTrigger,
-    ({ error, response }: { error: string; response: any }) => {
+    ({ error, response }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         notifee.setBadgeCount(response.totalUnRead)
@@ -205,7 +207,7 @@ export default function Home(props: any) {
     }
   );
 
-  const sortArrayService = _.sortBy(arrService, (s: any) =>
+  const sortArrayService = _.sortBy(arrService, (s: ApiItem) =>
     _.indexOf([1, 2, 3, 4, 5], s.serviceType)
   ).slice(0, 5);
   const extraService = [
@@ -254,7 +256,7 @@ export default function Home(props: any) {
     requestServiceManagement();
     const listen = messaging()
       .getInitialNotification()
-      .then((remoteMessage: any) => {
+      .then((remoteMessage: ApiItem) => {
         if (remoteMessage?.data) {
           switch (remoteMessage.data.type) {
             case "0":
@@ -381,7 +383,7 @@ export default function Home(props: any) {
   };
 
   const renderHeader = () => {
-    const items = carouselItems.filter((i: any) => i.type === 1);
+    const items = carouselItems.filter((i: ApiItem) => i.type === 1);
     return (
       <View>
         <Header
@@ -416,7 +418,7 @@ export default function Home(props: any) {
         )}
         <FlatList
           horizontal
-          data={listService}
+          data={listService as any[]}
           contentContainerStyle={{ paddingHorizontal: 16 }}
           extraData={listService}
           keyExtractor={(iten, index) => index.toString()}
@@ -543,7 +545,7 @@ export default function Home(props: any) {
   };
 
   const renderHeaderPromotion = () => {
-    const items = carouselItems.filter((i: any) => i.type === 2);
+    const items = carouselItems.filter((i: ApiItem) => i.type === 2);
     if (isEmpty(items)) return null;
     return (
       <View style={{ alignSelf: "center", maxHeight: (width - 24) / 1.5 }}>

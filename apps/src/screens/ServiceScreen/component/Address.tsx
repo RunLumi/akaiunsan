@@ -15,10 +15,12 @@ import i18n from "../../../shared/I18n";
 
 import Constants from "../../../shared/Constants";
 import { apiSlice, portRequest, type ApiResult } from "../../../redux/apiSlice";
-export default function Address(props: any) {
+import type { ApiItem } from "../../../redux/apiSlice";
+import type { ScreenProps } from "../../../navigation/routes";
+export default function Address(props: ScreenProps) {
   const user = useAppSelector((state) => state.auth.user);
 
-  const [listAddress, setListAddress] = React.useState<any[]>([]);
+  const [listAddress, setListAddress] = React.useState<ApiItem[]>([]);
   const childRef = React.useRef<any>(null);
 
   const [currentAddress, setCurrentAddress] = React.useState(null);
@@ -42,7 +44,7 @@ export default function Address(props: any) {
       }, 300);
     };
 
-  const getValueAddress = (value: any) => {
+  const getValueAddress = (value: ApiItem) => {
     setCurrentAddress(value.id);
     props.handleAddress(value);
   };

@@ -27,14 +27,16 @@ import Constants from "../../../shared/Constants";
 import _, { isNil } from "lodash";
 import { ScrollView } from "react-native-gesture-handler";
 import { apiSlice, portRequest, type ApiResult } from "../../../redux/apiSlice";
+import type { ApiItem } from "../../../redux/apiSlice";
+import type { ScreenProps } from "../../../navigation/routes";
 
-export default function Option(props: any) {
+export default function Option(props: ScreenProps) {
   const extraService = props.extraService || [];
   const workingHour = props.valueShowHour || [];
   const numberKids = props.numberKids || { numberKids: 0, age: [0] };
   const numberPet = props.numberPet || 0;
   const extraServiceCleaning = props.extraServiceCleaning || [];
-  const [dataExtraService, setDataExtraService] = React.useState<any[]>([]);
+  const [dataExtraService, setDataExtraService] = React.useState<ApiItem[]>([]);
   const [dataExtraServiceCleaning, setDataExtraServiceCleaning] =
     React.useState(extraServiceCleaning);
   const [nameHelper, setNameHelper] = React.useState(
@@ -56,8 +58,8 @@ export default function Option(props: any) {
   const [petCareActivities, setPetCareActivities] = React.useState(
     props.activitiesPetCare
   );
-  const [priceSpecifyHelper, setPriceSpecifyHelper] = React.useState<any>({});
-  const [pricePreferLanguage, setPricePreferLanguage] = React.useState<any[]>([]);
+  const [priceSpecifyHelper, setPriceSpecifyHelper] = React.useState<ApiItem>({});
+  const [pricePreferLanguage, setPricePreferLanguage] = React.useState<ApiItem[]>([]);
   const dispatch = useDispatch();
   const [language, setLanguage] = React.useState<{
     label?: string;
@@ -73,9 +75,9 @@ export default function Option(props: any) {
         Alert.alert(i18n.t("auth.error"), error);
       } else {
         let getPriceSpecifyHelper = response.items.find(
-          (x: any) => x.code === Enum.PriceSpecialRequest.COSTSP
+          (x: ApiItem) => x.code === Enum.PriceSpecialRequest.COSTSP
         );
-        let getPricePreferLanguage = response.items.filter((y: any) => {
+        let getPricePreferLanguage = response.items.filter((y: ApiItem) => {
           if (y.code === Enum.PriceSpecialRequest.LANGUAGE) {
             return { ...y };
           }
@@ -168,7 +170,7 @@ export default function Option(props: any) {
     });
   };
 
-  const onCheckExtraService = (value: any, idx: any) => {
+  const onCheckExtraService = (value: boolean, idx: number) => {
     let data = [...dataExtraService];
     data[idx].isCheck = !value;
     if (value) {
@@ -285,7 +287,7 @@ export default function Option(props: any) {
   };
 
   // ACCleaning
-  const renderItemACCleaning = (item: any, idx: any) => (
+  const renderItemACCleaning = (item: ApiItem, idx: number) => (
     <View
       key={idx}
       style={[
@@ -347,7 +349,7 @@ export default function Option(props: any) {
       </View>
     </View>
   );
-  const onCheckACCleaning = (value: any, idx: any) => {
+  const onCheckACCleaning = (value: boolean, idx: number) => {
     let data = [...dataExtraServiceCleaning];
     data[idx].isCheck = !value;
     if (value) {
@@ -358,7 +360,7 @@ export default function Option(props: any) {
     data[idx].count = 1;
     setDataExtraServiceCleaning(data);
   };
-  const minusCountACCleaning = (value: any, idx: any) => {
+  const minusCountACCleaning = (value: number, idx: number) => {
     if (props.isEdit) return
     if (value > 1) {
       let data = [...dataExtraServiceCleaning];
@@ -374,7 +376,7 @@ export default function Option(props: any) {
       setDataExtraServiceCleaning(data);
     }
   };
-  const plusCountACCleaning = (value: any, idx: any) => {
+  const plusCountACCleaning = (value: number, idx: number) => {
     if (props.isEdit) return
 
     let data = [...dataExtraServiceCleaning];
@@ -410,7 +412,7 @@ export default function Option(props: any) {
     setIsModalPetCare(false);
   };
 
-  const deletePetProfile = (idx: any) => {
+  const deletePetProfile = (idx: number) => {
     let data = [...dataPetcare];
     data.splice(idx, 1);
     setDataPetcare(data);
@@ -551,7 +553,7 @@ export default function Option(props: any) {
         <View style={{ flex: 1, paddingTop: 10 }}>
           <TextInput
             value={petCareActivities}
-            onChangeText={(value: any) => onchangePetCareActivities(value)}
+            onChangeText={(value: string) => onchangePetCareActivities(value)}
             multiline
             numberOfLines={5}
             textAlignVertical="top"
@@ -572,8 +574,8 @@ export default function Option(props: any) {
       </View>
     );
   };
-  const renderItemPetCare = (item: any, idx: any) => (
-    <View key={idx} style={[styles.borderExtraService, { padding: 10 }]}>
+  const renderItemPetCare = (item: ApiItem, index: number) => (
+    <View key={index} style={[styles.borderExtraService, { padding: 10 }]}>
       <View
         style={{
           flexDirection: "row",
@@ -585,7 +587,7 @@ export default function Option(props: any) {
           {i18n.t("home.pet_profile")}
         </Text>
         <Ionicons
-          onPress={() => deletePetProfile(idx)}
+          onPress={() => deletePetProfile(index)}
           name="trash"
           size={20}
           color={colors.black_text}

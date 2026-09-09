@@ -16,6 +16,8 @@ import Constants from "../../../shared/Constants";
 import Enum from "../../../shared/Enum";
 import i18n from "../../../shared/I18n";
 import { SelectTimeModal } from "./components/SelectTimeModal";
+import type { ApiItem } from "../../../redux/apiSlice";
+import type { ScreenProps } from "../../../navigation/routes";
 interface Props {
   serviceId: string;
   serviceItemId: string;
@@ -43,7 +45,7 @@ export const AddFixPlan = ({
   onSetAgeKid,
   ...props
 }: Props) => {
-  const [daysInWeek, setDaysInWeek] = useState<any[]>([]);
+  const [daysInWeek, setDaysInWeek] = useState<ApiItem[]>([]);
 
   const [isShow, setIsShow] = useState(false);
   const [indexItem, setIndexItem] = useState(-1);
@@ -56,8 +58,8 @@ export const AddFixPlan = ({
     setCountHour(2);
     setStart(7);
   };
-  const onPressRemove = (index: any) => {
-    setTimes(_.filter(times, (v, k) => k != index));
+  const onPressRemove = (index: number) => {
+    setTimes(_.filter(times, (v, k: number) => k != index));
     resetConfig();
   };
 
@@ -88,7 +90,7 @@ export const AddFixPlan = ({
     setPickDate(times[index].startAt)
   };
   console.log('times ', times)
-  const onSelectTime = (item: any) => {
+  const onSelectTime = (item: number) => {
     setIsShow(false);
     setStart(item);
     times[indexItem].startAt = dayjs(times[indexItem].startAt)
@@ -111,7 +113,7 @@ export const AddFixPlan = ({
     const startAt = value.clone().startOf("day").set("hour", getRangeHour(value));
    
     const endAt = dayjs(startAt).add(countHour, "hours");
-    const label = _.find(daysInWeek, { value: startAt.day() }).label;
+    const label = _.find(daysInWeek, { value: startAt.day() })!.label;
 
     if (_.findIndex(times, { label }) != -1) {
       return;
@@ -203,10 +205,10 @@ export const AddFixPlan = ({
   );
 };
 
-const CalendarComponent = (props: any) => {
+const CalendarComponent = (props: ScreenProps) => {
   const getMoreItems = () => {
     const moreItems: any = [];
-    function getDaysBooking(day: any) {
+    function getDaysBooking(day: ApiItem) {
       let start = dayjs(day.startAt);
       let count = 0;
       let tmp = dayjs(start).clone().day(dayjs(day.startAt).day());
@@ -230,7 +232,7 @@ const CalendarComponent = (props: any) => {
       }
       return moreItems;
     }
-    props.items.map((i: any) => {
+    props.items.map((i: ApiItem) => {
       getDaysBooking(i);
     });
     return moreItems;

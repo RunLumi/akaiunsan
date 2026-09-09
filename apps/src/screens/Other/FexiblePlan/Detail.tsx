@@ -12,8 +12,10 @@ import Constants from "../../../shared/Constants";
 import i18n from "../../../shared/I18n";
 import { Payment } from "../../ServiceScreen/component";
 import { apiSlice, portRequest, type ApiResult } from "../../../redux/apiSlice";
+import type { ApiItem } from "../../../redux/apiSlice";
+import type { ScreenProps } from "../../../navigation/routes";
 
-export default function Detail(props: any) {
+export default function Detail(props: ScreenProps) {
   const childRef = React.useRef<any>(null);
   const { goBack } = props.navigation;
   const { plan, onGoBack } = props.route.params;
@@ -78,7 +80,7 @@ export default function Detail(props: any) {
 
   const handlePaymentMethod = () => {};
 
-  const handlePromotionId = (value: any) => {
+  const handlePromotionId = (value: string) => {
     setPromotionId(value);
   };
 
@@ -96,7 +98,7 @@ export default function Detail(props: any) {
     setReceivePoint(receivePoint + value);
   };
 
-  const handleCloseModalCrediCard = (value: any) => {
+  const handleCloseModalCrediCard = (value: ApiItem) => {
     setIsShowModal(false);
 
     if (value.nativeEvent && value.nativeEvent.data === "cancel") {
@@ -130,7 +132,7 @@ export default function Detail(props: any) {
     }
   };
 
-  const handleIdCard = (cardSelected: any) => {
+  const handleIdCard = (cardSelected: string) => {
     if (cardSelected) {
       setIdCard(cardSelected);
     }

@@ -3,6 +3,7 @@ import dayjs from ".//dayjs";
 import { Platform } from "react-native";
 import Enum from "./Enum";
 import i18n from "./I18n";
+import type { ApiItem } from "../redux/apiSlice";
 
 export const getRegionForCoordinates = (points: any[]) => {
   let minX: number;
@@ -17,7 +18,7 @@ export const getRegionForCoordinates = (points: any[]) => {
     maxY = point.longitude;
   })(points[0]);
 
-  points.map((point: any) => {
+  points.map((point: ApiItem) => {
     minX = Math.min(minX, point.latitude);
     maxX = Math.max(maxX, point.latitude);
     minY = Math.min(minY, point.longitude);
@@ -88,7 +89,7 @@ export const getStatus = (orderStatus: any, order?: any) => {
   return status;
 };
 
-export const getSpecialRequest = (status: any) => {
+export const getSpecialRequest = (status: number) => {
   switch (status) {
     case 1:
       return "Approved";

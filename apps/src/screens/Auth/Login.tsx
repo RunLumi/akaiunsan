@@ -44,14 +44,16 @@ import * as AppleAuthentication from "expo-apple-authentication";
 import * as WebBrowser from "expo-web-browser";
 import * as Location from "expo-location";
 import Config from "react-native-config";
+import type { ApiItem } from "../../redux/apiSlice";
+import type { ScreenProps } from "../../navigation/routes";
 
 WebBrowser.maybeCompleteAuthSession();
 
-export default function Login(props: any) {
+export default function Login(props: ScreenProps) {
   const dispatch = useDispatch();
 
   const params = props.route.params || {};
-  const tokenFromResponse = (response: any) => response?.auth_token ?? response?._token;
+  const tokenFromResponse = (response: ApiItem) => response?.auth_token ?? response?._token;
 
   const language = useAppSelector((state) => state.language.language);
   // const token = useAppSelector((state) => state.auth.token);
@@ -82,7 +84,7 @@ export default function Login(props: any) {
     }
   );
 
-  const sendFCMToken = (token: any) => {
+  const sendFCMToken = (token: ApiItem) => {
     const sendToken = setTimeout(async () => {
       const fcmToken = await messaging().getToken();
       requestAddDeviceNotification({
@@ -145,8 +147,8 @@ export default function Login(props: any) {
   const request = ({ data }: any) => {
     loginMutation({ email: data?.email, password: data?.password })
       .unwrap()
-      .then((response: any) => handleLoginResult({ error: "", response }))
-      .catch((e: any) =>
+      .then((response: ApiItem) => handleLoginResult({ error: "", response }))
+      .catch((e: ApiItem) =>
         handleLoginResult({
           // mirrors useApi's 400 translation: axios reported
           // "Request failed with status code 400" for e.status === 400

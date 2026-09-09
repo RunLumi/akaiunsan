@@ -13,9 +13,10 @@ import colors from "../../shared/Colors";
 import Constants from "../../shared/Constants";
 import i18n from "../../shared/I18n";
 import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
+import type { ApiItem } from "../../redux/apiSlice";
 
 export default function PreferToFriend() {
-  const [dataPrefer, setDataPrefer] = useState<any>([]);
+  const [dataPrefer, setDataPrefer] = useState<ApiItem[]>([]);
   const [referrenCode, setReferrenCode] = useState("");
   const [totalFriend, setTotalFriend] = useState(0);
   const [page, setPage] = useState(2);
@@ -36,8 +37,8 @@ export default function PreferToFriend() {
   );
 
   const user = useAppSelector((state) => state.auth.user);
-  const renderItem = (item: any, idx: any) => (
-    <View key={idx} style={styles.borderBottom1}>
+  const renderItem = (item: ApiItem, index: number) => (
+    <View key={index} style={styles.borderBottom1}>
       <View style={{ marginHorizontal: 20, marginVertical: 10 }}>
         <Text>Name: {item.name}</Text>
         <Text>Gift point: {item.giftPoint}</Text>
@@ -112,7 +113,7 @@ export default function PreferToFriend() {
             data={dataPrefer}
             onEndReachedThreshold={0.1}
             onEndReached={onLoadMore}
-            keyExtractor={(item: any) => item.userId}
+            keyExtractor={(item: ApiItem) => item.userId}
             renderItem={({ item, index, separators }) =>
               renderItem(item, index)
             }

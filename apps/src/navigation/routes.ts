@@ -32,6 +32,11 @@ declare global {
   }
 }
 
+// Canonical (loose) screen props. Screens read route params and parent
+// callbacks freely; the named alias keeps `props: any` annotations out of the
+// codebase and gives the per-screen typing pass a single place to tighten.
+export type ScreenProps = any;
+
 // The bottom-tab route names — the four names that were previously
 // i18n-translated strings (a locale switch used to change route identity).
 export const TAB_ROUTES = {

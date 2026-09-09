@@ -3,8 +3,9 @@ import React from "react";
 import { View, StyleSheet, TouchableHighlight } from "react-native";
 import { Text } from ".";
 import Colors from "../shared/Colors";
+import type { ScreenProps } from "../navigation/routes";
 
-function CustomMarker(props: any) {
+function CustomMarker(props: ScreenProps) {
   return (
     <TouchableHighlight>
       <View

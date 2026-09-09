@@ -14,11 +14,13 @@ import layout from "../../shared/Layout";
 import i18n from "../../shared/I18n";
 import { NavigationRoot } from "../../navigation/root";
 import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
+import type { ApiItem } from "../../redux/apiSlice";
+import type { ScreenProps } from "../../navigation/routes";
 
-export default function AllService(props: any) {
+export default function AllService(props: ScreenProps) {
   const { subscriptionPlanActive } = props.route.params || {};
-  const [carouselItems, setCarouselItems] = useState<any[]>([]);
-  const [arrService, setArrService] = useState<any[]>([]);
+  const [carouselItems, setCarouselItems] = useState<ApiItem[]>([]);
+  const [arrService, setArrService] = useState<ApiItem[]>([]);
   const [requestGetBannerTrigger, { isLoading: loadingBanner }] =
     apiSlice.endpoints.getBanner.useLazyQuery();
   const requestGetBanner = portRequest(

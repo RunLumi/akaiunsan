@@ -9,14 +9,16 @@ import {
   FlatList,
 } from "react-native";
 import { Container, Loading, AddCardPayment, Text } from "../../components";
-import { apiSlice, portRequest } from "../../redux/apiSlice";
+import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
 import Colors from "../../shared/Colors";
 import i18n from "../../shared/I18n";
 import { FontAwesome } from "@expo/vector-icons";
+import type { ApiItem } from "../../redux/apiSlice";
+import type { ScreenProps } from "../../navigation/routes";
 
-export default function PaymentList(props: any) {
+export default function PaymentList(props: ScreenProps) {
   const childRef = React.useRef<any>(null);
-  const [listPayment, setListPayment] = useState<any[]>([]);
+  const [listPayment, setListPayment] = useState<ApiItem[]>([]);
   const [idDefaultCard, setIdDefaultCard] = useState("");
 
   // Phase 5 RTK Query port: the three credit-card tunnels keep their legacy
@@ -27,7 +29,7 @@ export default function PaymentList(props: any) {
   ] = apiSlice.endpoints.getPaymentCards.useLazyQuery();
   const requestListCard = portRequest(
     listCardTrigger,
-    ({ error, response }: { error: string; response: any }) => {
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
@@ -49,7 +51,7 @@ export default function PaymentList(props: any) {
   ] = apiSlice.endpoints.deletePaymentCard.useMutation();
   const requestDeleteCard = portRequest(
     deleteCardMutation,
-    ({ error }: { error: string; response: any }) => {
+    ({ error }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
@@ -64,7 +66,7 @@ export default function PaymentList(props: any) {
   ] = apiSlice.endpoints.setDefaultPaymentCard.useMutation();
   const requestCardDefault = portRequest(
     cardDefaultMutation,
-    ({ error }: { error: string; response: any }) => {
+    ({ error }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
@@ -73,7 +75,7 @@ export default function PaymentList(props: any) {
     }
   );
 
-  const deleteCard = (item: any) => {
+  const deleteCard = (item: ApiItem) => {
     Alert.alert(
       "",
       i18n.t("home.confirm_delete_card"),
@@ -96,7 +98,7 @@ export default function PaymentList(props: any) {
     );
   };
 
-  const onPressIsDefaultCard = (item: any) => {
+  const onPressIsDefaultCard = (item: ApiItem) => {
     requestCardDefault({
       data: {
         cardId: item.id,
@@ -104,8 +106,8 @@ export default function PaymentList(props: any) {
     });
   };
 
-  const handleAddCard = (value: any) => {
-    if (value) {
+  const handleAddCard = (added: boolean) => {
+    if (added) {
       requestListCard();
     }
   };

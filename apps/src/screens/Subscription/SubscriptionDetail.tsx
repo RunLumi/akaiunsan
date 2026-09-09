@@ -7,10 +7,12 @@ import Colors from "../../shared/Colors";
 import Constants from "../../shared/Constants";
 import i18n from "../../shared/I18n";
 import { Fontisto,MaterialCommunityIcons } from "@expo/vector-icons";
+import type { ApiItem } from "../../redux/apiSlice";
+import type { ScreenProps } from "../../navigation/routes";
 
-export default function SubscriptionDetail(props: any) {
+export default function SubscriptionDetail(props: ScreenProps) {
 
-  const [listBooking, setListBooking] = useState<any[]>([]);
+  const [listBooking, setListBooking] = useState<ApiItem[]>([]);
   // const [loadingListBooking, requestListBooking] = useApi({
   //   method: "get",
   //   url: Constants.API.get_booking,

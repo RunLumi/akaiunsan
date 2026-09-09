@@ -17,19 +17,20 @@ import Theme from "../shared/theme";
 import Constants from "../shared/Constants";
 import Styles from "../shared/Styles";
 import { Text } from "./Text";
+import type { ApiItem } from "../redux/apiSlice";
 
 const PADDING = 10;
 interface Props {
   style?: StyleProp<TextStyle>;
-  value?: any;
+  value?: string;
   containerStyle?: StyleProp<ViewStyle>;
   secureText?: boolean;
   disabled?: boolean;
   isError?: boolean;
   errorText?: string;
-  onDropDown?: any;
-  onCancel?: any;
-  onDateTime?: any;
+  onDropDown?: (...args: unknown[]) => void;
+  onCancel?: (...args: unknown[]) => void;
+  onDateTime?: (...args: unknown[]) => void;
   noShawdow?: boolean;
 }
 

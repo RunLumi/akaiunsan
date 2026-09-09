@@ -12,7 +12,7 @@ import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../redux/hooks";
 import Constants from "../../shared/Constants";
 import { Fontisto, AntDesign } from "@expo/vector-icons";
-import { apiSlice, portRequest } from "../../redux/apiSlice";
+import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
 import { Ionicons } from "@expo/vector-icons";
 import i18n from "../../shared/I18n";
 import { CheckBox } from "react-native-elements";
@@ -24,20 +24,22 @@ import { paramArray } from "../../shared/Utils";
 import notifee from "@notifee/react-native";
 import Colors from "../../shared/Colors";
 import { TYPES } from "../../redux/actions";
+import type { ApiItem } from "../../redux/apiSlice";
+import type { ScreenProps } from "../../navigation/routes";
 
 
-export default function Inbox(props: any) {
+export default function Inbox(props: ScreenProps) {
   const tools = useAppSelector((state) => state.tools.notification);
   const [notificationTabActive, setNotificationTabActive] = useState(true);
   const [promotionTabActive, setPromotionTabActive] = useState(false);
   const [refreshNoti, setRefreshNoti] = useState(false);
   const [refreshPromo, setRefreshPromo] = useState(false);
-  const [arrNoti, setArrNoti] = useState<any[]>([]);
-  const [valueNotiDelete, setValueNotiDelete] = useState<any[]>([]);
-  const [arrPromo, setArrPromo] = useState<any[]>([]);
+  const [arrNoti, setArrNoti] = useState<ApiItem[]>([]);
+  const [valueNotiDelete, setValueNotiDelete] = useState<boolean[]>([]);
+  const [arrPromo, setArrPromo] = useState<ApiItem[]>([]);
   const [pageNoti, setPageNoti] = useState(2);
   const [pagePromo, setPagePromo] = useState(2);
-  const [valuePromoDelete, setValuePromoDelete] = useState<any[]>([]);
+  const [valuePromoDelete, setValuePromoDelete] = useState<boolean[]>([]);
   // Phase 5 RTK Query port: notifications + promotions read the same paged
   // endpoint (like useApi, two tunnels); delete/read-all run as mutations.
   // All callbacks are preserved verbatim via portRequest.
@@ -47,7 +49,7 @@ export default function Inbox(props: any) {
   ] = apiSlice.endpoints.getNotifications.useLazyQuery();
   const requestGetNotification = portRequest(
     notificationTrigger,
-    ({ error, response }: { error: string; response: any }) => {
+    ({ error, response }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         setRefreshNoti(false);
@@ -71,7 +73,7 @@ export default function Inbox(props: any) {
           let data = [...arrNoti];
           let valueNoti = [];
           if (response.items && response.items.length) {
-            response.items.forEach((m: any) => {
+            response.items.forEach((m: ApiItem) => {
               let item = data.find((n) => n.id === m.id);
               if (item) {
                 return Object.assign(item, m);
@@ -94,7 +96,7 @@ export default function Inbox(props: any) {
   ] = apiSlice.endpoints.getNotifications.useLazyQuery();
   const requestPromotion = portRequest(
     promotionTrigger,
-    ({ error, response }: { error: string; response: any }) => {
+    ({ error, response }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         notifee.setBadgeCount(response.totalUnRead);
@@ -107,7 +109,7 @@ export default function Inbox(props: any) {
               valuePromo.push(false);
             }
           }
-          let getPromotionId = response.items.map((x: any, index: any) => {
+          let getPromotionId = response.items.map((x: ApiItem, index: number) => {
             if (x.type === Enum.InboxType.NEWS) {
               return { ...x, newsId: JSON.parse(x.data).NotificationId };
             } else {
@@ -117,11 +119,11 @@ export default function Inbox(props: any) {
           setValueNotiDelete(valuePromo);
           setArrPromo(getPromotionId);
         } else {
-          let data: any = [...arrPromo];
+          let data: ApiItem[] = [...arrPromo];
           let valuePromo = [];
           if (response.items && response.items.length) {
-            response.items.forEach((m: any) => {
-              let item = data.find((n: any) => n.id === m.id);
+            response.items.forEach((m: ApiItem) => {
+              let item = data.find((n: ApiItem) => n.id === m.id);
               if (item) {
                 return Object.assign(item, m);
               }
@@ -131,7 +133,7 @@ export default function Inbox(props: any) {
               valuePromo.push(false);
             }
           }
-          let getPromotionId = data.map((x: any) => {
+          let getPromotionId = data.map((x: ApiItem) => {
             if (x.type === Enum.InboxType.NEWS) {
               return { ...x, newsId: JSON.parse(x.data).NotificationId };
             } else {
@@ -155,7 +157,7 @@ export default function Inbox(props: any) {
   ] = apiSlice.endpoints.deleteNotification.useMutation();
   const requestDeleteNotification = portRequest(
     deleteNotificationMutation,
-    ({ error }: { error: string; response: any }) => {
+    ({ error }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         // if (response) {
@@ -179,7 +181,7 @@ export default function Inbox(props: any) {
   ] = apiSlice.endpoints.readAllNotifications.useMutation();
   const requestReadAll = portRequest(
     readAllMutation,
-    ({ error }: { error: string; response: any }) => {
+    ({ error }: ApiResult) => {
       if (error) {
         setTimeout(() => {
           Alert.alert(i18n.t("auth.error"), error);
@@ -191,7 +193,7 @@ export default function Inbox(props: any) {
       }
     }
   );
-  const navigateTo = (value: any) => {
+  const navigateTo = (value: number) => {
     if (value === 1) {
       setNotificationTabActive(true);
       setPromotionTabActive(false);
@@ -233,9 +235,9 @@ export default function Inbox(props: any) {
     }
   };
   const deleteNotification = () => {
-    const notUndefined = (anyValue: any) => typeof anyValue !== "undefined";
+    const notUndefined = (anyValue: ApiItem) => typeof anyValue !== "undefined";
     const getItemDelete = arrNoti
-      .map((x: any) => {
+      .map((x: ApiItem) => {
         if (x.isDeleted) {
           return x.id;
         }
@@ -260,9 +262,9 @@ export default function Inbox(props: any) {
   };
 
   const deletePromotion = () => {
-    const notUndefined = (anyValue: any) => typeof anyValue !== "undefined";
+    const notUndefined = (anyValue: ApiItem) => typeof anyValue !== "undefined";
     const getItemDelete = arrPromo
-      .map((x: any) => {
+      .map((x: ApiItem) => {
         if (x.isDeleted) {
           return x.id;
         }
@@ -284,7 +286,7 @@ export default function Inbox(props: any) {
   };
   const onDeleteAll = (value: boolean) => {
     setIsDeleteAll(value);
-    let valueDeleteAll: any = [];
+    let valueDeleteAll: boolean[] = [];
     if (notificationTabActive) {
       arrNoti.forEach((element) => {
         if (value) {
@@ -309,9 +311,9 @@ export default function Inbox(props: any) {
       setValuePromoDelete(valueDeleteAll);
     }
   };
-  const selectDeleteNoti = (newValue: any, index: any) => {
-    const value = [...valueNotiDelete] as any;
-    const valueDelete = [...arrNoti] as any;
+  const selectDeleteNoti = (newValue: boolean, index: number) => {
+    const value = [...valueNotiDelete] as any[];
+    const valueDelete = [...arrNoti] as any[];
     valueDelete[index].isDeleted = newValue;
     value[index] = newValue;
     setValueNotiDelete(value);
@@ -319,9 +321,9 @@ export default function Inbox(props: any) {
     let countValue = value.filter(Boolean).length;
     setCountItemDelete(countValue);
   };
-  const selectDeletePromo = (newValue: any, index: any) => {
-    const value = [...valuePromoDelete] as any;
-    const valueDelete = [...arrPromo] as any;
+  const selectDeletePromo = (newValue: boolean, index: number) => {
+    const value = [...valuePromoDelete] as any[];
+    const valueDelete = [...arrPromo] as any[];
     valueDelete[index].isDeleted = newValue;
     value[index] = newValue;
     setValuePromoDelete(value);
@@ -370,7 +372,7 @@ export default function Inbox(props: any) {
     });
   };
 
-  const redirectDetailNoti = (item: any, index: any) => {
+  const redirectDetailNoti = (item: ApiItem, index: number) => {
     // NavigationRoot.push(Constants.SCREENS.OTHER.INBOXDETAIL, { data });
     let data = [...arrNoti];
     if (!data[index].isRead) {
@@ -401,7 +403,7 @@ export default function Inbox(props: any) {
             <CheckBox
               style={{ alignItems: "flex-start" }}
               center
-              checked={valueNotiDelete[index]}
+              checked={!!valueNotiDelete[index]}
               onPress={() => selectDeleteNoti(!valueNotiDelete[index], index)}
               checkedColor={COLOR.main_color}
             />
@@ -466,7 +468,7 @@ export default function Inbox(props: any) {
       </TouchableOpacity>
     </View>
   );
-  const redirectDetailPromo = (item: any, index: any) => {
+  const redirectDetailPromo = (item: ApiItem, index: number) => {
     let data2 = [...arrPromo];
     if (!data2[index].isRead) {
       data2[index].isRead = true;
@@ -496,7 +498,7 @@ export default function Inbox(props: any) {
               <CheckBox
                 style={{ alignItems: "flex-start" }}
                 center
-                checked={valuePromoDelete[index]}
+                checked={!!valuePromoDelete[index]}
                 onPress={() =>
                   selectDeletePromo(!valuePromoDelete[index], index)
                 }

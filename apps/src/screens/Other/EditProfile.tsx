@@ -29,8 +29,10 @@ import { NavigationRoot } from "../../navigation/root";
 import { add, isEmpty } from "lodash";
 import { Ionicons } from "@expo/vector-icons";
 import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
+import type { ApiItem } from "../../redux/apiSlice";
+import type { ScreenProps } from "../../navigation/routes";
 const { width } = Dimensions.get("screen");
-export default function EditProfile(props: any) {
+export default function EditProfile(props: ScreenProps) {
   const dispatch = useDispatch();
   const paramsProps = props.route.params || {};
   const [image, setImage] = useState("");
@@ -128,12 +130,12 @@ export default function EditProfile(props: any) {
     }
   );
 
-  const validatePhone = (phone: any) => {
+  const validatePhone = (phone: string) => {
     const re = /^([0-9]{9,10})$/;
     return re.test(phone);
   };
 
-  const validateEmail = (email: any) => {
+  const validateEmail = (email: string) => {
     const re =
       /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     return re.test(email);
@@ -308,7 +310,7 @@ export default function EditProfile(props: any) {
     });
   };
 
-  const handleValueImage = (value: any) => {
+  const handleValueImage = (value: ApiItem) => {
     setIsCamera(false);
     setImage(value.data);
   };
@@ -321,7 +323,7 @@ export default function EditProfile(props: any) {
     }
     setImage(user.avatar);
   }, [user]);
-  const onGoBack = (add: any) => {
+  const onGoBack = (add: ApiItem) => {
     setAddress({
       ...address,
       value: add.placeName,

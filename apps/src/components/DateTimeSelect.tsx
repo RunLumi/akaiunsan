@@ -21,12 +21,13 @@ import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import Colors from "../shared/Colors";
 import Theme from "../shared/theme";
 import CustomMarker from "./CustomMarker";
+import type { ApiItem } from "../redux/apiSlice";
 interface Props {
   style?: StyleProp<ViewStyle>;
-  children?: any;
-  valueDateTime?: any;
-  dateTimeSelect?: any;
-  hour?: any;
+  children?: React.Ref<unknown>;
+  valueDateTime?: (date: string, time: string, valueDate: string, valueTime: string, hours: number) => void;
+  dateTimeSelect?: string;
+  hour?: number;
 }
 
 export const DateTimeSelect = ({
@@ -44,7 +45,7 @@ export const DateTimeSelect = ({
   const [showDate, setShowDate] = React.useState("");
   const [markedDates, setMarkedDates] = React.useState({});
   const [showModal, setShowModal] = React.useState(false);
-  const [sliderValues, setSliderValues] = React.useState<any>([]);
+  const [sliderValues, setSliderValues] = React.useState<number[]>([]);
   const [step, setStep] = React.useState(0.5);
   React.useImperativeHandle(children, () => ({
     openModalDateTime() {
@@ -67,11 +68,11 @@ export const DateTimeSelect = ({
     setSliderValues([6, 9]);
   }, []);
 
-  const changeToHourDecimal = (value: any) => {
+  const changeToHourDecimal = (value: number) => {
     let data = value.toFixed(2);
     setValueTime(data);
   };
-  const selectDate = (value: any) => {
+  const selectDate = (value: ApiItem) => {
     const selectDate = {
       [value.dateString]: { selected: true, selectedColor: colors.main_color },
     };
@@ -100,7 +101,7 @@ export const DateTimeSelect = ({
         return;
       }
 
-      valueDateTime(
+      valueDateTime?.(
         showDate,
         showTime,
         valueDate,
@@ -161,7 +162,7 @@ export const DateTimeSelect = ({
               // mark date event
               markingType="custom"
               // hideArrows
-              renderArrow={(direction: any) => (
+              renderArrow={(direction) => (
                 <FontAwesome
                   name={`chevron-${direction}` as any}
                   size={24}

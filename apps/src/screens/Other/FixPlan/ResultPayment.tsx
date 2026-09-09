@@ -4,8 +4,9 @@ import React from "react";
 import { StyleSheet, View, Text, ScrollView } from "react-native";
 import colors from "../../../shared/Colors";
 import i18n from "../../../shared/I18n";
+import type { ScreenProps } from "../../../navigation/routes";
 
-export default function ResultPayment(props: any) {
+export default function ResultPayment(props: ScreenProps) {
   return (
     <View style={{ flex: 1 }}>
       {props.receivePoint ? (

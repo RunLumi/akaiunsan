@@ -1,5 +1,6 @@
 import Constants from "../shared/Constants";
 import type { RouteName } from "./routes";
+import type { ApiItem } from "../redux/apiSlice";
 
 // ---- Testable navigation contracts (Phase 1 characterization) --------------
 // Pure data / pure functions so they survive the Phase 2 replatform (typed

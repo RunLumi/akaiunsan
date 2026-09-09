@@ -18,12 +18,14 @@ import dayjs from "../../shared/dayjs";
 import { getSpecialRequest, getStatus } from "../../shared/Utils";
 import Enum from "../../shared/Enum";
 import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
+import type { ApiItem } from "../../redux/apiSlice";
+import type { ScreenProps } from "../../navigation/routes";
 
-export default function InboxDetail(props: any) {
-  const [title, setTitle] = useState<any>();
+export default function InboxDetail(props: ScreenProps) {
+  const [title, setTitle] = useState<ApiItem>();
   const [content, setContent] = useState();
 
-  const [order, setOrder] = useState<any>();
+  const [order, setOrder] = useState<ApiItem>();
 
   const [showDialog, setShowDialog] = useState(false);
   const [reason, setReason] = useState<String>();
@@ -123,12 +125,12 @@ export default function InboxDetail(props: any) {
 
   const renderUIOrder = () => (
     <View>
-      {order.bookingDetail.extraServices && (
+      {order!.bookingDetail.extraServices && (
         <View style={{ marginVertical: 16 }}>
           <Text style={{ marginBottom: 6, color: colors.gray_normal_text }}>
             Service option:
           </Text>
-          {order.bookingDetail.extraServices.map((item: any, index: number) =>
+          {order!.bookingDetail.extraServices.map((item: ApiItem, index: number) =>
             item.name != null ? (
               <Text
                 key={index}
@@ -147,7 +149,7 @@ export default function InboxDetail(props: any) {
           )}
         </View>
       )}
-      {order.serviceProvider && (
+      {order!.serviceProvider && (
         <View style={{ marginVertical: 16 }}>
           <Text style={{ fontSize: 16, color: colors.gray_normal_text }}>
             {i18n.t("home.your_helper")}
@@ -165,8 +167,8 @@ export default function InboxDetail(props: any) {
                 borderRadius: 50,
               }}
               source={
-                order.serviceProvider.avatar
-                  ? { uri: order.serviceProvider.avatar }
+                order!.serviceProvider.avatar
+                  ? { uri: order!.serviceProvider.avatar }
                   : require("../../assets/images/MaidService.jpg")
               }
             />
@@ -176,7 +178,7 @@ export default function InboxDetail(props: any) {
                   <Ionicons
                     key={index}
                     name={
-                      order.serviceProvider.star > i ? "star" : "star-outline"
+                      order!.serviceProvider.star > i ? "star" : "star-outline"
                     }
                     color={colors.main_orange}
                     size={18}
@@ -185,22 +187,22 @@ export default function InboxDetail(props: any) {
                 ))}
               </View>
               <Text style={{ marginBottom: 6, fontWeight: "600" }}>
-                {order.serviceProvider.fullName}
+                {order!.serviceProvider.fullName}
               </Text>
               <Text style={{ marginBottom: 6, fontWeight: "600" }}>
-                {order.serviceProvider.old} {i18n.t("home.year_old")}
+                {order!.serviceProvider.old} {i18n.t("home.year_old")}
               </Text>
-              {order.serviceProvider.skillLanguage && (
+              {order!.serviceProvider.skillLanguage && (
                 <View style={{ marginBottom: 12, flexDirection: "row" }}>
                   <Ionicons name="checkmark" size={18} />
                   {/* <Text style={{ fontWeight: "600" }}>English</Text> */}
                   <Text style={{ fontWeight: "600" }}>
-                    {JSON.parse(order.serviceProvider.skillLanguage).join(", ")}
+                    {JSON.parse(order!.serviceProvider.skillLanguage).join(", ")}
                   </Text>
                 </View>
               )}
               <Text style={{ color: colors.main_color }}>
-                {order.serviceProvider.experiences}{" "}
+                {order!.serviceProvider.experiences}{" "}
                 {i18n.t("home.services_done")}
               </Text>
             </View>
@@ -214,9 +216,9 @@ export default function InboxDetail(props: any) {
           marginBottom: 16,
         }}
       >
-        {i18n.t("home.status")}: {getStatus(order.orderStatus, order)}
+        {i18n.t("home.status")}: {getStatus(order!.orderStatus, order)}
       </Text>
-      {order.specialRequests && (
+      {order!.specialRequests && (
         <View>
           <Text
             style={{
@@ -226,7 +228,7 @@ export default function InboxDetail(props: any) {
             }}
           >
             {i18n.t("home.special_request")}:{" "}
-            {getSpecialRequest(order.specialRequests.status)}
+            {getSpecialRequest(order!.specialRequests.status)}
           </Text>
           <Text
             style={{
@@ -234,11 +236,11 @@ export default function InboxDetail(props: any) {
               fontSize: 16,
             }}
           >
-            {order.specialRequests.content}
+            {order!.specialRequests.content}
           </Text>
         </View>
       )}
-      {getReason(order.reason) && (
+      {getReason(order!.reason) && (
         <View>
           <Text
             style={{
@@ -256,7 +258,7 @@ export default function InboxDetail(props: any) {
               marginBottom: 16,
             }}
           >
-            {getReason(order.reason)}
+            {getReason(order!.reason)}
           </Text>
         </View>
       )}
@@ -275,8 +277,8 @@ export default function InboxDetail(props: any) {
         >
           Pet profile:
         </Text>
-        {order.bookingDetail.petProfiles &&
-          order.bookingDetail.petProfiles.map((item: any, index: number) => (
+        {order!.bookingDetail.petProfiles &&
+          order!.bookingDetail.petProfiles.map((item: ApiItem, index: number) => (
             <Text
               key={index}
               style={{
@@ -288,7 +290,7 @@ export default function InboxDetail(props: any) {
               {item.name}
             </Text>
           ))}
-        {order.serviceProvider && (
+        {order!.serviceProvider && (
           <View style={{ marginVertical: 16 }}>
             <Text style={{ fontSize: 16, color: colors.gray_normal_text }}>
               {i18n.t("home.your_helper")}
@@ -306,8 +308,8 @@ export default function InboxDetail(props: any) {
                   borderRadius: 50,
                 }}
                 source={
-                  order.serviceProvider.avatar
-                    ? { uri: order.serviceProvider.avatar }
+                  order!.serviceProvider.avatar
+                    ? { uri: order!.serviceProvider.avatar }
                     : require("../../assets/images/MaidService.jpg")
                 }
               />
@@ -317,7 +319,7 @@ export default function InboxDetail(props: any) {
                     <Ionicons
                       key={index}
                       name={
-                        order.serviceProvider.star > i ? "star" : "star-outline"
+                        order!.serviceProvider.star > i ? "star" : "star-outline"
                       }
                       color={colors.main_orange}
                       size={18}
@@ -326,24 +328,24 @@ export default function InboxDetail(props: any) {
                   ))}
                 </View>
                 <Text style={{ marginBottom: 6, fontWeight: "600" }}>
-                  {order.serviceProvider.fullName}
+                  {order!.serviceProvider.fullName}
                 </Text>
                 <Text style={{ marginBottom: 6, fontWeight: "600" }}>
-                  {order.serviceProvider.old} {i18n.t("home.year_old")}
+                  {order!.serviceProvider.old} {i18n.t("home.year_old")}
                 </Text>
-                {order.serviceProvider.skillLanguage && (
+                {order!.serviceProvider.skillLanguage && (
                   <View style={{ marginBottom: 12, flexDirection: "row" }}>
                     <Ionicons name="checkmark" size={18} />
                     {/* <Text style={{ fontWeight: "600" }}>English</Text> */}
                     <Text style={{ fontWeight: "600" }}>
-                      {JSON.parse(order.serviceProvider.skillLanguage).join(
+                      {JSON.parse(order!.serviceProvider.skillLanguage).join(
                         ", "
                       )}
                     </Text>
                   </View>
                 )}
                 <Text style={{ color: colors.main_color }}>
-                  {order.serviceProvider.experiences}{" "}
+                  {order!.serviceProvider.experiences}{" "}
                   {i18n.t("home.services_done")}
                 </Text>
               </View>
@@ -357,9 +359,9 @@ export default function InboxDetail(props: any) {
             marginBottom: 16,
           }}
         >
-          Status: {getStatus(order.orderStatus)}
+          Status: {getStatus(order!.orderStatus)}
         </Text>
-        {order.orderStatus == 5 && (
+        {order!.orderStatus == 5 && (
           <View>
             <Button onPress={onPressPetcareConfirm}>
               <Text>Confirm</Text>
@@ -373,7 +375,7 @@ export default function InboxDetail(props: any) {
           </View>
         )}
 
-        {getReason(order.reason) && (
+        {getReason(order!.reason) && (
           <View>
             <Text
               style={{
@@ -390,7 +392,7 @@ export default function InboxDetail(props: any) {
                 fontSize: 16,
               }}
             >
-              {getReason(order.reason)}
+              {getReason(order!.reason)}
             </Text>
           </View>
         )}
@@ -456,7 +458,7 @@ export default function InboxDetail(props: any) {
                 <TouchableOpacity
                   onPress={() =>
                     requestCancel({
-                      data: { id: order.orderDetailId, reason },
+                      data: { id: order!.orderDetailId, reason },
                     })
                   }
                   style={{
@@ -494,7 +496,7 @@ export default function InboxDetail(props: any) {
               textDecorationLine: "underline",
             }}
           >
-            {title}
+            {String(title ?? "")}
           </Text>
           <View
             style={{
@@ -551,8 +553,8 @@ export default function InboxDetail(props: any) {
         </View>
       ) : (
         <View style={{ marginVertical: 10, marginHorizontal: 10 }}>
-          <Text>{title}</Text>
-          <Text>{content}</Text>
+          <Text>{String(title ?? "")}</Text>
+          <Text>{String(content ?? "")}</Text>
         </View>
       )}
     </Container>

@@ -14,12 +14,13 @@ import dayjs from "../../shared/dayjs";
 import { useDispatch } from "react-redux";
 import { TYPES } from "../../redux/actions";
 import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
+import type { ApiItem } from "../../redux/apiSlice";
 
 export default function AllSubscriptionPlan() {
-  const [listPlan, setListPlan] = useState<any>([]);
-  const [dataPlan, setDataPlan] = useState<any>();
-  const [indexCancel, setIndexCancel] = useState<any>(undefined);
-  const [service, setService] = useState<any>();
+  const [listPlan, setListPlan] = useState<ApiItem[]>([]);
+  const [dataPlan, setDataPlan] = useState<ApiItem>();
+  const [indexCancel, setIndexCancel] = useState<number | undefined>(undefined);
+  const [service, setService] = useState<ApiItem>();
   const [serviceCancel, setServiceCancel] = useState("");
   const [reason, setReason] = useState<any>({
     label: "Location",
@@ -37,7 +38,7 @@ export default function AllSubscriptionPlan() {
       }
       if (!_.isNull(response)) {
         const list = Object.keys(response).filter((i) => !isEmpty(response[i]));
-        setListPlan(list);
+        setListPlan(list as any[]);
         setDataPlan(response);
       }
     }
@@ -119,7 +120,7 @@ export default function AllSubscriptionPlan() {
     ];
     const onPressCancelPlan = () => {
       setIndexCancel(index);
-      setServiceCancel(item.id);
+      setServiceCancel(item.id as string);
       dispatch({
         type: TYPES.TOOLS.OPEN_PICKER,
         payload: {

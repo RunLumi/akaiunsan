@@ -5,8 +5,9 @@ import { WebView } from "react-native-webview";
 import { Container, Text, Button } from "../../components";
 import colors from "../../shared/Colors";
 import Constants from "../../shared/Constants";
+import type { ScreenProps } from "../../navigation/routes";
 
-export function AboutUsView(props: any) {
+export function AboutUsView(props: ScreenProps) {
   const { url }: { url: string } = props.route.params;
 
   return (
@@ -31,7 +32,7 @@ export function AboutUsView(props: any) {
   );
 }
 
-export default function AboutUs(props: any) {
+export default function AboutUs(props: ScreenProps) {
   return (
     <Container>
       <View

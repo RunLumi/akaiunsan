@@ -33,8 +33,10 @@ import { rankBackground } from "../../../shared/Utils";
 import _ from "lodash";
 import dayjs from "../../../shared/dayjs";
 import { apiSlice, portRequest, type ApiResult } from "../../../redux/apiSlice";
+import type { ApiItem } from "../../../redux/apiSlice";
+import type { ScreenProps } from "../../../navigation/routes";
 
-export default function Payment(props: any) {
+export default function Payment(props: ScreenProps) {
   const user = useAppSelector((state) => state.auth.user);
 
   const [tableHeadFlexible, setTableHeadFlexible] = React.useState([
@@ -74,15 +76,15 @@ export default function Payment(props: any) {
   const [isDisableCreditCard, setIsDisableCreditCard] = React.useState(true);
   const [idCreditCard, setIdCreditCard] = React.useState("");
   const [isDiscount, setIsDiscount] = React.useState<{
-    value?: any;
+    value?: number;
     isTrue?: boolean;
   }>({});
   const [textPromotion, setTextPromotion] = React.useState<{
-    text?: any;
+    text?: string;
     isShow?: boolean;
   }>({});
   const [isApplyPromotion, setIsApplyPromotion] = React.useState<{
-    value?: any;
+    value?: number;
     isTrue?: boolean;
     promotionType?: number;
   }>({});
@@ -92,12 +94,12 @@ export default function Payment(props: any) {
   });
   const [receivePointFromPrice, setReceivePointFromPrice] = React.useState(0);
   const [voucherCode, setVoucherCode] = React.useState<{
-    value?: any;
+    value?: string;
     isError?: boolean;
     msgErr?: string;
   }>({});
   const [point, setPoint] = React.useState<{
-    value?: any;
+    value?: number;
     isError?: boolean;
     msgErr?: string;
   }>({});
@@ -176,10 +178,10 @@ export default function Payment(props: any) {
             let priceServiceDiscount = 0;
             let nameServiceDiscount = "";
             if (!_.isEmpty(props.extraService)) {
-              const match = props.extraService.filter((i: any) =>
-                serviceDiscount.some((e: any) => e.name === i.name && i.isCheck)
+              const match = props.extraService.filter((i: ApiItem) =>
+                serviceDiscount.some((e: ApiItem) => e.name === i.name && i.isCheck)
               );
-              match.map((i: any) => {
+              match.map((i: ApiItem) => {
                 nameServiceDiscount += `- ${i.name} `;
                 priceServiceDiscount +=
                   (i.price * serviceDiscount[0].discount) / 100;
@@ -265,7 +267,7 @@ export default function Payment(props: any) {
         Alert.alert(i18n.t("auth.error"), error);
       } else {
         let data = JSON.parse(response.items[0].config);
-        let percentDiscount = (point.value * data.discounts) / data.point;
+        let percentDiscount = (point.value! * data.discounts) / data.point;
         let valueDiscount = (props.price * percentDiscount) / 100;
         setIsDiscount({ ...isDiscount, isTrue: true, value: valueDiscount });
         props.handleDiscountPrice(valueDiscount, true, point.value);
@@ -318,8 +320,8 @@ export default function Payment(props: any) {
     setIsApplyPromotion({ ...isApplyPromotion, isTrue: false });
     setTextPromotion({ ...textPromotion, isShow: false });
     if (isApplyPromotion.promotionType == Enum.PromotionType.GIFT_POINT) {
-      props.handleReceivePoint(-isApplyPromotion.value);
-      setReceivePointFromPrice(receivePointFromPrice - isApplyPromotion.value);
+      props.handleReceivePoint(-isApplyPromotion.value!);
+      setReceivePointFromPrice(receivePointFromPrice - isApplyPromotion.value!);
     } else {
       if (props.handlePriceExtraService) {
         props.handlePriceExtraService(isApplyPromotion.value, "plus");
@@ -347,7 +349,7 @@ export default function Payment(props: any) {
       });
       return;
     }
-    if (point.value < 100 || point.value > 200) {
+    if (point.value! < 100 || point.value! > 200) {
       setPoint({
         ...point,
         isError: true,
@@ -565,12 +567,12 @@ export default function Payment(props: any) {
             >
               <CustomInput
                 disabled={isDiscount.isTrue}
-                value={point.value}
+                value={String(point.value ?? "")}
                 keyboardType="number-pad"
                 placeholder={i18n.t("home.point")}
                 containerStyle={{ width: "65%" }}
                 onChangeText={(value) =>
-                  setPoint({ ...point, value: value, isError: false })
+                  setPoint({ ...point, value: value as unknown as number, isError: false })
                 }
                 isError={point.isError}
                 errorText={point.msgErr}

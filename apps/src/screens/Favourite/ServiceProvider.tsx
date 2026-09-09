@@ -9,13 +9,15 @@ import Colors from "../../shared/Colors";
 import Constants from "../../shared/Constants";
 import i18n from "../../shared/I18n";
 import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
+import type { ApiItem } from "../../redux/apiSlice";
+import type { ScreenProps } from "../../navigation/routes";
 
-export default function ServiceProvider(props: any) {
+export default function ServiceProvider(props: ScreenProps) {
   const navigation = props.navigation;
 
   const token = useAppSelector((state) => state.auth.token);
 
-  const [listServiceProvider, setListServiceProvider] = useState<any[]>([]);
+  const [listServiceProvider, setListServiceProvider] = useState<ApiItem[]>([]);
 
   const [currentSelected, setCurrentSelected] = useState<String[]>([]);
   const [currentDelSelected, setCurrentDelSelected] = useState<String[]>([]);
@@ -33,7 +35,7 @@ export default function ServiceProvider(props: any) {
       setListServiceProvider(response && response.items);
       setCurrentSelected(
         _(response.items)
-          .filter((i: any) => i.isSelected)
+          .filter((i: ApiItem) => i.isSelected)
           .map("id")
           .value()
       );
@@ -143,7 +145,7 @@ export default function ServiceProvider(props: any) {
     ]);
   };
 
-  const onPressCheck = (id: any) => {
+  const onPressCheck = (id: string) => {
     setCurrentSelected(
       currentSelected.indexOf(id) != -1
         ? _.remove(currentSelected, id)

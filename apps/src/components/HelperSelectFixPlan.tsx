@@ -27,17 +27,18 @@ import { Loading } from "./Loading";
 import dayjs from "../shared/dayjs";
 import { isEmpty } from "lodash";
 import { apiSlice, portRequest, type ApiResult } from "../redux/apiSlice";
+import type { ApiItem } from "../redux/apiSlice";
 
 interface Props {
   style?: StyleProp<ViewStyle>;
-  children?: any;
-  valueHelper?: any;
+  children?: React.Ref<unknown>;
+  valueHelper?: (id: unknown, name: unknown, old: unknown, star: unknown, avatar: unknown) => void;
   serviceType?: number;
   // startTime?:any;
   // endTime?:any;
-  addressId?: any;
-  language?: any;
-  times?: any;
+  addressId?: ApiItem;
+  language?: ApiItem;
+  times?: ApiItem;
 }
 
 export const HelperSelectFixPlan = ({
@@ -58,11 +59,11 @@ export const HelperSelectFixPlan = ({
   const [oldDetail, setOldDetail] = React.useState("");
   const [serviceDetail, setServiceDetail] = React.useState("");
   const [searchHelper, setSearchHelper] = React.useState("");
-  const [dataHelper, setDataHelper] = React.useState<any[]>([]);
+  const [dataHelper, setDataHelper] = React.useState<ApiItem[]>([]);
   const [national, setNational] = React.useState("");
   // const [id, setId] = React.useState('');
   const [experiences, setExperiences] = React.useState(0);
-  const [dataHelperSuggest, setDataHelperSuggest] = React.useState<any[]>([]);
+  const [dataHelperSuggest, setDataHelperSuggest] = React.useState<ApiItem[]>([]);
   const [requestListHelperTrigger, { isLoading: loadingListHelper }] =
     apiSlice.endpoints.servicesHelperFixplan.useMutation();
   const requestListHelper = portRequest(
@@ -89,7 +90,7 @@ export const HelperSelectFixPlan = ({
             listDate: times,
             addressId: addressId?.id || addressId?.addressId,
             languages: (language && language.value) || "",
-            serviceProvider: response.items.map((x: any) => x.id),
+            serviceProvider: response.items.map((x: ApiItem) => x.id),
           },
         });
       }
@@ -104,14 +105,14 @@ export const HelperSelectFixPlan = ({
     },
   }));
   const submitHelper = () => {
-    let dataSelect: any;
-    let dataSelectSuggest: any;
+    let dataSelect: ApiItem | undefined;
+    let dataSelectSuggest: ApiItem | undefined;
     dataSelect = dataHelper.find((x) => x.isSelect === true);
     dataSelectSuggest = dataHelperSuggest.find((x) => x.isSelect === true);
     if (dataSelect) {
       setShowModalDetail(false);
       setShowModal(false);
-      valueHelper(
+      valueHelper?.(
         dataSelect.id,
         dataSelect.fullName,
         dataSelect.old,
@@ -119,7 +120,7 @@ export const HelperSelectFixPlan = ({
         dataSelect.avatar
       );
     } else if (dataSelectSuggest) {
-      valueHelper(
+      valueHelper?.(
         dataSelectSuggest.id,
         dataSelectSuggest.fullName,
         dataSelectSuggest.old,
@@ -132,7 +133,7 @@ export const HelperSelectFixPlan = ({
       Alert.alert(i18n.t("auth.error"), i18n.t("home.select_your_helper"));
     }
   };
-  const searchNameHelper = (value: any) => {
+  const searchNameHelper = (value: string) => {
     setSearchHelper(value);
     requestListHelper({
       data: {
@@ -144,9 +145,9 @@ export const HelperSelectFixPlan = ({
       },
     });
   };
-  const onSelectHelper = (value: any, idx: any) => {
-    let valueHelpers: any = [...dataHelper];
-    let valueHelperSuggest: any = [...dataHelperSuggest];
+  const onSelectHelper = (value: ApiItem, idx: number) => {
+    let valueHelpers: ApiItem[] = [...dataHelper];
+    let valueHelperSuggest: ApiItem[] = [...dataHelperSuggest];
     for (let index = 0; index < valueHelpers.length; index++) {
       valueHelpers[index].isSelect = false;
     }
@@ -161,9 +162,9 @@ export const HelperSelectFixPlan = ({
     setDataHelper(valueHelpers);
     setDataHelperSuggest(valueHelperSuggest);
   };
-  const onSelectHelperSuggest = (value: any, idx: number) => {
-    let valueHelperSuggest: any = [...dataHelperSuggest];
-    let valueHelpers: any = [...dataHelper];
+  const onSelectHelperSuggest = (value: ApiItem, idx: number) => {
+    let valueHelperSuggest: ApiItem[] = [...dataHelperSuggest];
+    let valueHelpers: ApiItem[] = [...dataHelper];
     for (let index = 0; index < valueHelperSuggest.length; index++) {
       valueHelperSuggest[index].isSelect = false;
     }
@@ -178,7 +179,7 @@ export const HelperSelectFixPlan = ({
     setDataHelperSuggest(valueHelperSuggest);
     setDataHelper(valueHelpers);
   };
-  const renderItem = (item: any, idx: any) => (
+  const renderItem = (item: ApiItem, idx: number) => (
     <View key={idx} style={styles.viewImage}>
       <TouchableOpacity onPress={() => showDetail(item, idx, 1)}>
         <ImageBackground
@@ -250,7 +251,7 @@ export const HelperSelectFixPlan = ({
     star: any,
     image: any
   ) => {
-    valueHelper(id, name, old, star, image);
+    valueHelper?.(id, name, old, star, image);
     setShowModalDetail(false);
     setShowModal(false);
   };
@@ -326,15 +327,15 @@ export const HelperSelectFixPlan = ({
       return;
     }
   };
-  const onChooseHelper = (item: any, idx: number) => {
+  const onChooseHelper = (item: ApiItem, index: number) => {
     if (item.id != idDetail) {
       const findData = dataHelper.filter((i) => i.id == item.id);
       const findSuggest = dataHelperSuggest.filter((i) => i.id == item.id);
       if (findData.length > 0) {
-        showDetail(item, idx - dataHelperSuggest.length, 1);
+        showDetail(item, index - dataHelperSuggest.length, 1);
       }
       if (findSuggest.length > 0) {
-        showDetail(item, idx, 2);
+        showDetail(item, index, 2);
       }
     }
   };

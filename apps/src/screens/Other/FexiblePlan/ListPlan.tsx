@@ -16,8 +16,10 @@ import Constants from "../../../shared/Constants";
 import i18n from "../../../shared/I18n";
 import { rankBackground } from "../../../shared/Utils";
 import { apiSlice, portRequest, type ApiResult } from "../../../redux/apiSlice";
+import type { ApiItem } from "../../../redux/apiSlice";
+import type { ScreenProps } from "../../../navigation/routes";
 
-export default function ListPlan(props: any) {
+export default function ListPlan(props: ScreenProps) {
   const {
     currentPlan: plan,
     serviceId,
@@ -27,8 +29,8 @@ export default function ListPlan(props: any) {
   } = props.route.params;
 
   const [currentPlan, setCurrentPlan] = useState<any>();
-  const [currentFixPlan, setCurrentFixPlan] = useState<any>();
-  const [listPlan, setListPlan] = useState<any[]>([]);
+  const [currentFixPlan, setCurrentFixPlan] = useState<ApiItem | null>();
+  const [listPlan, setListPlan] = useState<ApiItem[]>([]);
   const [autoRenew, setAutoRenew] = useState(false);
   const [autoRenewFixPlan, setAutoRenewFixPlan] = useState(false);
 
@@ -70,7 +72,7 @@ export default function ListPlan(props: any) {
       }
       if (response.title) {
         setCurrentFixPlan(response);
-        setCurrentPlan(null);
+        setCurrentPlan(null as ApiItem | null);
 
         if (response && response.isRenew == true) {
           setAutoRenewFixPlan(true);
@@ -134,7 +136,7 @@ export default function ListPlan(props: any) {
         return;
       }
 
-      setCurrentPlan(null);
+      setCurrentPlan(null as ApiItem | null);
       requestCurrentPlan();
     }
   );
@@ -217,7 +219,7 @@ export default function ListPlan(props: any) {
       point: 0,
     };
 
-    if (plan.rank <= currentPlan.rank) {
+    if (plan.rank <= currentPlan!.rank) {
       requestDowngradeFlexiblePlan({
         data,
       });
@@ -234,7 +236,7 @@ export default function ListPlan(props: any) {
     props.navigation.pop(1);
   };
 
-  const onPressPlan = (item: any) => {
+  const onPressPlan = (item: ApiItem) => {
     if (!_.isNil(currentPlan)) {
       props.navigation.navigate(Constants.SCREENS.OTHER.AGREE_FEXIBLE_PLAN, {
         plan: item,
@@ -260,7 +262,7 @@ export default function ListPlan(props: any) {
   const onPressCancelPlan = () => {
     requestCancelFlexiblePlan({
       data: {
-        orderId: currentPlan.subscriptionOrderId,
+        orderId: currentPlan!.subscriptionOrderId,
       },
     });
   };
@@ -268,7 +270,7 @@ export default function ListPlan(props: any) {
   const onPressCancelFixPlan = () => {
     requestCancelFixPlan({
       data: {
-        orderId: currentFixPlan.idOrder,
+        orderId: currentFixPlan!.idOrder,
         reason: "123",
         serviceType,
       },
@@ -279,14 +281,14 @@ export default function ListPlan(props: any) {
     if (autoRenew) {
       requestToggleRenewFlexible({
         data: {
-          orderId: currentPlan.subscriptionOrderId,
+          orderId: currentPlan!.subscriptionOrderId,
           isAutoRenew: false,
         },
       });
     } else {
       requestToggleRenewFlexible({
         data: {
-          orderId: currentPlan.subscriptionOrderId,
+          orderId: currentPlan!.subscriptionOrderId,
           isAutoRenew: true,
         },
       });
@@ -296,7 +298,7 @@ export default function ListPlan(props: any) {
   const handleAutoRenewFixPlan = () => {
     requestToggleRenewFixPlan({
       data: {
-        orderId: currentFixPlan.idOrder,
+        orderId: currentFixPlan!.idOrder,
         isAutoRenew: !autoRenewFixPlan,
       },
     });
@@ -396,8 +398,8 @@ export default function ListPlan(props: any) {
               </Text>
             </View>
             <View style={{ marginBottom: 24 }}>
-              {currentFixPlan.time.map((x: any, i: number) => (
-                <View key={i}>
+              {currentFixPlan.time.map((x: ApiItem, index: number) => (
+                <View key={index}>
                   <Text>{x.bookingDate}</Text>
                   <Text>{x.bookingHours}</Text>
                 </View>
@@ -509,8 +511,8 @@ export default function ListPlan(props: any) {
           </View>
         )}
         {_.isNil(currentFixPlan) &&
-          listPlan.map((item: any, i: number) => (
-            <View key={i} style={{ marginVertical: 8, paddingHorizontal: 16 }}>
+          listPlan.map((item: ApiItem, index: number) => (
+            <View key={index} style={{ marginVertical: 8, paddingHorizontal: 16 }}>
               <PlanCard
                 background={rankBackground(item.rank)}
                 onPress={() => onPressPlan(item)}

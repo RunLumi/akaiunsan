@@ -29,8 +29,10 @@ import _, { isEmpty, times } from "lodash";
 import analytics from "@react-native-firebase/analytics";
 import Config from "react-native-config";
 import { apiSlice, portRequest, type ApiResult, type RequestArg } from "../../redux/apiSlice";
+import type { ApiItem } from "../../redux/apiSlice";
+import type { ScreenProps } from "../../navigation/routes";
 
-export default function Service(props: any) {
+export default function Service(props: ScreenProps) {
   const childRef = React.useRef<any>(null);
   const params = props.route.params || {};
   const apiOrder =
@@ -47,7 +49,7 @@ export default function Service(props: any) {
 
   const [disabledNext, setDisableNext] = useState(true);
   const [idCard, setIdCard] = useState("");
-  const [dataAddress, setDataAddress] = useState<any>();
+  const [dataAddress, setDataAddress] = useState<ApiItem>();
   const [valueShowHour, setValueShowHour] = useState(0);
   const [valueShowDateTime, setValueShowDateTime] = useState(
     i18n.t("home.select_date_time")
@@ -67,11 +69,11 @@ export default function Service(props: any) {
   });
   const [two, setTwo] = useState(0);
   const [threePlus, setThreePlus] = useState(0);
-  const [idSpecifyHelper, setIdSpecifyHelper] = useState<any>({});
+  const [idSpecifyHelper, setIdSpecifyHelper] = useState<ApiItem>({});
   const [twoPlus, setTwoPlus] = useState(0);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
-  const [extraService, setExtraService] = useState<any[]>([]);
+  const [extraService, setExtraService] = useState<ApiItem[]>([]);
   const [pointApply, setPointApply] = useState(0);
   const [receivePoint, setReceivePoint] = useState(0);
 
@@ -486,17 +488,17 @@ export default function Service(props: any) {
       setPrice(Number((price + valueDiscount).toFixed(2)));
     }
   };
-  const handleAddress = (data: any) => {
+  const handleAddress = (data: ApiItem) => {
     setDataAddress(data);
     setDisableNext(false);
   };
-  const handleIdSpecifyHelper = (data: any) => {
+  const handleIdSpecifyHelper = (data: ApiItem) => {
     setIdSpecifyHelper(data);
   };
   const handlePriceEnglish = (value: any) => {
     setPrice(value);
   };
-  // const handleIdPreferLanguge = (value: any) => {
+  // const handleIdPreferLanguge = (value: ApiItem) => {
   //   setIdPreferLanguge(value);
   // };
   const handlePaymentMethod = (value: string, type: boolean) => {
@@ -539,7 +541,7 @@ export default function Service(props: any) {
       setAddPricePreferLanguage(true);
     }
   };
-  const handlePriceCleaning = (data: any) => {
+  const handlePriceCleaning = (data: ApiItem) => {
     let priceCleaning = 0;
     for (let index = 0; index < data.length; index++) {
       if (data[index].isCheck) {
@@ -763,7 +765,7 @@ export default function Service(props: any) {
       setCurrentStep(currentStep + 1);
     }
   };
-  const handleCloseModalCrediCard = (value: any) => {
+  const handleCloseModalCrediCard = (value: ApiItem) => {
     if (value.nativeEvent && value.nativeEvent.data === "cancel") {
       setModalCreditCard({ ...modalCreditCard, isModal: false });
 
@@ -804,7 +806,7 @@ export default function Service(props: any) {
     `;
     return injectedData;
   };
-  const handleIdCard = (cardSelected: any) => {
+  const handleIdCard = (cardSelected: string) => {
     if (cardSelected) {
       setIdCard(cardSelected);
     }

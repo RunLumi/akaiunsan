@@ -11,21 +11,23 @@ import {
 import { Container, Loading, Text } from "../../components";
 import Constants from "../../shared/Constants";
 import _ from "lodash";
-import { apiSlice, portRequest } from "../../redux/apiSlice";
+import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
 import i18n from "../../shared/I18n";
 import dayjs from "../../shared/dayjs";
 import Enum from "../../shared/Enum";
 import { getStatus, paramArray } from "../../shared/Utils";
 import Colors from "../../shared/Colors";
+import type { ApiItem } from "../../redux/apiSlice";
+import type { ScreenProps } from "../../navigation/routes";
 
-export default function Booking(props: any) {
+export default function Booking(props: ScreenProps) {
   const [activeTab, setActiveTab] = useState(0);
 
   const [pageListBooking, setPageListBooking] = useState(1);
   const [pageListHistory, setPageListHistory] = useState(1);
 
-  const [listHistory, setListHistory] = useState<any>([]);
-  const [listBooking, setListBooking] = useState<any>([]);
+  const [listHistory, setListHistory] = useState<ApiItem>([]);
+  const [listBooking, setListBooking] = useState<ApiItem>([]);
 
   // Phase 5 RTK Query port: list and history share the get_bookings endpoint
   // (orderStatus[] params decide which is which); the legacy callbacks and
@@ -36,14 +38,14 @@ export default function Booking(props: any) {
   ] = apiSlice.endpoints.getBookings.useLazyQuery();
   const requestListHistory = portRequest(
     historyTrigger,
-    ({ error, response }: { error: string; response: any }) => {
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
       }
       if (!_.isNull(response)) {
         if (response.items.length) {
-          setListHistory((old: any) => [...old, ...response.items]);
+          setListHistory((old: any[]) => [...old, ...response.items]);
           setPageListHistory(response.page);
         }
       }
@@ -55,14 +57,14 @@ export default function Booking(props: any) {
   ] = apiSlice.endpoints.getBookings.useLazyQuery();
   const requestListBooking = portRequest(
     bookingTrigger,
-    ({ error, response }: { error: string; response: any }) => {
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
       }
       if (!_.isNull(response)) {
         if (response.items.length) {
-          setListBooking((old: any) => [...old, ...response.items]);
+          setListBooking((old: any[]) => [...old, ...response.items]);
           setPageListBooking(response.page);
         }
       }
@@ -91,13 +93,13 @@ export default function Booking(props: any) {
     props.navigation.navigate(Constants.SCREENS.BOOKING.CALENDAR);
   };
 
-  const onPressBookingDetail = (item: any) => {
+  const onPressBookingDetail = (item: ApiItem) => {
     props.navigation.navigate(Constants.SCREENS.BOOKING.DETAIL, {
       item,
     });
   };
 
-  const onPressHistoryDetail = (item: any) => {
+  const onPressHistoryDetail = (item: ApiItem) => {
     props.navigation.navigate(Constants.SCREENS.BOOKING.DETAIL_HISTORY, {
       item,
     });
@@ -245,7 +247,7 @@ export default function Booking(props: any) {
       {activeTab == 0 && (
         <View style={s.pageView}>
           <FlatList
-            data={listBooking}
+            data={listBooking as any[]}
             contentContainerStyle={
               listBooking.length === 0 && {
                 flexGrow: 1,
@@ -275,7 +277,7 @@ export default function Booking(props: any) {
       {activeTab == 1 && (
         <View style={s.pageView}>
           <FlatList
-            data={listHistory}
+            data={listHistory as any[]}
             contentContainerStyle={
               listHistory.length === 0 && {
                 flexGrow: 1,

@@ -13,11 +13,13 @@ import i18n from "../../shared/I18n";
 import Layout from "../../shared/Layout";
 import { Fontisto, AntDesign } from "@expo/vector-icons";
 import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
+import type { ApiItem } from "../../redux/apiSlice";
+import type { ScreenProps } from "../../navigation/routes";
 
-export default function PromotionList(props: any) {
+export default function PromotionList(props: ScreenProps) {
   const [refresh, setRefresh] = useState(false);
   const [page, setPage] = useState(2);
-  const [arrPromotion, setArrPromotion] = useState<any[]>([]);
+  const [arrPromotion, setArrPromotion] = useState<ApiItem[]>([]);
   const [requestListPromotionUsedTrigger, { isLoading: loadingListPromotionUsed }] =
     apiSlice.endpoints.promotionUsed.useLazyQuery();
   const requestListPromotionUsed = portRequest(
@@ -30,14 +32,14 @@ export default function PromotionList(props: any) {
       setRefresh(false);
       if (response.page === 1) {
         setPage(2);
-        let getPromotionId = response.items.map((x: any, idx: any) => {
+        let getPromotionId = response.items.map((x: ApiItem, index: number) => {
           return { ...x, promotionId: x.id };
         });
         setArrPromotion(getPromotionId);
       } else {
         let data = [...arrPromotion];
         if (response.items && response.items.length) {
-          response.items.forEach((m: any) => {
+          response.items.forEach((m: ApiItem) => {
             let item = data.find((n) => n.id === m.id);
             if (item) {
               return Object.assign(item, m);
@@ -53,8 +55,8 @@ export default function PromotionList(props: any) {
     }
   );
 
-  const renderItem = (item: any, idx: any) => (
-    <View key={idx}>
+  const renderItem = (item: ApiItem, index: number) => (
+    <View key={index}>
       <TouchableOpacity
         onPress={() =>
           props.navigation.navigate(Constants.SCREENS.PROMOTIOM.DETAIL, {

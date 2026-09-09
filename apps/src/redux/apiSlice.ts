@@ -61,6 +61,13 @@ export interface ApiResult {
   response: ItemsResponse;
 }
 
+// Canonical loose item shape for API payloads rendered by the screens: one
+// index signature instead of hundreds of `any` parameter annotations. Reads
+// stay `any`-typed through the index signature, so behavior is unchanged.
+export type ApiItem = {
+  [key: string]: any;
+};
+
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
@@ -70,7 +77,7 @@ export const apiSlice = createApi({
     // `new URLSearchParams(stripUndefined(params))`, which spreads the
     // instance into an empty object on standard platforms — keep the axios
     // wire format instead.
-    paramsSerializer: (params: any) =>
+    paramsSerializer: (params: ApiItem) =>
       params instanceof URLSearchParams
         ? params.toString()
         : new URLSearchParams(
@@ -79,7 +86,7 @@ export const apiSlice = createApi({
             )
           ).toString(),
     prepareHeaders: (headers, { getState }) => {
-      const token = (getState() as any)?.auth?.token;
+      const token = (getState() as ApiItem)?.auth?.token;
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }

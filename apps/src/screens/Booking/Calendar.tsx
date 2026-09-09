@@ -11,10 +11,12 @@ import Constants from "../../shared/Constants";
 import Enum from "../../shared/Enum";
 import { paramArray } from "../../shared/Utils";
 import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
+import type { ApiItem } from "../../redux/apiSlice";
+import type { ScreenProps } from "../../navigation/routes";
 
 dayjs.locale("en");
 
-const WeeklyCalendar = (props: any) => {
+const WeeklyCalendar = (props: ScreenProps) => {
   const dates: dayjs.Dayjs[] = [];
 
   for (
@@ -189,8 +191,8 @@ const WeeklyCalendar = (props: any) => {
   );
 };
 
-const MonthlyCalendar = (props: any) => {
-  const [calendar, setCalendar] = useState<any>([]);
+const MonthlyCalendar = (props: ScreenProps) => {
+  const [calendar, setCalendar] = useState<ApiItem>([]);
   const [month, setMonth] = useState(props.month);
 
   const weeksOfMonth = () => {
@@ -288,9 +290,9 @@ const MonthlyCalendar = (props: any) => {
       </View>
       <View style={{ flex: 1 }}>
         <View style={{ flexDirection: "row" }}>
-          {calendar[0].days.map((d: any, idx: any) => (
+          {calendar[0].days.map((d: ApiItem, index: number) => (
             <View
-              key={idx}
+              key={index}
               style={{
                 flex: 1,
                 alignItems: "center",
@@ -310,14 +312,14 @@ const MonthlyCalendar = (props: any) => {
           ))}
         </View>
         <View style={{ flex: 1 }}>
-          {calendar.map((row: any) => (
+          {calendar.map((row: ApiItem) => (
             <View
               style={{
                 flex: 1,
                 flexDirection: "row",
               }}
             >
-              {row.days.map((col: any) => {
+              {row.days.map((col: dayjs.Dayjs) => {
                 const j = getJob(col);
                 return (
                   <View
@@ -392,14 +394,14 @@ const MonthlyCalendar = (props: any) => {
   );
 };
 
-export default (props: any) => {
+export default (props: ScreenProps) => {
   const navigation = props.navigation;
   const newItems = props.route.params?.items;
   const [month, setMonth] = useState<any>(Date.now());
   const [type, setType] = useState(1);
 
-  const [listMonthly, setListMonthly] = useState<any>([]);
-  const [listWeekly, setListWeekly] = useState<any>([]);
+  const [listMonthly, setListMonthly] = useState<ApiItem>([]);
+  const [listWeekly, setListWeekly] = useState<ApiItem>([]);
 
   const [requestListMonthlyTrigger, { isLoading: loadingListMonthly }] =
     apiSlice.endpoints.getBookings.useLazyQuery();

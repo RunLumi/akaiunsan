@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import PagerView from "react-native-pager-view";
+import type { ApiItem } from "../redux/apiSlice";
 
 // Auto-playing, looping pager for the banner carousels. Replaces the
 // unmaintained react-native-snap-carousel / react-native-swiper usages with
@@ -8,8 +9,8 @@ import PagerView from "react-native-pager-view";
 // interval — the same autoplay/loop contract the old components provided.
 interface Props {
   data: any[];
-  renderItem: (item: any, index: number) => React.ReactNode;
-  style?: any;
+  renderItem: (item: ApiItem, index: number) => React.ReactNode;
+  style?: ApiItem;
   autoplayInterval?: number;
 }
 
@@ -29,7 +30,7 @@ export const AutoPager = ({
     if (
       typeof process !== "undefined" &&
       (process.env?.JEST_WORKER_ID !== undefined ||
-        (globalThis as any).__autoPagerPaused)
+        (globalThis as ApiItem).__autoPagerPaused)
     ) {
       return;
     }
@@ -57,7 +58,7 @@ export const AutoPager = ({
       ref={setPagerRef}
       style={[{ flex: 1 }, style]}
       initialPage={0}
-      onPageSelected={(e: any) => setPage(e?.nativeEvent?.position ?? 0)}
+      onPageSelected={(e: ApiItem) => setPage(e?.nativeEvent?.position ?? 0)}
     >
       {data.map((item, index) => (
         <View key={index.toString()} collapsable={false} style={{ flex: 1 }}>

@@ -23,8 +23,10 @@ import { useNavigation } from "@react-navigation/native";
 
 import { TYPES } from "../../redux/actions";
 import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
+import type { ApiItem } from "../../redux/apiSlice";
+import type { ScreenProps } from "../../navigation/routes";
 
-export default function PromotionList(props: any) {
+export default function PromotionList(props: ScreenProps) {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [review, setReview] = useState({ label: "All", value: 9999 });
@@ -36,7 +38,7 @@ export default function PromotionList(props: any) {
   const [showDate, setShowDate] = useState(false);
   const [callOnScrollEnd, setCallOnScrollEnd] = useState(false);
   const [page, setPage] = useState(2);
-  const [arrHistory, setArrHistory] = useState<any[]>([]);
+  const [arrHistory, setArrHistory] = useState<ApiItem[]>([]);
   const [requestListHistoryTrigger, { isLoading: loadingListHistory }] =
     apiSlice.endpoints.bookingGet.useLazyQuery();
   const requestListHistory = portRequest(
@@ -48,7 +50,7 @@ export default function PromotionList(props: any) {
       } else {
         let data = [...arrHistory];
         if (response.items && response.items.length) {
-          response.items.forEach((m: any) => {
+          response.items.forEach((m: ApiItem) => {
             let item = data.find((n) => n.orderId === m.orderId);
             if (item) {
               return Object.assign(item, m);
@@ -72,10 +74,10 @@ export default function PromotionList(props: any) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
       } else {
-        let data: any = [];
+        let data: ApiItem[] = [];
         if (response.items && response.items.length) {
-          response.items.forEach((m: any) => {
-            let item = data.find((n: any) => n.orderId === m.orderId);
+          response.items.forEach((m: ApiItem) => {
+            let item = data.find((n: ApiItem) => n.orderId === m.orderId);
             if (item) {
               return Object.assign(item, m);
             }
@@ -282,10 +284,10 @@ export default function PromotionList(props: any) {
     });
   };
 
-  const renderItem = (item: any, idx: any) => {
+  const renderItem = (item: ApiItem, index: number) => {
     return (
       <TouchableOpacity
-        key={idx}
+        key={index}
         style={s.jobItem}
         onPress={() =>
           (navigation.navigate as any)(

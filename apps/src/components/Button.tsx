@@ -14,14 +14,15 @@ import {
 import Theme from "../shared/theme";
 import Styles from "../shared/Styles";
 import { Text } from "./Text";
+import type { ApiItem } from "../redux/apiSlice";
 interface Props {
   style?: StyleProp<ViewStyle>;
   viewStyle?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
-  children?: any;
+  children?: React.ReactNode;
   title?: string;
-  colorBackground?: any;
-  image?: any;
+  colorBackground?: string;
+  image?: number;
   imageStyle?: StyleProp<ImageStyle>;
   onPress?: (event: GestureResponderEvent) => void;
   loading?: boolean;
@@ -70,7 +71,7 @@ export const Button = ({
           ) : null}
         </View>
         {title && <Text style={[s.text, textStyle]}>{title}</Text>}
-        {image && <Image source={image} style={[s.image, imageStyle]} />}
+        {image != null && <Image source={image as number} style={[s.image, imageStyle]} />}
         {children}
       </View>
     </TouchableOpacity>

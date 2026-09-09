@@ -14,13 +14,15 @@ import { getStatus } from "../../shared/Utils";
 import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
+import type { ApiItem } from "../../redux/apiSlice";
+import type { ScreenProps } from "../../navigation/routes";
 
-export default function PromotionDetail(props: any) {
+export default function PromotionDetail(props: ScreenProps) {
   const params = props.route.params;
   const navigation = useNavigation();
-  const [currentDetail, setCurrentDetail] = useState<any>({});
+  const [currentDetail, setCurrentDetail] = useState<ApiItem>({});
   const [rating, setRating] = useState(0);
-  const [subscriptionPlanActive, setSubscriptionPlanActive] = useState<any>({});
+  const [subscriptionPlanActive, setSubscriptionPlanActive] = useState<ApiItem>({});
   const [requestBookingDetailTrigger, { isLoading: loadingBookingDetail }] =
     apiSlice.endpoints.bookingDetail.useLazyQuery();
   const requestBookingDetail = portRequest(
@@ -64,7 +66,7 @@ export default function PromotionDetail(props: any) {
       }
       if (response.items && response.items.length) {
         let getSubscriptionPlanActive = response.items.find(
-          (x: any) => x.subscriptionStatus === Enum.SubscriptionStatus.ACTIVE
+          (x: ApiItem) => x.subscriptionStatus === Enum.SubscriptionStatus.ACTIVE
         );
         setSubscriptionPlanActive(getSubscriptionPlanActive);
       }

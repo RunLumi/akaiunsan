@@ -12,7 +12,7 @@ import Theme from "../shared/theme";
 
 interface Props {
   style?: StyleProp<ViewStyle>;
-  children?: any;
+  children?: React.ReactNode | React.RefObject<unknown>;
   loading?: boolean;
 }
 

@@ -9,8 +9,10 @@ import Constants from "../../shared/Constants";
 import i18n from "../../shared/I18n";
 import { Payment } from "../ServiceScreen/component";
 import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
+import type { ApiItem } from "../../redux/apiSlice";
+import type { ScreenProps } from "../../navigation/routes";
 
-export default function PaymentPetcare(props: any) {
+export default function PaymentPetcare(props: ScreenProps) {
   const { order } = props.route.params;
   const childRef = React.useRef<any>(null);
   const [valueShowDateTime, setValueShowDateTime] = useState<string>();
@@ -104,7 +106,7 @@ export default function PaymentPetcare(props: any) {
 
   const handleReceivePoint = () => {};
 
-  const handleCloseModalCrediCard = (value: any) => {
+  const handleCloseModalCrediCard = (value: ApiItem) => {
     setIsShowModal(false);
 
     if (value.nativeEvent && value.nativeEvent.data === "cancel") {

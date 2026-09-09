@@ -18,10 +18,11 @@ import Constants from "../shared/Constants";
 import Colors from "../shared/Colors";
 import Theme from "../shared/theme";
 import { Loading } from ".";
+import type { ApiItem } from "../redux/apiSlice";
 
 interface Props {
   style?: StyleProp<ViewStyle>;
-  children?: any;
+  children?: (result: ApiItem) => void;
   isShowModalCamera?: boolean;
   setModalVisible?: (event: GestureResponderEvent) => void;
 }
@@ -34,15 +35,15 @@ export const CameraLibrary = ({
   ...props
 }: Props) => {
   const [loadingImage, setLoadingImage] = React.useState(false);
-  const postImage = async (formData: any) => {
+  const postImage = async (uri: string) => {
     setLoadingImage(true);
     let bodyFormData = new FormData();
     bodyFormData.append("file", {
-      uri: formData,
+      uri: uri,
       name: "photo.png",
       filename: "imageName.png",
       type: "image/png",
-    } as any);
+    } as ApiItem);
     bodyFormData.append("Content-Type", "image/png");
 
     return await fetch(`${Constants.API.base}${Constants.API.upload_image}`, {
@@ -71,7 +72,7 @@ export const CameraLibrary = ({
         quality: 1,
       });
       if (!result.canceled && result.assets?.[0]?.uri) {
-        children(await postImage(result.assets[0].uri));
+        children?.(await postImage(result.assets[0].uri));
       }
     }
   };
@@ -88,7 +89,7 @@ export const CameraLibrary = ({
       });
 
       if (!result.canceled && result.assets?.[0]?.uri) {
-        children(await postImage(result.assets[0].uri));
+        children?.(await postImage(result.assets[0].uri));
       }
     }
   };

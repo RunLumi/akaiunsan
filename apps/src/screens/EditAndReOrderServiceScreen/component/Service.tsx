@@ -19,13 +19,15 @@ import CustomMarker from "../../../components/CustomMarker";
 import _ from "lodash";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import { SelectTimeModal } from "../../Other/FixPlan/components/SelectTimeModal";
+import type { ApiItem } from "../../../redux/apiSlice";
+import type { ScreenProps } from "../../../navigation/routes";
 
 
-export default function Service(props: any) {
+export default function Service(props: ScreenProps) {
   const [step, setStep] = useState(1);
   const { width } = Dimensions.get("screen");
   const language = useAppSelector((state) => state.language.language);
-  const [sliderValues, setSliderValues] = useState<any>();
+  const [sliderValues, setSliderValues] = useState<number[]>([]);
   const [hour, setHour] = useState<number>(props.valueShowHour || 2);
   const [start, setStart] = useState(7);
   const [isShow, setIsShow] = useState(false);

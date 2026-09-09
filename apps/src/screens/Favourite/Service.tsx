@@ -11,8 +11,10 @@ import Colors from "../../shared/Colors";
 import Constants from "../../shared/Constants";
 import i18n from "../../shared/I18n";
 import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
+import type { ApiItem } from "../../redux/apiSlice";
+import type { ScreenProps } from "../../navigation/routes";
 
-export default function Service(props: any) {
+export default function Service(props: ScreenProps) {
   const navigation = props.navigation;
 
   const token = useAppSelector((state) => state.auth.token);
@@ -21,7 +23,7 @@ export default function Service(props: any) {
   const [currentDelSelected, setCurrentDelSelected] = useState<String[]>([]);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const [listService, setListService] = useState<any[]>([]);
+  const [listService, setListService] = useState<ApiItem[]>([]);
 
   const [requestListServiceTrigger, { isLoading: loadingListService }] =
     apiSlice.endpoints.listFavouriteService.useLazyQuery();
@@ -35,7 +37,7 @@ export default function Service(props: any) {
       setListService(response && response.items);
       setCurrentSelected(
         _(response.items)
-          .filter((i: any) => i.isSelected)
+          .filter((i: ApiItem) => i.isSelected)
           .map("id")
           .value()
       );
@@ -127,7 +129,7 @@ export default function Service(props: any) {
     ]);
   };
 
-  const onPressCheck = (id: any) => {
+  const onPressCheck = (id: string) => {
     setCurrentSelected(
       currentSelected.indexOf(id) != -1
         ? _.remove(currentSelected, id)

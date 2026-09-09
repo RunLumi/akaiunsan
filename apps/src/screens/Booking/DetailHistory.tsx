@@ -11,12 +11,14 @@ import dayjs from "../../shared/dayjs";
 import Enum from "../../shared/Enum";
 import { getStatus } from "../../shared/Utils";
 import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
+import type { ApiItem } from "../../redux/apiSlice";
+import type { ScreenProps } from "../../navigation/routes";
 
-export default function DetailHistory(props: any) {
+export default function DetailHistory(props: ScreenProps) {
   const params = props.route.params;
 
   const [currentStar, setCurrentStar] = useState(0);
-  const [currentDetail, setCurrentDetail] = useState<any>({});
+  const [currentDetail, setCurrentDetail] = useState<ApiItem>({});
 
   const [requestReviewTrigger, { isLoading: loadingRequestReview }] =
     apiSlice.endpoints.reviewOrder.useMutation();
@@ -192,7 +194,7 @@ export default function DetailHistory(props: any) {
               <Text style={{ marginBottom: 4 }}>{i18n.t("home.option")}</Text>
             
               {currentDetail.bookingDetail?.extraServices?.map(
-                (item: any, index: number) => (
+                (item: ApiItem, index: number) => (
                   <Text
                     key={index}
                     style={{
@@ -434,7 +436,7 @@ export default function DetailHistory(props: any) {
                           ).length > 0
                           ? JSON.parse(
                               currentDetail.serviceProvider.skillLanguage
-                            ).map((item: any) => {
+                            ).map((item: ApiItem) => {
                               if (
                                 JSON.parse(
                                   currentDetail.serviceProvider.skillLanguage

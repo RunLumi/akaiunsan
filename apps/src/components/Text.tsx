@@ -12,7 +12,7 @@ import Styles from "../shared/Styles";
 
 interface Props {
   style?: StyleProp<TextStyle>;
-  children?: any;
+  children?: React.ReactNode | React.RefObject<unknown>;
   onPress?: (event: GestureResponderEvent) => void;
   numberOfLines?: number;
   [key: string]: any;
@@ -35,7 +35,7 @@ export const Text = ({ style, children, numberOfLines, onPress, ...props }: Prop
       {...props}
       style={[{ fontFamily: fonts() }, s.default, style]}
     >
-      {children}
+      {children as React.ReactNode}
     </DefaultText>
   );
 };

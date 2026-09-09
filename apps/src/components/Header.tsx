@@ -4,13 +4,14 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import Colors from "../shared/Colors";
 import i18n from "../shared/I18n";
 import { Text } from "./Text";
+import type { ApiItem } from "../redux/apiSlice";
 interface Props {
   style?: StyleProp<ViewStyle>;
-  children?: any;
+  children?: React.ReactNode | React.RefObject<unknown>;
   titleDashboard?: string;
   isDashboard?: boolean;
   pointNumberDashboard?: string;
-  selectLanguage?: any;
+  selectLanguage?: (lang: string) => void;
   language?: string;
 }
 
@@ -60,7 +61,7 @@ export const Header = ({
         </Text>
         <TouchableOpacity
           disabled={language == "en"}
-          onPress={() => selectLanguage("en")}
+          onPress={() => selectLanguage?.("en")}
         >
           <Text
             style={{
@@ -83,7 +84,7 @@ export const Header = ({
         </Text>
         <TouchableOpacity
           disabled={language == "th"}
-          onPress={() => selectLanguage("th")}
+          onPress={() => selectLanguage?.("th")}
         >
           <Text
             style={{

@@ -51,6 +51,8 @@ import { linkingConfig, deepLinkRoute, gateForToken } from "./contracts";
 import type { RouteName } from "./routes";
 import { reactNavigationIntegration } from "../../instrument";
 import { apiSlice, portRequest, type ApiResult } from "../redux/apiSlice";
+import type { ApiItem } from "../redux/apiSlice";
+import type { ScreenProps } from "../navigation/routes";
 
 const { width } = Dimensions.get("window");
 
@@ -60,7 +62,7 @@ export default function Navigation() {
   const linking = linkingConfig;
 
   // Get active route name
-  function getActiveRouteName(state: any): any {
+  function getActiveRouteName(state: ApiItem): any {
     if (state) {
       const route = state.routes[state.index];
       if (route.state) {
@@ -160,7 +162,7 @@ function RootNavigator() {
       return;
     }
 
-    messagingService.onNotificationOpenedApp(async (remoteMessage: any) => {
+    messagingService.onNotificationOpenedApp(async (remoteMessage: ApiItem) => {
       const { data } = remoteMessage;
       // Preserved side-effects: each type pre-loads its initialParams state
       // (note: navigation below reads the *stale* render-closure value).

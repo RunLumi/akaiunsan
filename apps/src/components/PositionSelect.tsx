@@ -28,14 +28,15 @@ import { getRegionForCoordinates } from "../shared/Utils";
 import { googleAddressGeocodeAsync } from "../shared/Geocoding";
 import { useFocusEffect } from "@react-navigation/core";
 import { apiSlice, portRequest, type ApiResult, type RequestArg } from "../redux/apiSlice";
+import type { ApiItem } from "../redux/apiSlice";
 const full_width = Dimensions.get("window").width;
 
 interface Props {
   style?: StyleProp<ViewStyle>;
-  children?: any;
-  valuePosition?: any;
-  navigation?: any;
-  type?: any;
+  children?: React.Ref<unknown>;
+  valuePosition?: () => void;
+  navigation?: ApiItem;
+  type?: number;
 }
 
 export const PositionSelect = ({
@@ -61,11 +62,11 @@ export const PositionSelect = ({
     apartment: false,
     house: false,
   });
-  const [address, setAddress] = useState<any>();
-  const [location, setLocation] = useState<any>(null);
+  const [address, setAddress] = useState<ApiItem | null>();
+  const [location, setLocation] = useState<ApiItem | null>(null);
   const notSelectHomeType = { condo: false, apartment: false, house: false };
   React.useImperativeHandle(children, () => ({
-    openModalPosition(item: any) {
+    openModalPosition(item: ApiItem) {
       setShowModal(true);
       setItemId(null);
       setBathroomNumber(0);
@@ -202,7 +203,7 @@ export const PositionSelect = ({
         id: itemId || null,
         phoneNumber: phone,
         shortAddress: address.name,
-        longAddress: getLongAddress(address),
+        longAddress: getLongAddress(address!),
         isDefault: isDefaultAddress,
         country: address.country,
         province: address.region || "",
@@ -223,7 +224,7 @@ export const PositionSelect = ({
   };
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () => {
+    const unsubscribe = navigation!.addListener("focus", () => {
       setShowModal(true);
     });
 
@@ -266,12 +267,12 @@ export const PositionSelect = ({
         Alert.alert(i18n.t("auth.error"), error);
         return;
       }
-      valuePosition();
+      valuePosition?.();
       setShowModal(false);
     }
   );
 
-  const getLongAddress = (address: any) =>
+  const getLongAddress = (address: ApiItem) =>
     _(address)
       .pick(["name", "district", "subregion", "region", "country"])
       .filter((v) => !_.isEmpty(v))
@@ -287,7 +288,7 @@ export const PositionSelect = ({
   const onOpenPickAddress = () => {
     setShowModal(false);
 
-    navigation.navigate(Constants.SCREENS.ADDRESS.PICK_ADDRESS, {
+    navigation!.navigate(Constants.SCREENS.ADDRESS.PICK_ADDRESS, {
       onGoBack,
       item: {
         latitude: location?.coords?.latitude,
@@ -390,7 +391,7 @@ export const PositionSelect = ({
                 </TouchableOpacity>
                 {/* )} */}
               </View>
-              {!isEmpty(getLongAddress(address)) && (
+              {!isEmpty(getLongAddress(address!)) && (
                 <Text
                   style={{
                     backgroundColor: colors.gray_normal_text,
@@ -403,7 +404,7 @@ export const PositionSelect = ({
                     fontWeight: "600",
                   }}
                 >
-                  {getLongAddress(address)}
+                  {getLongAddress(address!)}
                 </Text>
               )}
             </View>

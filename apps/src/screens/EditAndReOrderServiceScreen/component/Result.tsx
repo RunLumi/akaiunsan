@@ -4,7 +4,8 @@ import {
 } from 'react-native';
 import colors from '../../../shared/Colors';
 import i18n from '../../../shared/I18n';
-export default function Result(props: any) {
+import type { ScreenProps } from "../../../navigation/routes";
+export default function Result(props: ScreenProps) {
 
   return (
     <View style={{flex:1, padding:20}}>

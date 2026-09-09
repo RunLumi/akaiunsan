@@ -1,7 +1,8 @@
 import React from "react";
 import { View, ImageBackground, TouchableOpacity } from "react-native";
 import Colors from "../shared/Colors";
-export default function PlanCard(props: any) {
+import type { ScreenProps } from "../navigation/routes";
+export default function PlanCard(props: ScreenProps) {
   return (
     <TouchableOpacity onPress={props.onPress} disabled={props.buttonDisabled}>
       <ImageBackground

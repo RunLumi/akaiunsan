@@ -13,7 +13,8 @@ import Theme from "../../../../shared/theme";
 import { Text } from "../../../../components";
 import _ from "lodash";
 import dayjs from "../../../../shared/dayjs";
-export const SelectTimeModal = (props: any) => {
+import type { ScreenProps } from "../../../../navigation/routes";
+export const SelectTimeModal = (props: ScreenProps) => {
   const { isShow, pickDate } = props;
   const IsSameDate = dayjs(pickDate).isSame(dayjs().add(1, "day"), "date");
   

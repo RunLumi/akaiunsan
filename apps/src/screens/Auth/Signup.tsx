@@ -31,9 +31,11 @@ import i18n from "../../shared/I18n";
 import Styles from "../../shared/Styles";
 import { styles } from "../Main/Home";
 import { color } from "react-native-elements/dist/helpers";
+import type { ApiItem } from "../../redux/apiSlice";
+import type { ScreenProps } from "../../navigation/routes";
 
 const windowWidth = Dimensions.get('window').width;
-export default function Signup(props: any) {
+export default function Signup(props: ScreenProps) {
   const dispatch = useDispatch();
   const [firstname, setFirstName] = useState({
     value: "",
@@ -67,7 +69,7 @@ export default function Signup(props: any) {
   });
   const [gender, setGender] = useState<{
     label?: string;
-    value?: any;
+    value?: number;
     isError?: boolean;
     msgErr?: string;
   }>({
@@ -112,8 +114,8 @@ export default function Signup(props: any) {
   const request = ({ data }: any) => {
     signupMutation(data)
       .unwrap()
-      .then((response: any) => handleRegisterResult({ error: "", response }))
-      .catch((e: any) =>
+      .then((response: ApiItem) => handleRegisterResult({ error: "", response }))
+      .catch((e: ApiItem) =>
         handleRegisterResult({
           // mirrors useApi's 400 translation: axios reported
           // "Request failed with status code 400" for e.status === 400
@@ -125,12 +127,12 @@ export default function Signup(props: any) {
         })
       );
   };
-  const validatePhone = (phone: any) => {
+  const validatePhone = (phone: string) => {
     const re = /^(0)\d{9}$/g;
     return re.test(phone);
   };
 
-  const validateEmail = (email: any) => {
+  const validateEmail = (email: string) => {
     const re =
       /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     return re.test(email);
@@ -317,7 +319,7 @@ export default function Signup(props: any) {
     });
   };
 
-  const onGoBack = (add: any) => {
+  const onGoBack = (add: ApiItem) => {
     setAddress({
       ...address,
       value: add.placeName,

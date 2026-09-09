@@ -7,6 +7,8 @@ import messaging from "@react-native-firebase/messaging";
 import { NavigationRoot } from "../navigation/root";
 import _ from "lodash";
 import Colors from "../shared/Colors";
+import type { ApiItem } from "../redux/apiSlice";
+import type { ScreenProps } from "../navigation/routes";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -18,20 +20,20 @@ Notifications.setNotificationHandler({
   }),
 });
 
-export const NotificationHandler = (props: any) => {
+export const NotificationHandler = (props: ScreenProps) => {
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef<any>(undefined);
   const responseListener = useRef<any>(undefined);
 
   useEffect(() => {
-    registerForPushNotificationsAsync().then((tokenDevice: any) => {
-      setExpoPushToken(tokenDevice);
+    registerForPushNotificationsAsync().then((tokenDevice) => {
+      setExpoPushToken(tokenDevice ?? "");
     });
 
     notificationListener.current =
-      Notifications.addNotificationReceivedListener((notification: any) => {
-        setNotification(notification);
+      Notifications.addNotificationReceivedListener((notification) => {
+        setNotification(notification as any);
       });
 
     responseListener.current =

@@ -16,6 +16,7 @@ import Colors from "../shared/Colors";
 import Theme from "../shared/theme";
 import i18n from "../shared/I18n";
 import {Text} from "./Text";
+import type { ApiItem } from "../redux/apiSlice";
 
 const PickerModal = () => {
   const { height } = Dimensions.get("window");
@@ -36,7 +37,7 @@ const PickerModal = () => {
     dispatch({ type: TYPES.TOOLS.CLOSE_PICKER });
   };
 
-  const handleEventValue = (value: any) => {
+  const handleEventValue = (value: ApiItem) => {
     setSelected(value.value);
     if (callback) callback(value.value);
     dispatch({ type: TYPES.TOOLS.CLOSE_PICKER });
@@ -46,7 +47,7 @@ const PickerModal = () => {
     dispatch({ type: TYPES.TOOLS.CLOSE_PICKER });
   };
 
-  const renderItem = (item: any, idx: any) => (
+  const renderItem = (item: ApiItem, idx: number) => (
     <TouchableOpacity key={idx} onPress={() => handleEventValue(item)}>
       <Text
         style={{

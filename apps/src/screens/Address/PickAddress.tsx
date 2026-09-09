@@ -34,8 +34,10 @@ import {
 } from "../../shared/Utils";
 import * as L2 from "../../shared/Geocoding";
 import { apiSlice, portRequest, type ApiResult, type RequestArg } from "../../redux/apiSlice";
+import type { ApiItem } from "../../redux/apiSlice";
+import type { ScreenProps } from "../../navigation/routes";
 
-const PickAddress = (props: any) => {
+const PickAddress = (props: ScreenProps) => {
   const { params } = props.route;
   const navigation = useNavigation();
   const onGoBack = params?.onGoBack;
@@ -81,7 +83,7 @@ const PickAddress = (props: any) => {
       }
     }
   );
-  const onPlace = async (event: any) => {
+  const onPlace = async (event: ApiItem) => {
     L2.setGoogleApiKey(
       Platform.OS === "ios"
         ? Constants.GOOGLEMAPSAPIKEYIOS

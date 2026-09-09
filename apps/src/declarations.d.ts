@@ -14,11 +14,11 @@ declare module "@react-native-firebase/messaging" {
     (): {
       getToken: (opts?: unknown) => Promise<string>;
       getInitialNotification: () => Promise<any>;
-      onMessage: (listener: (message: any) => void) => () => void;
-      onNotificationOpenedApp: (listener: (message: any) => void) => () => void;
+      onMessage: (listener: (message: ApiItem) => void) => () => void;
+      onNotificationOpenedApp: (listener: (message: ApiItem) => void) => () => void;
       registerDeviceForRemoteMessages: () => Promise<void>;
       requestPermission: () => Promise<number>;
-      setBackgroundMessageHandler: (listener: (message: any) => void) => void;
+      setBackgroundMessageHandler: (listener: (message: ApiItem) => void) => void;
     };
     AuthorizationStatus: Record<string, number>;
   };
@@ -29,7 +29,7 @@ declare module "@react-native-firebase/analytics" {
   const analytics: () => {
     logEvent: (name: string, payload?: any) => Promise<void>;
     setUserId: (id: string | null) => Promise<void>;
-    setUserProperties: (props: any) => Promise<void>;
+    setUserProperties: (props: ScreenProps) => Promise<void>;
   };
   export default analytics;
 }

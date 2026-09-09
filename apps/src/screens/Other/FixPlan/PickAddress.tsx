@@ -30,9 +30,11 @@ import { Ionicons } from "@expo/vector-icons";
 import { AddFixPlan } from "..";
 import Layout from "../../../shared/Layout";
 import { apiSlice, portRequest, type ApiResult } from "../../../redux/apiSlice";
+import type { ApiItem } from "../../../redux/apiSlice";
+import type { ScreenProps } from "../../../navigation/routes";
 const { width } = Dimensions.get("window");
 
-export default function PickAddress(props: any) {
+export default function PickAddress(props: ScreenProps) {
   const childRef = React.useRef<any>(null);
 
   const navigation = props.navigation;
@@ -41,17 +43,17 @@ export default function PickAddress(props: any) {
   const [currentStep, setCurrentStep] = useState(0);
   const [showAddress, setShowAddress] = useState(false);
   const [salePrice, setSalePrice] = useState(0);
-  const [priceModel, setPriceModel] = useState<any>();
-  const [salePriceModel, setSalePriceModel] = useState<any>();
-  const [extraService, setExtraService] = useState<any[]>([]);
+  const [priceModel, setPriceModel] = useState<ApiItem>();
+  const [salePriceModel, setSalePriceModel] = useState<ApiItem>();
+  const [extraService, setExtraService] = useState<ApiItem[]>([]);
   const [idPreferLanguge, setIdPreferLanguge] = useState({
     label: "",
     value: "",
   });
-  const [times, setTimes] = useState<any[]>([]);
-  const [preferLanguge, setPreferLanguge] = useState<any[]>([]);
-  const [dataAddress, setDataAddress] = useState<any>();
-  const [idSpecifyHelper, setIdSpecifyHelper] = useState<any>({});
+  const [times, setTimes] = useState<ApiItem[]>([]);
+  const [preferLanguge, setPreferLanguge] = useState<ApiItem[]>([]);
+  const [dataAddress, setDataAddress] = useState<ApiItem>();
+  const [idSpecifyHelper, setIdSpecifyHelper] = useState<ApiItem>({});
   const [paymentMethodId, setPaymentMethodId] = useState("");
   const [isCreditCard, setIsCreditCard] = useState(true);
   const [isOrderSuccess, setIsOrderSuccess] = useState(false);
@@ -70,7 +72,7 @@ export default function PickAddress(props: any) {
     numberKids: 0,
     age: [0],
   });
-  const [idCard, setIdCard] = useState<any>("");
+  const [idCard, setIdCard] = useState<string>("");
 
   const [promotionId, setPromotionId] = useState("");
 
@@ -174,7 +176,7 @@ export default function PickAddress(props: any) {
           item.isCheck = false;
           if (item.perHour > 0 && item.perTime == 0) {
             item.price =
-              _.sum(getMoreItems().map((x: any) => x.hour)) * item.perHour;
+              _.sum(getMoreItems().map((x: ApiItem) => x.hour)) * item.perHour;
           }
 
           if (item.perHour == 0 && item.perTime > 0) {
@@ -197,7 +199,7 @@ export default function PickAddress(props: any) {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
       } else {
-        const items = response.items.map((x: any) => ({
+        const items = response.items.map((x: ApiItem) => ({
           label: x.name,
           value: x.code,
         }));
@@ -299,62 +301,62 @@ export default function PickAddress(props: any) {
   };
 
   const countPrice = () => {
-    let totalHour = _.sum(getMoreItems().map((x: any) => x.hour));
+    let totalHour = _.sum(getMoreItems().map((x: ApiItem) => x.hour));
     if (serviceType === Enum.SERVICE_TYPE.MaidService) {
       if (totalHour < 3) {
-        setPrice(totalHour * priceModel.two);
+        setPrice(totalHour * priceModel!.two);
       } else {
-        setPrice(totalHour * priceModel.threePlus);
+        setPrice(totalHour * priceModel!.threePlus);
       }
     } else if (serviceType === Enum.SERVICE_TYPE.PetcareService) {
       if (totalHour < 3) {
-        setPrice(totalHour * priceModel.two);
+        setPrice(totalHour * priceModel!.two);
       } else {
-        setPrice(totalHour * priceModel.threePlus);
+        setPrice(totalHour * priceModel!.threePlus);
       }
     } else if (serviceType === Enum.SERVICE_TYPE.NanyService) {
       if (totalHour < 3) {
-        setPrice(totalHour * priceModel.two);
+        setPrice(totalHour * priceModel!.two);
       } else {
-        setPrice(totalHour * priceModel.threePlus);
+        setPrice(totalHour * priceModel!.threePlus);
       }
     } else if (serviceType === Enum.SERVICE_TYPE.ElderService) {
-      setPrice(totalHour * priceModel.twoPlus);
+      setPrice(totalHour * priceModel!.twoPlus);
     }
 
-    salePriceModel.map((i: any, index: number) => {
+    salePriceModel!.map((i: ApiItem, index: number) => {
       if (totalHour == 0) {
         setSalePrice(0);
         return;
       }
       if (serviceType !== 3) {
         if (totalHour <= 2 && index === 0) {
-          setSalePrice(totalHour * priceModel.two * (1 - i.percent / 100));
+          setSalePrice(totalHour * priceModel!.two * (1 - i.percent / 100));
           return;
         }
         if (totalHour >= i.fromHour && totalHour <= i.toHour) {
           setSalePrice(
-            totalHour * priceModel.threePlus * (1 - i.percent / 100)
+            totalHour * priceModel!.threePlus * (1 - i.percent / 100)
           );
           return;
         }
         if (totalHour >= i.toHour) {
           setSalePrice(
-            totalHour * priceModel.threePlus * (1 - i.percent / 100)
+            totalHour * priceModel!.threePlus * (1 - i.percent / 100)
           );
           return;
         }
       } else {
         if (totalHour < 2 && index === 0) {
-          setSalePrice(totalHour * priceModel.twoPlus * (1 - i.percent / 100));
+          setSalePrice(totalHour * priceModel!.twoPlus * (1 - i.percent / 100));
           return;
         }
         if (totalHour >= i.fromHour && totalHour <= i.toHour) {
-          setSalePrice(totalHour * priceModel.twoPlus * (1 - i.percent / 100));
+          setSalePrice(totalHour * priceModel!.twoPlus * (1 - i.percent / 100));
           return;
         }
         if (totalHour >= i.toHour) {
-          setSalePrice(totalHour * priceModel.twoPlus * (1 - i.percent / 100));
+          setSalePrice(totalHour * priceModel!.twoPlus * (1 - i.percent / 100));
           return;
         }
       }
@@ -383,7 +385,7 @@ export default function PickAddress(props: any) {
   }, []);
   const getMoreItems = () => {
     const moreItems: any = [];
-    function getDaysBooking(day: any) {
+    function getDaysBooking(day: ApiItem) {
       let count = 0;
       let start = dayjs(day.startAt);
       let tmp = dayjs(start).clone().day(dayjs(day.startAt).day());
@@ -407,12 +409,12 @@ export default function PickAddress(props: any) {
       }
       return moreItems;
     }
-    times.map((i: any) => {
+    times.map((i: ApiItem) => {
       getDaysBooking(i);
     });
     return moreItems;
   };
-  const totalHour = _.sum(getMoreItems().map((x: any) => x.hour));
+  const totalHour = _.sum(getMoreItems().map((x: ApiItem) => x.hour));
 
   useEffect(() => {
     if (!isEmpty(priceModel) && !isEmpty(salePriceModel)) {
@@ -522,7 +524,7 @@ export default function PickAddress(props: any) {
               serviceType == 2
                 ? [numberKids]
                 : extraService
-                    .filter((x: any) => x.isCheck == true)
+                    .filter((x: ApiItem) => x.isCheck == true)
                     .map((x) =>
                       _.pick(x, ["name", "description", "perHour", "perTime"])
                     ),
@@ -536,7 +538,7 @@ export default function PickAddress(props: any) {
           cardId: idCard,
         },
         customerInfo: {
-          addressId: dataAddress.id,
+          addressId: dataAddress!.id,
         },
         dateOrder: _.map(getMoreItems(), (x) => ({
           bookingDate: x.startAt,
@@ -556,7 +558,7 @@ export default function PickAddress(props: any) {
 
     setCurrentStep(currentStep + 1);
   };
-  const handleAddress = (data: any) => {
+  const handleAddress = (data: ApiItem) => {
     setDataAddress(data);
   };
 
@@ -564,9 +566,9 @@ export default function PickAddress(props: any) {
     setIdPreferLanguge(value);
   };
 
-  const handlePriceEnglish = (value: any) => {};
+  const handlePriceEnglish = (value: ApiItem) => {};
 
-  const handleIdSpecifyHelper = (data: any) => {
+  const handleIdSpecifyHelper = (data: ApiItem) => {
     setIdSpecifyHelper(data);
   };
 
@@ -587,7 +589,7 @@ export default function PickAddress(props: any) {
     }
   };
 
-  const handlePriceCleaning = (data: any) => {};
+  const handlePriceCleaning = (data: ApiItem) => {};
 
   const handleProfilePet = (dataProfile: any, activities: string) => {
     setExtraService(dataProfile);
@@ -627,7 +629,7 @@ export default function PickAddress(props: any) {
     navigation.pop(3);
   };
 
-  // const handleCloseModalCreditCard = (value: any) => {
+  // const handleCloseModalCreditCard = (value: ApiItem) => {
   //   // setIsShowModal(false);
 
   //   if (value.nativeEvent && value.nativeEvent.data === "cancel") {
@@ -651,7 +653,7 @@ export default function PickAddress(props: any) {
   //   });
   // };
 
-  const handleIdCard = (cardSelected: any) => {
+  const handleIdCard = (cardSelected: string) => {
     if (cardSelected) {
       setIdCard(cardSelected);
     }

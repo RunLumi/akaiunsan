@@ -15,9 +15,11 @@ import Constants from "../../shared/Constants";
 import i18n from "../../shared/I18n";
 import { getStatus, paramArray } from "../../shared/Utils";
 import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
+import type { ApiItem } from "../../redux/apiSlice";
+import type { ScreenProps } from "../../navigation/routes";
 
-export default function ListMyBooking(props: any) {
-  const [listBooking, setListBooking] = useState<any[]>([]);
+export default function ListMyBooking(props: ScreenProps) {
+  const [listBooking, setListBooking] = useState<ApiItem[]>([]);
   const [pageListBooking, setPageListBooking] = useState(1);
 
   const [requestListBookingTrigger, { isLoading: loadingListBooking }] =
@@ -39,7 +41,7 @@ export default function ListMyBooking(props: any) {
     }
   );
 
-  const onPressBookingDetail = (item: any) => {
+  const onPressBookingDetail = (item: ApiItem) => {
     props.navigation.navigate(Constants.SCREENS.MYBOOKING.DETAIL_MYBOOKING, {
       item,
     });
@@ -91,7 +93,7 @@ export default function ListMyBooking(props: any) {
               {i18n.t("home.data_empty")}
             </Text>
           }
-          keyExtractor={(item: any) => item.orderId}
+          keyExtractor={(item: ApiItem) => item.orderId}
           onEndReachedThreshold={0.5}
           onEndReached={() => onLoadBooking(pageListBooking + 1)}
           scrollEnabled={true}

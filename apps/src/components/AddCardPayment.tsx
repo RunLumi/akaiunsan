@@ -23,12 +23,13 @@ import { WebView } from 'react-native-webview';
 import Layout from "../shared/Layout";
 import Config from "react-native-config";
 import { apiSlice, portRequest, type ApiResult } from "../redux/apiSlice";
+import type { ApiItem } from "../redux/apiSlice";
 
 interface Props {
   style?: StyleProp<ViewStyle>;
-  children?: any;
-  addSuccess?: any;
-  navigation?: any;
+  children?: React.Ref<unknown>;
+  addSuccess?: (added: boolean) => void;
+  navigation?: ApiItem;
 }
 
 export const AddCardPayment = ({
@@ -58,7 +59,7 @@ export const AddCardPayment = ({
       }
       setModalAddCard(false);
       Alert.alert(i18n.t("home.success"), i18n.t("home.add_card_success"));
-      addSuccess(true)
+      addSuccess?.(true)
     }
   );
 

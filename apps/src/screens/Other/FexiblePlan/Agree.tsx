@@ -8,8 +8,9 @@ import Theme from "../../../shared/theme";
 import Constants from "../../../shared/Constants";
 import i18n from "../../../shared/I18n";
 import { apiSlice, portRequest, type ApiResult } from "../../../redux/apiSlice";
+import type { ScreenProps } from "../../../navigation/routes";
 
-export default function Agree(props: any) {
+export default function Agree(props: ScreenProps) {
   const { plan, onGoBack } = props.route.params;
 
   const [agreeText, setAgreeText] = useState();

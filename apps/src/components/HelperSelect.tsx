@@ -25,16 +25,17 @@ import { paramArray } from "../shared/Utils";
 import Enum from "../shared/Enum";
 import { isEmpty } from "lodash";
 import { apiSlice, portRequest, type ApiResult } from "../redux/apiSlice";
+import type { ApiItem } from "../redux/apiSlice";
 
 interface Props {
   style?: StyleProp<ViewStyle>;
-  children?: any;
-  valueHelper?: any;
+  children?: React.Ref<unknown>;
+  valueHelper?: (id: unknown, name: unknown, old: unknown, star: unknown, avatar: unknown) => void;
   serviceType?: number;
-  startTime?: any;
-  endTime?: any;
-  addressId?: any;
-  language?: any;
+  startTime?: string;
+  endTime?: string;
+  addressId?: ApiItem;
+  language?: ApiItem;
 }
 
 export const HelperSelect = ({
@@ -58,8 +59,8 @@ export const HelperSelect = ({
   const [languageDetail, setLanguageDetail] = React.useState("");
   const [oldDetail, setOldDetail] = React.useState("");
   const [searchHelper, setSearchHelper] = React.useState("");
-  const [dataHelper, setDataHelper] = React.useState<any[]>([]);
-  const [dataHelperSuggest, setDataHelperSuggest] = React.useState<any[]>([]);
+  const [dataHelper, setDataHelper] = React.useState<ApiItem[]>([]);
+  const [dataHelperSuggest, setDataHelperSuggest] = React.useState<ApiItem[]>([]);
   const [requestListHelperTrigger, { isLoading: loadingListHelper }] =
     apiSlice.endpoints.servicesManagementHelper.useLazyQuery();
   const requestListHelper = portRequest(
@@ -70,7 +71,7 @@ export const HelperSelect = ({
       } else {
         if (response.items && response.items.length) {
           setDataHelper(
-            response.items.filter((x: any) => x.status === Enum.HelperStatus.ACTIVE)
+            response.items.filter((x: ApiItem) => x.status === Enum.HelperStatus.ACTIVE)
           );
         }
       }
@@ -86,9 +87,9 @@ export const HelperSelect = ({
       } else {
         if (response.items && response.items.length) {
           setDataHelperSuggest(
-            response.items.filter((x: any) => x.status === Enum.HelperStatus.ACTIVE)
+            response.items.filter((x: ApiItem) => x.status === Enum.HelperStatus.ACTIVE)
           );
-          let dataHelperSuggest = response.items.map((x: any) => {
+          let dataHelperSuggest = response.items.map((x: ApiItem) => {
             if (x.status === Enum.HelperStatus.ACTIVE) {
               return x.id;
             }
@@ -100,7 +101,7 @@ export const HelperSelect = ({
               { endTime: dayjs(endTime).toISOString() },
               { addressId: addressId?.id ||  addressId?.addressId},
               { languages: (language && language.value) || "" },
-              ...dataHelperSuggest.map((item: any) => ({
+              ...dataHelperSuggest.map((item: ApiItem) => ({
                 serviceProvider: item,
               })),
               // { serviceProvider: dataHelperSuggest},
@@ -118,14 +119,14 @@ export const HelperSelect = ({
     },
   }));
   const submitHelper = () => {
-    let dataSelect: any;
-    let dataSelectSuggest: any;
+    let dataSelect: ApiItem | undefined;
+    let dataSelectSuggest: ApiItem | undefined;
     dataSelect = dataHelper.find((x) => x.isSelect === true);
     dataSelectSuggest = dataHelperSuggest.find((x) => x.isSelect === true);
     if (dataSelect) {
       setShowModalDetail(false);
       setShowModal(false);
-      valueHelper(
+      valueHelper?.(
         dataSelect.id,
         dataSelect.fullName,
         dataSelect.old,
@@ -133,7 +134,7 @@ export const HelperSelect = ({
         dataSelect.avatar
       );
     } else if (dataSelectSuggest) {
-      valueHelper(
+      valueHelper?.(
         dataSelectSuggest.id,
         dataSelectSuggest.fullName,
         dataSelectSuggest.old,
@@ -158,7 +159,7 @@ export const HelperSelect = ({
       ]),
     });
   };
-  const onSelectHelper = (value: any, idx: any) => {
+  const onSelectHelper = (value: ApiItem, idx: number) => {
     let valueHelpers = [...dataHelper];
     let valueHelperSuggest = [...dataHelperSuggest];
     for (let index = 0; index < valueHelpers.length; index++) {
@@ -175,7 +176,7 @@ export const HelperSelect = ({
     setDataHelper(valueHelpers);
     setDataHelperSuggest(valueHelperSuggest);
   };
-  const onSelectHelperSuggest = (value: any, idx: any) => {
+  const onSelectHelperSuggest = (value: ApiItem, idx: number) => {
     let valueHelperSuggest = [...dataHelperSuggest];
     let valueHelpers = [...dataHelper];
     for (let index = 0; index < valueHelperSuggest.length; index++) {
@@ -192,7 +193,7 @@ export const HelperSelect = ({
     setDataHelperSuggest(valueHelperSuggest);
     setDataHelper(valueHelpers);
   };
-  const renderItem = (item: any, idx: any) => (
+  const renderItem = (item: ApiItem, idx: number) => (
     <View key={idx} style={styles.viewImage}>
       <TouchableOpacity onPress={() => showDetail(item, idx, 1)}>
         <ImageBackground
@@ -255,7 +256,7 @@ export const HelperSelect = ({
     star: any,
     image: any
   ) => {
-    valueHelper(id, name, old, star, image);
+    valueHelper?.(id, name, old, star, image);
     setShowModalDetail(false);
     setShowModal(false);
   };
@@ -417,15 +418,15 @@ export const HelperSelect = ({
       return;
     }
   };
-  const onChooseHelper = (item: any, idx: number) => {
+  const onChooseHelper = (item: ApiItem, index: number) => {
     if (item.id != idDetail) {
       const findData = dataHelper.filter((i) => i.id == item.id);
       const findSuggest = dataHelperSuggest.filter((i) => i.id == item.id);
       if (findData.length > 0) {
-        showDetail(item, idx - dataHelperSuggest.length, 1);
+        showDetail(item, index - dataHelperSuggest.length, 1);
       }
       if (findSuggest.length > 0) {
-        showDetail(item, idx, 2);
+        showDetail(item, index, 2);
       }
     }
   };

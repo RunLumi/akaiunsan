@@ -20,11 +20,12 @@ import Constants from "../shared/Constants";
 import _ from "lodash";
 import Layout from "../shared/Layout";
 import { apiSlice, portRequest, type ApiResult } from "../redux/apiSlice";
+import type { ApiItem } from "../redux/apiSlice";
 interface Props {
   style?: StyleProp<ViewStyle>;
-  children?: any;
-  handleIdCard?: any;
-  navigation?: any;
+  children?: React.Ref<unknown>;
+  handleIdCard?: (id: string) => void;
+  navigation?: ApiItem;
 }
 
 export const ListCardPayment = ({
@@ -83,7 +84,7 @@ export const ListCardPayment = ({
     setModalListCard(false);
   };
 
-  const onPressIsDefaultCard = (item: any) => {
+  const onPressIsDefaultCard = (item: ApiItem) => {
     requestCardDefault({
       data: {
         cardId: item.id,
@@ -91,14 +92,14 @@ export const ListCardPayment = ({
     });
   };
 
-  const handleAddCard = (value: any) => {
-    if (value) {
+  const handleAddCard = (added: boolean) => {
+    if (added) {
       requestListCard();
     }
   };
 
   const onSelectCard = () => {
-    handleIdCard(idSelectCard);
+    handleIdCard?.(idSelectCard);
     onPressClose();
   };
 
@@ -206,7 +207,7 @@ export const ListCardPayment = ({
           style={{ alignSelf: "center", width: 100 }}
           title={i18n.t("home.payment")}
         />
-        <AddCardPayment children={childRef} addSuccess={handleAddCard} />
+        <AddCardPayment children={childRef} addSuccess={handleAddCard as (added: boolean) => void} />
       </View>
     </Overlay>
   );

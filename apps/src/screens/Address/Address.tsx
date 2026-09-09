@@ -8,10 +8,12 @@ import Styles from "../../shared/Styles";
 import Constants from "../../shared/Constants";
 import i18n from "../../shared/I18n";
 import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
+import type { ApiItem } from "../../redux/apiSlice";
+import type { ScreenProps } from "../../navigation/routes";
 
-const AddressScreen = (props: any) => {
+const AddressScreen = (props: ScreenProps) => {
   const { navigation } = props;
-  const [listAddress, setListAddress] = useState<any[]>([]);
+  const [listAddress, setListAddress] = useState<ApiItem[]>([]);
 
   const [requestListAddressTrigger, { isLoading: loadingListAddress }] =
     apiSlice.endpoints.listAddress.useLazyQuery();
@@ -65,7 +67,7 @@ const AddressScreen = (props: any) => {
     props.navigation.navigate(Constants.SCREENS.ADDRESS.PICK_ADDRESS);
   };
 
-  const onPressEditAddress = (item: any) => {
+  const onPressEditAddress = (item: ApiItem) => {
     props.navigation.navigate(Constants.SCREENS.ADDRESS.PICK_ADDRESS, { item });
   };
 
@@ -87,7 +89,7 @@ const AddressScreen = (props: any) => {
     ]);
   };
 
-  const onPressIsDefaultAddress = (item: any) => {
+  const onPressIsDefaultAddress = (item: ApiItem) => {
     requestEditAddress({
       data: {
         ...item,

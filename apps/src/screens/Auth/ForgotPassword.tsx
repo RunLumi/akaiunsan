@@ -7,8 +7,9 @@ import Constants from '../../shared/Constants';
 import i18n from '../../shared/I18n';
 import Styles from '../../shared/Styles';
 import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
+import type { ScreenProps } from "../../navigation/routes";
 
-export default function ForgotPassword(props: any) {
+export default function ForgotPassword(props: ScreenProps) {
 	const [email, setEmail] = useState({value:"",isError:false,msgErr:""});
 	const [otp, setOTP] = useState({value:"",isError:false,msgErr:""});
 	const [pass, setPass] = useState({value:"",isError:false,msgErr:""});

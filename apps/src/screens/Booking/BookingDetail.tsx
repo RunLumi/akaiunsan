@@ -16,18 +16,20 @@ import { Picker } from "@react-native-picker/picker";
 import { useDispatch } from "react-redux";
 import { TYPES } from "../../redux/actions";
 import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
+import type { ApiItem } from "../../redux/apiSlice";
+import type { ScreenProps } from "../../navigation/routes";
 
-export default function BookingDetail(props: any) {
+export default function BookingDetail(props: ScreenProps) {
   const params = props.route.params;
   const [showReason, setShowReason] = useState(false);
 
   const [showDialog, setShowDialog] = useState(false);
-  const [reason, setReason] = useState<any>("");
-  const [reasonCancel, setReasonCancel] = useState<any>({
+  const [reason, setReason] = useState<string>("");
+  const [reasonCancel, setReasonCancel] = useState<ApiItem>({
     label: "Location",
     value: 1,
   });
-  const [currentDetail, setCurrentDetail] = useState<any>({});
+  const [currentDetail, setCurrentDetail] = useState<ApiItem>({});
 
   const dispatch = useDispatch();
   const [requestCancelTrigger, { isLoading: loadingRequestCancel }] =
@@ -430,8 +432,8 @@ export default function BookingDetail(props: any) {
                   {i18n.t("home.pet_profile")}
                 </Text>
                 {currentDetail.bookingDetail?.petProfiles?.map(
-                  (item: any, idx: any) => (
-                    <View key={idx} style={{ flexDirection: "row" }}>
+                  (item: ApiItem, index: number) => (
+                    <View key={index} style={{ flexDirection: "row" }}>
                       <Text
                         style={{
                           marginVertical: 2,
@@ -639,7 +641,7 @@ export default function BookingDetail(props: any) {
                           ).length > 0
                           ? JSON.parse(
                               currentDetail.serviceProvider.skillLanguage
-                            ).map((item: any) => {
+                            ).map((item: ApiItem) => {
                               if (
                                 JSON.parse(
                                   currentDetail.serviceProvider.skillLanguage

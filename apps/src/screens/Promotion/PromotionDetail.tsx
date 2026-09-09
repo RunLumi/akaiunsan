@@ -19,15 +19,17 @@ import WebView from "react-native-webview";
 import { isArray, isEmpty } from "lodash";
 import { Image as ExpoImage } from "expo-image";
 import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
+import type { ApiItem } from "../../redux/apiSlice";
+import type { ScreenProps } from "../../navigation/routes";
 const { width } = Dimensions.get("screen");
 
-export default function PromotionDetail(props: any) {
+export default function PromotionDetail(props: ScreenProps) {
   const params = props.route.params || {};
-  const [dataDetail, setDataDetail] = useState<any>({});
-  const [content, setContent] = useState<any>([]);
+  const [dataDetail, setDataDetail] = useState<ApiItem>({});
+  const [content, setContent] = useState<ApiItem>([]);
   const [isPromotion, setIsPromotion] = useState(false);
   const [isNotification, setIsNotification] = useState(false);
-  const [imageBanner, setImageBanner] = useState<any[]>([]);
+  const [imageBanner, setImageBanner] = useState<ApiItem[]>([]);
   const [typePromotion, setTypePromotion] = useState(0);
   const [requestPromotionDetailTrigger, { isLoading: loadingPromotionDetail }] =
     apiSlice.endpoints.promotionDetail.useLazyQuery();
@@ -89,7 +91,7 @@ export default function PromotionDetail(props: any) {
     }
   );
 
-  // const onPressBookingDetail = (item: any) => {
+  // const onPressBookingDetail = (item: ApiItem) => {
   //   props.navigation.navigate(Constants.SCREENS.MYBOOKING.DETAIL_MYBOOKING, {
   //     item,
   //   });
@@ -226,10 +228,10 @@ export default function PromotionDetail(props: any) {
                   </Text>
                   <View style={{ flex: 3 }}>
                     {!isEmpty(content) && typePromotion == 4 ? (
-                      content.map((i: any, index: number) => (
+                      content.map((i: ApiItem, index: number) => (
                         <View key={index}>
                           <Text>- {getNameService(i.ServiceType)}: </Text>
-                          {i?.PromotionExtraItem.map((x: any) => (
+                          {i?.PromotionExtraItem.map((x: ApiItem) => (
                             <Text style={{ marginLeft: 6 }}>
                               :+ Promotion discount {x.discount}% with name{" "}
                               {x.name}

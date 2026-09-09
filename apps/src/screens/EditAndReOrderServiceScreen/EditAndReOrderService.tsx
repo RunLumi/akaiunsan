@@ -28,8 +28,10 @@ import Layout from "../../shared/Layout";
 import _, { isEmpty, isNil } from "lodash";
 import Config from "react-native-config";
 import { apiSlice, portRequest, type ApiResult, type RequestArg } from "../../redux/apiSlice";
+import type { ApiItem } from "../../redux/apiSlice";
+import type { ScreenProps } from "../../navigation/routes";
 
-export default function EditAndReOrderService(props: any) {
+export default function EditAndReOrderService(props: ScreenProps) {
   const childRef = React.useRef<any>(null);
   const params = props.route.params || {};
   let valueDateTimeEdit = params.data?.bookingDetail?.bookingDate;
@@ -50,7 +52,7 @@ export default function EditAndReOrderService(props: any) {
   const [idService, setIdService] = useState("");
   const [banner, setBanner] = useState("");
   const [idCard, setIdCard] = useState("");
-  const [dataAddress, setDataAddress] = useState<any>(
+  const [dataAddress, setDataAddress] = useState<ApiItem>(
     params.data?.customerInfo
   );
   const [valueShowHour, setValueShowHour] = useState(
@@ -81,19 +83,19 @@ export default function EditAndReOrderService(props: any) {
   const [priceHelper, setPriceHelper] = useState(0);
   const [two, setTwo] = useState(0);
   const [threePlus, setThreePlus] = useState(0);
-  const [idSpecifyHelper, setIdSpecifyHelper] = useState<any>({});
+  const [idSpecifyHelper, setIdSpecifyHelper] = useState<ApiItem>({});
   const [twoPlus, setTwoPlus] = useState(0);
   const [serviceDetail, setServiceDetail] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
-  const [extraService, setExtraService] = useState<any[]>([]);
+  const [extraService, setExtraService] = useState<ApiItem[]>([]);
   const [pointApply, setPointApply] = useState(0);
   const [receivePoint, setReceivePoint] = useState(0);
   const [idPreferLanguge, setIdPreferLanguge] = useState({
     label: "",
     value: "",
   });
-  const [preferLanguge, setPreferLanguge] = useState<any[]>([]);
+  const [preferLanguge, setPreferLanguge] = useState<ApiItem[]>([]);
   const [paymentMethodId, setPaymentMethodId] = useState("");
   const [promotionId, setPromotionId] = useState("");
   const [modalCreditCard, setModalCreditCard] = useState({
@@ -196,7 +198,7 @@ export default function EditAndReOrderService(props: any) {
     ({ error, response }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
-        let dataLanguage = response.items.map((x: any) => {
+        let dataLanguage = response.items.map((x: ApiItem) => {
           return {
             label: x.name,
             value: x.code,
@@ -217,7 +219,7 @@ export default function EditAndReOrderService(props: any) {
           let price = JSON.parse(response.items[0].pricesModel);
           if (response.items[0].serviceType === Enum.SERVICE_TYPE.MaidService) {
             if (!isEmpty(params.data?.bookingDetail.extraServices)) {
-              params.data?.bookingDetail.extraServices.map((i: any) => {
+              params.data?.bookingDetail.extraServices.map((i: ApiItem) => {
                 if (i.perHour > 0) {
                   if (valueShowHour < 3) {
                     setPrice(valueShowHour * (price.two + i.perHour));
@@ -267,7 +269,7 @@ export default function EditAndReOrderService(props: any) {
             response.items[0].serviceType === Enum.SERVICE_TYPE.ElderService
           ) {
             if (!isEmpty(params.data?.bookingDetail.extraServices)) {
-              params.data?.bookingDetail.extraServices.map((i: any) => {
+              params.data?.bookingDetail.extraServices.map((i: ApiItem) => {
                 if (i.perHour > 0) {
                   setPrice(valueShowHour * (price.twoPlus + i.perHour));
                 } else {
@@ -499,7 +501,7 @@ export default function EditAndReOrderService(props: any) {
       } else {
         if (params.data.serviceType === Enum.SERVICE_TYPE.MaidService) {
           if (!isEmpty(params.data?.bookingDetail.extraServices)) {
-            params.data?.bookingDetail.extraServices.map((i: any) => {
+            params.data?.bookingDetail.extraServices.map((i: ApiItem) => {
               if (i.perHour > 0) {
                 if (value < 3) {
                   setPrice(value * (two + i.perHour));
@@ -529,7 +531,7 @@ export default function EditAndReOrderService(props: any) {
           }
         } else if (params.data.serviceType === Enum.SERVICE_TYPE.ElderService) {
           if (!isEmpty(params.data?.bookingDetail.extraServices)) {
-            params.data?.bookingDetail.extraServices.map((i: any) => {
+            params.data?.bookingDetail.extraServices.map((i: ApiItem) => {
               if (i.perHour > 0) {
                 setPrice(value * (twoPlus + i.perHour));
               } else {
@@ -597,11 +599,11 @@ export default function EditAndReOrderService(props: any) {
       setPrice(Number((price + valueDiscount).toFixed(2)));
     }
   };
-  const handleAddress = (data: any) => {
+  const handleAddress = (data: ApiItem) => {
     setDataAddress(data);
     setDisableNext(false);
   };
-  const handleIdSpecifyHelper = (data: any) => {
+  const handleIdSpecifyHelper = (data: ApiItem) => {
     setIdSpecifyHelper(data);
   };
   const handlePriceEnglish = (value: any) => {
@@ -624,7 +626,7 @@ export default function EditAndReOrderService(props: any) {
   const handlePromotionId = (value: string) => {
     setPromotionId(value);
   };
-  const handlePriceCleaning = (data: any) => {
+  const handlePriceCleaning = (data: ApiItem) => {
     let priceCleaning = 0;
     for (let index = 0; index < data.length; index++) {
       if (data[index].isCheck) {
@@ -859,7 +861,7 @@ export default function EditAndReOrderService(props: any) {
                 bookingDate: dayjs(startTime).toISOString(),
                 bookingHour: dayjs(endTime).toISOString(),
                 serviceProvider: idSpecifyHelper.id,
-                petProfiles: extraService.map((x: any) => {
+                petProfiles: extraService.map((x: ApiItem) => {
                   return { name: x.name, type: x.type };
                 }),
                 activity: activitiesPetCare,
@@ -870,7 +872,7 @@ export default function EditAndReOrderService(props: any) {
                   dataAddress.id || (dataAddress && dataAddress?.addressId),
                 bookingDate: startTime,
                 bookingHour: endTime,
-                petProfiles: extraService.map((x: any) => {
+                petProfiles: extraService.map((x: ApiItem) => {
                   return { name: x.name, type: x.type };
                 }),
                 activity: activitiesPetCare,
@@ -935,7 +937,7 @@ export default function EditAndReOrderService(props: any) {
       setCurrentStep(currentStep + 1);
     }
   };
-  const handleCloseModalCrediCard = (value: any) => {
+  const handleCloseModalCrediCard = (value: ApiItem) => {
     if (value.nativeEvent && value.nativeEvent.data === "cancel") {
       setModalCreditCard({ ...modalCreditCard, isModal: false });
       requestCancelPayment({
@@ -974,7 +976,7 @@ export default function EditAndReOrderService(props: any) {
     return injectedData;
   };
 
-  const handleIdCard = (cardSelected: any) => {
+  const handleIdCard = (cardSelected: string) => {
     if (cardSelected) {
       setIdCard(cardSelected);
     }

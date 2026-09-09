@@ -17,8 +17,10 @@ import Enum from "../../../shared/Enum";
 import Layout from "../../../shared/Layout";
 import Constants from "../../../shared/Constants";
 import { apiSlice, portRequest, type ApiResult } from "../../../redux/apiSlice";
+import type { ApiItem } from "../../../redux/apiSlice";
+import type { ScreenProps } from "../../../navigation/routes";
 
-export default function Option(props: any) {
+export default function Option(props: ScreenProps) {
   const extraService = props.extraService || [];
   const workingHour = props.valueShowHour || [];
   const preferLanguage = props.preferLanguage || [];
@@ -45,8 +47,8 @@ export default function Option(props: any) {
   const [petCareActivities, setPetCareActivities] = React.useState(
     isEdit ? dataEdit.bookingDetail.activity : ""
   );
-  const [priceSpecifyHelper, setPriceSpecifyHelper] = React.useState<any>({});
-  const [pricePreferLanguage, setPricePreferLanguage] = React.useState<any[]>([]);
+  const [priceSpecifyHelper, setPriceSpecifyHelper] = React.useState<ApiItem>({});
+  const [pricePreferLanguage, setPricePreferLanguage] = React.useState<ApiItem[]>([]);
   const dispatch = useDispatch();
   const [language, setLanguage] = React.useState({ label: "", value: "" });
   const [requestConfigPriceTrigger, { isLoading: loadingConfigPrice }] =
@@ -90,9 +92,9 @@ export default function Option(props: any) {
         Alert.alert(i18n.t("auth.error"), error);
       } else {
         let getPriceSpecifyHelper = response.items.find(
-          (x: any) => x.code === Enum.PriceSpecialRequest.COSTSP
+          (x: ApiItem) => x.code === Enum.PriceSpecialRequest.COSTSP
         );
-        let getPricePreferLanguage = response.items.filter((y: any) => {
+        let getPricePreferLanguage = response.items.filter((y: ApiItem) => {
           if (y.code === Enum.PriceSpecialRequest.LANGUAGE) {
             return { ...y };
           }
@@ -225,7 +227,7 @@ export default function Option(props: any) {
     });
   };
 
-  const onCheckExtraService = (value: any, idx: any) => {
+  const onCheckExtraService = (value: boolean, idx: number) => {
     let data = [...dataExtraService];
     data[idx].isCheck = !value;
     if (value) {
@@ -278,7 +280,7 @@ export default function Option(props: any) {
       setLanguage(props.valuePreferLanguage);
     }
   }, []);
-  const renderItem = (item: any, index: any) => {
+  const renderItem = (item: ApiItem, index: number) => {
     return (
       <View style={styles.borderExtraService}>
         <View
@@ -326,7 +328,7 @@ export default function Option(props: any) {
   };
 
   // ACCleaning
-  const renderItemACCleaning = (item: any, idx: any) => (
+  const renderItemACCleaning = (item: ApiItem, idx: number) => (
     <View key={idx} style={styles.borderExtraService}>
       <View
         style={[
@@ -375,7 +377,7 @@ export default function Option(props: any) {
       </View>
     </View>
   );
-  const onCheckACCleaning = (value: any, idx: any) => {
+  const onCheckACCleaning = (value: boolean, idx: number) => {
     let data = [...dataExtraServiceCleaning];
     data[idx].isCheck = !value;
     if (value) {
@@ -386,7 +388,7 @@ export default function Option(props: any) {
     data[idx].count = 1;
     setDataExtraServiceCleaning(data);
   };
-  const minusCountACCleaning = (value: any, idx: any) => {
+  const minusCountACCleaning = (value: number, idx: number) => {
     if (value > 1) {
       let data = [...dataExtraServiceCleaning];
       let price = 0;
@@ -401,7 +403,7 @@ export default function Option(props: any) {
       setDataExtraServiceCleaning(data);
     }
   };
-  const plusCountACCleaning = (value: any, idx: any) => {
+  const plusCountACCleaning = (value: number, idx: number) => {
     let data = [...dataExtraServiceCleaning];
     let price = 0;
     data[idx].count = value + 1;
@@ -418,7 +420,7 @@ export default function Option(props: any) {
   // Pet Care
   const [dataPetcare, setDataPetcare] = React.useState(
     isEdit
-      ? dataEdit.bookingDetail?.petProfiles?.map((x: any) => {
+      ? dataEdit.bookingDetail?.petProfiles?.map((x: ApiItem) => {
           return { ...x, isModal: false };
         })
       : []
@@ -440,7 +442,7 @@ export default function Option(props: any) {
     setIsModalPetCare(false);
   };
 
-  const deletePetProfile = (idx: any) => {
+  const deletePetProfile = (idx: number) => {
     let data = [...dataPetcare];
     data.splice(idx, 1);
     setDataPetcare(data);
@@ -464,7 +466,7 @@ export default function Option(props: any) {
     props.handleProfilePet(dataPetcare, petCareActivities);
   };
 
-  const renderItemPetCare = (item: any, idx: any) => (
+  const renderItemPetCare = (item: ApiItem, idx: number) => (
     <View key={idx} style={[styles.borderExtraService, { padding: 10 }]}>
       <Overlay
         isVisible={dataPetcare[idx].isModal}
@@ -617,7 +619,7 @@ export default function Option(props: any) {
         <View style={{ paddingTop: 10 }}>
           <TextInput
             value={petCareActivities}
-            onChangeText={(value: any) => onchangePetCareActivities(value)}
+            onChangeText={(value: string) => onchangePetCareActivities(value)}
             multiline
             numberOfLines={5}
             textAlignVertical="top"

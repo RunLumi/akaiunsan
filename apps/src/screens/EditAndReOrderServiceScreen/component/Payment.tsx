@@ -14,7 +14,9 @@ import { useSelector } from 'react-redux';
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
 import Layout from '../../../shared/Layout';
 import { apiSlice, portRequest, type ApiResult } from "../../../redux/apiSlice";
-export default function Payment(props: any) {
+import type { ScreenProps } from "../../../navigation/routes";
+import type { ApiItem } from "../../../redux/apiSlice";
+export default function Payment(props: ScreenProps) {
   const user = useAppSelector((state) => state.auth.user);
   const [tableHeadFlexible, setTableHeadFlexible] = React.useState([
     i18n.t("home.fexible_plan"), i18n.t("home.total_price")]);
@@ -39,13 +41,13 @@ export default function Payment(props: any) {
   const [idCash, setIdCash] = React.useState('');
   const [isDisableCreditCard, setIsDisableCreditCard] = React.useState(true);
   const [idCreditCard, setIdCreditCard] = React.useState('');
-  const [isDiscount, setIsDiscount] = React.useState<{ value?: any; isTrue?: boolean; }>({});
-  const [textPromotion, setTextPromotion] = React.useState<{ text?: any; isShow?: boolean; }>({});
-  const [isApplyPromotion, setIsApplyPromotion] = React.useState<{ value?: any; isTrue?: boolean; promotionType?: number }>({});
+  const [isDiscount, setIsDiscount] = React.useState<{ value?: number; isTrue?: boolean; }>({});
+  const [textPromotion, setTextPromotion] = React.useState<{ text?: string; isShow?: boolean; }>({});
+  const [isApplyPromotion, setIsApplyPromotion] = React.useState<{ value?: number; isTrue?: boolean; promotionType?: number }>({});
   const [paymentType, setPaymentType] = React.useState({ cash: true, creditCard: false });
   const [receivePointFromPrice, setReceivePointFromPrice] = React.useState(0);
-  const [voucherCode, setVoucherCode] = React.useState<{ value?: any; isError?: boolean; msgErr?: string }>({});
-  const [point, setPoint] = React.useState<{ value?: any; isError?: boolean; msgErr?: string }>({});
+  const [voucherCode, setVoucherCode] = React.useState<{ value?: string; isError?: boolean; msgErr?: string }>({});
+  const [point, setPoint] = React.useState<{ value?: number; isError?: boolean; msgErr?: string }>({});
   const notSelectPaymentType = { cash: false, creditCard: false };
   const selectPaymentType = (type: string) => {
     setPaymentType({ ...notSelectPaymentType, [type]: true });
@@ -162,7 +164,7 @@ export default function Payment(props: any) {
         Alert.alert(i18n.t("auth.error"), error);
       } else {
         let data = JSON.parse(response.items[0].config);
-        let percentDiscount = point.value * data.discounts / data.point;
+        let percentDiscount = point.value! * data.discounts / data.point;
         let valueDiscount = props.price * percentDiscount / 100;
         setIsDiscount({ ...isDiscount, isTrue: true, value: valueDiscount });
         props.handleDiscountPrice(valueDiscount, true, point.value);
@@ -218,8 +220,8 @@ export default function Payment(props: any) {
     } else if (isApplyPromotion.promotionType === Enum.PromotionType.GIFT_PERCENT) {
       props.handlePriceExtraService(isApplyPromotion.value, "plus");
     } else if (isApplyPromotion.promotionType === Enum.PromotionType.GIFT_POINT) {
-      props.handleReceivePoint(-isApplyPromotion.value);
-      setReceivePointFromPrice(receivePointFromPrice - isApplyPromotion.value);
+      props.handleReceivePoint(-isApplyPromotion.value!);
+      setReceivePointFromPrice(receivePointFromPrice - isApplyPromotion.value!);
     } else if (isApplyPromotion.promotionType === Enum.PromotionType.EXTRA_SERVICES) {
       props.handlePriceExtraService(isApplyPromotion.value, "plus");
     }
@@ -346,11 +348,11 @@ export default function Payment(props: any) {
             <View style={{ flexDirection: "row", justifyContent: "space-between", paddingVertical: 5 }}>
               <CustomInput
                 disabled={isDiscount.isTrue}
-                value={point.value}
+                value={String(point.value ?? "")}
                 keyboardType="number-pad"
                 placeholder={i18n.t('home.point')}
                 containerStyle={{ width: "65%" }}
-                onChangeText={(value) => setPoint({ ...point, value: value, isError: false })}
+                onChangeText={(value) => setPoint({ ...point, value: value as unknown as number, isError: false })}
                 isError={point.isError}
                 errorText={point.msgErr} />
               <Button onPress={() => isDiscount.isTrue ? onPressUndoDiscount() : onPressPoint()} titleStyle={{ color: colors.black_text }} buttonStyle={{ backgroundColor: colors.gray_hidden_text }} containerStyle={{ width: "30%", borderRadius: 10 }} title={isDiscount.isTrue ? i18n.t('home.undo') : i18n.t('home.apply')} />

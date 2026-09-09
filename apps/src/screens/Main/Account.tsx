@@ -24,8 +24,9 @@ import i18n from "../../shared/I18n";
 import { Divider } from "react-native-elements";
 import notifee from "@notifee/react-native";
 import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
+import type { ScreenProps } from "../../navigation/routes";
 
-export default function Account(props: any) {
+export default function Account(props: ScreenProps) {
   const [requestRemoveTrigger, { isLoading: loadingRemove }] =
     apiSlice.endpoints.removeAccount.useMutation();
   const requestRemove = portRequest(

@@ -6,8 +6,9 @@ import { Container } from "../../components";
 import Constants from "../../shared/Constants";
 import Colors from "../../shared/Colors";
 import i18n from "../../shared/I18n";
+import type { ScreenProps } from "../../navigation/routes";
 
-export default function MenuFavourite(props: any) {
+export default function MenuFavourite(props: ScreenProps) {
   const navigation = props.navigation;
 
   const onPressService = () => {

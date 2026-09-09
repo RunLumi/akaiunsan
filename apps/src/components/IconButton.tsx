@@ -14,13 +14,14 @@ import {
 import Theme from "../shared/theme";
 import Styles from "../shared/Styles";
 import {Text} from "./Text";
+import type { ApiItem } from "../redux/apiSlice";
 interface Props {
   style?: StyleProp<ViewStyle>;
   viewStyle?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
-  children?: any;
+  children?: React.ReactNode;
   title?: string;
-  image?: any;
+  image?: number;
   imageStyle?: StyleProp<ImageStyle>;
   onPress?: (event: GestureResponderEvent) => void;
   loading?: boolean;

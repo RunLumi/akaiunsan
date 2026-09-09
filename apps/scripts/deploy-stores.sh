@@ -77,6 +77,7 @@ Important environment:
   APPLE_TEAM_ID                  or TEAM_ID
 
 Optional:
+  INSTALL_DEPENDENCIES=NO    reuse an existing dependency installation.
   ALLOW_PROVISIONING_UPDATES=YES
   ALLOW_PLAY_PRODUCTION=YES      required when PLAY_TRACK=production
   PLAY_UPLOADER=/path/to/uploader API uploader; fastlane is the fallback.
@@ -164,6 +165,18 @@ IOS_BUILD_NUMBER="$(cd "$APP_ROOT" && node -p 'require("./app.json").expo.ios.bu
 require_command find
 require_command mkdir
 require_command cp
+require_command grep
+
+if [[ "${INSTALL_DEPENDENCIES:-YES}" == "YES" ]]; then
+  require_command yarn
+  echo "==> Refreshing JavaScript dependencies"
+  (cd "$APP_ROOT" && yarn install --frozen-lockfile --force)
+fi
+
+ACTION_BUTTON="$APP_ROOT/node_modules/react-native-action-button/ActionButton.js"
+if [[ -f "$ACTION_BUTTON" ]] && grep -Fq "Text.propTypes.style" "$ACTION_BUTTON"; then
+  die "stale react-native-action-button detected; dependency refresh did not include the React Native 0.86 compatibility fix"
+fi
 
 if [[ "${PREBUILD_NATIVE:-YES}" == "YES" ]]; then
   EXPO_CLI="$APP_ROOT/node_modules/.bin/expo"

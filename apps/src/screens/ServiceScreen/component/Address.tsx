@@ -57,7 +57,7 @@ export default function Address(props: ScreenProps) {
     }
   }, []);
 
-  const renderItem = ({ item, index }: any) => (
+  const renderItem = ({ item, index }: { item: ApiItem; index: number }) => (
     <TouchableOpacity
       onPress={() => getValueAddress(item)}
       disabled={props.nonEdit}

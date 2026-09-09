@@ -226,7 +226,7 @@ export default function Option(props: ScreenProps) {
   React.useEffect(() => {
     props.onSelectNumberKid(numberKids);
   }, [numberKids]);
-  const renderItem = ({ item, index }: any) => {
+  const renderItem = ({ item, index }: { item: ApiItem; index: number }) => {
     return (
       <View
         style={[

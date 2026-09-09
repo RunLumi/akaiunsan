@@ -318,7 +318,7 @@ export default function Home(props: ScreenProps) {
     ]);
   };
 
-  const renderItem = ({ item, index }: { item: any; index: number }) => {
+  const renderItem = ({ item, index }: { item: ApiItem; index: number }) => {
     return (
       <TouchableWithoutFeedback
         onPress={() =>
@@ -339,7 +339,7 @@ export default function Home(props: ScreenProps) {
     );
   };
 
-  const renderItemService = ({ item, index }: { item: any; index: number }) => {
+  const renderItemService = ({ item, index }: { item: ApiItem; index: number }) => {
     const onPress = () => {
       if (item.type === 1) {
         return Alert.alert("", "This service will coming soon.");
@@ -418,7 +418,7 @@ export default function Home(props: ScreenProps) {
         )}
         <FlatList
           horizontal
-          data={listService as any[]}
+          data={listService as ApiItem[]}
           contentContainerStyle={{ paddingHorizontal: 16 }}
           extraData={listService}
           keyExtractor={(iten, index) => index.toString()}
@@ -518,7 +518,7 @@ export default function Home(props: ScreenProps) {
     );
   };
 
-  const renderItemSubBanner = ({ item, index }: any) => {
+  const renderItemSubBanner = ({ item, index }: { item: ApiItem; index: number }) => {
     return (
       <TouchableOpacity
         onPress={() =>

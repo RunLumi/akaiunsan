@@ -23,13 +23,13 @@ interface Props {
   serviceItemId: string;
   serviceName: string;
   ageKid: string;
-  onSetAgeKid: any;
+  onSetAgeKid: (text: string) => void;
   serviceType: number;
-  priceModel: any;
-  salePriceModel: any;
-  setTimes: any;
-  countPrice: any;
-  times: any;
+  priceModel?: ApiItem;
+  salePriceModel?: ApiItem;
+  setTimes: (times: ApiItem[]) => void;
+  countPrice: () => void;
+  times: ApiItem[];
 }
 export const AddFixPlan = ({
   serviceId,
@@ -207,7 +207,7 @@ export const AddFixPlan = ({
 
 const CalendarComponent = (props: ScreenProps) => {
   const getMoreItems = () => {
-    const moreItems: any = [];
+    const moreItems: ApiItem[] = [];
     function getDaysBooking(day: ApiItem) {
       let start = dayjs(day.startAt);
       let count = 0;
@@ -261,7 +261,7 @@ const CalendarComponent = (props: ScreenProps) => {
       //     />
       //   )
       // }
-      dayComponent={({ date }: any) => (
+      dayComponent={({ date }: { date?: { dateString: string } }) => (
         <TouchableOpacity
           style={[
             {
@@ -271,19 +271,19 @@ const CalendarComponent = (props: ScreenProps) => {
               alignItems: "center",
             },
             _.find(getMoreItems(), function (o) {
-              return dayjs(o.startAt).format("yyyy-MM-DD") === date.dateString;
+              return dayjs(o.startAt).format("yyyy-MM-DD") === date!.dateString;
             }) && { backgroundColor: Colors.main_orange, borderRadius: 4 },
           ]}
           onPress={() => {
-            if (dayjs(date.dateString).diff(dayjs()) < 1 == false) {
-              props.onPickDate(dayjs(date.dateString));
+            if (dayjs(date!.dateString).diff(dayjs()) < 1 == false) {
+              props.onPickDate(dayjs(date!.dateString));
             }
           }}
         >
           <Text
             style={[
               {
-                ...(dayjs(date.dateString).diff(dayjs()) < 1
+                ...(dayjs(date!.dateString).diff(dayjs()) < 1
                   ? {
                       color: Colors.gray_normal_text,
                     }
@@ -293,12 +293,12 @@ const CalendarComponent = (props: ScreenProps) => {
               },
               _.find(getMoreItems(), function (o) {
                 return (
-                  dayjs(o.startAt).format("yyyy-MM-DD") === date.dateString
+                  dayjs(o.startAt).format("yyyy-MM-DD") === date!.dateString
                 );
               }) && { color: Colors.white },
             ]}
           >
-            {date.day}
+            {dayjs(date!.dateString).date()}
           </Text>
         </TouchableOpacity>
       )}

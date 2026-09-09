@@ -168,7 +168,7 @@ export default function Service(props: ScreenProps) {
               maxDate={dayjs().add(1, "year").format("YYYY-MM-DD")}
               monthFormat={"MMMM - yyyy"}
               hideExtraDays={true}
-              dayComponent={({ date }: any) => (
+              dayComponent={({ date }: { date?: { dateString: string } }) => (
                 <TouchableOpacity
                 disabled={props.isEdit}
                   style={{
@@ -176,33 +176,33 @@ export default function Service(props: ScreenProps) {
                     minHeight: 24,
                     justifyContent: "center",
                     alignItems: "center",
-                    ...(date.dateString == pickDate && {
+                    ...(date!.dateString == pickDate && {
                       backgroundColor: Colors.main_orange,
                       borderRadius: 4,
                     }),
                   }}
                   onPress={() => {
-                    if (dayjs(date.dateString).diff(dayjs()) < 1 == false) {
-                      setPickDate(date.dateString);
-                      onChangeSliderValues(date.dateString, sliderValues);
+                    if (dayjs(date!.dateString).diff(dayjs()) < 1 == false) {
+                      setPickDate(date!.dateString);
+                      onChangeSliderValues(date!.dateString, sliderValues);
                     }
                   }}
                 >
                   <Text
                     style={{
-                      ...(dayjs(date.dateString).diff(dayjs()) < 1
+                      ...(dayjs(date!.dateString).diff(dayjs()) < 1
                         ? {
                             color: Colors.gray_normal_text,
                           }
                         : {
                             color: Colors.black,
                           }),
-                      ...(date.dateString == pickDate && {
+                      ...(date!.dateString == pickDate && {
                         color: Colors.white,
                       }),
                     }}
                   >
-                    {date.day}
+                    {dayjs(date!.dateString).date()}
                   </Text>
                 </TouchableOpacity>
               )}

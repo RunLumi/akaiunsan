@@ -170,7 +170,7 @@ export default function Service(props: ScreenProps) {
             maxDate={dayjs().add(1, "year").format("YYYY-MM-DD")}
             monthFormat={"MMMM - yyyy"}
             hideExtraDays={true}
-            dayComponent={({ date }: any) => (
+            dayComponent={({ date }: { date?: { dateString: string } }) => (
               <TouchableOpacity
                 disabled={props.isEdit}
                 style={{
@@ -178,14 +178,14 @@ export default function Service(props: ScreenProps) {
                   minHeight: 24,
                   justifyContent: "center",
                   alignItems: "center",
-                  ...(date.dateString == pickDate && {
+                  ...(date!.dateString == pickDate && {
                     backgroundColor: Colors.main_orange,
                     borderRadius: 4,
                   }),
                 }}
                 onPress={() => {
-                  if (dayjs(date.dateString).isAfter(dayjs(), "date")) {
-                    const IsSameDate = dayjs(date.dateString).isSame(
+                  if (dayjs(date!.dateString).isAfter(dayjs(), "date")) {
+                    const IsSameDate = dayjs(date!.dateString).isSame(
                       dayjs().add(1, "day"),
                       "date"
                     );
@@ -194,8 +194,8 @@ export default function Service(props: ScreenProps) {
                     } else {
                       setStart(7);
                     }
-                    setPickDate(date.dateString);
-                    onChangeSliderValues(date.dateString, sliderValues);
+                    setPickDate(date!.dateString);
+                    onChangeSliderValues(date!.dateString, sliderValues);
                   }
                 }}
               >
@@ -208,12 +208,12 @@ export default function Service(props: ScreenProps) {
                       : {
                           color: Colors.black,
                         }),
-                    ...(date.dateString == pickDate && {
+                    ...(date!.dateString == pickDate && {
                       color: Colors.white,
                     }),
                   }}
                 >
-                  {date.day}
+                  {dayjs(date!.dateString).date()}
                 </Text>
               </TouchableOpacity>
             )}

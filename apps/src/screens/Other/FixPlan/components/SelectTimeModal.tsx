@@ -14,6 +14,7 @@ import { Text } from "../../../../components";
 import _ from "lodash";
 import dayjs from "../../../../shared/dayjs";
 import type { ScreenProps } from "../../../../navigation/routes";
+import type { ApiItem } from "../../../../redux/apiSlice";
 export const SelectTimeModal = (props: ScreenProps) => {
   const { isShow, pickDate } = props;
   const IsSameDate = dayjs(pickDate).isSame(dayjs().add(1, "day"), "date");
@@ -28,7 +29,7 @@ export const SelectTimeModal = (props: ScreenProps) => {
     [pickDate],
   );
   const data = _.range(getRangeHour(), 24, 1);
-  const renderItem = ({ item, index }: any) => {
+  const renderItem = ({ item, index }: { item: number; index: number }) => {
     const onPress = () => {
       if (props.onSelect) {
         props.onSelect(item);

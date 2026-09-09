@@ -110,7 +110,7 @@ export default function AllSubscriptionPlan() {
         return require("../../assets/images/1e01.png");
     }
   };
-  const renderItemSub = ({ item, index }: { item: any; index: number }) => {
+  const renderItemSub = ({ item, index }: { item: ApiItem; index: number }) => {
     const enumReason = [
       { label: "Location", value: 1 },
       { label: "No-answer", value: 2 },

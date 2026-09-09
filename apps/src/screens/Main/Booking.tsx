@@ -45,7 +45,7 @@ export default function Booking(props: ScreenProps) {
       }
       if (!_.isNull(response)) {
         if (response.items.length) {
-          setListHistory((old: any[]) => [...old, ...response.items]);
+          setListHistory((old: ApiItem[]) => [...old, ...response.items]);
           setPageListHistory(response.page);
         }
       }
@@ -64,7 +64,7 @@ export default function Booking(props: ScreenProps) {
       }
       if (!_.isNull(response)) {
         if (response.items.length) {
-          setListBooking((old: any[]) => [...old, ...response.items]);
+          setListBooking((old: ApiItem[]) => [...old, ...response.items]);
           setPageListBooking(response.page);
         }
       }
@@ -147,7 +147,7 @@ export default function Booking(props: ScreenProps) {
         return require("../../assets/images/1e01.png");
     }
   };
-  const renderItem = ({ item, index }: any) => {
+  const renderItem = ({ item, index }: { item: ApiItem; index: number }) => {
     return (
       <TouchableOpacity
         style={s.jobItem}
@@ -247,7 +247,7 @@ export default function Booking(props: ScreenProps) {
       {activeTab == 0 && (
         <View style={s.pageView}>
           <FlatList
-            data={listBooking as any[]}
+            data={listBooking as ApiItem[]}
             contentContainerStyle={
               listBooking.length === 0 && {
                 flexGrow: 1,
@@ -277,7 +277,7 @@ export default function Booking(props: ScreenProps) {
       {activeTab == 1 && (
         <View style={s.pageView}>
           <FlatList
-            data={listHistory as any[]}
+            data={listHistory as ApiItem[]}
             contentContainerStyle={
               listHistory.length === 0 && {
                 flexGrow: 1,
@@ -300,7 +300,7 @@ export default function Booking(props: ScreenProps) {
               setListHistory([]);
               onLoadHistory(1);
             }}
-            renderItem={({ item }: any) => (
+            renderItem={({ item }: { item: ApiItem }) => (
               <TouchableOpacity
                 style={s.historyItem}
                 onPress={() => onPressHistoryDetail(item)}

@@ -45,7 +45,7 @@ export default function AllService(props: ScreenProps) {
     }
   );
 
-  const _renderItem = ({ item, index }: any) => {
+  const _renderItem = ({ item, index }: { item: ApiItem; index: number }) => {
     return (
       <View key={index}>
         {item.listImage &&

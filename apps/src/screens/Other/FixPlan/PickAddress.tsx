@@ -172,7 +172,7 @@ export default function PickAddress(props: ScreenProps) {
       } else {
         const items = JSON.parse(response.extraService) || [];
 
-        const dataExtraService: any = _.map(items, (item) => {
+        const dataExtraService: ApiItem[] = _.map(items, (item) => {
           item.isCheck = false;
           if (item.perHour > 0 && item.perTime == 0) {
             item.price =
@@ -384,7 +384,7 @@ export default function PickAddress(props: ScreenProps) {
     });
   }, []);
   const getMoreItems = () => {
-    const moreItems: any = [];
+    const moreItems: ApiItem[] = [];
     function getDaysBooking(day: ApiItem) {
       let count = 0;
       let start = dayjs(day.startAt);

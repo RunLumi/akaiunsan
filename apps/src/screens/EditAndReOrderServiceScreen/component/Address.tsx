@@ -64,7 +64,7 @@ export default function Address(props: ScreenProps) {
     requestListAddress();
   }, []);
 
-  const renderItem = ({ item, index }: any) => (
+  const renderItem = ({ item, index }: { item: ApiItem; index: number }) => (
     <TouchableOpacity onPress={() => getValueAddress(item)}>
       <View
         style={{

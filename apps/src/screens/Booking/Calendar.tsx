@@ -447,7 +447,7 @@ export default (props: ScreenProps) => {
   );
 
   const getMoreItems = () => {
-    const moreItems: any = [];
+    const moreItems: ApiItem[] = [];
 
     for (
       let m = dayjs().startOf("day");

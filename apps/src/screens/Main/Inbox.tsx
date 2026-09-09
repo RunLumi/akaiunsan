@@ -312,8 +312,8 @@ export default function Inbox(props: ScreenProps) {
     }
   };
   const selectDeleteNoti = (newValue: boolean, index: number) => {
-    const value = [...valueNotiDelete] as any[];
-    const valueDelete = [...arrNoti] as any[];
+    const value = [...valueNotiDelete];
+    const valueDelete = [...arrNoti] as ApiItem[];
     valueDelete[index].isDeleted = newValue;
     value[index] = newValue;
     setValueNotiDelete(value);
@@ -322,8 +322,8 @@ export default function Inbox(props: ScreenProps) {
     setCountItemDelete(countValue);
   };
   const selectDeletePromo = (newValue: boolean, index: number) => {
-    const value = [...valuePromoDelete] as any[];
-    const valueDelete = [...arrPromo] as any[];
+    const value = [...valuePromoDelete];
+    const valueDelete = [...arrPromo] as ApiItem[];
     valueDelete[index].isDeleted = newValue;
     value[index] = newValue;
     setValuePromoDelete(value);
@@ -389,7 +389,7 @@ export default function Inbox(props: ScreenProps) {
       id: item.notificationId,
     });
   };
-  const renderItemNoti = ({ item, index }: { item: any; index: number }) => (
+  const renderItemNoti = ({ item, index }: { item: ApiItem; index: number }) => (
     <View>
       <TouchableOpacity
         onPress={() =>
@@ -483,7 +483,7 @@ export default function Inbox(props: ScreenProps) {
       data: item,
     });
   };
-  const renderItemPromo = ({ item, index }: { item: any; index: number }) => {
+  const renderItemPromo = ({ item, index }: { item: ApiItem; index: number }) => {
     return (
       <View>
         <TouchableOpacity

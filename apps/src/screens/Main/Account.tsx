@@ -25,6 +25,7 @@ import { Divider } from "react-native-elements";
 import notifee from "@notifee/react-native";
 import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
 import type { ScreenProps } from "../../navigation/routes";
+import type { ApiItem } from "../../redux/apiSlice";
 
 export default function Account(props: ScreenProps) {
   const [requestRemoveTrigger, { isLoading: loadingRemove }] =
@@ -126,7 +127,7 @@ export default function Account(props: ScreenProps) {
     notifee.setBadgeCount(0);
   };
 
-  const renderItem = ({ item, index }: { item: any; index: number }) => {
+  const renderItem = ({ item, index }: { item: ApiItem; index: number }) => {
     return (
       <TouchableOpacity
         onPress={() =>

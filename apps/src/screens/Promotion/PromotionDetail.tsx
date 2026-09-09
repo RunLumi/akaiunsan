@@ -97,13 +97,13 @@ export default function PromotionDetail(props: ScreenProps) {
   //   });
   // };
 
-  const renderItem = ({ item, index }: any) => {
+  const renderItem = ({ item, index }: { item: ApiItem; index: number }) => {
     return (
       <View key={index}>
         <ExpoImage
           contentFit="contain"
           style={{ width: width, height: width }}
-          source={{ uri: item }}
+          source={{ uri: String(item ?? "") }}
         />
       </View>
     );

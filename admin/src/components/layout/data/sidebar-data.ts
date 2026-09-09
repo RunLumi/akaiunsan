@@ -18,16 +18,16 @@ import {
   Users,
   MessagesSquare,
   ShieldCheck,
-  GalleryVerticalEnd,
 } from 'lucide-react'
 import { ClerkLogo } from '@/assets/clerk-logo'
+import { Logo } from '@/assets/logo'
 import { type SidebarData } from '../types'
 
 export const sidebarData: SidebarData = {
   teams: [
     {
       name: 'Akaiunsan',
-      logo: GalleryVerticalEnd,
+      logo: Logo,
       plan: 'Back Office',
     },
   ],

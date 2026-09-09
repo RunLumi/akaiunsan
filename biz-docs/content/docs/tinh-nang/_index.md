@@ -5,6 +5,8 @@ weight: 300
 
 # Danh sách tính năng
 
+Xem kèm [Danh mục màn hình](/docs/man-hinh/) — nơi mỗi tính năng được ánh xạ tới màn hình cụ thể của ứng dụng.
+
 Tính năng được nhóm theo **hành trình của khách hàng**. Cột *Mã* dùng để tham chiếu chéo sang [Yêu cầu chức năng](/docs/yeu-cau-chuc-nang/) và [Kịch bản kiểm thử](/docs/kiem-thu/).
 
 ## 1. Tài khoản & xác thực

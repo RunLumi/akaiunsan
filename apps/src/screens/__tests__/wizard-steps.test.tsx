@@ -242,6 +242,14 @@ const pressOne = (fn: any) => {
   });
 };
 
+// Bounded flush: the legacy step-2/3 subtrees can keep scheduling React work
+// (timers + chained requests), which makes an unbounded act() never return
+// under the Node renderer — the previously-documented hang. Racing flush
+// against a short timeout keeps the walk moving so unmount always runs.
+const settle = async () => {
+  await Promise.race([flush(), new Promise((r) => setTimeout(r, 250))]);
+};
+
 describe("booking wizard edit-mode (Phase 3 characterization)", () => {
   beforeEach(() => {
     mockNavInstance = nav();
@@ -268,14 +276,19 @@ describe("booking wizard edit-mode (Phase 3 characterization)", () => {
         />,
         makeApiStore(preloadedState)
       );
-      await flush();
+      await settle();
       typeAll(renderer.root);
-      await flush();
+      await settle();
       pressAll(renderer.root);
-      await flush();
+      await settle();
       expect(renderer.toJSON()).not.toBeNull();
-      await flush();
-      renderer.unmount();
+      await act(async () => {
+        renderer.unmount();
+        await Promise.race([
+          new Promise((r) => setImmediate(r)),
+          new Promise((r) => setTimeout(r, 250)),
+        ]);
+      });
     },
     30000
   );
@@ -304,7 +317,7 @@ describe("booking wizard steps (Phase 3 characterization)", () => {
         />,
         makeApiStore(preloadedState)
       );
-      await flush();
+      await settle();
       // Jump through every step header (absolute toStep jumps), sweeping the
       // freshly mounted step each time. `onNextStep` is pressed once at the
       // deepest step with shaped endpoint data (order submission flow).
@@ -319,11 +332,11 @@ describe("booking wizard steps (Phase 3 characterization)", () => {
       });
       for (const labelHandler of labels) {
         pressOne(labelHandler);
-        await flush();
+        await settle();
         typeAll(renderer.root);
-        await flush();
+        await settle();
         sweepExceptOnNextStep(renderer.root);
-        await flush();
+        await settle();
       }
       // Walk forward: sweep (presses the step's confirm handlers), then
       // onNextStep, repeating so each mounted step's content is exercised.
@@ -346,43 +359,42 @@ describe("booking wizard steps (Phase 3 characterization)", () => {
         });
         return next;
       };
-      // One forward pass: the sweep sets the step's confirm state
-      // (handleAddress etc.), then onNextStep advances and the newly mounted
-      // step's content is swept. A second pass re-mounts the step-2 subtree,
-      // whose effects still re-schedule unresolved work under the Node
-      // renderer (the settle-walk below does not always rescue it).
-      for (let stepPass = 0; stepPass < 1; stepPass++) {
+      // Forward passes: the sweep sets the step's confirm state
+      // (handleAddress etc.), then onNextStep advances and each newly mounted
+      // step's content is swept. The settle walk after each press keeps the
+      // step-2+ remounts fully drained under the Node renderer (the
+      // previously-documented hang).
+      for (let stepPass = 0; stepPass < 3; stepPass++) {
         typeAll(renderer.root);
-        await flush();
-        // eslint-disable-next-line no-console
-        console.log("W typed", label, stepPass);
+        await settle();
         sweepExceptOnNextStep(renderer.root);
-        await flush();
-        // eslint-disable-next-line no-console
-        console.log("W swept", label, stepPass);
+        await settle();
         const nextStep = findNextStep();
         if (!nextStep) break;
         pressOne(nextStep);
-        // Walking the tree between the press and the flush forces the
-        // scheduler to reconcile the freshly mounted step; without it the
-        // pending act work occasionally never settles under the Node
-        // renderer (timing-sensitive race).
-        renderer.root.findAll(() => false);
-        await flush();
-        // eslint-disable-next-line no-console
-        console.log("W next", label, stepPass);
+        // Settle walk: the freshly mounted step's RTK query chains span more
+        // microtask rounds than one flush drains; setImmediate rounds let the
+        // scheduler reconcile while the environment is still alive.
+        for (let round = 0; round < 4; round++) {
+          await settle();
+          await Promise.race([
+            new Promise((r) => setImmediate(r)),
+            new Promise((r) => setTimeout(r, 250)),
+          ]);
+        }
         typeAll(renderer.root);
-        await flush();
-        // eslint-disable-next-line no-console
-        console.log("W typed2", label, stepPass);
+        await settle();
         sweepExceptOnNextStep(renderer.root);
-        await flush();
-        // eslint-disable-next-line no-console
-        console.log("W swept2", label, stepPass);
+        await settle();
       }
       expect(renderer.toJSON()).not.toBeNull();
-      await flush();
-      renderer.unmount();
+      await act(async () => {
+        renderer.unmount();
+        await Promise.race([
+          new Promise((r) => setImmediate(r)),
+          new Promise((r) => setTimeout(r, 250)),
+        ]);
+      });
     },
     30000
   );

@@ -230,7 +230,7 @@ export const HelperSelect = ({
       </TouchableOpacity>
     </View>
   );
-  const showDetail = (detail: any, idx: number, type: number) => {
+  const showDetail = (detail: ApiItem, idx: number, type: number) => {
     type == 1
       ? onSelectHelper(detail.isSelect, idx)
       : onSelectHelperSuggest(detail.isSelect, idx);
@@ -252,9 +252,9 @@ export const HelperSelect = ({
   const selectHelper = (
     id: string,
     name: string,
-    old: any,
-    star: any,
-    image: any
+    old: unknown,
+    star: unknown,
+    image: unknown
   ) => {
     valueHelper?.(id, name, old, star, image);
     setShowModalDetail(false);
@@ -276,7 +276,7 @@ export const HelperSelect = ({
         <Text style={styles.title}>{i18n.t("home.suggest_for_you")}</Text>
         <View style={styles.borderSuggest}>
           {dataHelperSuggest.length ? (
-            dataHelperSuggest.map((x: any, idx) => {
+            dataHelperSuggest.map((x: ApiItem, idx) => {
               return (
                 <View key={idx} style={styles.viewImage}>
                   <TouchableOpacity onPress={() => showDetail(x, idx, 2)}>

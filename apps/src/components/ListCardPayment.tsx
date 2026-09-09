@@ -122,7 +122,7 @@ export const ListCardPayment = ({
         >
           {listPayment.length ? (
             <>
-              {listPayment.map((item: any, idx) => (
+              {listPayment.map((item: ApiItem, idx) => (
                 <TouchableOpacity
                   key={idx}
                   style={s.jobItem}

@@ -200,9 +200,9 @@ export default function Option(props: ScreenProps) {
   const handleValueHelper = (
     id: any,
     name: any,
-    old: any,
-    star: any,
-    image: any
+    old: unknown,
+    star: unknown,
+    image: unknown
   ) => {
     setNameHelper(name);
     setOldHelper(old);

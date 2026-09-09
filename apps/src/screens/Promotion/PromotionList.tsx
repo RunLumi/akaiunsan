@@ -47,7 +47,7 @@ export default function PromotionList(props: ScreenProps) {
             data.push(m);
           });
         }
-        let getPromotionId = data.map((x: any, idx) => {
+        let getPromotionId = data.map((x: ApiItem, idx) => {
           return { ...x, promotionId: x.id };
         });
         setArrPromotion(getPromotionId);

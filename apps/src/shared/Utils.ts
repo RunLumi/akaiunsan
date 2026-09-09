@@ -5,7 +5,7 @@ import Enum from "./Enum";
 import i18n from "./I18n";
 import type { ApiItem } from "../redux/apiSlice";
 
-export const getRegionForCoordinates = (points: any[]) => {
+export const getRegionForCoordinates = (points: ApiItem[]) => {
   let minX: number;
   let maxX: number;
   let minY: number;
@@ -60,7 +60,7 @@ export const paramArray = (params: any) => {
 
 }
 
-export const getStatus = (orderStatus: any, order?: any) => {
+export const getStatus = (orderStatus: number, order?: ApiItem) => {
   let status;
   switch (orderStatus) {
     case 0:

@@ -104,7 +104,7 @@ const WeeklyCalendar = (props: ScreenProps) => {
             flexDirection: "row",
           }}
         >
-          {[-1, ...dates].map((d: any, index) => (
+          {[-1, ...dates].map((d: number | dayjs.Dayjs, index: number) => (
             <View
               key={index}
               style={{
@@ -146,7 +146,7 @@ const WeeklyCalendar = (props: ScreenProps) => {
               ))}
               {d != -1 &&
                 times.map((x) => {
-                  const job = getJob(d, x);
+                  const job = getJob(d as dayjs.Dayjs, x);
 
                   if (job != null) {
                     const startWork = dayjs().startOf("day").set("hours", 6);
@@ -290,7 +290,7 @@ const MonthlyCalendar = (props: ScreenProps) => {
       </View>
       <View style={{ flex: 1 }}>
         <View style={{ flexDirection: "row" }}>
-          {calendar[0].days.map((d: ApiItem, index: number) => (
+          {calendar[0].days.map((d: dayjs.Dayjs, index: number) => (
             <View
               key={index}
               style={{
@@ -320,7 +320,7 @@ const MonthlyCalendar = (props: ScreenProps) => {
               }}
             >
               {row.days.map((col: dayjs.Dayjs) => {
-                const j = getJob(col);
+                const j = getJob(col as dayjs.Dayjs);
                 return (
                   <View
                     style={{

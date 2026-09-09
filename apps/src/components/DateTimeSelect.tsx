@@ -83,10 +83,10 @@ export const DateTimeSelect = ({
   };
 
   const submitDateTime = () => {
-    let showTime: any = "";
+    let showTime: string = "";
     let getMinTime = dayjs().format("HH:mm");
     let valueSplitMinTime = Number(getMinTime.split(":")[0]);
-    let valueTimeF: any = "";
+    let valueTimeF: string = "";
     if (valueDate) {
       if (valueTime.indexOf(".5") != -1) {
         showTime = valueTime.split(".")[0] + ":30"; // dayjs(.split('.')[0]);

@@ -1,9 +1,10 @@
-baseURL = "https://streamentry.github.io/akaiunsan/"
+baseURL = "https://akaiunsan.pages.dev/"
 defaultContentLanguage = "vi"
 title = "AKAIUNSAN — Tài liệu nghiệp vụ"
 theme = "hugo-book"
 
-# Served on GitHub Pages
+# Served on Cloudflare Pages (akaiunsan.pages.dev); GitHub Pages mirror
+# overrides baseURL via --baseURL in .github/workflows/biz-docs.yml
 enableGitInfo = false
 disablePathToLower = true
 canonifyURLs = false

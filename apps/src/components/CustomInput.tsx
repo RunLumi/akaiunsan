@@ -93,6 +93,7 @@ export const CustomInput = ({
           value={value}
           placeholderTextColor={colors.gray}
           {...props}
+          maxFontSizeMultiplier={Styles.typography.maxFontSizeMultiplier}
         />
 
         {onDropDown ? (

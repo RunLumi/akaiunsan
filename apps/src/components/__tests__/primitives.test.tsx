@@ -4,6 +4,7 @@ import {
   StyleSheet,
   StatusBar,
   Text as RNText,
+  TextInput as RNTextInput,
   View,
 } from "react-native";
 import { act, create, textNodes, hostTouchables } from "../../test-utils/helpers";
@@ -25,6 +26,7 @@ describe("Text", () => {
     const node = textNodes(renderer.root, "Hello")[0];
     expect(node.type).toBe(RNText);
     expect(font(node)).toBe("OpenSans-Regular");
+    expect(node.props.maxFontSizeMultiplier).toBe(1.3);
   });
 
   it("uses SukhumvitSet-Text when the locale is th", () => {
@@ -59,10 +61,11 @@ describe("TextInput", () => {
         onChangeText={onChangeText}
       />
     );
-    const input = root.findByProps({ value: "abc" });
+    const input = root.findByType(RNTextInput);
     act(() => input.props.onChangeText("xyz"));
     expect(onChangeText).toHaveBeenCalledWith("xyz");
     expect(StyleSheet.flatten(input.props.style).color).toBe("red");
+    expect(input.props.maxFontSizeMultiplier).toBe(1.3);
   });
 });
 

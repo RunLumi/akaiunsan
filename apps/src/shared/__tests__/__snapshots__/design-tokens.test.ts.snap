@@ -192,6 +192,7 @@ exports[`Styles characterization golden file: spacing/shadow/typography scale 1`
     "h1": 32,
     "h2": 24,
     "h3": 18,
+    "maxFontSizeMultiplier": 1.3,
     "normal": 14,
     "title": 16,
   },

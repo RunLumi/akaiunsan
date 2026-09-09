@@ -4,6 +4,7 @@ import {
 	TextStyle,
 	StyleProp,
 } from 'react-native';
+import Styles from '../shared/Styles';
 
 interface Props {
 	style: StyleProp<TextStyle>;
@@ -11,5 +12,11 @@ interface Props {
 }
 
 export const TextInput = (props: Props) => {
-	return <DefaultTextInput {...props} style={props.style} />;
+	return (
+		<DefaultTextInput
+			{...props}
+			maxFontSizeMultiplier={Styles.typography.maxFontSizeMultiplier}
+			style={props.style}
+		/>
+	);
 }

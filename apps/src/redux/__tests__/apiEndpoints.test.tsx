@@ -132,4 +132,36 @@ describe("apiSlice Phase 5 endpoints — Home", () => {
     );
     expect(apiErrorString(undefined)).toBe("error");
   });
+
+  it("GET get_booking forwards orderStatus[] + page for list and history", async () => {
+    const store = makeApiStore(preloadedState);
+    // upcoming list: PENDING/MATCH/ON_PROCESS/WAITING_CONFIRM/RECEIVED
+    const upcoming: any = await store.dispatch(
+      apiSlice.endpoints.getBookings.initiate({
+        params: paramArray([
+          { orderStatus: 0 },
+          { orderStatus: 1 },
+          { orderStatus: 4 },
+          { orderStatus: 5 },
+          { orderStatus: 6 },
+          { page: 1 },
+        ]),
+      })
+    );
+    const upcomingUrl = (await lastRequest()).url;
+    expect(upcomingUrl).toContain(Constants.API.get_booking);
+    expect((upcomingUrl.match(/orderStatus=/g) || []).length).toBe(5);
+    expect(upcomingUrl).toContain("page=1");
+    // the screen reads response.items + response.page
+    expect(upcoming.data.items).toHaveLength(1);
+    expect(upcoming.data.page).toBe(1);
+
+    // history: COMPLETED/CANCEL against the same URL (useApi did the same)
+    const history: any = await store.dispatch(
+      apiSlice.endpoints.getBookings.initiate({
+        params: paramArray([{ orderStatus: 2 }, { orderStatus: 3 }]),
+      })
+    );
+    expect((history.data.items[0] as any).orderStatus).toBe(2);
+  });
 });

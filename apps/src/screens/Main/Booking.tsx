@@ -11,7 +11,7 @@ import {
 import { Container, Loading, Text } from "../../components";
 import Constants from "../../shared/Constants";
 import _ from "lodash";
-import useApi from "../../hooks/useApi";
+import { apiSlice, portRequest } from "../../redux/apiSlice";
 import i18n from "../../shared/I18n";
 import moment from "moment";
 import Enum from "../../shared/Enum";
@@ -27,10 +27,16 @@ export default function Booking(props: any) {
   const [listHistory, setListHistory] = useState<any>([]);
   const [listBooking, setListBooking] = useState<any>([]);
 
-  const [loadingListHistory, requestListHistory] = useApi({
-    method: "get",
-    url: Constants.API.get_booking,
-    callback: ({ error, response }) => {
+  // Phase 5 RTK Query port: list and history share the get_bookings endpoint
+  // (orderStatus[] params decide which is which); the legacy callbacks and
+  // append/page bookkeeping are unchanged via portRequest.
+  const [
+    historyTrigger,
+    { isLoading: loadingListHistory },
+  ] = apiSlice.endpoints.getBookings.useLazyQuery();
+  const requestListHistory = portRequest(
+    historyTrigger,
+    ({ error, response }: { error: string; response: any }) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
@@ -41,12 +47,15 @@ export default function Booking(props: any) {
           setPageListHistory(response.page);
         }
       }
-    },
-  });
-  const [loadingListBooking, requestListBooking] = useApi({
-    method: "get",
-    url: Constants.API.get_booking,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [
+    bookingTrigger,
+    { isLoading: loadingListBooking },
+  ] = apiSlice.endpoints.getBookings.useLazyQuery();
+  const requestListBooking = portRequest(
+    bookingTrigger,
+    ({ error, response }: { error: string; response: any }) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
@@ -57,8 +66,8 @@ export default function Booking(props: any) {
           setPageListBooking(response.page);
         }
       }
-    },
-  });
+    }
+  );
 
   useEffect(() => {
     requestListHistory({

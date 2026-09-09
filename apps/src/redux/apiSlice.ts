@@ -57,6 +57,19 @@ export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: Config.API_URL,
+    // useApi (axios) serialized URLSearchParams verbatim, preserving repeated
+    // keys (`orderStatus=0&orderStatus=1…`). RTK's default does
+    // `new URLSearchParams(stripUndefined(params))`, which spreads the
+    // instance into an empty object on standard platforms — keep the axios
+    // wire format instead.
+    paramsSerializer: (params: any) =>
+      params instanceof URLSearchParams
+        ? params.toString()
+        : new URLSearchParams(
+            (Object.entries(params || {}) as [string, string][]).filter(
+              ([, v]) => v !== undefined
+            )
+          ).toString(),
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as any)?.auth?.token;
       if (token) {
@@ -67,6 +80,19 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
+  // Default cache keys JSON-stringify the whole arg — a URLSearchParams param
+  // serializes to `{}` for every call, collapsing list/history/paged requests
+  // into one cache entry. Key on the serialized query string instead.
+  serializeQueryArgs: ({ endpointName, queryArgs }: any) => {
+    const params = queryArgs?.params;
+    const key =
+      params instanceof URLSearchParams
+        ? params.toString()
+        : params && typeof params === "object"
+        ? JSON.stringify(params)
+        : "";
+    return `${endpointName}(${key})`;
+  },
   endpoints: (builder) => ({
     login: builder.mutation<LoginResponse, { email: string; password: string }>(
       {
@@ -119,6 +145,16 @@ export const apiSlice = createApi({
       // (paged lists); params carry type[]/page exactly as useApi did.
       query: (arg) => ({
         url: Constants.API.get_notification,
+        params: arg?.params,
+      }),
+    }),
+
+    // ---- Booking (Phase 5 module port) -------------------------------------
+    // List and history share /client/jobs — the orderStatus[] params in the
+    // query string decide which list the response feeds (as with useApi).
+    getBookings: builder.query<ItemsResponse, RequestArg | void>({
+      query: (arg) => ({
+        url: Constants.API.get_booking,
         params: arg?.params,
       }),
     }),
@@ -179,4 +215,6 @@ export const {
   useLazyGetCurrentPlanQuery,
   useGetNotificationsQuery,
   useLazyGetNotificationsQuery,
+  useGetBookingsQuery,
+  useLazyGetBookingsQuery,
 } = apiSlice;

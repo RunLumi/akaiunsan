@@ -47,7 +47,7 @@ export default function Service(props: ScreenProps) {
     }
   }, []);
 
-  const onChangeSliderValues = (valueDate: any, values: number[]) => {
+  const onChangeSliderValues = (valueDate: string, values: number[]) => {
     if ((values[1] - values[0]).toString().indexOf(".5") != -1) {
       values[1] = values[1] + 0.5;
     }
@@ -75,11 +75,11 @@ export default function Service(props: ScreenProps) {
   };
 
   const handleValueDateTime = (
-    showDate: any,
-    showTime: any,
-    valueDate: any,
-    valueTime: any,
-    valueHour: any
+    showDate: string,
+    showTime: string,
+    valueDate: string,
+    valueTime: string,
+    valueHour: number
   ) => {
     let formatValuetime = "";
     if (_.toInteger(valueTime) < 10) {

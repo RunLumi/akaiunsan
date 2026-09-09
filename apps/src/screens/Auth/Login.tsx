@@ -118,7 +118,7 @@ export default function Login(props: ScreenProps) {
   // request callback runs unchanged through the adapter so the success/error
   // contract (FCM token, language update, LOGIN dispatch, 400 translation)
   // is identical to the useApi tunnel.
-  const handleLoginResult = ({ error, response }: any) => {
+  const handleLoginResult = ({ error, response }: { error: string; response: ApiItem }) => {
     if (error) Alert.alert(i18n.t("auth.error"), error);
     else {
       const token = tokenFromResponse(response);
@@ -144,10 +144,10 @@ export default function Login(props: ScreenProps) {
   };
   const [loginMutation, { isLoading: loadingRTK }] = useLoginMutation();
   const loading = loadingRTK;
-  const request = ({ data }: any) => {
-    loginMutation({ email: data?.email, password: data?.password })
+  const request = ({ data }: { data: { email: string; password: string } }) => {
+    loginMutation(data)
       .unwrap()
-      .then((response: ApiItem) => handleLoginResult({ error: "", response }))
+      .then((response: ApiItem) => handleLoginResult({ error: "", response: response as ApiItem }))
       .catch((e: ApiItem) =>
         handleLoginResult({
           // mirrors useApi's 400 translation: axios reported

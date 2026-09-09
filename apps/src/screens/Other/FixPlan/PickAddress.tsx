@@ -572,7 +572,7 @@ export default function PickAddress(props: ScreenProps) {
     setIdSpecifyHelper(data);
   };
 
-  const handlePriceExtraService = (value: any, type: any) => {
+  const handlePriceExtraService = (value: number, type: string) => {
     if (value) {
       if (type === "plus") {
         if (serviceType == 2) {
@@ -591,8 +591,8 @@ export default function PickAddress(props: ScreenProps) {
 
   const handlePriceCleaning = (data: ApiItem) => {};
 
-  const handleProfilePet = (dataProfile: any, activities: string) => {
-    setExtraService(dataProfile);
+  const handleProfilePet = (dataProfile: ApiItem, activities: string) => {
+    setExtraService(dataProfile as unknown as ApiItem[]);
     setActivitiesPetCare(activities);
   };
 
@@ -659,7 +659,7 @@ export default function PickAddress(props: ScreenProps) {
     }
   };
 
-  const handlePriceSpecifyHelper = (value: any, isCheck: boolean) => {
+  const handlePriceSpecifyHelper = (value: number, isCheck: boolean) => {
     const priceSpecifyHelper = value * getMoreItems().length;
     if (isCheck) {
       if (addPriceSpecifyHelper) {
@@ -674,7 +674,7 @@ export default function PickAddress(props: ScreenProps) {
     }
   };
 
-  const handlePricePreferLanguage = (value: any, isCheck: boolean) => {
+  const handlePricePreferLanguage = (value: number, isCheck: boolean) => {
     const pricePreferLanguage = value * getMoreItems().length;
     if (isCheck) {
       if (addPricePreferLanguage) {

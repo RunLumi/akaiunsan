@@ -104,7 +104,7 @@ const PickAddress = (props: ScreenProps) => {
       event.coordinate.longitude
     );
 
-    let longest = multiAddress.results.reduce(function (a: any, b: any) {
+    let longest = multiAddress.results.reduce(function (a: ApiItem, b: ApiItem) {
       return a.address_components.length > b.address_components.length ? a : b;
     });
     const listAddresses = await L2.googleAddressGeocodeAsync(
@@ -136,7 +136,7 @@ const PickAddress = (props: ScreenProps) => {
         currentPosition.coords.longitude
       );
 
-      let longest = multiAddress.results.reduce(function (a: any, b: any) {
+      let longest = multiAddress.results.reduce(function (a: ApiItem, b: ApiItem) {
         return a.address_components.length > b.address_components.length
           ? a
           : b;

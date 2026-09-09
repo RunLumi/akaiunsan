@@ -157,7 +157,7 @@ export default function AllSubscriptionPlan() {
       });
       item.isAutoRenew = value;
     };
-    const newData = item.bookDetail.sort(function (a: any, b: any) {
+    const newData = item.bookDetail.sort(function (a: ApiItem, b: ApiItem) {
       return new Date(b.bookingDate).getTime() - new Date(a.bookingDate).getTime();
     });
     const bookingTime =

@@ -22,7 +22,7 @@ import {
   Loading,
   Text,
 } from "../../components";
-import { useSignupMutation } from "../../redux/apiSlice";
+import { useSignupMutation, type SignupPayload } from "../../redux/apiSlice";
 import { NavigationRoot } from "../../navigation/root";
 import { TYPES } from "../../redux/actions";
 import Colors from "../../shared/Colors";
@@ -111,7 +111,7 @@ export default function Signup(props: ScreenProps) {
   };
   const [signupMutation, { isLoading: loadingRTK }] = useSignupMutation();
   const loading = loadingRTK;
-  const request = ({ data }: any) => {
+  const request = ({ data }: { data: SignupPayload }) => {
     signupMutation(data)
       .unwrap()
       .then((response: ApiItem) => handleRegisterResult({ error: "", response }))

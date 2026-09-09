@@ -8,6 +8,7 @@ weight: 700
 Phần này viết bằng ngôn ngữ đời thường — bạn có thể gửi thẳng cho người dùng cuối.
 
 1. [Đặt dịch vụ từng bước](/docs/huong-dan-su-dung/dat-dich-vu/)
+2. [Sơ đồ toàn bộ màn hình ứng dụng](/docs/man-hinh/) (cho ai muốn khám phá)
 2. Câu hỏi nhanh:
 
 | Tôi muốn… | Làm thế nào |

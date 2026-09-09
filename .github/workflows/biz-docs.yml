@@ -32,7 +32,8 @@ jobs:
 
       - name: Build
         working-directory: biz-docs
-        run: hugo --gc --minify
+        # hugo.toml is canonical for akaiunsan.pages.dev; override for the mirror
+        run: hugo --gc --minify --baseURL https://streamentry.github.io/akaiunsan/
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

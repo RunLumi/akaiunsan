@@ -6,8 +6,11 @@ Tham chiếu thiết kế: [DESIGN.md](../DESIGN.md) ("Living Standard").
 
 ## Xem trực tuyến
 
-Site được GitHub Pages tự dựng qua `.github/workflows/biz-docs.yml` tại:
-**https://streamentry.github.io/akaiunsan/**
+Site chính được Cloudflare Pages tự dựng từ `biz-docs/` tại:
+**https://akaiunsan.pages.dev/**
+
+GitHub Pages tự dựng mirror qua `.github/workflows/biz-docs.yml` tại:
+https://streamentry.github.io/akaiunsan/
 
 ## Build local
 
@@ -19,6 +22,20 @@ hugo server --bind 127.0.0.1 --port 1313
 ```
 
 Build production: `hugo --gc --minify` (xuất ra `public/`, đã gitignore).
+
+## Deploy lên Cloudflare Pages
+
+Theme hugo-book yêu cầu **Hugo ≥ 0.158** (`theme.toml: min_version`), trong khi
+mặc định của Cloudflare Pages là 0.147.x → build lỗi
+`can't evaluate field Name in type *langs.Language`.
+
+Trong dashboard Pages → **Settings → Variables and Secrets**, đặt cho cả hai môi
+trường Production và Preview:
+
+- `HUGO_VERSION` = `0.165.0` (trùng với pin trong `.github/workflows/biz-docs.yml`)
+
+Sau đó retry deploy. `hugo.toml` đã trỏ `baseURL` về `https://akaiunsan.pages.dev/`
+nên không cần biến `HUGO_BASEURL`.
 
 ## Cấu trúc
 

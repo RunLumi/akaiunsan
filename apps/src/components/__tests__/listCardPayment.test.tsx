@@ -6,7 +6,7 @@ import Constants from "../../shared/Constants";
 import i18n from "../../shared/I18n";
 import {
   createWithStore,
-  makeStore,
+  makeApiStore,
   act,
   textNodes,
   flush,
@@ -37,7 +37,7 @@ describe("ListCardPayment", () => {
         children={React.createRef<any>()}
         handleIdCard={jest.fn()}
       />,
-      makeStore()
+      makeApiStore()
     );
     await flush();
     expect(mockAxios).toHaveBeenCalledTimes(1);
@@ -49,7 +49,7 @@ describe("ListCardPayment", () => {
     const ref = React.createRef<any>();
     const { root } = createWithStore(
       <ListCardPayment children={ref} handleIdCard={jest.fn()} />,
-      makeStore()
+      makeApiStore()
     );
     await flush();
     act(() => ref.current && ref.current.openModalListCard());
@@ -70,7 +70,7 @@ describe("ListCardPayment", () => {
     const ref = React.createRef<any>();
     const { root } = createWithStore(
       <ListCardPayment children={ref} handleIdCard={handleIdCard} />,
-      makeStore()
+      makeApiStore()
     );
     await flush();
     act(() => ref.current && ref.current.openModalListCard());
@@ -98,7 +98,7 @@ describe("ListCardPayment", () => {
         children={React.createRef<any>()}
         handleIdCard={jest.fn()}
       />,
-      makeStore()
+      makeApiStore()
     );
     await flush();
     expect(alertSpy).toHaveBeenCalledWith(i18n.t("auth.error"), "network down");

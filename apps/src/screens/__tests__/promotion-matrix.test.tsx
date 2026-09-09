@@ -3,7 +3,7 @@ import axios from "axios";
 import dayjs from "../../shared/dayjs";
 import {
   createWithStore,
-  makeStore,
+  makeApiStore,
   flush,
   pressAll,
   typeAll,
@@ -127,7 +127,7 @@ describe("payment promotion matrix (Phase 3 characterization)", () => {
       });
       const renderer = createWithStore(
         <Component {...paymentProps()} />,
-        makeStore(preloadedState)
+        makeApiStore(preloadedState)
       );
       await flush();
       // type a voucher code, then sweep (the apply button fires the request)

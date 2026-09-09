@@ -7,7 +7,7 @@ import Constants from "../../shared/Constants";
 import i18n from "../../shared/I18n";
 import {
   createWithStore,
-  makeStore,
+  makeApiStore,
   act,
   textNodes,
   flush,
@@ -42,7 +42,7 @@ const renderHelper = (props: any = {}) =>
       language={{ value: "en" }}
       {...props}
     />,
-    makeStore()
+    makeApiStore()
   );
 
 describe("HelperSelect", () => {

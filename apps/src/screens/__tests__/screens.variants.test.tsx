@@ -4,7 +4,6 @@ import dayjs from "../../shared/dayjs";
 import Constants from "../../shared/Constants";
 import {
   createWithStore,
-  makeStore,
   makeApiStore,
   flush,
   pressAll,
@@ -256,7 +255,7 @@ describe("screens alternative-state variants (Phase 3 characterization)", () => 
           route={routeMock(baseParams)}
           {...(EXTRA_PROPS[label] || {})}
         />,
-        ported ? makeApiStore(preloadedState) : makeStore(preloadedState)
+        ported ? makeApiStore(preloadedState) : makeApiStore(preloadedState)
       );
       await flush();
       expect(renderer.toJSON()).not.toBeNull();
@@ -285,7 +284,7 @@ describe("screens alternative-state variants (Phase 3 characterization)", () => 
           route={routeMock(baseParams)}
           {...(EXTRA_PROPS[label] || {})}
         />,
-        ported ? makeApiStore(preloadedState) : makeStore(preloadedState)
+        ported ? makeApiStore(preloadedState) : makeApiStore(preloadedState)
       );
       try {
         await flush();
@@ -319,7 +318,7 @@ describe("screens alternative-state variants (Phase 3 characterization)", () => 
           route={routeMock(baseParams)}
           {...(EXTRA_PROPS[label] || {})}
         />,
-        ported ? makeApiStore(preloadedState) : makeStore(preloadedState)
+        ported ? makeApiStore(preloadedState) : makeApiStore(preloadedState)
       );
       await flush();
       expect(renderer.toJSON()).not.toBeNull();

@@ -3,7 +3,7 @@ import axios from "axios";
 import Constants from "../../shared/Constants";
 import {
   createWithStore,
-  makeStore,
+  makeApiStore,
   flush,
   pressAll,
   typeAll,
@@ -304,7 +304,7 @@ describe("picker-driven flows (Phase 3 characterization)", () => {
   it.each(CASES)(
     "captures and resolves OPEN_PICKER callbacks for %s",
     async (label, Screen) => {
-      const store = makeStore(preloadedState);
+      const store = makeApiStore(preloadedState);
       const picked = makeRecordingDispatch(store);
       // Nany/Petcare variants switch the service type so the kid/pet
       // picker sections render (the default is the Maid flow)

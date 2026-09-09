@@ -3,7 +3,7 @@ import axios from "axios";
 import dayjs from "../../shared/dayjs";
 import {
   createWithStore,
-  makeStore,
+  makeApiStore,
   flush,
   pressAll,
   typeAll,
@@ -213,7 +213,7 @@ describe("step-gated wizard components (Phase 3 characterization)", () => {
     // Cleaning-type variants render the AC/extra-service rows (check/count
     // handlers); the default is the Maid flow.
     const extraType = /cleaning/i.test(label) ? 4 : undefined;
-    const store = makeStore(preloadedState);
+    const store = makeApiStore(preloadedState);
     const renderer = createWithStore(
       <Component
         navigation={mockNavInstance}

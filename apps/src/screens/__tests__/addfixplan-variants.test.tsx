@@ -3,7 +3,7 @@ import axios from "axios";
 import dayjs from "../../shared/dayjs";
 import {
   createWithStore,
-  makeStore,
+  makeApiStore,
   flush,
   pressAll,
   typeAll,
@@ -79,7 +79,7 @@ describe("AddFixPlan variants (Phase 3 characterization)", () => {
   });
 
   it.each(CASES)("mounts and exercises the %s flow", async (_label, over) => {
-    const store = makeStore(preloadedState);
+    const store = makeApiStore(preloadedState);
     const renderer = createWithStore(
       <AddFixPlan {...baseProps(over)} />,
       store

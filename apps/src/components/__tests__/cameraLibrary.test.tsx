@@ -4,7 +4,7 @@ import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
 import { CameraLibrary } from "../CameraLibrary";
 import i18n from "../../shared/I18n";
-import { createWithStore, makeStore, act } from "../../test-utils/helpers";
+import { createWithStore, makeApiStore, act } from "../../test-utils/helpers";
 
 const mockAxios = axios as unknown as jest.Mock;
 
@@ -27,7 +27,7 @@ describe("CameraLibrary", () => {
   it("renders the library and camera buttons", () => {
     const { root } = createWithStore(
       <CameraLibrary isShowModalCamera children={jest.fn()} />,
-      makeStore()
+      makeApiStore()
     );
     expect(
       root.findAllByProps({ title: i18n.t("home.image_library") }).length
@@ -45,7 +45,7 @@ describe("CameraLibrary", () => {
     });
     const { root } = createWithStore(
       <CameraLibrary isShowModalCamera children={children} />,
-      makeStore()
+      makeApiStore()
     );
     const libraryBtn = libButton(root);
     await act(async () => libraryBtn.props.onPress());
@@ -64,7 +64,7 @@ describe("CameraLibrary", () => {
     });
     const { root } = createWithStore(
       <CameraLibrary isShowModalCamera children={children} />,
-      makeStore()
+      makeApiStore()
     );
     const libraryBtn = libButton(root);
     await act(async () => libraryBtn.props.onPress());
@@ -80,7 +80,7 @@ describe("CameraLibrary", () => {
     const children = jest.fn();
     const { root } = createWithStore(
       <CameraLibrary isShowModalCamera children={children} />,
-      makeStore()
+      makeApiStore()
     );
     const libraryBtn = libButton(root);
     await act(async () => libraryBtn.props.onPress());
@@ -102,7 +102,7 @@ describe("CameraLibrary", () => {
     const children = jest.fn();
     const { root } = createWithStore(
       <CameraLibrary isShowModalCamera children={children} />,
-      makeStore()
+      makeApiStore()
     );
     const libraryBtn = libButton(root);
     await act(async () => libraryBtn.props.onPress());

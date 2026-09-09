@@ -4,7 +4,6 @@ import Constants from "../../shared/Constants";
 import dayjs from "../../shared/dayjs";
 import {
   createWithStore,
-  makeStore,
   makeApiStore,
   flush,
   pressAll,
@@ -646,7 +645,7 @@ describe("screens interaction sweep (Phase 3 coverage harness)", () => {
     async (label, Screen) => {
       const store = PORTED.has(label)
         ? makeApiStore(preloadedState)
-        : makeStore(preloadedState);
+        : makeApiStore(preloadedState);
       const renderer = createWithStore(
         <Screen
           navigation={mockNavInstance}

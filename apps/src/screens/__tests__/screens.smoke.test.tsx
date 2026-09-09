@@ -3,11 +3,7 @@ import { act } from "react-test-renderer";
 import axios from "axios";
 import Constants from "../../shared/Constants";
 import dayjs from "../../shared/dayjs";
-import {
-  create,
-  createWithApiStore,
-  flush,
-} from "../../test-utils/helpers";
+import { createWithApiStore, flush } from "../../test-utils/helpers";
 import { installApiRoutes } from "../../test-utils/api-mock";
 
 // useIsFocused/useNavigation require a navigation context; the smoke suite
@@ -639,15 +635,6 @@ const EXTRA_PROPS: Record<string, any> = {
 };
 
 
-// Screens already ported to RTK Query (Phase 5): they read their data through
-// the apiSlice, so they mount on the strangler store (legacy slices + api).
-const PORTED = new Set([
-  "Main/Home",
-  "Main/Booking",
-  "Main/Inbox",
-  "Payment/PaymentList",
-]);
-
 describe("screens smoke render (Phase 3 characterization)", () => {
   beforeEach(() => {
     mockNavInstance = navigationMock();
@@ -656,16 +643,16 @@ describe("screens smoke render (Phase 3 characterization)", () => {
   it.each(CASES)(
     "mounts %s and settles its effects",
     async (label, Screen) => {
-      const element = (
+      // Every screen mounts on the strangler store (legacy slices + RTK api)
+      // during the Phase 5 useApi deletion.
+      const renderer = createWithApiStore(
         <Screen
           navigation={mockNavInstance}
           route={routeMock(baseParams)}
           {...(EXTRA_PROPS[label] || {})}
-        />
+        />,
+        preloadedState
       );
-      const renderer = PORTED.has(label)
-        ? createWithApiStore(element, preloadedState)
-        : create(element, preloadedState);
       await flush();
       expect(renderer).toBeTruthy();
       expect(renderer.toJSON()).not.toBeNull();

@@ -25,6 +25,10 @@ export type FetchRouteValue =
 
 export const fetchState = {
   routes: {} as Record<string, FetchRouteValue>,
+  // Generic body for unlisted API endpoints (the fetch twin of the axios
+  // suites' fallbackData). Only consulted for API URLs — geocode/google URLs
+  // keep falling through to the geocode default in jest.setup.js.
+  fallback: null as FetchRouteValue | null,
   // variants-suite controls (mirror axios empty/error/never-settling states)
   rejectAll: false,
   neverSettle: false,
@@ -198,6 +202,10 @@ export const installFetchRoutes = (routes: Record<string, FetchRouteValue>) => {
   Object.assign(fetchState.routes, routes);
 };
 
+export const setFetchFallback = (body: FetchRouteValue | null) => {
+  fetchState.fallback = body;
+};
+
 export const setFetchBehavior = (opts: {
   rejectAll?: boolean;
   neverSettle?: boolean;
@@ -208,6 +216,7 @@ export const setFetchBehavior = (opts: {
 
 export const resetFetchRoutes = () => {
   fetchState.routes = { ...DEFAULT_FETCH_ROUTES };
+  fetchState.fallback = null;
   fetchState.rejectAll = false;
   fetchState.neverSettle = false;
 };
@@ -224,10 +233,18 @@ export const resolveFetchBody = (
     ? normalized.slice(normalized.indexOf("?") + 1)
     : "";
   const route = fetchState.routes[path];
-  if (route === undefined) return undefined;
-  return typeof route === "function"
-    ? route({ url: normalized, path, query, method: method.toUpperCase() })
-    : route;
+  if (route !== undefined) {
+    return typeof route === "function"
+      ? route({ url: normalized, path, query, method: method.toUpperCase() })
+      : route;
+  }
+  // API fallback (suite-level generic envelope) — never for geocode/google
+  if (fetchState.fallback !== null && !/google|maps|geocode/i.test(normalized)) {
+    return typeof fetchState.fallback === "function"
+      ? fetchState.fallback({ url: normalized, path, query, method: method.toUpperCase() })
+      : fetchState.fallback;
+  }
+  return undefined;
 };
 
 // initialize

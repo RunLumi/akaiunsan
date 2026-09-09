@@ -5,7 +5,7 @@ import i18n from "../../shared/I18n";
 import {
   createWithStore,
   act,
-  makeStore,
+  makeApiStore,
   textNodes,
   hostTouchables,
   pressableFrom,
@@ -25,7 +25,7 @@ const openPicker = (store: any, overrides: any = {}) => {
 
 describe("PickerModal", () => {
   it("lists the picker data from the tools store", () => {
-    const store = makeStore();
+    const store = makeApiStore();
     openPicker(store);
     const { root } = createWithStore(<PickerModal />, store);
     expect(textNodes(root, "A").length).toBe(1);
@@ -34,7 +34,7 @@ describe("PickerModal", () => {
 
   it("choosing a row calls the callback and closes the picker", () => {
     const callback = jest.fn();
-    const store = makeStore();
+    const store = makeApiStore();
     openPicker(store, { callback });
     const { root } = createWithStore(<PickerModal />, store);
     const touchable = pressableFrom(textNodes(root, "B")[0]);
@@ -44,7 +44,7 @@ describe("PickerModal", () => {
   });
 
   it("shows the empty-state message when there is no data", () => {
-    const store = makeStore();
+    const store = makeApiStore();
     openPicker(store, { data: [] });
     const { root } = createWithStore(<PickerModal />, store);
     expect(textNodes(root, i18n.t("home.data_empty")).length).toBe(1);
@@ -52,7 +52,7 @@ describe("PickerModal", () => {
 
   it("tapping the backdrop cancels without invoking the callback", () => {
     const callback = jest.fn();
-    const store = makeStore();
+    const store = makeApiStore();
     openPicker(store, { callback });
     const { root } = createWithStore(<PickerModal />, store);
     const [backdrop] = hostTouchables(root);

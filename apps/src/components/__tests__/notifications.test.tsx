@@ -7,7 +7,7 @@ import AppConstant from "../../shared/Constants";
 import { NotificationHandler } from "../Notifications";
 import {
   createWithStore,
-  makeStore,
+  makeApiStore,
   act,
   flush,
 } from "../../test-utils/helpers";
@@ -33,7 +33,7 @@ describe("NotificationHandler", () => {
   // Awaiting resolve() settles registerForPushNotificationsAsync's
   // `.then(setExpoPushToken)` inside act, so nothing re-renders after teardown.
   it("registers the notification handler and both listeners on mount", async () => {
-    createWithStore(<NotificationHandler />, makeStore());
+    createWithStore(<NotificationHandler />, makeApiStore());
     await flush();
     expect(Notifications.setNotificationHandler).toHaveBeenCalledTimes(1);
     expect(
@@ -45,14 +45,14 @@ describe("NotificationHandler", () => {
   });
 
   it("does not call FCM on the simulator (Constants.isDevice=false)", async () => {
-    createWithStore(<NotificationHandler />, makeStore());
+    createWithStore(<NotificationHandler />, makeApiStore());
     await flush();
     expect(Constants.isDevice).toBe(false);
     expect(messaging).not.toHaveBeenCalled();
   });
 
   it("deep-links to the inbox detail when a response carries an id", async () => {
-    createWithStore(<NotificationHandler />, makeStore());
+    createWithStore(<NotificationHandler />, makeApiStore());
     await flush();
     const handler = (Notifications.addNotificationResponseReceivedListener as jest.Mock)
       .mock.calls[0][0];
@@ -68,7 +68,7 @@ describe("NotificationHandler", () => {
   });
 
   it("ignores responses without an id", async () => {
-    createWithStore(<NotificationHandler />, makeStore());
+    createWithStore(<NotificationHandler />, makeApiStore());
     await flush();
     const handler = (Notifications.addNotificationResponseReceivedListener as jest.Mock)
       .mock.calls[0][0];
@@ -79,7 +79,7 @@ describe("NotificationHandler", () => {
   });
 
   it("removes both subscriptions on unmount", async () => {
-    const { unmount } = createWithStore(<NotificationHandler />, makeStore());
+    const { unmount } = createWithStore(<NotificationHandler />, makeApiStore());
     await flush();
     const receivedSubscription = (Notifications.addNotificationReceivedListener as jest.Mock)
       .mock.results[0].value;

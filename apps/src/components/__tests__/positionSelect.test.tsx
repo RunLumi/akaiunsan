@@ -5,7 +5,7 @@ import Enum from "../../shared/Enum";
 import i18n from "../../shared/I18n";
 import {
   createWithStore,
-  makeStore,
+  makeApiStore,
   act,
   textNodes,
   textIncluding,
@@ -21,7 +21,7 @@ describe("PositionSelect", () => {
   it("renders closed and asks for GPS on focus (useFocusEffect runs location)", () => {
     createWithStore(
       <PositionSelect children={React.createRef<any>()} navigation={nav()} />,
-      makeStore()
+      makeApiStore()
     );
     // useFocusEffect is a no-op mock; getCurrentPositionAsync must stay idle
     expect(Location.getCurrentPositionAsync).not.toHaveBeenCalled();
@@ -35,7 +35,7 @@ describe("PositionSelect", () => {
         navigation={nav()}
         type={Enum.SERVICE_TYPE.CleaningService}
       />,
-      makeStore()
+      makeApiStore()
     );
     expect(textNodes(root, i18n.t("auth.confirm")).length).toBe(0);
     act(() => ref.current && ref.current.openModalPosition(null));
@@ -51,7 +51,7 @@ describe("PositionSelect", () => {
         navigation={nav()}
         type={Enum.SERVICE_TYPE.MaidService}
       />,
-      makeStore()
+      makeApiStore()
     );
     act(() => ref.current && ref.current.openModalPosition(null));
     expect(textNodes(root, i18n.t("home.room_no")).length).toBe(1);
@@ -82,7 +82,7 @@ describe("PositionSelect", () => {
     };
     const { root } = createWithStore(
       <PositionSelect children={ref} navigation={nav()} />,
-      makeStore()
+      makeApiStore()
     );
     act(() => ref.current && ref.current.openModalPosition(item));
     // Composed via getLongAddress(address): name, ward, district, province, country
@@ -93,7 +93,7 @@ describe("PositionSelect", () => {
     const ref = React.createRef<any>();
     const { root } = createWithStore(
       <PositionSelect children={ref} navigation={nav()} />,
-      makeStore()
+      makeApiStore()
     );
     act(() => ref.current && ref.current.openModalPosition(null));
     pressText(root, i18n.t("home.close"));

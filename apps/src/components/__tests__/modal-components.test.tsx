@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import dayjs from "../../shared/dayjs";
 import { act } from "react-test-renderer";
-import { createWithStore, makeStore, flush, pressAll, typeAll } from "../../test-utils/helpers";
+import { createWithStore, makeApiStore, flush, pressAll, typeAll } from "../../test-utils/helpers";
 
 // The shared modal components expose their open API through an imperative
 // handle wired to the legacy `children` prop (used as the ref). This suite
@@ -184,7 +184,7 @@ describe("shared modal components (Phase 3 characterization)", () => {
           navigation={mockNavInstance}
           {...(richProps[label] || {})}
         />,
-        makeStore(preloadedState)
+        makeApiStore(preloadedState)
       );
       await flush();
       openViaRef(ref, method, args);

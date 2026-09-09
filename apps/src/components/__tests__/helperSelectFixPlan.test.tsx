@@ -6,7 +6,7 @@ import Constants from "../../shared/Constants";
 import i18n from "../../shared/I18n";
 import {
   createWithStore,
-  makeStore,
+  makeApiStore,
   act,
   textNodes,
   flush,
@@ -38,7 +38,7 @@ const renderFixPlan = (props: any = {}) =>
       times={["2026-09-10", "2026-09-11"]}
       {...props}
     />,
-    makeStore()
+    makeApiStore()
   );
 
 describe("HelperSelectFixPlan", () => {

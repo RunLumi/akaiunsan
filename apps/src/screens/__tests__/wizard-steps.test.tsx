@@ -3,7 +3,7 @@ import axios from "axios";
 import { act } from "react-test-renderer";
 import {
   createWithStore,
-  makeStore,
+  makeApiStore,
   flush,
   pressAll,
   typeAll,
@@ -298,7 +298,7 @@ describe("booking wizard edit-mode (Phase 3 characterization)", () => {
             },
           }}
         />,
-        makeStore(preloadedState)
+        makeApiStore(preloadedState)
       );
       await flush();
       typeAll(renderer.root);
@@ -334,7 +334,7 @@ describe("booking wizard steps (Phase 3 characterization)", () => {
             },
           }}
         />,
-        makeStore(preloadedState)
+        makeApiStore(preloadedState)
       );
       await flush();
       // Jump through every step header (absolute toStep jumps), sweeping the

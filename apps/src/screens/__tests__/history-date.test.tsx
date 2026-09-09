@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import {
   createWithStore,
-  makeStore,
+  makeApiStore,
   flush,
   pressAll,
 } from "../../test-utils/helpers";
@@ -102,7 +102,7 @@ describe("HistoryList date flow (Phase 3 characterization)", () => {
   });
 
   it("opens the picker and reloads history on date selection", async () => {
-    const store = makeStore(preloadedState);
+    const store = makeApiStore(preloadedState);
     const renderer = createWithStore(
       <HistoryList navigation={mockNavInstance} route={routeMock(baseParams)} />,
       store

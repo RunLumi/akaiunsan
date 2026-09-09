@@ -1,0 +1,54 @@
+/* AKAIUNSAN "Living Standard" (DESIGN.md) áp lên theme hugo-book */
+:root {
+  --color-paper: #f9f8f3;
+  --color-ink: #20251b;
+  --color-muted: #666b5a;
+  --color-line: #dcdecd;
+  --color-lime: #c7dc50;
+  --color-lime-soft: #dce7a2;
+  --color-mint: #f0f2e4;
+  --color-mint-strong: #e0e8c5;
+  --color-olive: #6c7d22;
+  --color-olive-dark: #4f601a;
+  --color-moss-deep: #1b2512;
+  --color-signal: #d0202b;
+  --book-font-family: "Manrope", "Be Vietnam Pro", sans-serif;
+  --book-heading-font: "Be Vietnam Pro", "Manrope", sans-serif;
+}
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--book-font-family);
+}
+.book-menu {
+  background: var(--color-mint);
+  border-right: 1px solid var(--color-line);
+}
+.book-menu .book-menu-content { background: transparent; }
+.book-menu nav a { color: var(--color-ink); }
+.book-menu nav a:hover { color: var(--color-olive-dark); background: var(--color-lime-soft); }
+.book-menu nav a.active { color: var(--color-ink); background: var(--color-lime); border-radius: 999px; }
+.mark, mark { background: var(--color-lime); color: var(--color-ink); padding: 0 .15em; border-radius: 6px; }
+a { color: var(--color-olive-dark); }
+a:hover { color: var(--color-olive); }
+h1, h2, h3, h4 { font-family: var(--book-heading-font); font-weight: 700; }
+h2 { border-bottom: 1px solid var(--color-line); padding-bottom: .3em; }
+table { border-collapse: collapse; width: 100%; font-size: .92em; }
+th { background: var(--color-mint-strong); color: var(--color-ink); }
+th, td { border: 1px solid var(--color-line); padding: 8px 10px; vertical-align: top; }
+tr:nth-child(even) td { background: rgba(240, 242, 228, .5); }
+code { background: var(--color-mint-strong); border-radius: 6px; }
+pre code { background: transparent; }
+.book-page { background: var(--color-paper); }
+.book-header { color: var(--color-muted); }
+.doc-eyebrow {
+  font-family: "Spline Sans Mono", ui-monospace, monospace;
+  font-size: 13px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--color-olive-dark); margin-bottom: .2em;
+}
+blockquote {
+  border-left: 4px solid var(--color-lime);
+  background: var(--color-mint);
+  border-radius: 0 18px 18px 0;
+  padding: 12px 16px; color: var(--color-ink);
+}

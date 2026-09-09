@@ -89,3 +89,8 @@ coverage/
 
 # Adobe Illustrator source files (kept locally, not for git)
 *.ai
+
+# Hugo build output (biz-docs)
+biz-docs/public/
+biz-docs/resources/
+biz-docs/.hugo_build.lock

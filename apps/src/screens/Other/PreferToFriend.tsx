@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useAppSelector } from "../../redux/hooks";
 import {
   StyleSheet,
   View,
@@ -12,7 +13,7 @@ import colors from "../../shared/Colors";
 import Constants from "../../shared/Constants";
 import useApi from "../../hooks/useApi";
 import i18n from "../../shared/I18n";
-import { useSelector } from "react-redux";
+
 export default function PreferToFriend() {
   const [dataPrefer, setDataPrefer] = useState<any>([]);
   const [referrenCode, setReferrenCode] = useState("");
@@ -34,7 +35,7 @@ export default function PreferToFriend() {
     },
   });
 
-  const user = useSelector((state: any) => state.auth.user);
+  const user = useAppSelector((state) => state.auth.user);
   const renderItem = (item: any, idx: any) => (
     <View key={idx} style={styles.borderBottom1}>
       <View style={{ marginHorizontal: 20, marginVertical: 10 }}>

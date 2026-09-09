@@ -13,7 +13,8 @@ import {
 import { WebView } from "react-native-webview";
 import ActionButton from "react-native-action-button";
 import { Container, Loading, Text } from "../../components";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "../../redux/hooks";
 import Constants from "../../shared/Constants";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import colors from "../../shared/Colors";
@@ -99,9 +100,9 @@ export default function Account(props: any) {
     },
   ]);
   
-  const user = useSelector((state: any) => state.auth.user);
+  const user = useAppSelector((state) => state.auth.user);
   const dispatch = useDispatch();
-  const language = useSelector((state: any) => state.language.language);
+  const language = useAppSelector((state) => state.language.language);
 
   const [loadingAddDeviceNotification, requestAddDeviceNotification] = useApi({
     method: "post",

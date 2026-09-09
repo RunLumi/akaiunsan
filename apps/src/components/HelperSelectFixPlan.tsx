@@ -1,4 +1,5 @@
 import React from "react";
+import { useAppSelector } from "../redux/hooks";
 import PropTypes from "prop-types";
 import {
   Image,
@@ -11,7 +12,7 @@ import {
   Alert,
   ImageBackground,
 } from "react-native";
-import { useSelector } from "react-redux";
+
 import { Overlay, SearchBar } from "react-native-elements";
 // import CustomButton from './CustomButton';
 import colors from "../shared/Colors";
@@ -94,7 +95,7 @@ export const HelperSelectFixPlan = ({
   });
   const [showModal, setShowModal] = React.useState(false);
   const [showModalDetail, setShowModalDetail] = React.useState(false);
-  const user = useSelector((state: any) => state.auth.user);
+  const user = useAppSelector((state) => state.auth.user);
   React.useImperativeHandle(children, () => ({
     openModalHelper() {
       setShowModal(true);

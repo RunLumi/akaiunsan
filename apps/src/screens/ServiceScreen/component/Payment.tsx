@@ -1,4 +1,5 @@
 import React from "react";
+import { useAppSelector } from "../../../redux/hooks";
 import {
   StyleSheet,
   Alert,
@@ -19,7 +20,7 @@ import i18n from "../../../shared/I18n";
 import useApi from "../../../hooks/useApi";
 import Constants from "../../../shared/Constants";
 import Enum from "../../../shared/Enum";
-import { useSelector } from "react-redux";
+
 import {
   Table,
   TableWrapper,
@@ -34,7 +35,7 @@ import _ from "lodash";
 import dayjs from "../../../shared/dayjs";
 
 export default function Payment(props: any) {
-  const user = useSelector((state: any) => state.auth.user);
+  const user = useAppSelector((state) => state.auth.user);
 
   const [tableHeadFlexible, setTableHeadFlexible] = React.useState([
     i18n.t("home.fexible_plan"),

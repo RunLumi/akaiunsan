@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useAppSelector } from "../redux/hooks";
 import {
   Platform,
   StyleSheet,
@@ -10,7 +11,7 @@ import {
   SafeAreaView,
 } from "react-native";
 import {Text} from './Text'
-import { useSelector } from "react-redux";
+
 import { Overlay, Slider } from "react-native-elements";
 import colors from "../shared/Colors";
 import Theme from "../shared/theme";
@@ -37,7 +38,7 @@ export const AddCardPayment = ({
   navigation,
   ...props
 }: Props) => {
-  const token = useSelector((state: any) => state.auth.token);
+  const token = useAppSelector((state) => state.auth.token);
   const [modalAddCard, setModalAddCard] = React.useState(false);
 
   React.useImperativeHandle(children, () => ({

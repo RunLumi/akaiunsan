@@ -8,7 +8,8 @@ import {
   Platform,
   TouchableOpacity,
 } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "../../redux/hooks";
 import analytics from "@react-native-firebase/analytics";
 import {
   GoogleSignin,
@@ -46,8 +47,8 @@ export default function Login(props: any) {
   const params = props.route.params || {};
   const tokenFromResponse = (response: any) => response?.auth_token ?? response?._token;
 
-  const language = useSelector((state: any) => state.language.language);
-  // const token = useSelector((state: any) => state.auth.token);
+  const language = useAppSelector((state) => state.language.language);
+  // const token = useAppSelector((state) => state.auth.token);
 
   // const [isReady, setIsReady] = useState(false);
   const [currentLanguage, setCurrentLanguage] = useState(language);

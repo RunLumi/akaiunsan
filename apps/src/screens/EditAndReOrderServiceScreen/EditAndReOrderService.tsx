@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Alert, TouchableOpacity } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "../../redux/hooks";
 import {
   Container,
   Text,
@@ -446,8 +447,8 @@ export default function EditAndReOrderService(props: any) {
     },
   ]);
   const [currentStep, setCurrentStep] = useState(0);
-  const user = useSelector((state: any) => state.auth.user);
-  const token = useSelector((state: any) => state.auth.token);
+  const user = useAppSelector((state) => state.auth.user);
+  const token = useAppSelector((state) => state.auth.token);
   const handleHour = (value: number) => {
     if (value) {
       if (

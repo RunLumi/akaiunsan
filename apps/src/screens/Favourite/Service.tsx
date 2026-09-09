@@ -1,10 +1,11 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useAppSelector } from "../../redux/hooks";
 import _ from "lodash";
 import dayjs from "../../shared/dayjs";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { View, Image, Alert } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
-import { useSelector } from "react-redux";
+
 import { Container, Text } from "../../components";
 import useApi from "../../hooks/useApi";
 import Colors from "../../shared/Colors";
@@ -14,7 +15,7 @@ import i18n from "../../shared/I18n";
 export default function Service(props: any) {
   const navigation = props.navigation;
 
-  const token = useSelector((state: any) => state.auth.token);
+  const token = useAppSelector((state) => state.auth.token);
 
   const [currentSelected, setCurrentSelected] = useState<String[]>([]);
   const [currentDelSelected, setCurrentDelSelected] = useState<String[]>([]);

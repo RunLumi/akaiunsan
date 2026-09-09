@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import { useAppSelector } from "../redux/hooks";
 import { useEffect, useState } from "react";
 import { InteractionManager } from "react-native";
-import { useSelector } from "react-redux";
 import { currentPlatform } from "../shared/Utils";
 import DeviceInfo from "react-native-device-info";
 
@@ -32,8 +32,8 @@ const useApi = ({
   );
   const [error, setError] = useState<any>();
   const [response, setResponse] = useState<any>();
-  const token = useSelector((state: any) => state.auth.token);
-  const { language } = useSelector((state: any) => state.language);
+  const token = useAppSelector((state) => state.auth.token);
+  const { language } = useAppSelector((state) => state.language);
   const config: AxiosRequestConfig = {
     method,
     url,

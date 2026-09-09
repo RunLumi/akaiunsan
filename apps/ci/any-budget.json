@@ -1,0 +1,5 @@
+{
+  "explicitAny": 580,
+  "measuredAt": "2026-09-09",
+  "note": "Ratchet cap for explicit  occurrences in production src (excludes __tests__/test-utils), counted by scripts/count-explicit-any.mjs. Pre-ratchet baseline: 580 occurrences (575 matching lines); first reduction (typed useAppSelector sweep) reached this cap. Never raise; lower in the same commit as each type-safety win."
+}

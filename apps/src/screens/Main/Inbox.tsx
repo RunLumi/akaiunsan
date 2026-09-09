@@ -8,7 +8,8 @@ import {
 } from "react-native";
 import { Container, Loading, Text } from "../../components";
 import COLOR from "../../shared/Colors";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "../../redux/hooks";
 import Constants from "../../shared/Constants";
 import { Fontisto, AntDesign } from "@expo/vector-icons";
 import { apiSlice, portRequest } from "../../redux/apiSlice";
@@ -26,7 +27,7 @@ import { TYPES } from "../../redux/actions";
 
 
 export default function Inbox(props: any) {
-  const tools = useSelector((state: any) => state.tools.notification);
+  const tools = useAppSelector((state) => state.tools.notification);
   const [notificationTabActive, setNotificationTabActive] = useState(true);
   const [promotionTabActive, setPromotionTabActive] = useState(false);
   const [refreshNoti, setRefreshNoti] = useState(false);
@@ -203,8 +204,8 @@ export default function Inbox(props: any) {
       setCountItemDelete(0);
     }
   };
-  const user = useSelector((state: any) => state.auth.user);
-  const token = useSelector((state: any) => state.auth.token);
+  const user = useAppSelector((state) => state.auth.user);
+  const token = useAppSelector((state) => state.auth.token);
   const [isDelete, setIsDelete] = useState(false);
   const [isDeleteAll, setIsDeleteAll] = useState(false);
   const [countItemDelete, setCountItemDelete] = useState(0);

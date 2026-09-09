@@ -1,17 +1,18 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useAppSelector } from "../redux/hooks";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React, { useEffect, useState } from "react";
 import Constants from "../shared/Constants";
 import { Account, Booking, Home, Inbox } from "../screens/Main";
 import colors from "../shared/Colors";
 import i18n from "../shared/I18n";
-import { useSelector } from "react-redux";
+
 import { tabLabel, TAB_ROUTES } from "./routes";
 
 const BottomTab = createBottomTabNavigator();
 export default function BottomTabNavigator() {
-  const tools = useSelector((state: any) => state.tools.notification);
-  const language = useSelector((state: any) => state.language.language);
+  const tools = useAppSelector((state) => state.tools.notification);
+  const language = useAppSelector((state) => state.language.language);
   const [currentLanguage, setCurrentLanguage] = useState(language);
 
   React.useEffect(() => {

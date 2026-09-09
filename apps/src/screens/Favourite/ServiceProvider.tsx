@@ -1,8 +1,9 @@
 import { Ionicons } from "@expo/vector-icons";
+import { useAppSelector } from "../../redux/hooks";
 import _ from "lodash";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { View, Image, TouchableOpacity, Alert } from "react-native";
-import { useSelector } from "react-redux";
+
 import { Container, Text } from "../../components";
 import useApi from "../../hooks/useApi";
 import Colors from "../../shared/Colors";
@@ -12,7 +13,7 @@ import i18n from "../../shared/I18n";
 export default function ServiceProvider(props: any) {
   const navigation = props.navigation;
 
-  const token = useSelector((state: any) => state.auth.token);
+  const token = useAppSelector((state) => state.auth.token);
 
   const [listServiceProvider, setListServiceProvider] = useState<any[]>([]);
 

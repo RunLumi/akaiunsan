@@ -12,7 +12,8 @@ import {
 } from "react-native";
 import { Image as ExpoImage } from "expo-image";
 import messaging from "@react-native-firebase/messaging";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "../../redux/hooks";
 import { AutoPager, Container, Header, Loading, Text } from "../../components";
 import { success, TYPES } from "../../redux/actions";
 import { NavigationRoot } from "../../navigation/root";
@@ -30,9 +31,9 @@ import { paramArray } from "../../shared/Utils";
 const { width } = Dimensions.get("window");
 export default function Home(props: any) {
   const dispatch = useDispatch();
-  const language = useSelector((state: any) => state.language.language);
-  const user = useSelector((state: any) => state.auth.user);
-  const token = useSelector((state: any) => state.auth.token);
+  const language = useAppSelector((state) => state.language.language);
+  const user = useAppSelector((state) => state.auth.user);
+  const token = useAppSelector((state) => state.auth.token);
 
   const [arrUpdate, setArrUpdate] = useState<any[]>([]);
   const [currentLanguage, setCurrentLanguage] = useState(language);

@@ -1,4 +1,5 @@
 import React from "react";
+import { useAppSelector } from "../redux/hooks";
 import {
   StyleSheet,
   ViewStyle,
@@ -8,7 +9,7 @@ import {
   Alert,
   ScrollView,
 } from "react-native";
-import { useSelector } from "react-redux";
+
 import { Overlay } from "react-native-elements";
 import colors from "../shared/Colors";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
@@ -37,7 +38,7 @@ export const ListCardPayment = ({
   const [listPayment, setListPayment] = React.useState([]);
   const [idDefaultCard, setIdDefaultCard] = React.useState("");
   const [idSelectCard, setIdSelectCard] = React.useState("");
-  const user = useSelector((state: any) => state.auth.user);
+  const user = useAppSelector((state) => state.auth.user);
   React.useImperativeHandle(children, () => ({
     openModalListCard() {
       setModalListCard(true);

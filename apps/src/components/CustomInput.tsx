@@ -1,4 +1,5 @@
 import { FontAwesome, SimpleLineIcons, Ionicons } from "@expo/vector-icons";
+import { useAppSelector } from "../redux/hooks";
 import React, { useState } from "react";
 import {
   StyleProp,
@@ -10,7 +11,7 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import { useSelector } from "react-redux";
+
 import colors from "../shared/Colors";
 import Theme from "../shared/theme";
 import Constants from "../shared/Constants";
@@ -55,7 +56,7 @@ export const CustomInput = ({
       enabled: !val.enabled,
       image: val.enabled ? "eye" : "eye-slash",
     }));
-  const language = useSelector((state: any) => state.language.language);
+  const language = useAppSelector((state) => state.language.language);
   const fonts = () => {
     switch (language) {
       case "th":

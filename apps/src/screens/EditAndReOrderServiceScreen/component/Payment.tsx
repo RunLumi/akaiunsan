@@ -1,4 +1,5 @@
 import React from 'react';
+import { useAppSelector } from "../../../redux/hooks";
 import {
   StyleSheet, Alert, View, TouchableOpacity, ScrollView
 } from 'react-native';
@@ -14,7 +15,7 @@ import { useSelector } from 'react-redux';
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
 import Layout from '../../../shared/Layout';
 export default function Payment(props: any) {
-  const user = useSelector((state: any) => state.auth.user);
+  const user = useAppSelector((state) => state.auth.user);
   const [tableHeadFlexible, setTableHeadFlexible] = React.useState([
     i18n.t("home.fexible_plan"), i18n.t("home.total_price")]);
   const [tableTitleFlexible, setTableTitleFlexible] = React.useState(

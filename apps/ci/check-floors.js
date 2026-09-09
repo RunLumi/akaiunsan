@@ -52,3 +52,14 @@ for (const dir of floors.dirs) {
 }
 
 console.log("coverage floors OK");
+
+// any-ratchet (Phase 3): the explicit-any cap rides on the same gate so the
+// count can only move down. Landed type-safety wins => lower ci/any-budget.json.
+const { execFileSync } = require("child_process");
+const anyScript = path.join(__dirname, "..", "scripts", "count-explicit-any.mjs");
+try {
+  const out = execFileSync(process.execPath, [anyScript, "--check"], { encoding: "utf8" });
+  console.log(out.trim());
+} catch (e) {
+  fail((e.stdout || "") + (e.stderr || "explicit-any ratchet failed"));
+}

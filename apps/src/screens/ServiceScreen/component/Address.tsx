@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useAppSelector } from "../../../redux/hooks";
 import {
   StyleSheet,
   View,
@@ -12,10 +13,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { Loading, PositionSelect, Text } from "../../../components";
 import i18n from "../../../shared/I18n";
 import useApi from "../../../hooks/useApi";
-import { useSelector } from "react-redux";
+
 import Constants from "../../../shared/Constants";
 export default function Address(props: any) {
-  const user = useSelector((state: any) => state.auth.user);
+  const user = useAppSelector((state) => state.auth.user);
 
   const [listAddress, setListAddress] = React.useState<any[]>([]);
   const childRef = React.useRef<any>(null);

@@ -45,6 +45,7 @@ import { PaymentList } from "../screens/Payment";
 import useApi from "../hooks/useApi";
 import i18n from "../shared/I18n";
 import * as ReactRedux from "react-redux";
+import { useAppSelector } from "../redux/hooks";
 import { TYPES } from "../redux/actions";
 import { isEmpty } from "lodash";
 import { linkingConfig, deepLinkRoute, gateForToken } from "./contracts";
@@ -96,8 +97,8 @@ const NavStack = createStackNavigator();
 
 function RootNavigator() {
   const dispatch = ReactRedux.useDispatch();
-  const user = ReactRedux.useSelector((state: any) => state.auth.user);
-  const token = ReactRedux.useSelector((state: any) => state.auth.token);
+  const user = useAppSelector((state) => state.auth.user);
+  const token = useAppSelector((state) => state.auth.token);
 
   // const [initRoute, setInitRoute] = useState(Constants.SCREENS.AUTH.LOGIN)
   // const [isReady, setIsReady] = useState(false);

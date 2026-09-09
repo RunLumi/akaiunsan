@@ -1,4 +1,5 @@
 import React from "react";
+import { useAppSelector } from "../redux/hooks";
 import {
   GestureResponderEvent,
   StyleProp,
@@ -6,7 +7,7 @@ import {
   Text as DefaultText,
   TextStyle,
 } from "react-native";
-import { useSelector } from "react-redux";
+
 import Styles from "../shared/Styles";
 
 interface Props {
@@ -18,7 +19,7 @@ interface Props {
 }
 
 export const Text = ({ style, children, numberOfLines, onPress, ...props }: Props) => {
-  const language = useSelector((state: any) => state.language.language);
+  const language = useAppSelector((state) => state.language.language);
   const fonts = () => {
     switch (language) {
       case "th":

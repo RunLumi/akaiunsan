@@ -9,7 +9,8 @@ import {
   FlatList,
 } from "react-native";
 import { Divider } from "react-native-elements";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "../redux/hooks";
 import { TYPES } from "../redux/actions";
 import Colors from "../shared/Colors";
 import Theme from "../shared/theme";
@@ -18,7 +19,7 @@ import {Text} from "./Text";
 
 const PickerModal = () => {
   const { height } = Dimensions.get("window");
-  const { isShow, data, selected, callback } = useSelector((state: any) => {
+  const { isShow, data, selected, callback } = useAppSelector((state) => {
     return state.tools.picker;
   });
   const [currentSelected, setSelected] = useState(

@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { createWithStore, makeStore, flush, pressAll, typeAll } from "../../test-utils/helpers";
+import { createWithStore, makeApiStore, flush, pressAll, typeAll } from "../../test-utils/helpers";
 
 // The full navigation tree mounts in the Node renderer once the heavy global
 // overlays (NotificationHandler, PickerModal) are stood in and the safe-area
@@ -87,7 +87,7 @@ describe("app navigation tree (Phase 3 characterization)", () => {
     async () => {
       const renderer = createWithStore(
         <Navigation />,
-        makeStore(preloadedState)
+        makeApiStore(preloadedState)
       );
       await flush();
       expect(renderer.toJSON()).not.toBeNull();

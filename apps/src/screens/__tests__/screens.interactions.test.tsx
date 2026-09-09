@@ -3,9 +3,9 @@ import axios from "axios";
 import Constants from "../../shared/Constants";
 import moment from "moment";
 import {
-  create,
   createWithStore,
   makeStore,
+  makeApiStore,
   flush,
   pressAll,
   typeAll,
@@ -627,6 +627,15 @@ const SINGLE_ROUND = new Set([
   "Subscription/SubscriptionDetail",
 ]);
 
+// Screens already ported to RTK Query (Phase 5) mount on the strangler store;
+// they no longer hit the axios mock at all (see test-utils/fetch-mock.ts).
+const PORTED = new Set([
+  "Main/Home",
+  "Main/Booking",
+  "Main/Inbox",
+  "Payment/PaymentList",
+]);
+
 describe("screens interaction sweep (Phase 3 coverage harness)", () => {
   beforeEach(() => {
     mockNavInstance = navigationMock();
@@ -635,7 +644,9 @@ describe("screens interaction sweep (Phase 3 coverage harness)", () => {
   it.each(CASES)(
     "exercises %s press + input branches",
     async (label, Screen) => {
-      const store = makeStore(preloadedState);
+      const store = PORTED.has(label)
+        ? makeApiStore(preloadedState)
+        : makeStore(preloadedState);
       const renderer = createWithStore(
         <Screen
           navigation={mockNavInstance}

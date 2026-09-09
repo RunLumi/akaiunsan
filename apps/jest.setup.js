@@ -365,21 +365,35 @@ jest.mock("axios", () => {
 // un-caught response.json() parse (Geocoding flows inside screens) rejects
 // after the suite finishes and fails the CI process. Stub a well-formed
 // response; suites that characterize fetch (Geocoding) override this per test.
-// URL-aware: the login endpoint returns an auth token for the RTK Auth
-// port contract; geocoding returns one result so reduce-style flows execute.
+// URL-aware, two layers:
+//  - RTK Query ports (Phase 5) route through src/test-utils/fetch-mock.ts,
+//    keyed by Constants.API path (pagination/orderStatus-aware route fns);
+//  - everything else keeps the legacy defaults (login token, one geocoder
+//    result) that the RTK Auth port contract and Geocoding flows rely on.
+const { fetchState, resolveFetchBody } = require("./src/test-utils/fetch-mock");
+
 globalThis.fetch = jest.fn((url, opts) => {
   const normalized = typeof url === "string" ? url : url?.url || "";
-  const body = normalized.includes("/auth/signin")
-    ? { auth_token: "rtk-test-token", user: { id: 1, fullName: "Test User" } }
-    : {
-        results: [
-          {
-            formatted_address: "Test address",
-            address_components: [{ long_name: "Test", types: ["locality"] }],
-          },
-        ],
-        status: "OK",
-      };
+  // variants-suite controls: mirror axios error / never-settling request states
+  if (fetchState.neverSettle) return new Promise(() => {});
+  if (fetchState.rejectAll) {
+    return Promise.reject(new Error("Network request failed"));
+  }
+  const routed = resolveFetchBody(normalized, opts?.method);
+  const body =
+    routed !== undefined
+      ? routed
+      : normalized.includes("/auth/signin")
+      ? { auth_token: "rtk-test-token", user: { id: 1, fullName: "Test User" } }
+      : {
+          results: [
+            {
+              formatted_address: "Test address",
+              address_components: [{ long_name: "Test", types: ["locality"] }],
+            },
+          ],
+          status: "OK",
+        };
   // fetchBaseQuery clones the response internally for cache snapshots
   const response = {
     ok: true,
@@ -390,6 +404,26 @@ globalThis.fetch = jest.fn((url, opts) => {
   };
   response.clone = () => response;
   return Promise.resolve(response);
+});
+
+// RTK Query arms a keepUnusedDataFor GC timer (default 60s) whenever a query's
+// subscription count drops to zero; the timer keeps the jest worker alive past
+// the suite. Drop every cached api entry after each test. Deliberately require-
+// free: modules loaded from this setup file keep their identity for every test
+// file (defeating per-file jest.mock factories like useApi.test's config
+// mock), so makeApiStore (helpers.tsx) pushes its reset closures onto
+// globalThis instead and we only touch plain data here.
+afterEach(() => {
+  const resets = globalThis.__apiStoreResets;
+  if (Array.isArray(resets)) {
+    for (const reset of resets.splice(0)) {
+      try {
+        reset();
+      } catch {
+        // a store already torn down with its suite — nothing to clean
+      }
+    }
+  }
 });
 
 // RN 0.64 + jest-expo run components in the Node env, which has no global

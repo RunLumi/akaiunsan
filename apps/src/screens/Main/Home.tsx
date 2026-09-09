@@ -17,7 +17,7 @@ import { AutoPager, Container, Header, Loading, Text } from "../../components";
 import { success, TYPES } from "../../redux/actions";
 import { NavigationRoot } from "../../navigation/root";
 import Constants from "../../shared/Constants";
-import useApi from "../../hooks/useApi";
+import { apiSlice, portRequest } from "../../redux/apiSlice";
 import i18n from "../../shared/I18n";
 import _, { isEmpty, isEqual, isNil } from "lodash";
 import Enum from "../../shared/Enum";
@@ -40,10 +40,14 @@ export default function Home(props: any) {
   const [carouselItems, setCarouselItems] = useState<any[]>([]);
   const [listService, setListService] = useState<any>([]);
   const [subscriptionPlanActive, setSubscriptionPlanActive] = useState<any>({});
-  const [loadingLanguage, requestUpdateLanguage] = useApi({
-    method: "put",
-    url: Constants.API.update_language,
-    callback: ({ error, response }) => {
+  // Phase 5 RTK Query port: every useApi tunnel keeps its legacy callback
+  // verbatim via portRequest (same {error, response} contract, same error
+  // strings); only the transport underneath moved to the apiSlice.
+  const [updateLanguageMutation, { isLoading: loadingLanguage }] =
+    apiSlice.endpoints.updateLanguage.useMutation();
+  const requestUpdateLanguage = portRequest(
+    updateLanguageMutation,
+    ({ error }: { error: string; response: any }) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         dispatch({
@@ -53,12 +57,15 @@ export default function Home(props: any) {
           },
         });
       }
-    },
-  });
-  const [loadingListService, requestListService] = useApi({
-    method: "get",
-    url: Constants.API.list_favourite_service,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [
+    listFavouriteServiceTrigger,
+    { isLoading: loadingListService },
+  ] = apiSlice.endpoints.listFavouriteService.useLazyQuery();
+  const requestListService = portRequest(
+    listFavouriteServiceTrigger,
+    ({ error, response }: { error: string; response: any }) => {
       if (error) {
         if (error === "Request failed with status code 401") {
         } else {
@@ -71,12 +78,13 @@ export default function Home(props: any) {
             .value()
         );
       }
-    },
-  });
-  const [loadingUserMe, requestUserMe] = useApi({
-    method: "get",
-    url: Constants.API.get_profile,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [userMeTrigger, { isLoading: loadingUserMe }] =
+    apiSlice.endpoints.getProfile.useLazyQuery();
+  const requestUserMe = portRequest(
+    userMeTrigger,
+    ({ error, response }: { error: string; response: any }) => {
       if (error) {
         if (error === "Request failed with status code 401") {
           dispatch({ type: success(TYPES.AUTH.LOG_OUT) });
@@ -106,32 +114,35 @@ export default function Home(props: any) {
           });
         }
       }
-    },
-  });
-  const [loadingBanner, requestGetBanner] = useApi({
-    method: "get",
-    url: Constants.API.get_banner,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [bannerTrigger, { isLoading: loadingBanner }] =
+    apiSlice.endpoints.getBanner.useLazyQuery();
+  const requestGetBanner = portRequest(
+    bannerTrigger,
+    ({ error, response }: { error: string; response: any }) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         setCarouselItems(response && response.items);
       }
-    },
-  });
-  const [loadingServiceManagement, requestServiceManagement] = useApi({
-    method: "get",
-    url: Constants.API.services_management,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [serviceManagementTrigger, { isLoading: loadingServiceManagement }] =
+    apiSlice.endpoints.getServicesManagement.useLazyQuery();
+  const requestServiceManagement = portRequest(
+    serviceManagementTrigger,
+    ({ error, response }: { error: string; response: any }) => {
       if (error) console.log(i18n.t("auth.error"), error);
       else {
         setArrService(response.items);
       }
-    },
-  });
-  const [loadingPromotion, requestGetPromotion] = useApi({
-    method: "get",
-    url: Constants.API.promotion_updates,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [promotionTrigger, { isLoading: loadingPromotion }] =
+    apiSlice.endpoints.getPromotionUpdates.useLazyQuery();
+  const requestGetPromotion = portRequest(
+    promotionTrigger,
+    ({ error, response }: { error: string; response: any }) => {
       if (error) {
         if (error === "Request failed with status code 401") {
         } else {
@@ -156,12 +167,13 @@ export default function Home(props: any) {
           setArrUpdate(data);
         }
       }
-    },
-  });
-  const [loadingCurrentPlan, requestCurrentPlan] = useApi({
-    method: "get",
-    url: Constants.API.get_current_plan,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [currentPlanTrigger, { isLoading: loadingCurrentPlan }] =
+    apiSlice.endpoints.getCurrentPlan.useLazyQuery();
+  const requestCurrentPlan = portRequest(
+    currentPlanTrigger,
+    ({ error, response }: { error: string; response: any }) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
@@ -173,12 +185,13 @@ export default function Home(props: any) {
         );
         setSubscriptionPlanActive(getSubscriptionPlanActive);
       }
-    },
-  });
-  const [loadingNotification, requestGetNotification] = useApi({
-    method: "get",
-    url: Constants.API.get_notification,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [notificationTrigger, { isLoading: loadingNotification }] =
+    apiSlice.endpoints.getNotifications.useLazyQuery();
+  const requestGetNotification = portRequest(
+    notificationTrigger,
+    ({ error, response }: { error: string; response: any }) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         notifee.setBadgeCount(response.totalUnRead)
@@ -188,8 +201,8 @@ export default function Home(props: any) {
           payload: response && response.totalUnRead,
         });
       }
-    },
-  });
+    }
+  );
 
   const sortArrayService = _.sortBy(arrService, (s: any) =>
     _.indexOf([1, 2, 3, 4, 5], s.serviceType)

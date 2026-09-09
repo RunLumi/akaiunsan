@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import Config from "react-native-config";
+import i18n from "../shared/I18n";
 import Constants from "../shared/Constants";
 
 // Phase 5 RTK Query strangler (docs/mobile-app-upgrade-plan.md §5): the typed
@@ -27,6 +28,29 @@ export interface SignupPayload {
 export interface SignupResponse {
   message?: string;
   user?: Record<string, any>;
+}
+
+// List-envelope responses the ported screens read (`items`, `page`,
+// `totalUnRead`) — the direct JSON body the Express API returns.
+export interface ItemsResponse {
+  items?: any[];
+  page?: number;
+  totalUnRead?: number;
+  [key: string]: any;
+}
+
+export interface PaymentCardsResponse {
+  customer?: {
+    cards?: { data?: any[] };
+    default_card?: string;
+  };
+}
+
+// useApi's per-call override shape: every ported endpoint accepts the same
+// `{ params?, data? }` envelope its `request({...})` call sites pass.
+export interface RequestArg {
+  params?: any;
+  data?: any;
 }
 
 export const apiSlice = createApi({
@@ -60,7 +84,99 @@ export const apiSlice = createApi({
         body: payload,
       }),
     }),
+
+    // ---- Home (Phase 5 module port) ---------------------------------------
+    updateLanguage: builder.mutation<any, RequestArg | void>({
+      query: (arg) => ({
+        url: Constants.API.update_language,
+        method: "put",
+        body: arg?.data,
+      }),
+    }),
+    listFavouriteService: builder.query<ItemsResponse, RequestArg | void>({
+      query: (arg) => ({
+        url: Constants.API.list_favourite_service,
+        params: arg?.params,
+      }),
+    }),
+    getProfile: builder.query<any, void>({
+      query: () => ({ url: Constants.API.get_profile }),
+    }),
+    getBanner: builder.query<ItemsResponse, void>({
+      query: () => ({ url: Constants.API.get_banner }),
+    }),
+    getServicesManagement: builder.query<ItemsResponse, void>({
+      query: () => ({ url: Constants.API.services_management }),
+    }),
+    getPromotionUpdates: builder.query<ItemsResponse, void>({
+      query: () => ({ url: Constants.API.promotion_updates }),
+    }),
+    getCurrentPlan: builder.query<ItemsResponse, void>({
+      query: () => ({ url: Constants.API.get_current_plan }),
+    }),
+    getNotifications: builder.query<ItemsResponse, RequestArg | void>({
+      // /client/notifications is shared by Home (badge count) and Inbox
+      // (paged lists); params carry type[]/page exactly as useApi did.
+      query: (arg) => ({
+        url: Constants.API.get_notification,
+        params: arg?.params,
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation, useSignupMutation } = apiSlice;
+// Mirrors useApi's error-string contract so ported callbacks keep comparing
+// the same strings: axios' `Request failed with status code NNN` wording and
+// the 400 -> home.error_400 i18n mapping.
+export const apiErrorString = (error: any): string => {
+  if (typeof error?.status === "number") {
+    if (error.status === 400) return i18n.t("home.error_400");
+    return `Request failed with status code ${error.status}`;
+  }
+  if (error?.status === 401) return "Request failed with status code 401";
+  return error?.error || error?.data?.message || error?.message || "error";
+};
+
+// useApi-shaped adapter for ported screens: an RTK mutation / lazy-query
+// trigger wrapped so the screen keeps its legacy `callback({error, response})`
+// and the `[loading, request]` call pattern verbatim. Mirrors useApi's
+// success-with-errors-array branch (errors[0].message surfaces as `error`).
+// Lazy triggers always refetch (forceRefetch), matching useApi's no-cache
+// request semantics.
+export const portRequest =
+  (
+    trigger: (arg?: any) => { unwrap: () => Promise<any> },
+    callback: ({ error, response }: { error: string; response: any }) => any
+  ) =>
+  (arg?: RequestArg) => {
+    return trigger(arg)
+      .unwrap()
+      .then((response: any) => {
+        if (Array.isArray(response?.errors) && response.errors.length > 0) {
+          callback({ error: response.errors[0]?.message, response });
+        } else {
+          callback({ error: "", response });
+        }
+      })
+      .catch((e: any) => callback({ error: apiErrorString(e), response: {} }));
+  };
+
+export const {
+  useLoginMutation,
+  useSignupMutation,
+  useUpdateLanguageMutation,
+  useListFavouriteServiceQuery,
+  useLazyListFavouriteServiceQuery,
+  useGetProfileQuery,
+  useLazyGetProfileQuery,
+  useGetBannerQuery,
+  useLazyGetBannerQuery,
+  useGetServicesManagementQuery,
+  useLazyGetServicesManagementQuery,
+  useGetPromotionUpdatesQuery,
+  useLazyGetPromotionUpdatesQuery,
+  useGetCurrentPlanQuery,
+  useLazyGetCurrentPlanQuery,
+  useGetNotificationsQuery,
+  useLazyGetNotificationsQuery,
+} = apiSlice;

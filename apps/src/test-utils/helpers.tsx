@@ -5,13 +5,25 @@ import TestRenderer, { act } from "react-test-renderer";
 import { Text as RNText, TouchableOpacity as RNTouchableOpacity } from "react-native";
 import reducers from "../redux/reducers";
 import { setupListenerMiddleware } from "../redux/listenerMiddleware";
+import { apiSlice } from "../redux/apiSlice";
 
 export const makeStore = (preloaded?: any): any => createStore(reducers as any, preloaded);
 
 // Phase 5 strangler store: legacy reducers (auth/language/tools) plus the RTK
-// Query api slice, for suites that mount ported screens.
-export const makeApiStore = (preloaded?: any): any =>
-  setupListenerMiddleware(preloaded);
+// Query api slice, for suites that mount ported screens. Each store pushes a
+// reset closure onto globalThis.__apiStoreResets so jest.setup.js's afterEach
+// can drop cached queries (the keepUnusedDataFor GC timer would otherwise hold
+// the worker for 60s). The registry is require-free by design: anything
+// required from jest.setup keeps its module identity for every test file and
+// would defeat per-file jest.mock factories.
+export const makeApiStore = (preloaded?: any): any => {
+  const store = setupListenerMiddleware(preloaded);
+  const resets = ((globalThis as any).__apiStoreResets ??= []);
+  resets.push(() => {
+    store.dispatch(apiSlice.util.resetApiState());
+  });
+  return store;
+};
 
 // Flushes the resolved axios mocks so useApi callbacks run their setState.
 export const flush = async () => {

@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import Constants from "../../shared/Constants";
 import { AppState } from "react-native";
-import { createWithStore, makeStore, flush, pressAll, typeAll } from "../../test-utils/helpers";
+import { createWithStore, makeApiStore, flush, pressAll, typeAll } from "../../test-utils/helpers";
 import { installApiRoutes } from "../../test-utils/api-mock";
 
 // The tab screens register AppState change handlers; the handler bodies
@@ -186,9 +186,11 @@ describe("app-state refresh flows (Phase 3 characterization)", () => {
   it.each(CASES)(
     "emits background/active transitions for %s",
     async (label, Screen) => {
+      // The strangler store (legacy slices + RTK api) backs this suite: the
+      // tab screens are the Phase 5 RTK Query port targets.
       const renderer = createWithStore(
         <Screen navigation={mockNavInstance} route={routeMock(baseParams)} />,
-        makeStore(preloadedState)
+        makeApiStore(preloadedState)
       );
       await flush();
       emitAppState("background");

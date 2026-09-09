@@ -1,13 +1,20 @@
 import React from "react";
 import axios from "axios";
 import moment from "moment";
+import Constants from "../../shared/Constants";
 import {
   createWithStore,
   makeStore,
+  makeApiStore,
   flush,
   pressAll,
   typeAll,
 } from "../../test-utils/helpers";
+import {
+  installFetchRoutes,
+  setFetchBehavior,
+  resetFetchRoutes,
+} from "../../test-utils/fetch-mock";
 
 // Second pass over every screen under the alternative request states the app
 // hits in production: empty lists, request errors, and never-settling loads.
@@ -180,9 +187,59 @@ const EXTRA_PROPS: Record<string, any> = {
   },
 };
 
+// Screens already ported to RTK Query (Phase 5): their request states are
+// driven through the fetch stub (test-utils/fetch-mock.ts) — axios mocks no
+// longer reach them. Each variant below flips both transports.
+const PORTED = new Set([
+  "Main/Home",
+  "Main/Booking",
+  "Main/Inbox",
+  "Payment/PaymentList",
+]);
+
+// Generic empty envelope covering every ported callback's reads (items lists,
+// page/totalUnRead, the payment card map).
+const emptyFetchEnvelope = () => ({
+  items: [],
+  data: [],
+  page: 1,
+  totalUnRead: 0,
+  customer: { cards: { data: [] }, default_card: "" },
+});
+
+// Every Constants.API path the ported screens read, so the empty variant can
+// starve them all (extend per module as ports land).
+const PORTED_PATHS = [
+  Constants.API.get_profile,
+  Constants.API.update_language,
+  Constants.API.list_favourite_service,
+  Constants.API.get_banner,
+  Constants.API.services_management,
+  Constants.API.promotion_updates,
+  Constants.API.get_current_plan,
+  Constants.API.get_notification,
+];
+
+const applyFetchVariant = (variant: "empty" | "error" | "pending") => {
+  resetFetchRoutes();
+  if (variant === "empty") {
+    const empty: Record<string, any> = {};
+    for (const path of PORTED_PATHS) empty[path] = emptyFetchEnvelope();
+    installFetchRoutes(empty);
+  } else if (variant === "error") {
+    setFetchBehavior({ rejectAll: true });
+  } else {
+    setFetchBehavior({ neverSettle: true });
+  }
+};
+
 describe("screens alternative-state variants (Phase 3 characterization)", () => {
   beforeEach(() => {
     mockNavInstance = navigationMock();
+  });
+
+  afterEach(() => {
+    resetFetchRoutes();
   });
 
   it("empty-list responses render every screen's empty branches", async () => {
@@ -191,13 +248,15 @@ describe("screens alternative-state variants (Phase 3 characterization)", () => 
       data: { data: { items: [], data: [], errors: [] } },
     });
     for (const [label, Screen] of CASES) {
+      const ported = PORTED.has(label);
+      if (ported) applyFetchVariant("empty");
       const renderer = createWithStore(
         <Screen
           navigation={mockNavInstance}
           route={routeMock(baseParams)}
           {...(EXTRA_PROPS[label] || {})}
         />,
-        makeStore(preloadedState)
+        ported ? makeApiStore(preloadedState) : makeStore(preloadedState)
       );
       await flush();
       expect(renderer.toJSON()).not.toBeNull();
@@ -208,6 +267,7 @@ describe("screens alternative-state variants (Phase 3 characterization)", () => 
         await flush();
       }
       renderer.unmount();
+      if (ported) resetFetchRoutes();
     }
   }, 30000);
 
@@ -217,13 +277,15 @@ describe("screens alternative-state variants (Phase 3 characterization)", () => 
     );
     const fragile: string[] = [];
     for (const [label, Screen] of CASES) {
+      const ported = PORTED.has(label);
+      if (ported) applyFetchVariant("error");
       const renderer = createWithStore(
         <Screen
           navigation={mockNavInstance}
           route={routeMock(baseParams)}
           {...(EXTRA_PROPS[label] || {})}
         />,
-        makeStore(preloadedState)
+        ported ? makeApiStore(preloadedState) : makeStore(preloadedState)
       );
       try {
         await flush();
@@ -240,6 +302,7 @@ describe("screens alternative-state variants (Phase 3 characterization)", () => 
           // already torn down by the crash
         }
       }
+      if (ported) resetFetchRoutes();
     }
     // The sweep itself must run; individual fragility is tolerated but visible.
     expect(CASES.length).toBeGreaterThan(0);
@@ -248,13 +311,15 @@ describe("screens alternative-state variants (Phase 3 characterization)", () => 
   it("never-settling requests pin every screen's loading state", async () => {
     (axios as any).mockImplementation(() => new Promise(() => {}));
     for (const [label, Screen] of CASES) {
+      const ported = PORTED.has(label);
+      if (ported) applyFetchVariant("pending");
       const renderer = createWithStore(
         <Screen
           navigation={mockNavInstance}
           route={routeMock(baseParams)}
           {...(EXTRA_PROPS[label] || {})}
         />,
-        makeStore(preloadedState)
+        ported ? makeApiStore(preloadedState) : makeStore(preloadedState)
       );
       await flush();
       expect(renderer.toJSON()).not.toBeNull();
@@ -265,6 +330,7 @@ describe("screens alternative-state variants (Phase 3 characterization)", () => 
         await flush();
       }
       renderer.unmount();
+      if (ported) resetFetchRoutes();
     }
   }, 30000);
 });

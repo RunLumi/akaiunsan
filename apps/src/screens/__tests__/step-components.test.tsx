@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import moment from "moment";
+import dayjs from "../../shared/dayjs";
 import {
   createWithStore,
   makeStore,
@@ -144,7 +144,7 @@ const richProps = () => ({
   onSelectExtraService: () => {},
   onSetPrice: () => {},
   onChangeStep: () => {},
-  times: [{ startAt: moment("2026-01-01T00:00:00.000Z") }],
+  times: [{ startAt: dayjs("2026-01-01T00:00:00.000Z") }],
   onPickDate: () => {},
   point: 0,
   paymentMethodId: "",
@@ -160,8 +160,8 @@ const richProps = () => ({
   valueHelper: null,
   valueSpecialHelper: { name: "", old: 0, star: 0, image: "" },
   valuePreferLanguage: null,
-  startTime: moment("2026-01-01T07:00:00.000Z"),
-  endTime: moment("2026-01-01T09:00:00.000Z"),
+  startTime: dayjs("2026-01-01T07:00:00.000Z"),
+  endTime: dayjs("2026-01-01T09:00:00.000Z"),
   addressId: "addr-1",
   language: "en",
 });

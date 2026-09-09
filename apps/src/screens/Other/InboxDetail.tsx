@@ -15,7 +15,7 @@ import useApi from "../../hooks/useApi";
 import i18n from "../../shared/I18n";
 import { Ionicons } from "@expo/vector-icons";
 import _ from "lodash";
-import moment from "moment";
+import dayjs from "../../shared/dayjs";
 import { getSpecialRequest, getStatus } from "../../shared/Utils";
 import Enum from "../../shared/Enum";
 
@@ -513,11 +513,11 @@ export default function InboxDetail(props: any) {
               }}
             >
               Time start:{" "}
-              {moment(order.bookingDetail.bookingDate).format(
+              {dayjs(order.bookingDetail.bookingDate).format(
                 "DD/MM/YYYY[,] H:mm a[,] "
               )}
-              {moment(order.bookingDetail.bookingHour).diff(
-                moment(order.bookingDetail.bookingDate),
+              {dayjs(order.bookingDetail.bookingHour).diff(
+                dayjs(order.bookingDetail.bookingDate),
                 "hours"
               ) + "hrs"}
             </Text>

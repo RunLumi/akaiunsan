@@ -8,7 +8,7 @@ import useApi from "../../hooks/useApi";
 import Colors from "../../shared/Colors";
 import Constants from "../../shared/Constants";
 import i18n from "../../shared/I18n";
-import moment from "moment";
+import dayjs from "../../shared/dayjs";
 import Enum from "../../shared/Enum";
 import { getStatus } from "../../shared/Utils";
 
@@ -151,7 +151,7 @@ export default function DetailHistory(props: any) {
                 }}
               >
                 {currentDetail.bookingDetail &&
-                  moment(currentDetail.bookingDetail.bookingDate)
+                  dayjs(currentDetail.bookingDetail.bookingDate)
                     .local()
                     .format("lll")}{" "}
                 {params?.item?.hour > 0 ? params?.item?.hour + "hrs" : ""}

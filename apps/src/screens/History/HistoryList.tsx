@@ -17,7 +17,7 @@ import Constants from "../../shared/Constants";
 import i18n from "../../shared/I18n";
 import Layout from "../../shared/Layout";
 import { Ionicons } from "@expo/vector-icons";
-import moment from "moment";
+import dayjs from "../../shared/dayjs";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Rating } from "react-native-ratings";
 import { useNavigation } from "@react-navigation/native";
@@ -221,7 +221,7 @@ export default function PromotionList(props: any) {
     if (Platform.OS === "android") {
       if (event.type === "set") {
         setShowDate(false);
-        let currentDay = moment(selectedDate).format("YYYY-MM-DD");
+        let currentDay = dayjs(selectedDate).format("YYYY-MM-DD");
         if (serviceType.value) {
           requestListHistoryFillter({
             params: {
@@ -246,7 +246,7 @@ export default function PromotionList(props: any) {
       }
     } else {
       setShowDate(false);
-      let currentDay = moment(selectedDate).toISOString();
+      let currentDay = dayjs(selectedDate).toISOString();
       if (serviceType.value) {
         requestListHistoryFillter({
           params: {
@@ -316,7 +316,7 @@ export default function PromotionList(props: any) {
                 }}
               />
               <Text style={s.jobItemMetaSp}>
-                {moment(item.bookingDate).local().format("lll")}
+                {dayjs(item.bookingDate).local().format("lll")}
               </Text>
             </View>
             <View style={{ ...s.jobItemMeta }}>

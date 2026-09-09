@@ -10,7 +10,7 @@ import Theme from "../../shared/theme";
 import Constants from "../../shared/Constants";
 import i18n from "../../shared/I18n";
 import Enum from "../../shared/Enum";
-import moment from "moment";
+import dayjs from "../../shared/dayjs";
 import { Linking } from "react-native";
 import { getStatus } from "../../shared/Utils";
 import { Picker } from "@react-native-picker/picker";
@@ -387,7 +387,7 @@ export default function BookingDetail(props: any) {
                 }}
               >
                 {currentDetail.bookingDetail &&
-                  moment(currentDetail.bookingDetail.bookingDate)
+                  dayjs(currentDetail.bookingDetail.bookingDate)
                     .local()
                     .format("lll")}{" "}
                 {params?.item?.hour > 0 ? params?.item?.hour + "hrs" : ""}

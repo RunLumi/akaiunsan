@@ -12,15 +12,15 @@ import Colors from "../../../../shared/Colors";
 import Theme from "../../../../shared/theme";
 import { Text } from "../../../../components";
 import _ from "lodash";
-import moment from "moment";
+import dayjs from "../../../../shared/dayjs";
 export const SelectTimeModal = (props: any) => {
   const { isShow, pickDate } = props;
-  const IsSameDate = moment(pickDate).isSame(moment().add(1, "day"), "date");
+  const IsSameDate = dayjs(pickDate).isSame(dayjs().add(1, "day"), "date");
   
   const getRangeHour = useCallback(
     () => {
       if (IsSameDate) {
-        return (moment().get("hour") + 18) % 24;
+        return (dayjs().get("hour") + 18) % 24;
       }
       return 7;
     },

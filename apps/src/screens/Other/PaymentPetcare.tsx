@@ -1,4 +1,4 @@
-import moment from "moment";
+import dayjs from "../../shared/dayjs";
 import React, { useEffect, useState } from "react";
 import { View, Alert } from "react-native";
 import Config from "react-native-config";
@@ -77,7 +77,7 @@ export default function PaymentPetcare(props: any) {
   });
 
   useEffect(() => {
-    setValueShowDateTime(moment(order.bookingDetail.bookingDate).local().format("lll"));
+    setValueShowDateTime(dayjs(order.bookingDetail.bookingDate).local().format("lll"));
     setPrice(order.totalPrice);
   }, []);
 

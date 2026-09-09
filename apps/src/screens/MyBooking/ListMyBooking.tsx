@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import moment from "moment";
+import dayjs from "../../shared/dayjs";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import {
@@ -125,7 +125,7 @@ export default function ListMyBooking(props: any) {
                   }}
                 />
                 <Text style={s.jobItemMetaSp}>
-                  {moment(item.bookingDate).local().format("lll")}
+                  {dayjs(item.bookingDate).local().format("lll")}
                 </Text>
               </View>
               <View style={{ ...s.jobItemMeta, marginBottom: 0 }}>

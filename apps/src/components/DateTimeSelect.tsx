@@ -15,7 +15,7 @@ import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import { Calendar } from "react-native-calendars";
 import { Button, Text } from ".";
 import i18n from "../shared/I18n";
-import moment from "moment";
+import dayjs from "../shared/dayjs";
 import Layout from "../shared/Layout";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import Colors from "../shared/Colors";
@@ -37,7 +37,7 @@ export const DateTimeSelect = ({
   hour,
   ...props
 }: Props) => {
-  const today = moment(new Date()).add(1, "day").format("YYYY-MM-DD");
+  const today = dayjs(new Date()).add(1, "day").format("YYYY-MM-DD");
   const [currentDay, setCurrentDay] = React.useState(today);
   const [valueTime, setValueTime] = React.useState((6.0).toFixed(2));
   const [valueDate, setValueDate] = React.useState("");
@@ -49,8 +49,8 @@ export const DateTimeSelect = ({
   React.useImperativeHandle(children, () => ({
     openModalDateTime() {
       if (dateTimeSelect) {
-        let date = moment(dateTimeSelect).local().format("YYYY-MM-DD");
-        let time = moment(dateTimeSelect).local().format("HH:mm");
+        let date = dayjs(dateTimeSelect).local().format("YYYY-MM-DD");
+        let time = dayjs(dateTimeSelect).local().format("HH:mm");
         setCurrentDay(date);
         setMarkedDates({
           [date]: { selected: true, selectedColor: colors.main_color },
@@ -76,26 +76,26 @@ export const DateTimeSelect = ({
       [value.dateString]: { selected: true, selectedColor: colors.main_color },
     };
     setMarkedDates(selectDate);
-    setValueDate(moment(value.dateString).format("YYYY-MM-DD"));
-    setCurrentDay(moment(value.dateString).format("YYYY-MM-DD"));
+    setValueDate(dayjs(value.dateString).format("YYYY-MM-DD"));
+    setCurrentDay(dayjs(value.dateString).format("YYYY-MM-DD"));
     setShowDate(`${value.day}/${value.month}/${value.year}`);
   };
 
   const submitDateTime = () => {
     let showTime: any = "";
-    let getMinTime = moment().format("HH:mm");
+    let getMinTime = dayjs().format("HH:mm");
     let valueSplitMinTime = Number(getMinTime.split(":")[0]);
     let valueTimeF: any = "";
     if (valueDate) {
       if (valueTime.indexOf(".5") != -1) {
-        showTime = valueTime.split(".")[0] + ":30"; // moment(.split('.')[0]);
+        showTime = valueTime.split(".")[0] + ":30"; // dayjs(.split('.')[0]);
         valueTimeF = valueTime.split(".")[0] + ".30";
       } else {
         showTime = valueTime.split(".")[0] + ":00";
         valueTimeF = valueTime.split(".")[0] + ".00";
       }
 
-      if (moment(valueDate).isSame(moment(), "day")) {
+      if (dayjs(valueDate).isSame(dayjs(), "day")) {
         Alert.alert(i18n.t("auth.error"), i18n.t("home.date_not_min"));
         return;
       }

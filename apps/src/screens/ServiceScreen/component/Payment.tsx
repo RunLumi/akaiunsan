@@ -31,7 +31,7 @@ import Layout from "../../../shared/Layout";
 import PlanCard from "../../../components/PlanCard";
 import { rankBackground } from "../../../shared/Utils";
 import _ from "lodash";
-import moment from "moment";
+import dayjs from "../../../shared/dayjs";
 
 export default function Payment(props: any) {
   const user = useSelector((state: any) => state.auth.user);
@@ -453,14 +453,14 @@ export default function Payment(props: any) {
                   <Text style={styles.textDesc}>
                     {_.map(
                       props.times.sort(function (left: any, right: any) {
-                        return moment
+                        return dayjs
                           .utc(left.startAt)
-                          .diff(moment.utc(right.startAt));
+                          .diff(dayjs.utc(right.startAt));
                       }),
                       (x) =>
                         `- ${x.startAt.format("dddd")} \n${x.startAt.format(
                           "lll"
-                        )}\n(${i18n.t("home.repeat")} 4 ${i18n.t("home.timesBook")} ${moment(x.startAt).format("dddd")})\n`
+                        )}\n(${i18n.t("home.repeat")} 4 ${i18n.t("home.timesBook")} ${dayjs(x.startAt).format("dddd")})\n`
                     )}
                   </Text>
                 )}

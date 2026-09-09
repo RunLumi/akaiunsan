@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import moment from "moment";
+import dayjs from "../../shared/dayjs";
 import {
   createWithStore,
   makeStore,
@@ -62,7 +62,7 @@ const baseProps = (over: Record<string, any> = {}) => ({
   salePriceModel: [{ fromHour: 0, toHour: 99, percent: 0 }],
   setTimes: () => {},
   countPrice: () => {},
-  times: [{ startAt: moment("2026-01-01T00:00:00.000Z"), hour: 2 }],
+  times: [{ startAt: dayjs("2026-01-01T00:00:00.000Z"), hour: 2 }],
   ...over,
 });
 

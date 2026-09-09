@@ -13,7 +13,7 @@ import Constants from "../../shared/Constants";
 import _ from "lodash";
 import { apiSlice, portRequest } from "../../redux/apiSlice";
 import i18n from "../../shared/I18n";
-import moment from "moment";
+import dayjs from "../../shared/dayjs";
 import Enum from "../../shared/Enum";
 import { getStatus, paramArray } from "../../shared/Utils";
 import Colors from "../../shared/Colors";
@@ -175,7 +175,7 @@ export default function Booking(props: any) {
                   }}
                 />
                 <Text style={s.jobItemMetaSp}>
-                  {moment(item.bookingDate).local().format("lll")}
+                  {dayjs(item.bookingDate).local().format("lll")}
                 </Text>
               </View>
               <View style={{ ...s.jobItemMeta, marginBottom: 0, flex: 1 }}>
@@ -331,7 +331,7 @@ export default function Booking(props: any) {
                           }}
                         />
                         <Text style={s.jobItemMetaSp}>
-                          {moment(item.bookingDate).local().format("lll")}
+                          {dayjs(item.bookingDate).local().format("lll")}
                         </Text>
                       </View>
                       <View style={s.jobItemMeta}>

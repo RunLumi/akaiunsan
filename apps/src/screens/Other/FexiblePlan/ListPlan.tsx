@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import _ from "lodash";
-import moment from "moment";
+import dayjs from "../../../shared/dayjs";
 import React, { useEffect, useState } from "react";
 import { View, Alert } from "react-native";
 import {
@@ -470,7 +470,7 @@ export default function ListPlan(props: any) {
                   {currentPlan.hourRemain} {i18n.t("home.hour_left")}
                 </Text>
                 <Text>
-                  / {moment(currentPlan.expiredDate).local().format("ll")}
+                  / {dayjs(currentPlan.expiredDate).local().format("ll")}
                 </Text>
               </View>
               <View

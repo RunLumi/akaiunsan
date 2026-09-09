@@ -23,7 +23,7 @@ import useApi from "../../hooks/useApi";
 import Enum from "../../shared/Enum";
 import { WebView } from "react-native-webview";
 import { Overlay } from "react-native-elements";
-import moment from "moment";
+import dayjs from "../../shared/dayjs";
 import Layout from "../../shared/Layout";
 import _, { isEmpty, isNil } from "lodash";
 import Config from "react-native-config";
@@ -32,7 +32,7 @@ export default function EditAndReOrderService(props: any) {
   const childRef = React.useRef<any>(null);
   const params = props.route.params || {};
   let valueDateTimeEdit = params.data?.bookingDetail?.bookingDate;
-  let getDateEdit = moment(valueDateTimeEdit)
+  let getDateEdit = dayjs(valueDateTimeEdit)
     .local()
     .format("DD/MM/YYYY HH:mm a");
   const apiOrder =
@@ -550,10 +550,10 @@ export default function EditAndReOrderService(props: any) {
     if (valueDate) {
       setDisableNext(false);
       let getValue = `${valueDate} ${valueTime}`;
-      let valueStartTime = moment(getValue).format("MM/DD/YYYY HH:mm:ss");
+      let valueStartTime = dayjs(getValue).format("MM/DD/YYYY HH:mm:ss");
       let valueEndtime = "";
       if (hour) {
-        valueEndtime = moment(valueStartTime)
+        valueEndtime = dayjs(valueStartTime)
           .add(hour, "hours")
           .format("MM/DD/YYYY HH:mm:ss");
       }
@@ -651,12 +651,12 @@ export default function EditAndReOrderService(props: any) {
 
   useEffect(() => {
     setStartTime(
-      moment(params.data?.bookingDetail?.bookingDate)
+      dayjs(params.data?.bookingDetail?.bookingDate)
         .local()
         .format("MM/DD/YYYY HH:mm:ss")
     );
     setEndTime(
-      moment(params.data?.bookingDetail?.bookingHour)
+      dayjs(params.data?.bookingDetail?.bookingHour)
         .local()
         .format("MM/DD/YYYY HH:mm:ss")
     );
@@ -734,8 +734,8 @@ export default function EditAndReOrderService(props: any) {
     let paramOrder: any = {
       serviceId: idService,
       bookingDetail: {
-        bookingDate: moment(startTime).toISOString(),
-        bookingHour: moment(endTime).toISOString(),
+        bookingDate: dayjs(startTime).toISOString(),
+        bookingHour: dayjs(endTime).toISOString(),
         // language: idPreferLanguge.value,
         specialHelper: idSpecifyHelper && idSpecifyHelper.id,
         serviceType: params.data.serviceType,
@@ -845,8 +845,8 @@ export default function EditAndReOrderService(props: any) {
                 orderId: params.data.orderDetailId,
                 addressId:
                   dataAddress.id || (dataAddress && dataAddress?.addressId),
-                bookingDate: moment(startTime).toISOString(),
-                bookingHour: moment(endTime).toISOString(),
+                bookingDate: dayjs(startTime).toISOString(),
+                bookingHour: dayjs(endTime).toISOString(),
                 serviceProvider: idSpecifyHelper.id,
                 petProfiles: extraService.map((x: any) => {
                   return { name: x.name, type: x.type };
@@ -871,8 +871,8 @@ export default function EditAndReOrderService(props: any) {
                 orderId: params.data.orderDetailId,
                 addressId:
                   dataAddress.id || (dataAddress && dataAddress?.addressId),
-                bookingDate: moment(startTime).toISOString(),
-                bookingHour: moment(endTime).toISOString(),
+                bookingDate: dayjs(startTime).toISOString(),
+                bookingHour: dayjs(endTime).toISOString(),
                 serviceProvider: idSpecifyHelper.id,
               }
             : {

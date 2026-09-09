@@ -15,7 +15,7 @@ import { apiSlice, portRequest } from "../../redux/apiSlice";
 import { Ionicons } from "@expo/vector-icons";
 import i18n from "../../shared/I18n";
 import { CheckBox } from "react-native-elements";
-import moment from "moment-timezone";
+import dayjs from "../../shared/dayjs";
 import Layout from "../../shared/Layout";
 import Enum from "../../shared/Enum";
 import _ from "lodash";
@@ -446,7 +446,7 @@ export default function Inbox(props: any) {
                 { color: item.isRead ? COLOR.gray_normal_text : "black" },
               ]}
             >
-              {moment
+              {dayjs
                 .utc(item.createdDate)
                 .tz("Europe/London")
                 .clone()
@@ -547,7 +547,7 @@ export default function Inbox(props: any) {
                 { color: item.isRead ? COLOR.gray_normal_text : COLOR.black_text },
                 ]}
               >
-                {moment
+                {dayjs
                   .utc(item.createdDate)
                   .tz("Europe/London")
                   .clone()

@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import _ from "lodash";
-import moment from "moment";
+import dayjs from "../../shared/dayjs";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { View, Image, Alert } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
@@ -259,7 +259,7 @@ export default function Service(props: any) {
                       color: Colors.gray_normal_text,
                     }}
                   >
-                    {moment(item.bookingDate).local().format("lll")}
+                    {dayjs(item.bookingDate).local().format("lll")}
                   </Text>
                 </View>
                 <View

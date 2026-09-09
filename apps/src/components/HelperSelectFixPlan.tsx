@@ -24,7 +24,7 @@ import Stars from "react-native-stars";
 import useApi from "../hooks/useApi";
 import Constants from "../shared/Constants";
 import { Loading } from "./Loading";
-import moment from "moment";
+import dayjs from "../shared/dayjs";
 import { isEmpty } from "lodash";
 
 interface Props {
@@ -136,8 +136,8 @@ export const HelperSelectFixPlan = ({
         name: value,
         serviceType,
         listDate: times,
-        // startTime:moment(startTime).toISOString(),
-        // endTime:moment(endTime).toISOString(),
+        // startTime:dayjs(startTime).toISOString(),
+        // endTime:dayjs(endTime).toISOString(),
       },
     });
   };

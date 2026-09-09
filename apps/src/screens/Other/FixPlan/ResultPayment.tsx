@@ -1,5 +1,5 @@
 import _, { xor } from "lodash";
-import moment from "moment";
+import dayjs from "../../../shared/dayjs";
 import React from "react";
 import { StyleSheet, View, Text, ScrollView } from "react-native";
 import colors from "../../../shared/Colors";
@@ -41,7 +41,7 @@ export default function ResultPayment(props: any) {
                   "lll"
                 )}\n(${i18n.t("home.repeat")} 4 ${i18n.t(
                   "home.timesBook"
-                )} ${moment(x.startAt).format("dddd")})\n`
+                )} ${dayjs(x.startAt).format("dddd")})\n`
             )}
           </Text>
         )}

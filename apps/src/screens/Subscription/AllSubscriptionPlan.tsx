@@ -11,7 +11,7 @@ import i18n from "../../shared/I18n";
 import _, { isEmpty } from "lodash";
 import useApi from "../../hooks/useApi";
 import Constants from "../../shared/Constants";
-import moment from "moment";
+import dayjs from "../../shared/dayjs";
 import { useDispatch } from "react-redux";
 import { TYPES } from "../../redux/actions";
 
@@ -164,7 +164,7 @@ export default function AllSubscriptionPlan() {
             <Text style={styles.headerItemTitle}>{item.serviceName}</Text>
           </View>
           <Text style={styles.day}>
-            {moment(item.bookDetail[0].bookingDate).format("dddd")} (
+            {dayjs(item.bookDetail[0].bookingDate).format("dddd")} (
             {i18n.t("home.repeat")} {item.bookDetail.length}{" "}
             {i18n.t("home.times")})
           </Text>
@@ -179,19 +179,19 @@ export default function AllSubscriptionPlan() {
               START:
               <Text style={styles.time}>
                 {" "}
-                {moment(newData[newData.length - 1].bookingDate).format("ll")}
+                {dayjs(newData[newData.length - 1].bookingDate).format("ll")}
               </Text>
             </Text>
             <Text style={styles.wrapTime}>
               END:
               <Text style={styles.time}>
                 {" "}
-                {moment(newData[0].bookingDate).format("ll")}
+                {dayjs(newData[0].bookingDate).format("ll")}
               </Text>
             </Text>
           </View>
           <Text style={styles.time}>
-            {bookingTime && moment(bookingTime).format("hh:mm A")} ({item.hour}
+            {bookingTime && dayjs(bookingTime).format("hh:mm A")} ({item.hour}
             h)
           </Text>
           {index === indexCancel && item.id === serviceCancel && (

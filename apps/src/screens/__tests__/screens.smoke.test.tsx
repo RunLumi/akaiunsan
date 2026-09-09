@@ -2,7 +2,7 @@ import React from "react";
 import { act } from "react-test-renderer";
 import axios from "axios";
 import Constants from "../../shared/Constants";
-import moment from "moment";
+import dayjs from "../../shared/dayjs";
 import {
   create,
   createWithApiStore,
@@ -621,7 +621,7 @@ const CASES: [string, any][] = [
 // else mounts with navigation + route alone.
 const EXTRA_PROPS: Record<string, any> = {
   "Other/FixPlan/ResultPayment": {
-    times: [{ startAt: moment("2026-01-01T00:00:00.000Z") }],
+    times: [{ startAt: dayjs("2026-01-01T00:00:00.000Z") }],
     price: 100,
     onPickDate: () => {},
     address: "Test address",

@@ -1,6 +1,6 @@
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import _, { find, isEmpty, isNil } from "lodash";
-import moment from "moment";
+import dayjs from "../../../shared/dayjs";
 import React, { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import {
   View,
@@ -65,13 +65,13 @@ export const AddFixPlan = ({
   useEffect(() => {
     const dates = [];
     for (
-      let m = moment().startOf("week");
-      m.isBefore(moment().endOf("week"));
-      m.add(1, "days")
+      let m = dayjs().startOf("week");
+      m.isBefore(dayjs().endOf("week"));
+      m = m.add(1, "days")
     ) {
       dates.push({
-        label: i18n.t(moment(m.toDate()).format("dddd")),
-        value: moment(m.toDate()).day(),
+        label: i18n.t(dayjs(m.toDate()).format("dddd")),
+        value: dayjs(m.toDate()).day(),
       });
     }
 
@@ -92,28 +92,26 @@ export const AddFixPlan = ({
   const onSelectTime = (item: any) => {
     setIsShow(false);
     setStart(item);
-    times[indexItem].startAt = moment(times[indexItem].startAt)
+    times[indexItem].startAt = dayjs(times[indexItem].startAt)
       .startOf("day")
-      .set({
-        hour: item,
-      });
+      .set("hour", item);
   };
-  const getRangeHour = (value: moment.Moment) => {
-     const IsSameDate = moment(value).isSame(
-      moment().add(1, "day"),
+  const getRangeHour = (value: dayjs.Dayjs) => {
+     const IsSameDate = dayjs(value).isSame(
+      dayjs().add(1, "day"),
       "date"
     );
     if (IsSameDate) {
-       return((moment().get("hour") + 18) % 24);
+       return((dayjs().get("hour") + 18) % 24);
     } else {
       return(7);
     }
   }
-  const handlePickDate = (value: moment.Moment) => {
+  const handlePickDate = (value: dayjs.Dayjs) => {
    
-    const startAt = value.clone().startOf("day").set({ hour: getRangeHour(value) });
+    const startAt = value.clone().startOf("day").set("hour", getRangeHour(value));
    
-    const endAt = moment(startAt).add(countHour, "hours");
+    const endAt = dayjs(startAt).add(countHour, "hours");
     const label = _.find(daysInWeek, { value: startAt.day() }).label;
 
     if (_.findIndex(times, { label }) != -1) {
@@ -210,23 +208,24 @@ const CalendarComponent = (props: any) => {
   const getMoreItems = () => {
     const moreItems: any = [];
     function getDaysBooking(day: any) {
-      let start = moment(day.startAt);
+      let start = dayjs(day.startAt);
       let count = 0;
-      let tmp = moment(start).clone().day(moment(day.startAt).day());
+      let tmp = dayjs(start).clone().day(dayjs(day.startAt).day());
       if (tmp.isSameOrAfter(start, "d")) {
         moreItems.push({
           title: day.serviceName,
-          startAt: moment(tmp),
-          endAt: moment(tmp.clone().set({ hour: day.endAt.hour() })),
+          startAt: dayjs(tmp),
+          endAt: dayjs(tmp.clone().set("hour", day.endAt.hour())),
           hour: day.hour,
         });
       }
-      while (tmp.add(7, "days") && count < 3) {
+      while (count < 3) {
         count = count + 1;
+        tmp = tmp.add(7, "days");
         moreItems.push({
           title: day.serviceName,
-          startAt: moment(tmp),
-          endAt: moment(tmp.clone().set({ hour: day.endAt.hour() })),
+          startAt: dayjs(tmp),
+          endAt: dayjs(tmp.clone().set("hour", day.endAt.hour())),
           hour: day.hour,
         });
       }
@@ -242,12 +241,12 @@ const CalendarComponent = (props: any) => {
     <Calendar
       enableSwipeMonths={true}
       current={
-        moment().daysInMonth() == moment().endOf("month").daysInMonth()
-          ? moment().add(1, "days").format("YYYY-MM-DD")
-          : moment().format("YYYY-MM-DD")
+        dayjs().daysInMonth() == dayjs().endOf("month").daysInMonth()
+          ? dayjs().add(1, "days").format("YYYY-MM-DD")
+          : dayjs().format("YYYY-MM-DD")
       }
-      minDate={moment().format("YYYY-MM-DD")}
-      maxDate={moment().add(1, "year").format("YYYY-MM-DD")}
+      minDate={dayjs().format("YYYY-MM-DD")}
+      maxDate={dayjs().add(1, "year").format("YYYY-MM-DD")}
       monthFormat={"MMMM - yyyy"}
       hideExtraDays={true}
       // renderArrow={(direction) =>
@@ -271,19 +270,19 @@ const CalendarComponent = (props: any) => {
               alignItems: "center",
             },
             _.find(getMoreItems(), function (o) {
-              return moment(o.startAt).format("yyyy-MM-DD") === date.dateString;
+              return dayjs(o.startAt).format("yyyy-MM-DD") === date.dateString;
             }) && { backgroundColor: Colors.main_orange, borderRadius: 4 },
           ]}
           onPress={() => {
-            if (moment(date.dateString).diff(moment()) < 1 == false) {
-              props.onPickDate(moment(date.dateString));
+            if (dayjs(date.dateString).diff(dayjs()) < 1 == false) {
+              props.onPickDate(dayjs(date.dateString));
             }
           }}
         >
           <Text
             style={[
               {
-                ...(moment(date.dateString).diff(moment()) < 1
+                ...(dayjs(date.dateString).diff(dayjs()) < 1
                   ? {
                       color: Colors.gray_normal_text,
                     }
@@ -293,7 +292,7 @@ const CalendarComponent = (props: any) => {
               },
               _.find(getMoreItems(), function (o) {
                 return (
-                  moment(o.startAt).format("yyyy-MM-DD") === date.dateString
+                  dayjs(o.startAt).format("yyyy-MM-DD") === date.dateString
                 );
               }) && { color: Colors.white },
             ]}
@@ -319,18 +318,18 @@ const TimeItem = ({
     setHour((hour) => (hour -= 1));
   };
   // const repeatTime =
-  //   moment().daysInMonth() / 7 - new Date(item.startAt).getDate() / 7;
+  //   dayjs().daysInMonth() / 7 - new Date(item.startAt).getDate() / 7;
   const onIncrease = () => {
     if (hour == 24) return;
     setHour((hour) => (hour += 1));
   };
   useEffect(() => {
-    item.endAt = moment(item.startAt).add(hour, "hours");
+    item.endAt = dayjs(item.startAt).add(hour, "hours");
   }, [item.startAt]);
   useEffect(() => {
     item.hour = hour;
     onGetCountHour(hour);
-    item.endAt = moment(item.startAt).add(hour, "hours");
+    item.endAt = dayjs(item.startAt).add(hour, "hours");
   }, [hour]);
   return (
     <View
@@ -355,7 +354,7 @@ const TimeItem = ({
           fontWeight: "bold",
         }}
       >
-        {moment(item.startAt).format("DD/MM/YYYY")}
+        {dayjs(item.startAt).format("DD/MM/YYYY")}
         {/* {repeatTime > 1 && ( */}
           <Text
             style={{
@@ -366,7 +365,7 @@ const TimeItem = ({
           >
             {" "}
             {i18n.t("home.repeat")} 4{" "}
-            {i18n.t("home.timesBook")} {moment(item.startAt).format("dddd")}
+            {i18n.t("home.timesBook")} {dayjs(item.startAt).format("dddd")}
           </Text>
         {/* )} */}
       </Text>
@@ -390,7 +389,7 @@ const TimeItem = ({
             <Text style={[styles.title]}>{i18n.t("home.start_time")}</Text>
             <TouchableOpacity onPress={onPressTime} style={styles.dropDown}>
               <Text style={[styles.title, { marginLeft: 12 }]}>
-                {moment(item.startAt).format("HH:mm A")}
+                {dayjs(item.startAt).format("HH:mm A")}
               </Text>
               <Ionicons name="caret-down" size={18} />
             </TouchableOpacity>

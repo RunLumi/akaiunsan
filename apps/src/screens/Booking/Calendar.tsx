@@ -1,5 +1,5 @@
 import _, { isEmpty } from "lodash";
-import moment from "moment";
+import dayjs from "../../shared/dayjs";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { StyleSheet, View, Alert, ActivityIndicator } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
@@ -12,36 +12,36 @@ import Constants from "../../shared/Constants";
 import Enum from "../../shared/Enum";
 import { paramArray } from "../../shared/Utils";
 
-moment.locale("en");
+dayjs.locale("en");
 
 const WeeklyCalendar = (props: any) => {
-  const dates: moment.Moment[] = [];
+  const dates: dayjs.Dayjs[] = [];
 
   for (
-    let m = moment().startOf("week");
-    m.isBefore(moment().endOf("week"));
-    m.add(1, "days")
+    let m = dayjs().startOf("week");
+    m.isBefore(dayjs().endOf("week"));
+    m = m.add(1, "days")
   ) {
-    dates.push(moment(m.toDate()));
+    dates.push(dayjs(m.toDate()));
   }
 
-  const times: moment.Moment[] = [];
+  const times: dayjs.Dayjs[] = [];
   for (
-    let h = moment().startOf("day").set("hours", 6);
-    h.isBefore(moment().startOf("day").set("hours", 21));
-    h.add(1, "hours")
+    let h = dayjs().startOf("day").set("hour", 6);
+    h.isBefore(dayjs().startOf("day").set("hour", 21));
+    h = h.add(1, "hours")
   ) {
-    times.push(moment(h.toDate()));
+    times.push(dayjs(h.toDate()));
   }
 
-  const getJob = (date: moment.Moment, time: moment.Moment) => {
+  const getJob = (date: dayjs.Dayjs, time: dayjs.Dayjs) => {
     const datetime = date
       .startOf("day")
       .add(time.get("h"), "hour")
       .add(time.get("m"), "hour");
 
     return _(props.items).find(
-      (j) => moment(datetime).get("hour") === moment(j.startAt).get("hour")
+      (j) => dayjs(datetime).get("hour") === dayjs(j.startAt).get("hour")
     );
   };
 
@@ -64,7 +64,7 @@ const WeeklyCalendar = (props: any) => {
               justifyContent: "center",
               alignItems: "center",
               marginVertical: 8,
-              ...(moment().isSame(d, "date")
+              ...(dayjs().isSame(d, "date")
                 ? {
                     borderColor: Colors.main_color,
                     borderWidth: 1.5,
@@ -76,7 +76,7 @@ const WeeklyCalendar = (props: any) => {
             <Text
               style={{
                 fontWeight: "600",
-                ...(moment().isSame(d, "date")
+                ...(dayjs().isSame(d, "date")
                   ? { color: Colors.main_color }
                   : {}),
               }}
@@ -86,7 +86,7 @@ const WeeklyCalendar = (props: any) => {
             <Text
               style={{
                 fontWeight: "600",
-                ...(moment().isSame(d, "date")
+                ...(dayjs().isSame(d, "date")
                   ? { color: Colors.main_color }
                   : {}),
               }}
@@ -147,7 +147,7 @@ const WeeklyCalendar = (props: any) => {
                   const job = getJob(d, x);
 
                   if (job != null) {
-                    const startWork = moment().startOf("day").set("hours", 6);
+                    const startWork = dayjs().startOf("day").set("hours", 6);
                     return (
                       <View
                         style={{
@@ -194,12 +194,12 @@ const MonthlyCalendar = (props: any) => {
   const [month, setMonth] = useState(props.month);
 
   const weeksOfMonth = () => {
-    const startMonth = moment(month).clone().startOf("month");
-    const startWeek = startMonth.clone().startOf("isoWeek");
+    const startMonth = dayjs(month).clone().startOf("month");
+    const startWeek = startMonth.clone().isoWeekday(1).startOf("day");
     const startOffset = startMonth.diff(startWeek, "days");
 
-    const endMonth = moment(month).clone().endOf("month");
-    const endWeek = endMonth.clone().endOf("isoWeek");
+    const endMonth = dayjs(month).clone().endOf("month");
+    const endWeek = endMonth.clone().isoWeekday(7).endOf("day");
     const endOffset = endWeek.diff(endMonth, "days");
 
     return Math.ceil(
@@ -210,14 +210,14 @@ const MonthlyCalendar = (props: any) => {
   const intCalendar = async () => {
     let item = [];
     for (
-      let week = moment(month).startOf("month").week();
-      week <= moment(month).startOf("month").week() + weeksOfMonth();
+      let week = dayjs(month).startOf("month").week();
+      week <= dayjs(month).startOf("month").week() + weeksOfMonth();
       week++
     ) {
       item.push({
         week: week,
         days: _.times(7).map((i) =>
-          moment(month).week(week).startOf("week").clone().add(i, "day")
+          dayjs(month).week(week).startOf("week").clone().add(i, "day")
         ),
       });
     }
@@ -240,10 +240,10 @@ const MonthlyCalendar = (props: any) => {
       />
     );
 
-  const getJob = (date: moment.Moment) => {
+  const getJob = (date: dayjs.Dayjs) => {
     return _(props.items)
       .filter(
-        (j) => moment(date).get("dates") === moment(j.startAt).get("dates")
+        (j) => dayjs(date).get("dates") === dayjs(j.startAt).get("dates")
       )
       .value();
   };
@@ -264,7 +264,7 @@ const MonthlyCalendar = (props: any) => {
           size={22}
           color={Colors.grab_orange}
           onPress={() =>
-            setMonth((month: any) => moment(month).startOf('month').subtract(1, "month"))
+            setMonth((month: any) => dayjs(month).startOf('month').subtract(1, "month"))
           }
           style={{ padding: 12 }}
         />
@@ -276,14 +276,14 @@ const MonthlyCalendar = (props: any) => {
             marginHorizontal: "15%",
           }}
         >
-          {moment(props.month).format("MMMM YYYY")}
+          {dayjs(props.month).format("MMMM YYYY")}
         </Text>
         <Ionicons
           style={{ padding: 12 }}
           name="chevron-forward-outline"
           size={22}
           color={Colors.grab_orange}
-          onPress={() => setMonth((month: any) => moment(month).startOf('month').add(1, "month"))}
+          onPress={() => setMonth((month: any) => dayjs(month).startOf('month').add(1, "month"))}
         />
       </View>
       <View style={{ flex: 1 }}>
@@ -324,7 +324,7 @@ const MonthlyCalendar = (props: any) => {
                     style={{
                       flex: 1,
                       padding: 2,
-                      ...(moment(col).month() === moment(props.month).month()
+                      ...(dayjs(col).month() === dayjs(props.month).month()
                         ? {}
                         : { opacity: 0 }),
                     }}
@@ -395,7 +395,7 @@ const MonthlyCalendar = (props: any) => {
 export default (props: any) => {
   const navigation = props.navigation;
   const newItems = props.route.params?.items;
-  const [month, setMonth] = useState<any>(moment.now());
+  const [month, setMonth] = useState<any>(Date.now());
   const [type, setType] = useState(1);
 
   const [listMonthly, setListMonthly] = useState<any>([]);
@@ -412,8 +412,8 @@ export default (props: any) => {
       const items = _.map(response?.items, (item) => {
         return {
           title: item.serviceName,
-          startAt: moment(item.bookingDate),
-          endAt: moment(item.bookingDate).add(item.hour, "hour"),
+          startAt: dayjs(item.bookingDate),
+          endAt: dayjs(item.bookingDate).add(item.hour, "hour"),
         };
       });
 
@@ -433,8 +433,8 @@ export default (props: any) => {
       const items = _.map(response?.items, (item) => {
         return {
           title: item.serviceName,
-          startAt: moment(item.bookingDate),
-          endAt: moment(item.bookingDate).add(item.hour, "hour"),
+          startAt: dayjs(item.bookingDate),
+          endAt: dayjs(item.bookingDate).add(item.hour, "hour"),
         };
       });
 
@@ -446,14 +446,14 @@ export default (props: any) => {
     const moreItems: any = [];
 
     for (
-      let m = moment().startOf("date");
-      m.isBefore(moment().add(1, "month").endOf("week"));
-      m.add(1, "days")
+      let m = dayjs().startOf("day");
+      m.isBefore(dayjs().add(1, "month").endOf("week"));
+      m = m.add(1, "days")
     ) {
       const newItem = _.find(newItems, { label: m.format("dddd") });
 
       if (!_.isNil(newItem)) {
-        const startAt = m.clone().set({ hour: newItem.startAt.hour() });
+        const startAt = m.clone().set("hour", newItem.startAt.hour());
         const endAt = startAt.clone().add(newItem.hour, "hour");
 
         moreItems.push({
@@ -476,7 +476,7 @@ export default (props: any) => {
         { orderStatus: Enum.OrderStatus.RECEIVED },
         { statusDate: "MONTH" },
         { limit: 100 },
-        { bookingMonth: moment().format("DD-MM-YYYY") },
+        { bookingMonth: dayjs().format("DD-MM-YYYY") },
       ]),
     });
 
@@ -536,7 +536,7 @@ export default (props: any) => {
         { statusDate: "MONTH" },
         { limit: 100 },
         {
-          bookingMonth: moment(month).format("DD-MM-YYYY"),
+          bookingMonth: dayjs(month).format("DD-MM-YYYY"),
         },
       ]),
     });

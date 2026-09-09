@@ -15,7 +15,7 @@ import Constants from "../../shared/Constants";
 import i18n from "../../shared/I18n";
 import Enum from "../../shared/Enum";
 import Layout from "../../shared/Layout";
-import moment from "moment-timezone";
+import dayjs from "../../shared/dayjs";
 import WebView from "react-native-webview";
 import { isArray, isEmpty } from "lodash";
 import { Image as ExpoImage } from "expo-image";
@@ -269,7 +269,7 @@ export default function PromotionDetail(props: any) {
                   <View style={{ flex: 3 }}>
                     <Text>
                       : {i18n.t("home.start")}{" "}
-                      {moment
+                      {dayjs
                         .utc(dataDetail.startDate)
                         .tz("Europe/London")
                         .clone()
@@ -279,7 +279,7 @@ export default function PromotionDetail(props: any) {
                     <Text>
                       {"  "}
                       {i18n.t("home.end")}{" "}
-                      {moment
+                      {dayjs
                         .utc(dataDetail.endDate)
                         .tz("Europe/London")
                         .clone()

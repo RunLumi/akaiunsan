@@ -1,5 +1,5 @@
 import { isNil } from "lodash";
-import moment from "moment";
+import dayjs from ".//dayjs";
 import { Platform } from "react-native";
 import Enum from "./Enum";
 import i18n from "./I18n";
@@ -69,13 +69,13 @@ export const getStatus = (orderStatus: any, order?: any) => {
       status = i18n.t("Match");
       break;
     case 2:
-      status = `${i18n.t("Completed")} ${!isNil(order) ? ('- ' + moment(order.bookingDetail.bookingHour).format('H:mm A')) : ''}`;
+      status = `${i18n.t("Completed")} ${!isNil(order) ? ('- ' + dayjs(order.bookingDetail.bookingHour).format('H:mm A')) : ''}`;
       break;
     case 3:
       status = i18n.t("Cancel");
       break;
     case 4:
-      status = `${i18n.t("On_Process")} ${!isNil(order) ? ('- ' + moment(order.bookingDetail.bookingDate).format('H:mm A')) : ''}`;
+      status = `${i18n.t("On_Process")} ${!isNil(order) ? ('- ' + dayjs(order.bookingDetail.bookingDate).format('H:mm A')) : ''}`;
       break;
     case 5:
       status = i18n.t("Waiting confirm");

@@ -1,6 +1,6 @@
 import { HeaderBackButton } from "@react-navigation/elements";
 import _, { isEmpty } from "lodash";
-import moment from "moment";
+import dayjs from "../../../shared/dayjs";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import {
   View,
@@ -378,22 +378,23 @@ export default function PickAddress(props: any) {
     const moreItems: any = [];
     function getDaysBooking(day: any) {
       let count = 0;
-      let start = moment(day.startAt);
-      let tmp = moment(start).clone().day(moment(day.startAt).day());
+      let start = dayjs(day.startAt);
+      let tmp = dayjs(start).clone().day(dayjs(day.startAt).day());
       if (tmp.isSameOrAfter(start, "d")) {
         moreItems.push({
           title: day.serviceName,
-          startAt: moment(tmp),
-          endAt: moment(tmp.clone().set({ hour: day.endAt.hour() })),
+          startAt: dayjs(tmp),
+          endAt: dayjs(tmp.clone().set("hour", day.endAt.hour())),
           hour: day.hour,
         });
       }
-      while (tmp.add(7, "days") && count < 3) {
+      while (count < 3) {
         count = count + 1;
+        tmp = tmp.add(7, "days");
         moreItems.push({
           title: day.serviceName,
-          startAt: moment(tmp),
-          endAt: moment(tmp.clone().set({ hour: day.endAt.hour() })),
+          startAt: dayjs(tmp),
+          endAt: dayjs(tmp.clone().set("hour", day.endAt.hour())),
           hour: day.hour,
         });
       }
@@ -825,8 +826,8 @@ export default function PickAddress(props: any) {
             valuePreferLanguage={idPreferLanguge}
             handleIdPreferLanguge={handleIdPreferLanguge}
             valueSpecialHelper={idSpecifyHelper}
-            startTime={moment().format("MM/DD/YYYY HH:mm:ss")}
-            endTime={moment().format("MM/DD/YYYY HH:mm:ss")}
+            startTime={dayjs().format("MM/DD/YYYY HH:mm:ss")}
+            endTime={dayjs().format("MM/DD/YYYY HH:mm:ss")}
             idAddress={dataAddress}
             extraServiceCleaning={extraService}
             activitiesPetCare={activitiesPetCare}

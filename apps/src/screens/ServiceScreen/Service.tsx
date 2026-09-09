@@ -23,7 +23,7 @@ import useApi from "../../hooks/useApi";
 import Enum from "../../shared/Enum";
 import { WebView } from "react-native-webview";
 import { Overlay } from "react-native-elements";
-import moment from "moment";
+import dayjs from "../../shared/dayjs";
 import Layout from "../../shared/Layout";
 import _, { isEmpty, times } from "lodash";
 import analytics from "@react-native-firebase/analytics";
@@ -441,10 +441,10 @@ export default function Service(props: any) {
     if (valueDate) {
       setDisableNext(false);
       let getValue = `${valueDate} ${valueTime}`;
-      let valueStartTime = moment(getValue).format("MM/DD/YYYY HH:mm:ss");
+      let valueStartTime = dayjs(getValue).format("MM/DD/YYYY HH:mm:ss");
       let valueEndtime = "";
       if (hour) {
-        valueEndtime = moment(valueStartTime)
+        valueEndtime = dayjs(valueStartTime)
           .add(hour, "hours")
           .format("MM/DD/YYYY HH:mm:ss");
       }
@@ -622,8 +622,8 @@ export default function Service(props: any) {
     let paramOrder: any = {
       serviceId: fromThread === 'favorite-service-thread' ? params.data.serviceId : params.data.id,
       bookingDetail: {
-        bookingDate: moment(startTime).toISOString(),
-        bookingHour: moment(endTime).toISOString(),
+        bookingDate: dayjs(startTime).toISOString(),
+        bookingHour: dayjs(endTime).toISOString(),
         // language: idPreferLanguge.value,
         specialHelper: idSpecifyHelper.id,
         serviceType: params.data.serviceType,

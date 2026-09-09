@@ -11,7 +11,7 @@ import {
 import { CustomInput, Text } from "../../../components";
 import i18n from "../../../shared/I18n";
 import { Calendar } from "react-native-calendars";
-import moment from "moment";
+import dayjs from "../../../shared/dayjs";
 import Colors from "../../../shared/Colors";
 import MultiSlider from "@ptomasroos/react-native-multi-slider";
 import CustomMarker from "../../../components/CustomMarker";
@@ -31,10 +31,10 @@ export default function Service(props: any) {
   const [pickDate, setPickDate] = useState<string>();
 
   useEffect(() => {
-    const m = moment(props.valueShowDateTime, "DD/MM/YYYY HH:mm");
+    const m = dayjs(props.valueShowDateTime, "DD/MM/YYYY HH:mm");
 
     if (m.isValid()) {
-      setStart(moment(props.valueShowDateTime, "DD/MM/YYYY HH:mm").hours());
+      setStart(dayjs(props.valueShowDateTime, "DD/MM/YYYY HH:mm").hour());
       if (props.isEdit) {
         setPickDate(m.format("YYYY-MM-DD"));
       }
@@ -64,7 +64,7 @@ export default function Service(props: any) {
     // setSliderValues(values);
 
     handleValueDateTime(
-      moment(valueDate).format("DD/MM/YYYY"),
+      dayjs(valueDate).format("DD/MM/YYYY"),
       valueTime.indexOf(".5") != -1
         ? valueTime.split(".")[0] + ":30"
         : valueTime.split(".")[0] + ":00",
@@ -111,17 +111,17 @@ export default function Service(props: any) {
     if (pickDate) {
       props.handleHour(hour);
       props.handleDateTime(
-        moment(props.valueShowDateTime, "DD/MM/YYYY HH:mm").format(
+        dayjs(props.valueShowDateTime, "DD/MM/YYYY HH:mm").format(
           "YYYY-MM-DD"
         ),
-        moment(props.valueShowDateTime, "DD/MM/YYYY HH:mm")
+        dayjs(props.valueShowDateTime, "DD/MM/YYYY HH:mm")
           .clone()
-          .set({ hour: start })
+          .set("hour", start)
           .format("HH:mm"),
         hour,
-        moment(props.valueShowDateTime, "DD/MM/YYYY HH:mm")
+        dayjs(props.valueShowDateTime, "DD/MM/YYYY HH:mm")
           .clone()
-          .set({ hour: start })
+          .set("hour", start)
           .format("DD/MM/YYYY H:mm A")
       );
     }
@@ -130,15 +130,15 @@ export default function Service(props: any) {
     setIsShow(false);
     setStart(value);
     props.handleDateTime(
-      moment(props.valueShowDateTime, "DD/MM/YYYY HH:mm").format("YYYY-MM-DD"),
-      moment(props.valueShowDateTime, "DD/MM/YYYY HH:mm")
+      dayjs(props.valueShowDateTime, "DD/MM/YYYY HH:mm").format("YYYY-MM-DD"),
+      dayjs(props.valueShowDateTime, "DD/MM/YYYY HH:mm")
         .clone()
-        .set({ hour: value })
+        .set("hour", value)
         .format("HH:mm"),
       hour,
-      moment(props.valueShowDateTime, "DD/MM/YYYY HH:mm")
+      dayjs(props.valueShowDateTime, "DD/MM/YYYY HH:mm")
         .clone()
-        .set({ hour: value })
+        .set("hour", value)
         .format("DD/MM/YYYY H:mm A")
     );
   };
@@ -159,12 +159,12 @@ export default function Service(props: any) {
           <Calendar
             enableSwipeMonths={true}
             current={
-              moment().daysInMonth() == moment().endOf("month").daysInMonth()
-                ? moment().add(1, "days").format("YYYY-MM-DD")
-                : moment().format("YYYY-MM-DD")
+              dayjs().daysInMonth() == dayjs().endOf("month").daysInMonth()
+                ? dayjs().add(1, "days").format("YYYY-MM-DD")
+                : dayjs().format("YYYY-MM-DD")
             }
-            minDate={moment().format("YYYY-MM-DD")}
-            maxDate={moment().add(1, "year").format("YYYY-MM-DD")}
+            minDate={dayjs().format("YYYY-MM-DD")}
+            maxDate={dayjs().add(1, "year").format("YYYY-MM-DD")}
             monthFormat={"MMMM - yyyy"}
             hideExtraDays={true}
             dayComponent={({ date }: any) => (
@@ -181,13 +181,13 @@ export default function Service(props: any) {
                   }),
                 }}
                 onPress={() => {
-                  if (moment(date.dateString).isAfter(moment(), "date")) {
-                    const IsSameDate = moment(date.dateString).isSame(
-                      moment().add(1, "day"),
+                  if (dayjs(date.dateString).isAfter(dayjs(), "date")) {
+                    const IsSameDate = dayjs(date.dateString).isSame(
+                      dayjs().add(1, "day"),
                       "date"
                     );
                     if (IsSameDate) {
-                       setStart((moment().get("hour") + 18) % 24);
+                       setStart((dayjs().get("hour") + 18) % 24);
                     } else {
                       setStart(7);
                     }
@@ -198,7 +198,7 @@ export default function Service(props: any) {
               >
                 <Text
                   style={{
-                    ...(!moment(date?.dateString).isAfter(moment(), "date")
+                    ...(!dayjs(date?.dateString).isAfter(dayjs(), "date")
                       ? {
                           color: Colors.gray_normal_text,
                         }
@@ -269,7 +269,7 @@ export default function Service(props: any) {
                       fontWeight: "bold",
                     }}
                   >
-                    {moment(pickDate).format("DD/MM/YYYY")}
+                    {dayjs(pickDate).format("DD/MM/YYYY")}
                   </Text>
                   <View
                     style={{
@@ -286,11 +286,11 @@ export default function Service(props: any) {
                       onPress={onPressTime}
                     >
                       <Text style={[styles.title, { marginLeft: 12 }]}>
-                        {moment(
-                          moment(pickDate)
+                        {dayjs(
+                          dayjs(pickDate)
                             .clone()
                             .startOf("day")
-                            .set({ hour: start })
+                            .set("hour", start)
                         ).format("HH:mm A")}
                       </Text>
                       <Ionicons name="caret-down" size={18} />

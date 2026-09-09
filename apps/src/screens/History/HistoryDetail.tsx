@@ -8,7 +8,7 @@ import i18n from "../../shared/I18n";
 import Enum from "../../shared/Enum";
 import { Ionicons } from "@expo/vector-icons";
 import { AirbnbRating } from "react-native-elements";
-import moment from "moment";
+import dayjs from "../../shared/dayjs";
 import _ from "lodash";
 import { NavigationRoot } from "../../navigation/root";
 import { getStatus } from "../../shared/Utils";
@@ -95,9 +95,9 @@ export default function PromotionDetail(props: any) {
         data: data,
         isEdit: false,
         subscriptionPlanActive,
-        hour: moment
+        hour: dayjs
           .duration(
-            moment(currentDetail.bookingDetail.bookingHour).diff(
+            dayjs(currentDetail.bookingDetail.bookingHour).diff(
               currentDetail.bookingDetail.bookingDate
             )
           )
@@ -197,7 +197,7 @@ export default function PromotionDetail(props: any) {
                 }}
               >
                 {currentDetail.bookingDetail &&
-                  moment(currentDetail.bookingDetail.bookingDate)
+                  dayjs(currentDetail.bookingDetail.bookingDate)
                     .local()
                     .format("lll")}{" "}
                 {params?.item?.hour > 0 ? params?.item?.hour + "hrs" : ""}

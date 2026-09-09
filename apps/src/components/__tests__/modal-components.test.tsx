@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import moment from "moment";
+import dayjs from "../../shared/dayjs";
 import { act } from "react-test-renderer";
 import { createWithStore, makeStore, flush, pressAll, typeAll } from "../../test-utils/helpers";
 
@@ -138,8 +138,8 @@ const openViaRef = (ref: any, method: string, args: any[]) => {
 const richProps: Record<string, any> = {
   "components/HelperSelect": {
     serviceType: 1,
-    startTime: moment("2026-01-01T07:00:00.000Z"),
-    endTime: moment("2026-01-01T09:00:00.000Z"),
+    startTime: dayjs("2026-01-01T07:00:00.000Z"),
+    endTime: dayjs("2026-01-01T09:00:00.000Z"),
     addressId: "addr-1",
     language: "en",
     // submitHelper invokes valueHelper(id, fullName, old, star, avatar)
@@ -147,8 +147,8 @@ const richProps: Record<string, any> = {
   },
   "components/HelperSelectFixPlan": {
     serviceType: 1,
-    startTime: moment("2026-01-01T07:00:00.000Z"),
-    endTime: moment("2026-01-01T09:00:00.000Z"),
+    startTime: dayjs("2026-01-01T07:00:00.000Z"),
+    endTime: dayjs("2026-01-01T09:00:00.000Z"),
     addressId: "addr-1",
     language: "en",
     valueHelper: () => {},

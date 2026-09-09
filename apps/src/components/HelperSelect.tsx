@@ -21,7 +21,7 @@ import Layout from "../shared/Layout";
 import Stars from "react-native-stars";
 import useApi from "../hooks/useApi";
 import Constants from "../shared/Constants";
-import moment from "moment";
+import dayjs from "../shared/dayjs";
 import { paramArray } from "../shared/Utils";
 import Enum from "../shared/Enum";
 import { isEmpty } from "lodash";
@@ -94,8 +94,8 @@ export const HelperSelect = ({
           requestListHelper({
             params: paramArray([
               { serviceType: serviceType },
-              { startTime: moment(startTime).toISOString() },
-              { endTime: moment(endTime).toISOString() },
+              { startTime: dayjs(startTime).toISOString() },
+              { endTime: dayjs(endTime).toISOString() },
               { addressId: addressId?.id ||  addressId?.addressId},
               { languages: (language && language.value) || "" },
               ...dataHelperSuggest.map((item: any) => ({
@@ -151,8 +151,8 @@ export const HelperSelect = ({
         { serviceType: serviceType },
         { name: value },
         { addressId: addressId?.id },
-        { startTime: moment(startTime).toISOString() },
-        { endTime: moment(endTime).toISOString() },
+        { startTime: dayjs(startTime).toISOString() },
+        { endTime: dayjs(endTime).toISOString() },
       ]),
     });
   };
@@ -262,8 +262,8 @@ export const HelperSelect = ({
       params: paramArray([
         { serviceType: serviceType },
         { addressId: addressId?.id ||  addressId?.addressId},
-        { startTime: moment(startTime).toISOString() },
-        { endTime: moment(endTime).toISOString() },
+        { startTime: dayjs(startTime).toISOString() },
+        { endTime: dayjs(endTime).toISOString() },
       ]),
     });
   }, []);

@@ -629,7 +629,14 @@ export default function Service(props: ScreenProps) {
 
   const onNextStep = async () => {
     const notUndefined = (anyValue: unknown): boolean => typeof anyValue !== "undefined";
-    let paramOrder: any = {
+    let paramOrder: {
+      serviceId: unknown;
+      bookingDetail: Record<string, unknown>;
+      customerInfo: Record<string, unknown>;
+      point?: number;
+      paymentMethodId?: string;
+      promotionId?: string;
+    } = {
       serviceId: fromThread === 'favorite-service-thread' ? params.data.serviceId : params.data.id,
       bookingDetail: {
         bookingDate: dayjs(startTime).toISOString(),

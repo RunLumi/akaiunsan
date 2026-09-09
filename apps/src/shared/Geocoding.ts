@@ -5,7 +5,7 @@ import {
 import _ from "lodash";
 
 const GOOGLE_API_URL = "https://maps.googleapis.com/maps/api/geocode/json";
-let googleApiKey: any;
+let googleApiKey: string | undefined;
 
 type GoogleApiGeocodingAddressComponent = {
   long_name: string;
@@ -105,7 +105,7 @@ function geocodingResultToLocation(
 function reverseGeocodingResultToAddress(
   result: GoogleApiGeocodingResult
 ): LocationGeocodedAddress {
-  const address: any = {};
+  const address: Record<string, unknown> = {};
 
   for (const { long_name, short_name, types } of result.address_components) {
     if (types.includes("locality")) {

@@ -609,7 +609,7 @@ export default function EditAndReOrderService(props: ScreenProps) {
   const handlePriceEnglish = (value: number) => {
     setPrice(value);
   };
-  const handleIdPreferLanguge = (value: any) => {
+  const handleIdPreferLanguge = (value: { label: string; value: string }) => {
     setIdPreferLanguge(value);
   };
   const handlePaymentMethod = (value: string, type: boolean) => {
@@ -744,7 +744,14 @@ export default function EditAndReOrderService(props: ScreenProps) {
 
   const onNextStep = async () => {
     const notUndefined = (anyValue: unknown): boolean => typeof anyValue !== "undefined";
-    let paramOrder: any = {
+    let paramOrder: {
+      serviceId: unknown;
+      bookingDetail: Record<string, unknown>;
+      customerInfo: Record<string, unknown>;
+      point?: number;
+      paymentMethodId?: string;
+      promotionId?: string;
+    } = {
       serviceId: idService,
       bookingDetail: {
         bookingDate: dayjs(startTime).toISOString(),

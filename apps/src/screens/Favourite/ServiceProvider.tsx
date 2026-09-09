@@ -209,7 +209,7 @@ export default function ServiceProvider(props: ScreenProps) {
           justifyContent: "space-between",
         }}
       >
-        {listServiceProvider.map((item: any, i) => (
+        {listServiceProvider.map((item: ApiItem, i: number) => (
           <View
             style={{
               // padding: 16,

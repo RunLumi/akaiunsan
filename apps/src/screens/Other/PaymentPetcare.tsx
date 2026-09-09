@@ -87,7 +87,7 @@ export default function PaymentPetcare(props: ScreenProps) {
   }, []);
 
   const handleDiscountPrice = (
-    valueDiscount: any,
+    valueDiscount: number,
     isDiscount: boolean,
     point: number
   ) => {
@@ -100,7 +100,7 @@ export default function PaymentPetcare(props: ScreenProps) {
     }
   };
 
-  const handlePaymentMethod = (_: any, type: boolean) => {
+  const handlePaymentMethod = (_: unknown, type: boolean) => {
     setIsCreditCard(type);
   };
 

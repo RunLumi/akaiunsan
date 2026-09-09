@@ -30,7 +30,7 @@ import type { ApiItem } from "../redux/apiSlice";
 interface Props {
   style?: StyleProp<ViewStyle>;
   children?: React.Ref<unknown>;
-  valueHelper?: (id: unknown, name: unknown, old: unknown, star: unknown, avatar: unknown) => void;
+  valueHelper?: (...args: unknown[]) => void;
   serviceType?: number;
   startTime?: string;
   endTime?: string;
@@ -147,8 +147,8 @@ export const HelperSelect = ({
       Alert.alert(i18n.t("auth.error"), i18n.t("home.select_your_helper"));
     }
   };
-  const searchNameHelper = (value?: any) => {
-    setSearchHelper(value);
+  const searchNameHelper = (value?: string) => {
+    setSearchHelper(value ?? "");
     requestListHelper({
       params: paramArray([
         { serviceType: serviceType },
@@ -612,7 +612,7 @@ export const HelperSelect = ({
           </Text>
           <SearchBar
             placeholder={i18n.t("home.search_helper")}
-            onChangeText={searchNameHelper}
+            onChangeText={(text?: string) => searchNameHelper(text ?? "")}
             value={searchHelper}
             // containerStyle={{backgroundColor:"transparent"}}
             showLoading={loadingListHelper}

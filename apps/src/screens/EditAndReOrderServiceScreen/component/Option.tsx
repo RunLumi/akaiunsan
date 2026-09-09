@@ -198,8 +198,8 @@ export default function Option(props: ScreenProps) {
   //   }
   // };
   const handleValueHelper = (
-    id: any,
-    name: any,
+    id: unknown,
+    name: unknown,
     old: unknown,
     star: unknown,
     image: unknown

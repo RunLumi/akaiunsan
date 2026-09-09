@@ -10,7 +10,7 @@ export const Container = ({
   ...props
 }: {
   safe?: boolean | any;
-  children: any;
+  children: React.ReactNode;
   style?: StyleProp<ViewStyle>;
   statusBarColor?: string;
 }) => {

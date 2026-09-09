@@ -22,7 +22,7 @@ Notifications.setNotificationHandler({
 
 export const NotificationHandler = (props: ScreenProps) => {
   const [expoPushToken, setExpoPushToken] = useState("");
-  const [notification, setNotification] = useState(false);
+  const [notification, setNotification] = useState<boolean | Record<string, unknown>>(false);
   const notificationListener = useRef<any>(undefined);
   const responseListener = useRef<any>(undefined);
 

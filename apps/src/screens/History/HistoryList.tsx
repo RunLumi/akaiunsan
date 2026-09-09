@@ -221,7 +221,7 @@ export default function PromotionList(props: ScreenProps) {
     setShowDate(true);
   };
 
-  const handleValueDate = (event: any, selectedDate: any) => {
+  const handleValueDate = (event: { type: string }, selectedDate?: Date) => {
     if (Platform.OS === "android") {
       if (event.type === "set") {
         setShowDate(false);
@@ -244,7 +244,7 @@ export default function PromotionList(props: ScreenProps) {
             },
           });
         }
-        setDate({ label: currentDay, value: selectedDate });
+        setDate({ label: currentDay, value: selectedDate as Date });
       } else {
         setShowDate(false);
       }
@@ -269,7 +269,7 @@ export default function PromotionList(props: ScreenProps) {
           },
         });
       }
-      setDate({ label: currentDay, value: selectedDate });
+      setDate({ label: currentDay, value: selectedDate as Date });
     }
   };
 

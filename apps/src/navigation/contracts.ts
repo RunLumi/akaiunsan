@@ -19,7 +19,7 @@ export const linkingConfig = {
 
 // FCM `data.type` → deep-link route. Types 0..4 are handled, anything else
 // resolves to "" (the app keeps that as "do nothing").
-export const deepLinkRoute = (data: any): RouteName | "" => {
+export const deepLinkRoute = (data: { type?: string } | null | undefined): RouteName | "" => {
   switch (data && data.type) {
     case "0":
       return Constants.SCREENS.BOOKING.DETAIL;
@@ -38,5 +38,5 @@ export const deepLinkRoute = (data: any): RouteName | "" => {
 
 // Auth gate: no token renders the Login/Signup stack, a token renders the app
 // stack. `!token` in JSX is exactly this predicate.
-export const gateForToken = (token: any): "auth" | "app" =>
+export const gateForToken = (token: string | null | undefined): "auth" | "app" =>
   token ? "app" : "auth";

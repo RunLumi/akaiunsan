@@ -305,7 +305,7 @@ export default function EditProfile(props: ScreenProps) {
     }
     setGender({
       ...gender,
-      value: Enum.GENDER[user.gender].value as any,
+      value: Enum.GENDER[user.gender].value as unknown as string,
       label: i18n.t(Enum.GENDER[user.gender].label),
     });
   };

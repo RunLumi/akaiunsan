@@ -1,21 +1,22 @@
 import { success, TYPES } from '../actions';
+import type { ApiItem } from '../apiSlice';
 
 const INITIAL_STATE = {
 	token: '',
-	user: null as any,
+	user: null as unknown as ApiItem | null,
 	loading: false
 };
 
 export default function authReducer(
 	state = INITIAL_STATE,
-	action: { type: string; payload: any },
+	action: { type: string; payload: Record<string, any> | null },
 ) {
 	switch (action.type) {
 		case success(TYPES.AUTH.LOGIN):
-			const { token } = action.payload;
+			const { token } = action.payload!;
 			return { ...state, token };
 		case success(TYPES.AUTH.PROFILE):
-			const { user } = action.payload;
+			const { user } = action.payload!;
 			return { ...state, user };
 		case success(TYPES.AUTH.LOG_OUT):
 			return INITIAL_STATE;

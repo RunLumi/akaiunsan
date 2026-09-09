@@ -562,7 +562,7 @@ export default function PickAddress(props: ScreenProps) {
     setDataAddress(data);
   };
 
-  const handleIdPreferLanguge = (value: any) => {
+  const handleIdPreferLanguge = (value: { label: string; value: string }) => {
     setIdPreferLanguge(value);
   };
 
@@ -602,7 +602,7 @@ export default function PickAddress(props: ScreenProps) {
   };
 
   const handleDiscountPrice = (
-    valueDiscount: any,
+    valueDiscount: number,
     isDiscount: boolean,
     point: number
   ) => {

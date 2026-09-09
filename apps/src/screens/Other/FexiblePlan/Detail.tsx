@@ -65,7 +65,7 @@ export default function Detail(props: ScreenProps) {
   );
 
   const handleDiscountPrice = (
-    valueDiscount: any,
+    valueDiscount: number,
     isDiscount: boolean,
     point: number
   ) => {

@@ -8,15 +8,15 @@ export const navigationRef = React.createRef<NavigationContainerRef<RootStackPar
 // the dispatcher internals stay loose because React Navigation's union-name
 // navigate overloads don't accept a union `name` argument directly.
 export const NavigationRoot = {
-	navigate: function navigate(name: RouteName, params?: any) {
+	navigate: function navigate(name: RouteName, params?: Record<string, unknown>) {
 		(navigationRef.current as any)?.navigate(name, params);
 	},
 
-	push: function push(name: RouteName, params?: any) {
+	push: function push(name: RouteName, params?: Record<string, unknown>) {
 		navigationRef.current?.dispatch(StackActions.push(name, params));
 	},
 
-	replace: function replace(name: RouteName, params?: any) {
+	replace: function replace(name: RouteName, params?: Record<string, unknown>) {
 		const replaceAction = StackActions.replace(name, params);
 		navigationRef.current?.dispatch(replaceAction);
 	},
@@ -26,7 +26,7 @@ export const NavigationRoot = {
 		navigationRef.current?.dispatch(popAction);
 	},
 
-	reset: function reset(props: any) {
+	reset: function reset(props: Parameters<NonNullable<typeof navigationRef.current>['reset']>[0]) {
 		navigationRef.current?.reset(props);
 	},
 

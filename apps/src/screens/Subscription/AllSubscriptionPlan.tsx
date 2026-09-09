@@ -17,7 +17,7 @@ import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
 import type { ApiItem } from "../../redux/apiSlice";
 
 export default function AllSubscriptionPlan() {
-  const [listPlan, setListPlan] = useState<ApiItem[]>([]);
+  const [listPlan, setListPlan] = useState<string[]>([]);
   const [dataPlan, setDataPlan] = useState<ApiItem>();
   const [indexCancel, setIndexCancel] = useState<number | undefined>(undefined);
   const [service, setService] = useState<ApiItem>();
@@ -38,7 +38,7 @@ export default function AllSubscriptionPlan() {
       }
       if (!_.isNull(response)) {
         const list = Object.keys(response).filter((i) => !isEmpty(response[i]));
-        setListPlan(list as any[]);
+        setListPlan(list as string[]);
         setDataPlan(response);
       }
     }
@@ -148,7 +148,7 @@ export default function AllSubscriptionPlan() {
       setIndexCancel(undefined);
       setReason("");
     };
-    const toggleSwitch = (value: any) => {
+    const toggleSwitch = (value: boolean) => {
       requestToggleRenewFlexible({
         data: {
           orderId: item.id,
@@ -246,12 +246,12 @@ export default function AllSubscriptionPlan() {
       </View>
     );
   };
-  const renderItem = ({ item }: { item: any }) => {
+  const renderItem = ({ item }: { item: string }) => {
     return (
       <View>
         {!isEmpty(dataPlan) && (
           <FlatList
-            data={dataPlan[item]}
+            data={dataPlan[item] as ApiItem[]}
             extraData={dataPlan[item]}
             renderItem={renderItemSub}
             keyExtractor={(item) => item.id}

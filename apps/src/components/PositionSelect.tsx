@@ -279,7 +279,7 @@ export const PositionSelect = ({
       .value()
       .join(", ");
 
-  const onGoBack = (address: any, location: any) => {
+  const onGoBack = (address: ApiItem, location: ApiItem) => {
     setShowModal(true);
     setAddress(address);
     setLocation(location);

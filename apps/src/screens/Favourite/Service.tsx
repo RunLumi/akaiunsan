@@ -200,7 +200,7 @@ export default function Service(props: ScreenProps) {
       </View>
       <ScrollView>
         <View style={{ padding: 16 }}>
-          {listService.map((item: any, i) => (
+          {listService.map((item: ApiItem, i: number) => (
             <View
               key={i}
               style={{

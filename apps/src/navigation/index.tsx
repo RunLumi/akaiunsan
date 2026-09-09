@@ -62,11 +62,13 @@ export default function Navigation() {
   const linking = linkingConfig;
 
   // Get active route name
-  function getActiveRouteName(state: ApiItem): any {
+  function getActiveRouteName(
+    state: { routes: { name: string; state?: unknown }[]; index: number }
+  ): string | undefined {
     if (state) {
       const route = state.routes[state.index];
       if (route.state) {
-        return getActiveRouteName(route.state);
+        return getActiveRouteName((route.state ?? {}) as { routes: { name: string; state?: unknown }[]; index: number });
       }
       return route.name;
     }

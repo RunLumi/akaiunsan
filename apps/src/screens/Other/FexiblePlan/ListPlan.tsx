@@ -208,7 +208,7 @@ export default function ListPlan(props: ScreenProps) {
     });
   }, []);
 
-  const onAgreeBack = async (result: boolean, plan: any) => {
+  const onAgreeBack = async (result: boolean, plan: ApiItem) => {
     if (!result) {
       return;
     }

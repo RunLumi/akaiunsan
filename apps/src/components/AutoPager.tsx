@@ -8,7 +8,7 @@ import type { ApiItem } from "../redux/apiSlice";
 // react-native-pager-view (New-Architecture supported) plus a light autoplay
 // interval — the same autoplay/loop contract the old components provided.
 interface Props {
-  data: any[];
+  data: ApiItem[];
   renderItem: (item: ApiItem, index: number) => React.ReactNode;
   style?: ApiItem;
   autoplayInterval?: number;

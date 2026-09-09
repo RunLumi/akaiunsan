@@ -461,7 +461,7 @@ export default function Payment(props: ScreenProps) {
                 {props.times && (
                   <Text style={styles.textDesc}>
                     {_.map(
-                      props.times.sort(function (left: any, right: any) {
+                      props.times.sort(function (left: ApiItem, right: ApiItem) {
                         return dayjs
                           .utc(left.startAt)
                           .diff(dayjs.utc(right.startAt));

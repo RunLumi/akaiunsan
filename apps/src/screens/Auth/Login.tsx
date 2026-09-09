@@ -6,6 +6,7 @@ import {
   Alert,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
   TouchableOpacity,
 } from "react-native";
 import { useDispatch } from "react-redux";
@@ -403,7 +404,11 @@ export default function Login(props: any) {
               style={s.logo}
             />
           </View>
-          <View style={s.content}>
+          <ScrollView
+            style={s.content}
+            contentContainerStyle={s.contentContainer}
+            keyboardShouldPersistTaps="handled"
+          >
             <CustomInput
               value={email.value}
               keyboardType="email-address"
@@ -476,7 +481,7 @@ export default function Login(props: any) {
               {i18n.t("auth.no_account")}{" "}
               <Text style={s.signup}>{i18n.t("auth.sign_up")}</Text>
             </Text>
-          </View>
+          </ScrollView>
         </DismissKeyboardView>
       </KeyboardAvoidingView>
     </Container>
@@ -495,6 +500,9 @@ const s = StyleSheet.create({
   content: {
     flex: 2,
     marginHorizontal: Styles.margin.horizontal,
+  },
+  contentContainer: {
+    paddingBottom: 32,
   },
   logoContainer: {
     flex: 1,

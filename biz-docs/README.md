@@ -29,10 +29,19 @@ Theme hugo-book yêu cầu **Hugo ≥ 0.158** (`theme.toml: min_version`), trong
 mặc định của Cloudflare Pages là 0.147.x → build lỗi
 `can't evaluate field Name in type *langs.Language`.
 
-Trong dashboard Pages → **Settings → Variables and Secrets**, đặt cho cả hai môi
-trường Production và Preview:
+Trong dashboard Pages → **Settings → Variables and Secrets**, đặt biến plaintext
+cho **cả hai** môi trường Production và Preview (build Preview không kế thừa
+biến của Production):
 
 - `HUGO_VERSION` = `0.165.0` (trùng với pin trong `.github/workflows/biz-docs.yml`)
+
+Lưu ý: `[vars]` trong `wrangler.toml` chỉ là biến runtime, không ảnh hưởng môi
+trường build — bắt buộc đặt trong dashboard. Phương án thay thế không phụ thuộc
+biến môi trường: đổi **Build command** thành lệnh tự tải Hugo về `/tmp`:
+
+```bash
+curl -sL https://github.com/gohugoio/hugo/releases/download/v0.165.0/hugo_extended_0.165.0_linux-amd64.tar.gz | tar xz -C /tmp hugo && /tmp/hugo --gc --minify
+```
 
 Sau đó retry deploy. `hugo.toml` đã trỏ `baseURL` về `https://akaiunsan.pages.dev/`
 nên không cần biến `HUGO_BASEURL`.

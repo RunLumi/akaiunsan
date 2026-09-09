@@ -443,10 +443,10 @@ export default function Service(props: ScreenProps) {
     }
   };
   const handleDateTime = (
-    valueDate: any,
-    valueTime: any,
-    hour: any,
-    showDateTime: any
+    valueDate: string,
+    valueTime: string,
+    hour: number,
+    showDateTime: string
   ) => {
     if (valueDate) {
       setDisableNext(false);
@@ -466,7 +466,7 @@ export default function Service(props: ScreenProps) {
     }
   };
 
-  const handlePriceExtraService = (value: any, type: any) => {
+  const handlePriceExtraService = (value: number, type: string) => {
     if (value) {
       if (type === "plus") {
         setPrice(price + value);
@@ -476,12 +476,12 @@ export default function Service(props: ScreenProps) {
     }
   };
   const handleDiscountPrice = (
-    valueDiscount: any,
+    valueDiscount: number,
     isDiscount: boolean,
-    point: number
+    point?: number
   ) => {
     if (isDiscount) {
-      setPointApply(point);
+      setPointApply(point!);
       setPrice(Number((price - valueDiscount).toFixed(2)));
     } else {
       setPointApply(0);
@@ -495,7 +495,7 @@ export default function Service(props: ScreenProps) {
   const handleIdSpecifyHelper = (data: ApiItem) => {
     setIdSpecifyHelper(data);
   };
-  const handlePriceEnglish = (value: any) => {
+  const handlePriceEnglish = (value: number) => {
     setPrice(value);
   };
   // const handleIdPreferLanguge = (value: ApiItem) => {
@@ -505,8 +505,8 @@ export default function Service(props: ScreenProps) {
     setPaymentMethodId(value);
     setIsCreditCard(type);
   };
-  const handleProfilePet = (dataProfile: any, activities: string) => {
-    setExtraService(dataProfile);
+  const handleProfilePet = (dataProfile: ApiItem, activities: string) => {
+    setExtraService(dataProfile as unknown as ApiItem[]);
     setActivitiesPetCare(activities);
   };
   const handleReceivePoint = (value: number) => {
@@ -515,7 +515,7 @@ export default function Service(props: ScreenProps) {
   const handlePromotionId = (value: string) => {
     setPromotionId(value);
   };
-  const handlePriceSpecifyHelper = (value: any, isCheck: boolean) => {
+  const handlePriceSpecifyHelper = (value: number, isCheck: boolean) => {
     if (isCheck) {
       if (addPriceSpecifyHelper) {
         setPriceHelper(value);
@@ -528,7 +528,7 @@ export default function Service(props: ScreenProps) {
       setAddPriceSpecifyHelper(true);
     }
   };
-  const handlePricePreferLanguage = (value: any, isCheck: boolean) => {
+  const handlePricePreferLanguage = (value: number, isCheck: boolean) => {
     if (isCheck) {
       if (addPricePreferLanguage) {
         setPriceLanguage(value);
@@ -628,7 +628,7 @@ export default function Service(props: ScreenProps) {
   };
 
   const onNextStep = async () => {
-    const notUndefined = (anyValue: any) => typeof anyValue !== "undefined";
+    const notUndefined = (anyValue: unknown): boolean => typeof anyValue !== "undefined";
     let paramOrder: any = {
       serviceId: fromThread === 'favorite-service-thread' ? params.data.serviceId : params.data.id,
       bookingDetail: {

@@ -85,3 +85,6 @@ coverage/
 /apps/ios/scripts/release.env
 /apps/ios/scripts/*.p8
 .DS_Store
+
+# Adobe Illustrator source files (kept locally, not for git)
+*.ai

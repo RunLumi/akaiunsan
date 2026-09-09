@@ -9,11 +9,11 @@ import {
 import colors from "../../shared/Colors";
 import i18n from "../../shared/I18n";
 import _, { isEmpty } from "lodash";
-import useApi from "../../hooks/useApi";
 import Constants from "../../shared/Constants";
 import dayjs from "../../shared/dayjs";
 import { useDispatch } from "react-redux";
 import { TYPES } from "../../redux/actions";
+import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
 
 export default function AllSubscriptionPlan() {
   const [listPlan, setListPlan] = useState<any>([]);
@@ -26,10 +26,11 @@ export default function AllSubscriptionPlan() {
     value: 1,
   });
   const dispatch = useDispatch();
-  const [loadingListPlan, requestListPlan] = useApi({
-    method: "get",
-    url: Constants.API.get_subscription,
-    callback: ({ error, response }) => {
+  const [requestListPlanTrigger, { isLoading: loadingListPlan }] =
+    apiSlice.endpoints.getSubscription.useLazyQuery();
+  const requestListPlan = portRequest(
+    requestListPlanTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
@@ -39,42 +40,45 @@ export default function AllSubscriptionPlan() {
         setListPlan(list);
         setDataPlan(response);
       }
-    },
-  });
+    }
+  );
 
-  const [loadingServiceManagement, requestServiceManagement] = useApi({
-    method: "get",
-    url: Constants.API.services_management,
-    callback: ({ error, response }) => {
+  const [requestServiceManagementTrigger, { isLoading: loadingServiceManagement }] =
+    apiSlice.endpoints.getServicesManagement.useLazyQuery();
+  const requestServiceManagement = portRequest(
+    requestServiceManagementTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) console.log(i18n.t("auth.error"), error);
       else {
         setService(response.items);
       }
-    },
-  });
+    }
+  );
 
-  const [loadingCancelSubscription, requestCancelSubscription] = useApi({
-    method: "put",
-    url: Constants.API.cancel_subscription,
-    callback: ({ error, response }) => {
+  const [requestCancelSubscriptionTrigger, { isLoading: loadingCancelSubscription }] =
+    apiSlice.endpoints.cancelSubscription.useMutation();
+  const requestCancelSubscription = portRequest(
+    requestCancelSubscriptionTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
       }
       requestListPlan();
-    },
-  });
+    }
+  );
 
-  const [loadingToggleRenewFlexible, requestToggleRenewFlexible] = useApi({
-    method: "post",
-    url: Constants.API.toggle_renew_flexible,
-    callback: ({ error, response }) => {
+  const [requestToggleRenewFlexibleTrigger, { isLoading: loadingToggleRenewFlexible }] =
+    apiSlice.endpoints.toggleRenewFlexible.useMutation();
+  const requestToggleRenewFlexible = portRequest(
+    requestToggleRenewFlexibleTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
       }
-    },
-  });
+    }
+  );
 
   useEffect(() => {
     requestListPlan();

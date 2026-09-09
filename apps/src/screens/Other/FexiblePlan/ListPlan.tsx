@@ -10,12 +10,12 @@ import {
 } from "react-native-gesture-handler";
 import { Button, Container, Loading, Text } from "../../../components";
 import PlanCard from "../../../components/PlanCard";
-import useApi from "../../../hooks/useApi";
 import Colors from "../../../shared/Colors";
 import Theme from "../../../shared/theme";
 import Constants from "../../../shared/Constants";
 import i18n from "../../../shared/I18n";
 import { rankBackground } from "../../../shared/Utils";
+import { apiSlice, portRequest, type ApiResult } from "../../../redux/apiSlice";
 
 export default function ListPlan(props: any) {
   const {
@@ -32,10 +32,11 @@ export default function ListPlan(props: any) {
   const [autoRenew, setAutoRenew] = useState(false);
   const [autoRenewFixPlan, setAutoRenewFixPlan] = useState(false);
 
-  const [loadingCurrentPlan, requestCurrentPlan] = useApi({
-    method: "get",
-    url: Constants.API.get_current_plan,
-    callback: ({ error, response }) => {
+  const [requestCurrentPlanTrigger, { isLoading: loadingCurrentPlan }] =
+    apiSlice.endpoints.getCurrentPlan.useLazyQuery();
+  const requestCurrentPlan = portRequest(
+    requestCurrentPlanTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         setTimeout(() => {
           Alert.alert(i18n.t("auth.error"), error);
@@ -53,13 +54,14 @@ export default function ListPlan(props: any) {
           setAutoRenew(true);
         }
       }
-    },
-  });
+    }
+  );
 
-  const [loadingCurrentFixPlan, requestCurrentFixPlan] = useApi({
-    method: "get",
-    url: Constants.API.get_current_fixplan,
-    callback: ({ error, response }) => {
+  const [requestCurrentFixPlanTrigger, { isLoading: loadingCurrentFixPlan }] =
+    apiSlice.endpoints.getCurrentFixplan.useLazyQuery();
+  const requestCurrentFixPlan = portRequest(
+    requestCurrentFixPlanTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         // setTimeout(() => {
           Alert.alert(i18n.t("auth.error"), error);
@@ -74,13 +76,14 @@ export default function ListPlan(props: any) {
           setAutoRenewFixPlan(true);
         }
       }
-    },
-  });
+    }
+  );
 
-  const [loadingListPlan, requestListPlan] = useApi({
-    method: "get",
-    url: Constants.API.get_plan,
-    callback: ({ error, response }) => {
+  const [requestListPlanTrigger, { isLoading: loadingListPlan }] =
+    apiSlice.endpoints.getPlan.useLazyQuery();
+  const requestListPlan = portRequest(
+    requestListPlanTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
@@ -90,42 +93,42 @@ export default function ListPlan(props: any) {
 
         setListPlan(response && _.sortBy(response.items, "rank"));
       }
-    },
-  });
+    }
+  );
 
-  const [loadingUpgradeFlexiblePlan, requestUpgradeFlexiblePlan] = useApi({
-    method: "post",
-    url: Constants.API.upgrade_flexible_plan,
-    callback: ({ error, response }) => {
-
+  const [requestUpgradeFlexiblePlanTrigger, { isLoading: loadingUpgradeFlexiblePlan }] =
+    apiSlice.endpoints.upgradeFlexiblePlan.useMutation();
+  const requestUpgradeFlexiblePlan = portRequest(
+    requestUpgradeFlexiblePlanTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
       }
 
       requestCurrentPlan();
-    },
-  });
+    }
+  );
 
-  const [loadingDowngradeFlexiblePlan, requestDowngradeFlexiblePlan] = useApi({
-    method: "post",
-    url: Constants.API.downgrade_flexible_plan,
-    callback: ({ error, response }) => {
-
+  const [requestDowngradeFlexiblePlanTrigger, { isLoading: loadingDowngradeFlexiblePlan }] =
+    apiSlice.endpoints.downgradeFlexiblePlan.useMutation();
+  const requestDowngradeFlexiblePlan = portRequest(
+    requestDowngradeFlexiblePlanTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
       }
 
       requestCurrentPlan();
-    },
-  });
+    }
+  );
 
-  const [loadingCancelFlexiblePlan, requestCancelFlexiblePlan] = useApi({
-    method: "post",
-    url: Constants.API.cancel_flexible_plan,
-    callback: ({ error, response }) => {
-
+  const [requestCancelFlexiblePlanTrigger, { isLoading: loadingCancelFlexiblePlan }] =
+    apiSlice.endpoints.cancelFlexiblePlan.useMutation();
+  const requestCancelFlexiblePlan = portRequest(
+    requestCancelFlexiblePlanTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
@@ -133,15 +136,15 @@ export default function ListPlan(props: any) {
 
       setCurrentPlan(null);
       requestCurrentPlan();
-    },
-  });
+    }
+  );
 
-  const [loadingCancelFixPlan, requestCancelFixPlan] = useApi({
-    method: "put",
-    url: Constants.API.order_cancel_fix_plan,
-    callback: ({ error, response }) => {
-
-      if (response == true) {
+  const [requestCancelFixPlanTrigger, { isLoading: loadingCancelFixPlan }] =
+    apiSlice.endpoints.orderCancelFixPlan.useMutation();
+  const requestCancelFixPlan = portRequest(
+    requestCancelFixPlanTrigger,
+    ({ error, response }: ApiResult) => {
+      if ((response as unknown) === true) {
         setCurrentFixPlan(null);
 
         requestCurrentFixPlan({
@@ -150,13 +153,14 @@ export default function ListPlan(props: any) {
           },
         });
       }
-    },
-  });
+    }
+  );
 
-  const [loadingToggleRenewFlexible, requestToggleRenewFlexible] = useApi({
-    method: "post",
-    url: Constants.API.toggle_renew_flexible,
-    callback: ({ error, response }) => {
+  const [requestToggleRenewFlexibleTrigger, { isLoading: loadingToggleRenewFlexible }] =
+    apiSlice.endpoints.toggleRenewFlexible.useMutation();
+  const requestToggleRenewFlexible = portRequest(
+    requestToggleRenewFlexibleTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
@@ -165,14 +169,14 @@ export default function ListPlan(props: any) {
           setAutoRenew(response.isAutoRenew);
         }
       }
-    },
-  });
+    }
+  );
 
-  const [loadingToggleRenewFixPlan, requestToggleRenewFixPlan] = useApi({
-    method: "post",
-    url: Constants.API.toggle_renew_fix,
-    callback: ({ error, response }) => {
-
+  const [requestToggleRenewFixPlanTrigger, { isLoading: loadingToggleRenewFixPlan }] =
+    apiSlice.endpoints.toggleRenewFix.useMutation();
+  const requestToggleRenewFixPlan = portRequest(
+    requestToggleRenewFixPlanTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
@@ -181,8 +185,8 @@ export default function ListPlan(props: any) {
           setAutoRenewFixPlan(response.isAutoRenew);
         }
       }
-    },
-  });
+    }
+  );
 
   useEffect(() => {
 

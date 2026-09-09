@@ -5,10 +5,10 @@ import React, { useEffect, useLayoutEffect, useState } from "react";
 import { View, Image, TouchableOpacity, Alert } from "react-native";
 
 import { Container, Text } from "../../components";
-import useApi from "../../hooks/useApi";
 import Colors from "../../shared/Colors";
 import Constants from "../../shared/Constants";
 import i18n from "../../shared/I18n";
+import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
 
 export default function ServiceProvider(props: any) {
   const navigation = props.navigation;
@@ -21,10 +21,11 @@ export default function ServiceProvider(props: any) {
   const [currentDelSelected, setCurrentDelSelected] = useState<String[]>([]);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const [loadingListServiceProvider, requestListServiceProvider] = useApi({
-    method: "get",
-    url: Constants.API.list_favourite_service_provider,
-    callback: ({ error, response }) => {
+  const [requestListServiceProviderTrigger, { isLoading: loadingListServiceProvider }] =
+    apiSlice.endpoints.listFavouriteServiceProvider.useLazyQuery();
+  const requestListServiceProvider = portRequest(
+    requestListServiceProviderTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
       }
@@ -36,26 +37,28 @@ export default function ServiceProvider(props: any) {
           .map("id")
           .value()
       );
-    },
-  });
+    }
+  );
 
-  const [loadingUpdate, requestUpdate] = useApi({
-    method: "put",
-    url: Constants.API.update_favourite_service_provider,
-    callback: ({ error, response }) => {
+  const [requestUpdateTrigger, { isLoading: loadingUpdate }] =
+    apiSlice.endpoints.updateFavouriteServiceProvider.useMutation();
+  const requestUpdate = portRequest(
+    requestUpdateTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
       }
 
       Alert.alert(i18n.t("home.update_successfully"), error);
-    },
-  });
+    }
+  );
 
-  const [loadingDelete, requestDelete] = useApi({
-    method: "delete",
-    url: Constants.API.delete_favourite_service_provider,
-    callback: ({ error, response }) => {
+  const [requestDeleteTrigger, { isLoading: loadingDelete }] =
+    apiSlice.endpoints.deleteFavouriteServiceProvider.useMutation();
+  const requestDelete = portRequest(
+    requestDeleteTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
@@ -66,8 +69,8 @@ export default function ServiceProvider(props: any) {
           Authorization: `Bearer ${token}`,
         },
       });
-    },
-  });
+    }
+  );
 
   useEffect(() => {
     requestListServiceProvider({

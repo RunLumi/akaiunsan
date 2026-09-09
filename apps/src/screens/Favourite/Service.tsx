@@ -7,10 +7,10 @@ import { View, Image, Alert } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 
 import { Container, Text } from "../../components";
-import useApi from "../../hooks/useApi";
 import Colors from "../../shared/Colors";
 import Constants from "../../shared/Constants";
 import i18n from "../../shared/I18n";
+import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
 
 export default function Service(props: any) {
   const navigation = props.navigation;
@@ -23,10 +23,11 @@ export default function Service(props: any) {
 
   const [listService, setListService] = useState<any[]>([]);
 
-  const [loadingListService, requestListService] = useApi({
-    method: "get",
-    url: Constants.API.list_favourite_service,
-    callback: ({ error, response }) => {
+  const [requestListServiceTrigger, { isLoading: loadingListService }] =
+    apiSlice.endpoints.listFavouriteService.useLazyQuery();
+  const requestListService = portRequest(
+    requestListServiceTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
       }
@@ -38,25 +39,27 @@ export default function Service(props: any) {
           .map("id")
           .value()
       );
-    },
-  });
+    }
+  );
 
-  const [loadingUpdate, requestUpdate] = useApi({
-    method: "put",
-    url: Constants.API.update_favourite_service,
-    callback: ({ error, response }) => {
+  const [requestUpdateTrigger, { isLoading: loadingUpdate }] =
+    apiSlice.endpoints.updateFavouriteService.useMutation();
+  const requestUpdate = portRequest(
+    requestUpdateTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
       }
 
       Alert.alert(i18n.t("home.update_successfully"), error);
-    },
-  });
+    }
+  );
 
-  const [loadingDelete, requestDelete] = useApi({
-    method: "delete",
-    url: Constants.API.delete_favourite_service,
-    callback: ({ error, response }) => {
+  const [requestDeleteTrigger, { isLoading: loadingDelete }] =
+    apiSlice.endpoints.deleteFavouriteService.useMutation();
+  const requestDelete = portRequest(
+    requestDeleteTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
@@ -65,8 +68,8 @@ export default function Service(props: any) {
       Alert.alert(i18n.t("home.delete_successfully"), error);
 
       requestListService();
-    },
-  });
+    }
+  );
 
   useEffect(() => {
     requestListService();

@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import dayjs from "../../shared/dayjs";
 import {
   createWithStore,
@@ -9,6 +8,7 @@ import {
   typeAll,
 } from "../../test-utils/helpers";
 import { installApiRoutes } from "../../test-utils/api-mock";
+import { setFetchFallback } from "../../test-utils/fetch-mock";
 import Constants from "../../shared/Constants";
 
 // The payment promotion callback branches on response.promotionType
@@ -26,26 +26,21 @@ jest.mock("@react-navigation/native", () => ({
 import ServicePayment from "../ServiceScreen/component/Payment";
 import EditPayment from "../EditAndReOrderServiceScreen/component/Payment";
 
-(axios as any).mockResolvedValue({
-  status: 200,
-  data: {
-    data: {
-      items: [
-        {
-          id: "li-1",
-          code: "COSTSP",
-          name: "Special",
-          pricePerUnit: 100,
-          pricePerMore: 120,
-          image: "",
-          content: "content",
-          status: 1,
-        },
-      ],
-      data: [],
-      errors: [],
+setFetchFallback({
+  items: [
+    {
+      id: "li-1",
+      code: "COSTSP",
+      name: "Special",
+      pricePerUnit: 100,
+      pricePerMore: 120,
+      image: "",
+      content: "content",
+      status: 1,
     },
-  },
+  ],
+  data: [],
+  errors: [],
 });
 
 const preloadedState = {
@@ -119,7 +114,8 @@ describe("payment promotion matrix (Phase 3 characterization)", () => {
   it.each(PROMO_CASES)(
     "applies the %s promotion branch",
     async (label, Component, content) => {
-      installApiRoutes(axios as any, {
+      installApiRoutes(
+  {
         [Constants.API.promotion_apply]: {
           promotionType: promoTypeId[label],
           content: JSON.stringify(content),

@@ -15,8 +15,8 @@ import { TYPES } from "../../../redux/actions";
 import { CheckBox, AirbnbRating, Overlay } from "react-native-elements";
 import Enum from "../../../shared/Enum";
 import Layout from "../../../shared/Layout";
-import useApi from "../../../hooks/useApi";
 import Constants from "../../../shared/Constants";
+import { apiSlice, portRequest, type ApiResult } from "../../../redux/apiSlice";
 
 export default function Option(props: any) {
   const extraService = props.extraService || [];
@@ -49,10 +49,11 @@ export default function Option(props: any) {
   const [pricePreferLanguage, setPricePreferLanguage] = React.useState<any[]>([]);
   const dispatch = useDispatch();
   const [language, setLanguage] = React.useState({ label: "", value: "" });
-  const [loadingConfigPrice, requestConfigPrice] = useApi({
-    method: "get",
-    url: Constants.API.config_price,
-    callback: ({ error, response }) => {
+  const [requestConfigPriceTrigger, { isLoading: loadingConfigPrice }] =
+    apiSlice.endpoints.configPrice.useLazyQuery();
+  const requestConfigPrice = portRequest(
+    requestConfigPriceTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         if (response.items && response.items[0].pricesModel) {
@@ -78,12 +79,13 @@ export default function Option(props: any) {
           setDataExtraService(uncheckDataExtraService);
         }
       }
-    },
-  });
-  const [loadingPriceSpecialRequest, requestPriceSpecialRequest] = useApi({
-    method: "get",
-    url: Constants.API.price_special_request,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [requestPriceSpecialRequestTrigger, { isLoading: loadingPriceSpecialRequest }] =
+    apiSlice.endpoints.priceSpecialRequest.useLazyQuery();
+  const requestPriceSpecialRequest = portRequest(
+    requestPriceSpecialRequestTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
       } else {
@@ -98,8 +100,8 @@ export default function Option(props: any) {
         setPricePreferLanguage(getPricePreferLanguage);
         setPriceSpecifyHelper(getPriceSpecifyHelper);
       }
-    },
-  });
+    }
+  );
   const childRef = React.useRef<any>(null);
   const onChooseHelper = () => {
     childRef.current.openModalHelper();

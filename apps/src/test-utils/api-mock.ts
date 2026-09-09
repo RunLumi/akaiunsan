@@ -1,28 +1,13 @@
-// Per-endpoint response routing for the characterization suites. During the
-// Phase 5 strangler this serves BOTH transports with identical payloads:
-//  - axios (useApi on not-yet-ported screens) via the wrapped envelope,
-//  - fetch (RTK Query on ported screens) via the fetch-mock route table,
-//    where the body IS the payload (RTK serves direct JSON bodies).
-// After useApi is deleted the axios leg disappears.
+// Per-endpoint response routing for the characterization suites. Since the
+// Phase 5 completion every screen reads RTK Query over the global fetch stub,
+// so routes are fetch bodies (the payload itself, no axios envelope) and the
+// optional fallback serves any endpoint a suite does not list.
 import { installFetchRoutes, setFetchFallback } from "./fetch-mock";
 
-export const defaultEnvelope = (data: any = {}) => ({
-  status: 200,
-  data: { data, errors: [] },
-});
-
 export const installApiRoutes = (
-  axiosMock: any,
   routes: Record<string, any>,
   fallbackData?: any
 ) => {
-  axiosMock.mockImplementation((config: any) => {
-    const url = config?.url || "";
-    if (routes[url] !== undefined) {
-      return Promise.resolve(defaultEnvelope(routes[url]));
-    }
-    return Promise.resolve(defaultEnvelope(fallbackData));
-  });
   installFetchRoutes(routes);
   if (fallbackData !== undefined) {
     setFetchFallback(fallbackData);

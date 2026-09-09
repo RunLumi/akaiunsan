@@ -11,19 +11,19 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import { Container, Loading, Text } from "../../components";
 import colors from "../../shared/Colors";
 import Constants from "../../shared/Constants";
-import useApi from "../../hooks/useApi";
 import i18n from "../../shared/I18n";
+import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
 
 export default function PreferToFriend() {
   const [dataPrefer, setDataPrefer] = useState<any>([]);
   const [referrenCode, setReferrenCode] = useState("");
   const [totalFriend, setTotalFriend] = useState(0);
   const [page, setPage] = useState(2);
-  const [loadingReferralList, requestReferralList] = useApi({
-    method: "get",
-    url: Constants.API.referral_list,
-    callback: ({ error, response }) => {
-
+  const [requestReferralListTrigger, { isLoading: loadingReferralList }] =
+    apiSlice.endpoints.referralList.useLazyQuery();
+  const requestReferralList = portRequest(
+    requestReferralListTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         let data = [...dataPrefer, ...response.items].filter(
@@ -32,8 +32,8 @@ export default function PreferToFriend() {
         setDataPrefer(data);
         setTotalFriend(response.total);
       }
-    },
-  });
+    }
+  );
 
   const user = useAppSelector((state) => state.auth.user);
   const renderItem = (item: any, idx: any) => (

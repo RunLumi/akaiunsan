@@ -19,7 +19,6 @@ import {
   Loading,
   Text,
 } from "../../components";
-import useApi from "../../hooks/useApi";
 import { success, TYPES } from "../../redux/actions";
 import Colors from "../../shared/Colors";
 import Constants from "../../shared/Constants";
@@ -29,6 +28,7 @@ import Styles from "../../shared/Styles";
 import { NavigationRoot } from "../../navigation/root";
 import { add, isEmpty } from "lodash";
 import { Ionicons } from "@expo/vector-icons";
+import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
 const { width } = Dimensions.get("screen");
 export default function EditProfile(props: any) {
   const dispatch = useDispatch();
@@ -89,10 +89,11 @@ export default function EditProfile(props: any) {
     isError: false,
     msgErr: "",
   });
-  const [loadingUserMe, requestUserMe] = useApi({
-    method: "get",
-    url: Constants.API.get_profile,
-    callback: ({ error, response }) => {
+  const [requestUserMeTrigger, { isLoading: loadingUserMe }] =
+    apiSlice.endpoints.getProfile.useLazyQuery();
+  const requestUserMe = portRequest(
+    requestUserMeTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         dispatch({ type: success(TYPES.AUTH.LOG_OUT) });
@@ -105,12 +106,13 @@ export default function EditProfile(props: any) {
         });
         props.navigation.goBack();
       }
-    },
-  });
-  const [loading, request] = useApi({
-    method: "put",
-    url: Constants.API.edit_profile,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [requestTrigger, { isLoading: loading }] =
+    apiSlice.endpoints.editProfile.useMutation();
+  const request = portRequest(
+    requestTrigger,
+    ({ error, response }: ApiResult) => {
       if (error)
         setTimeout(() => {
           Alert.alert(i18n.t("auth.error"), error);
@@ -123,8 +125,8 @@ export default function EditProfile(props: any) {
           Alert.alert(i18n.t("home.update_successfully"));
         }
       }
-    },
-  });
+    }
+  );
 
   const validatePhone = (phone: any) => {
     const re = /^([0-9]{9,10})$/;

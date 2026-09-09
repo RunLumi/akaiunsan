@@ -17,7 +17,6 @@ import {
   Loading,
   Text,
 } from "../../../components";
-import useApi from "../../../hooks/useApi";
 import colors from "../../../shared/Colors";
 import Constants from "../../../shared/Constants";
 import Enum from "../../../shared/Enum";
@@ -30,6 +29,7 @@ import WebView from "react-native-webview";
 import { Ionicons } from "@expo/vector-icons";
 import { AddFixPlan } from "..";
 import Layout from "../../../shared/Layout";
+import { apiSlice, portRequest, type ApiResult } from "../../../redux/apiSlice";
 const { width } = Dimensions.get("window");
 
 export default function PickAddress(props: any) {
@@ -160,10 +160,11 @@ export default function PickAddress(props: any) {
       ),
     },
   ]);
-  const [loadingServiceDetail, requestServiceDetail] = useApi({
-    method: "get",
-    url: Constants.API.services_management_item,
-    callback: ({ error, response }) => {
+  const [requestServiceDetailTrigger, { isLoading: loadingServiceDetail }] =
+    apiSlice.endpoints.servicesManagementItem.useLazyQuery();
+  const requestServiceDetail = portRequest(
+    requestServiceDetailTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
       } else {
@@ -185,13 +186,14 @@ export default function PickAddress(props: any) {
 
         setExtraService(dataExtraService);
       }
-    },
-  });
+    }
+  );
 
-  const [loadingPreferLanguage, requestPreferLanguage] = useApi({
-    method: "get",
-    url: Constants.API.languages,
-    callback: ({ error, response }) => {
+  const [requestPreferLanguageTrigger, { isLoading: loadingPreferLanguage }] =
+    apiSlice.endpoints.languages.useLazyQuery();
+  const requestPreferLanguage = portRequest(
+    requestPreferLanguageTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
       } else {
@@ -202,23 +204,25 @@ export default function PickAddress(props: any) {
 
         setPreferLanguge(items);
       }
-    },
-  });
-  const [loadingPrice, requestPrice] = useApi({
-    method: "get",
-    url: Constants.API.config_price,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [requestPriceTrigger, { isLoading: loadingPrice }] =
+    apiSlice.endpoints.configPrice.useLazyQuery();
+  const requestPrice = portRequest(
+    requestPriceTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       if (response.items && response.items[0].pricesModel) {
         let priceModel = JSON.parse(response.items[0].pricesModel);
         setPriceModel(priceModel);
       }
-    },
-  });
-  const [loadingConfigPrice, requestConfigPrice] = useApi({
-    method: "get",
-    url: Constants.API.config_price_subscription,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [requestConfigPriceTrigger, { isLoading: loadingConfigPrice }] =
+    apiSlice.endpoints.configPriceSubscription.useLazyQuery();
+  const requestConfigPrice = portRequest(
+    requestConfigPriceTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
       } else {
@@ -226,13 +230,14 @@ export default function PickAddress(props: any) {
         const priceModel = JSON.parse(cfgPrice.pricesModel);
         setSalePriceModel(priceModel);
       }
-    },
-  });
+    }
+  );
 
-  const [loadingRequestOrder, requestOrder] = useApi({
-    method: "post",
-    url: Constants.API.order_fix_plan_maid,
-    callback: ({ error, response }) => {
+  const [requestOrderTrigger, { isLoading: loadingRequestOrder }] =
+    apiSlice.endpoints.orderFixPlanMaid.useMutation();
+  const requestOrder = portRequest(
+    requestOrderTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         setTimeout(() => {
           Alert.alert(i18n.t("auth.error"), error);
@@ -248,8 +253,8 @@ export default function PickAddress(props: any) {
       //     },
       //   });
       // }
-    },
-  });
+    }
+  );
 
   // const [loadingCancelPayment, requestCancelPayment] = useApi({
   //   method: "post",
@@ -261,10 +266,12 @@ export default function PickAddress(props: any) {
   //   },
   // });
 
-  const [loadingCharges, requestCharges] = useApi({
-    method: "post",
-    url: Constants.API.chargesplan,
-    callback: ({ error, response }) => {
+  const [chargesPlanTrigger, { isLoading: loadingCharges }] =
+    apiSlice.endpoints.chargesplan.useMutation();
+  const requestCharges = portRequest(
+    chargesPlanTrigger,
+    ({ error, response }: ApiResult) => {
+
       if (error) {
         setTimeout(() => {
           Alert.alert(i18n.t("auth.error"), error);
@@ -272,8 +279,8 @@ export default function PickAddress(props: any) {
         return;
       }
       setIsOrderSuccess(true);
-    },
-  });
+    }
+  );
   const getPrice = () => {
     switch (serviceType) {
       case Enum.SERVICE_TYPE.MaidService:

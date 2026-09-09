@@ -3,11 +3,11 @@ import React, { useEffect, useState } from "react";
 import { View, TouchableOpacity, Alert } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { Button, Container, Loading, Text } from "../../../components";
-import useApi from "../../../hooks/useApi";
 import Colors from "../../../shared/Colors";
 import Theme from "../../../shared/theme";
 import Constants from "../../../shared/Constants";
 import i18n from "../../../shared/I18n";
+import { apiSlice, portRequest, type ApiResult } from "../../../redux/apiSlice";
 
 export default function Agree(props: any) {
   const { plan, onGoBack } = props.route.params;
@@ -15,18 +15,19 @@ export default function Agree(props: any) {
   const [agreeText, setAgreeText] = useState();
   const [agree, setAgree] = useState(true);
 
-  const [loadingAgreeSubscription, requestAgreeSubscription] = useApi({
-    method: "get",
-    url: Constants.API.get_agree_plan,
-    callback: ({ error, response }) => {
+  const [requestAgreeSubscriptionTrigger, { isLoading: loadingAgreeSubscription }] =
+    apiSlice.endpoints.getAgreePlan.useLazyQuery();
+  const requestAgreeSubscription = portRequest(
+    requestAgreeSubscriptionTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
       }
 
       setAgreeText(response && response.agree);
-    },
-  });
+    }
+  );
 
   useEffect(() => {
     requestAgreeSubscription({

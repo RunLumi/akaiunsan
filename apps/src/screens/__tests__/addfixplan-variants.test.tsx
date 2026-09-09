@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import dayjs from "../../shared/dayjs";
 import {
   createWithStore,
@@ -8,6 +7,7 @@ import {
   pressAll,
   typeAll,
 } from "../../test-utils/helpers";
+import { setFetchFallback } from "../../test-utils/fetch-mock";
 
 // AddFixPlan is a controlled sub-screen (FixPlan flow): it takes its whole
 // booking context as props and drives the times/calendar/selection state.
@@ -23,15 +23,10 @@ jest.mock("@react-navigation/native", () => ({
 
 import { AddFixPlan } from "../Other/FixPlan/AddFixPlan";
 
-(axios as any).mockResolvedValue({
-  status: 200,
-  data: {
-    data: {
+setFetchFallback({
       items: [{ id: "li-1", name: "Special", price: 100, status: 1 }],
       data: [],
       errors: [],
-    },
-  },
 });
 
 const preloadedState = {

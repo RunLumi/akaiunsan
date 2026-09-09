@@ -1,6 +1,5 @@
 import React from "react";
 import { act } from "react-test-renderer";
-import axios from "axios";
 import Constants from "../../shared/Constants";
 import dayjs from "../../shared/dayjs";
 import { createWithApiStore, flush } from "../../test-utils/helpers";
@@ -226,7 +225,8 @@ const fallbackData = {
   status: "OK",
 };
 
-installApiRoutes(axios as any, {
+installApiRoutes(
+  {
   // the booking wizards + FixPlan parse these JSON strings
   [Constants.API.services_management_item]: {
     serviceDetail: { id: "svc-1", name: "Test service", price: 100 },

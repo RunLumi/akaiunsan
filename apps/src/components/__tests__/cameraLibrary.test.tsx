@@ -1,20 +1,36 @@
 import React from "react";
 import { Alert } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-import axios from "axios";
 import { CameraLibrary } from "../CameraLibrary";
 import i18n from "../../shared/I18n";
 import { createWithStore, makeApiStore, act } from "../../test-utils/helpers";
 
-const mockAxios = axios as unknown as jest.Mock;
-
 const libButton = (root: any) =>
   root.findAllByProps({ title: i18n.t("home.image_library") })[0];
 
+// The upload posts a FormData body through fetch; replace the global stub's
+// implementation per-test (restored by jest.restoreAllMocks in afterEach).
+const realFetch = globalThis.fetch;
+const mockFetchImpl = (impl: (url: string) => any) => {
+  (globalThis.fetch as jest.Mock).mockImplementation((url: any, init?: any) =>
+    impl(typeof url === "string" ? url : url?.url || "")
+  );
+};
+const globalFetchPostCalls = () =>
+  (globalThis.fetch as jest.Mock).mock.calls.filter((c: any[]) => {
+    const init = typeof c[0] === "string" ? c[1] : undefined;
+    return (init?.method || "POST") === "POST";
+  }).length;
+
 describe("CameraLibrary", () => {
   beforeEach(() => {
-    mockAxios.mockReset();
-    mockAxios.mockResolvedValue({ status: 200, data: { id: "img-1" } });
+    (globalThis.fetch as jest.Mock).mockClear();
+    mockFetchImpl(async (url) => ({
+      ok: true,
+      status: 200,
+      url: String(url),
+      json: async () => ({ id: "img-1" }),
+    }));
     // Re-seed native mocks so a choice made in one test can't leak into the next.
     (ImagePicker.requestMediaLibraryPermissionsAsync as jest.Mock).mockResolvedValue(
       { status: "granted" }
@@ -49,11 +65,14 @@ describe("CameraLibrary", () => {
     );
     const libraryBtn = libButton(root);
     await act(async () => libraryBtn.props.onPress());
-    expect(mockAxios).toHaveBeenCalledTimes(1);
-    expect(mockAxios.mock.calls[0][0]).toMatchObject({
-      method: "POST",
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+    const uploadCalls = (globalThis.fetch as jest.Mock).mock.calls.filter(
+      (c: any[]) => String(typeof c[0] === "string" ? c[0] : c[0]?.url).includes("/uploads/image")
+    );
+    expect(uploadCalls).toHaveLength(1);
+    const [uploadUrl, uploadInit] = uploadCalls[0];
+    expect(String(uploadUrl)).toContain("/uploads/image");
+    expect(uploadInit.method).toBe("POST");
+    expect(uploadInit.headers["Content-Type"]).toBe("multipart/form-data");
     expect(children).toHaveBeenCalledWith({ id: "img-1" });
   });
 
@@ -68,7 +87,7 @@ describe("CameraLibrary", () => {
     );
     const libraryBtn = libButton(root);
     await act(async () => libraryBtn.props.onPress());
-    expect(mockAxios).not.toHaveBeenCalled();
+    expect(globalFetchPostCalls()).toBe(0);
     expect(children).not.toHaveBeenCalled();
   });
 
@@ -93,7 +112,9 @@ describe("CameraLibrary", () => {
   });
 
   it("upload failure alerts instead of calling children", async () => {
-    mockAxios.mockRejectedValue(new Error("boom"));
+    mockFetchImpl(async () => {
+      throw new Error("boom");
+    });
     (ImagePicker.launchImageLibraryAsync as jest.Mock).mockResolvedValue({
       canceled: false,
       assets: [{ uri: "file:///photo.png" }],
@@ -110,7 +131,7 @@ describe("CameraLibrary", () => {
     // undefined, but still calls children with that result
     expect(alertSpy).toHaveBeenCalledWith(
       i18n.t("auth.error"),
-      expect.objectContaining({ message: "boom" })
+      "Error: boom"
     );
     expect(children).toHaveBeenCalledWith(undefined);
     alertSpy.mockRestore();

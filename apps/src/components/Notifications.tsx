@@ -2,7 +2,6 @@ import Constants from "expo-constants";
 import * as Notifications from "expo-notifications";
 import React, { useState, useEffect, useRef } from "react";
 import { View, Platform, Alert } from "react-native";
-import useApi from "../hooks/useApi";
 import AppConstant from "../shared/Constants";
 import messaging from "@react-native-firebase/messaging";
 import { NavigationRoot } from "../navigation/root";

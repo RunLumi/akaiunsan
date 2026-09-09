@@ -11,13 +11,13 @@ import { Container, Text, Loading, Button } from "../../components";
 import colors from "../../shared/Colors";
 import Theme from "../../shared/theme";
 import Constants from "../../shared/Constants";
-import useApi from "../../hooks/useApi";
 import i18n from "../../shared/I18n";
 import { Ionicons } from "@expo/vector-icons";
 import _ from "lodash";
 import dayjs from "../../shared/dayjs";
 import { getSpecialRequest, getStatus } from "../../shared/Utils";
 import Enum from "../../shared/Enum";
+import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
 
 export default function InboxDetail(props: any) {
   const [title, setTitle] = useState<any>();
@@ -28,22 +28,24 @@ export default function InboxDetail(props: any) {
   const [showDialog, setShowDialog] = useState(false);
   const [reason, setReason] = useState<String>();
 
-  const [loadingDetailOrder, requestDetailOrder] = useApi({
-    method: "get",
-    url: Constants.API.detail_booking,
-    callback: ({ error, response }) => {
+  const [requestDetailOrderTrigger, { isLoading: loadingDetailOrder }] =
+    apiSlice.endpoints.detailBooking.useLazyQuery();
+  const requestDetailOrder = portRequest(
+    requestDetailOrderTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
       } else {
         setOrder(response);
       }
-    },
-  });
+    }
+  );
 
-  const [loadingInboxDetail, requestInboxDetail] = useApi({
-    method: "get",
-    url: Constants.API.get_notification_detail,
-    callback: ({ error, response }) => {
+  const [requestInboxDetailTrigger, { isLoading: loadingInboxDetail }] =
+    apiSlice.endpoints.getNotificationDetail.useLazyQuery();
+  const requestInboxDetail = portRequest(
+    requestInboxDetailTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
       } else {
@@ -69,12 +71,13 @@ export default function InboxDetail(props: any) {
           }
         }
       }
-    },
-  });
-  const [loadingRequestCancel, requestCancel] = useApi({
-    method: "post",
-    url: Constants.API.cancel_order,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [requestCancelTrigger, { isLoading: loadingRequestCancel }] =
+    apiSlice.endpoints.cancelOrder.useMutation();
+  const requestCancel = portRequest(
+    requestCancelTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
@@ -87,8 +90,8 @@ export default function InboxDetail(props: any) {
 
       setShowDialog(false);
       Alert.alert("Booking", "Booking cancelled!");
-    },
-  });
+    }
+  );
 
   useEffect(() => {
     requestInboxDetail({

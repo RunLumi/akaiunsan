@@ -18,8 +18,8 @@ import { AddCardPayment } from "./AddCardPayment";
 import i18n from "../shared/I18n";
 import Constants from "../shared/Constants";
 import _ from "lodash";
-import useApi from "../hooks/useApi";
 import Layout from "../shared/Layout";
+import { apiSlice, portRequest, type ApiResult } from "../redux/apiSlice";
 interface Props {
   style?: StyleProp<ViewStyle>;
   children?: any;
@@ -45,10 +45,11 @@ export const ListCardPayment = ({
     },
   }));
 
-  const [loadingListCard, requestListCard] = useApi({
-    method: "get",
-    url: Constants.API.payment_card_list,
-    callback: ({ error, response }) => {
+  const [requestListCardTrigger, { isLoading: loadingListCard }] =
+    apiSlice.endpoints.getPaymentCards.useLazyQuery();
+  const requestListCard = portRequest(
+    requestListCardTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
@@ -62,20 +63,21 @@ export const ListCardPayment = ({
       }
       setIdDefaultCard(response.customer && response.customer.default_card);
       setIdSelectCard(response.customer && response.customer.default_card);
-    },
-  });
+    }
+  );
 
-  const [loadingCardDefault, requestCardDefault] = useApi({
-    method: "put",
-    url: Constants.API.payment_card_default,
-    callback: ({ error, response }) => {
+  const [requestCardDefaultTrigger, { isLoading: loadingCardDefault }] =
+    apiSlice.endpoints.setDefaultPaymentCard.useMutation();
+  const requestCardDefault = portRequest(
+    requestCardDefaultTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
       }
       requestListCard();
-    },
-  });
+    }
+  );
 
   const onPressClose = () => {
     setModalListCard(false);

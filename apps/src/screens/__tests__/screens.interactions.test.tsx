@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import Constants from "../../shared/Constants";
 import dayjs from "../../shared/dayjs";
 import {
@@ -220,7 +219,8 @@ const fallbackData = {
   status: "OK",
 };
 
-installApiRoutes(axios as any, {
+installApiRoutes(
+  {
   // AllSubscriptionPlan reads the plan map keys (Flexible/Fix)
   [Constants.API.get_subscription]: {
     Flexible: [listItem({ id: "plan-flex", serviceName: "Flexible" })],

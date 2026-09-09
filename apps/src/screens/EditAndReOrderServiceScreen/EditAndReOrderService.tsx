@@ -20,7 +20,6 @@ import {
   Result,
 } from "../ServiceScreen/component";
 import i18n from "../../shared/I18n";
-import useApi from "../../hooks/useApi";
 import Enum from "../../shared/Enum";
 import { WebView } from "react-native-webview";
 import { Overlay } from "react-native-elements";
@@ -28,6 +27,7 @@ import dayjs from "../../shared/dayjs";
 import Layout from "../../shared/Layout";
 import _, { isEmpty, isNil } from "lodash";
 import Config from "react-native-config";
+import { apiSlice, portRequest, type ApiResult, type RequestArg } from "../../redux/apiSlice";
 
 export default function EditAndReOrderService(props: any) {
   const childRef = React.useRef<any>(null);
@@ -105,10 +105,11 @@ export default function EditAndReOrderService(props: any) {
   const [addPricePreferLanguage, setAddPricePreferLanguage] = useState(true);
   const [activitiesPetCare, setActivitiesPetCare] = useState("");
   const [bookingDetail, setBookingDetail] = useState(params.data?.customerInfo);
-  const [loadingEditOrder, requestEditOrder] = useApi({
-    method: "put",
-    url: Constants.API.orders_edit,
-    callback: ({ error, response }) => {
+  const [requestEditOrderTrigger, { isLoading: loadingEditOrder }] =
+    apiSlice.endpoints.ordersEdit.useMutation();
+  const requestEditOrder = portRequest(
+    requestEditOrderTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         Alert.alert(
@@ -124,23 +125,25 @@ export default function EditAndReOrderService(props: any) {
           { cancelable: true }
         );
       }
-    },
-  });
-  const [loadingBookingDetail, requestBookingDetail] = useApi({
-    method: "get",
-    url: Constants.API.booking_detail,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [requestBookingDetailTrigger, { isLoading: loadingBookingDetail }] =
+    apiSlice.endpoints.bookingDetail.useLazyQuery();
+  const requestBookingDetail = portRequest(
+    requestBookingDetailTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         setBookingDetail(response && response.customerInfo);
       }
-    },
-  });
+    }
+  );
 
-  const [loadingServiceDetail, requestServiceDetail] = useApi({
-    method: "get",
-    url: Constants.API.services_management_item,
-    callback: ({ error, response }) => {
+  const [requestServiceDetailTrigger, { isLoading: loadingServiceDetail }] =
+    apiSlice.endpoints.servicesManagementItem.useLazyQuery();
+  const requestServiceDetail = portRequest(
+    requestServiceDetailTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         setServiceDetail(response.serviceDetail);
@@ -184,12 +187,13 @@ export default function EditAndReOrderService(props: any) {
         }
         setExtraService(dataExtraService);
       }
-    },
-  });
-  const [loadingPreferLanguage, requestPreferLanguage] = useApi({
-    method: "get",
-    url: Constants.API.languages,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [requestPreferLanguageTrigger, { isLoading: loadingPreferLanguage }] =
+    apiSlice.endpoints.languages.useLazyQuery();
+  const requestPreferLanguage = portRequest(
+    requestPreferLanguageTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         let dataLanguage = response.items.map((x: any) => {
@@ -200,12 +204,13 @@ export default function EditAndReOrderService(props: any) {
         });
         setPreferLanguge(dataLanguage);
       }
-    },
-  });
-  const [loadingConfigPrice, requestConfigPrice] = useApi({
-    method: "get",
-    url: Constants.API.config_price,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [requestConfigPriceTrigger, { isLoading: loadingConfigPrice }] =
+    apiSlice.endpoints.configPrice.useLazyQuery();
+  const requestConfigPrice = portRequest(
+    requestConfigPriceTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         if (response.items && response.items[0].pricesModel) {
@@ -286,12 +291,13 @@ export default function EditAndReOrderService(props: any) {
           }
         }
       }
-    },
-  });
-  const [loadingOrder, requestOrder] = useApi({
-    method: "post",
-    url: apiOrder,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [requestOrderTrigger, { isLoading: loadingOrder }] =
+    apiSlice.endpoints.ordersMaid.useMutation();
+  const requestOrder = portRequest(
+    (arg?: RequestArg) => requestOrderTrigger({ ...(arg || {}), url: apiOrder }),
+    ({ error, response }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         if (isCreditCard) {
@@ -306,22 +312,24 @@ export default function EditAndReOrderService(props: any) {
           setCurrentStep(currentStep + 1);
         }
       }
-    },
-  });
-  const [loadingCharges, requestCharges] = useApi({
-    method: "post",
-    url: Constants.API.charges,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [requestChargesTrigger, { isLoading: loadingCharges }] =
+    apiSlice.endpoints.charges.useMutation();
+  const requestCharges = portRequest(
+    requestChargesTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         setCurrentStep(currentStep + 1);
       }
-    },
-  });
-  const [loadingChargesCard, requestChargesCard] = useApi({
-    method: "post",
-    url: Constants.API.chargescard,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [requestChargesCardTrigger, { isLoading: loadingChargesCard }] =
+    apiSlice.endpoints.chargescard.useMutation();
+  const requestChargesCard = portRequest(
+    requestChargesCardTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         if (params.data?.order) {
@@ -338,19 +346,21 @@ export default function EditAndReOrderService(props: any) {
           setCurrentStep(currentStep + 1);
         }
       }
-    },
-  });
-  const [loadingCancelPayment, requestCancelPayment] = useApi({
-    method: "post",
-    url: Constants.API.orders_cancel,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [requestCancelPaymentTrigger, { isLoading: loadingCancelPayment }] =
+    apiSlice.endpoints.ordersCancel.useMutation();
+  const requestCancelPayment = portRequest(
+    requestCancelPaymentTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
-    },
-  });
-  const [loadingPaymentPetcare, requestPaymentPetcare] = useApi({
-    method: "post",
-    url: Constants.API.payment_petcare,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [requestPaymentPetcareTrigger, { isLoading: loadingPaymentPetcare }] =
+    apiSlice.endpoints.paymentPetcare.useMutation();
+  const requestPaymentPetcare = portRequest(
+    requestPaymentPetcareTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         Alert.alert("Payment", "Update payment successfuly!", [
@@ -362,8 +372,8 @@ export default function EditAndReOrderService(props: any) {
           },
         ]);
       }
-    },
-  });
+    }
+  );
   const [steps, setSteps] = useState([
     {
       step: 0,

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Alert, StyleSheet, Image } from "react-native";
 import { Button, Container, Loading, Text } from "../../components";
-import useApi from "../../hooks/useApi";
 import Colors from "../../shared/Colors";
 import Constants from "../../shared/Constants";
 import i18n from "../../shared/I18n";
@@ -14,6 +13,7 @@ import { NavigationRoot } from "../../navigation/root";
 import { getStatus } from "../../shared/Utils";
 import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
+import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
 
 export default function PromotionDetail(props: any) {
   const params = props.route.params;
@@ -21,21 +21,23 @@ export default function PromotionDetail(props: any) {
   const [currentDetail, setCurrentDetail] = useState<any>({});
   const [rating, setRating] = useState(0);
   const [subscriptionPlanActive, setSubscriptionPlanActive] = useState<any>({});
-  const [loadingBookingDetail, requestBookingDetail] = useApi({
-    method: "get",
-    url: Constants.API.booking_detail,
-    callback: ({ error, response }) => {
+  const [requestBookingDetailTrigger, { isLoading: loadingBookingDetail }] =
+    apiSlice.endpoints.bookingDetail.useLazyQuery();
+  const requestBookingDetail = portRequest(
+    requestBookingDetailTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         setCurrentDetail(response);
       }
-    },
-  });
+    }
+  );
 
-  const [loadingRequestReview, requestReview] = useApi({
-    method: "post",
-    url: Constants.API.review_order,
-    callback: ({ error, response }) => {
+  const [requestReviewTrigger, { isLoading: loadingRequestReview }] =
+    apiSlice.endpoints.reviewOrder.useMutation();
+  const requestReview = portRequest(
+    requestReviewTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
@@ -49,12 +51,13 @@ export default function PromotionDetail(props: any) {
           orderId: params?.item.orderId,
         },
       });
-    },
-  });
-  const [loadingCurrentPlan, requestCurrentPlan] = useApi({
-    method: "get",
-    url: Constants.API.get_current_plan,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [requestCurrentPlanTrigger, { isLoading: loadingCurrentPlan }] =
+    apiSlice.endpoints.getCurrentPlan.useLazyQuery();
+  const requestCurrentPlan = portRequest(
+    requestCurrentPlanTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
@@ -65,8 +68,8 @@ export default function PromotionDetail(props: any) {
         );
         setSubscriptionPlanActive(getSubscriptionPlanActive);
       }
-    },
-  });
+    }
+  );
 
   const onPressReview = () => {
     requestReview({

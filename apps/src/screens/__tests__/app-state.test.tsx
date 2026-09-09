@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import Constants from "../../shared/Constants";
 import { AppState } from "react-native";
 import { createWithStore, makeApiStore, flush, pressAll, typeAll } from "../../test-utils/helpers";
@@ -107,7 +106,6 @@ const fallbackData = {
 
 // AllSubscriptionPlan reads the plan map keys off its response.
 installApiRoutes(
-  axios as any,
   {
     [Constants.API.get_subscription]: {
       Flexible: fallbackData.data.data.items.filter((i: any) => i.id === "li-1"),

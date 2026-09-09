@@ -17,7 +17,6 @@ import i18n from "../shared/I18n";
 import Constants from "../shared/Constants";
 import Colors from "../shared/Colors";
 import Theme from "../shared/theme";
-import axios from "axios";
 import { Loading } from ".";
 
 interface Props {
@@ -46,20 +45,17 @@ export const CameraLibrary = ({
     } as any);
     bodyFormData.append("Content-Type", "image/png");
 
-    return await axios({
-      url: `${Constants.API.base}${Constants.API.upload_image}`,
+    return await fetch(`${Constants.API.base}${Constants.API.upload_image}`, {
       method: "POST",
-      data: bodyFormData,
+      body: bodyFormData,
       headers: {
         Accept: "application/json",
         "Content-Type": "multipart/form-data",
       },
     })
-      .then((response) => {
-        return response.data;
-      })
+      .then((response) => response.json())
       .catch((error) => {
-        if (error) Alert.alert(i18n.t("auth.error"), error);
+        if (error) Alert.alert(i18n.t("auth.error"), String(error));
       })
       .finally(() => setLoadingImage(false));
   };

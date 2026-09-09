@@ -1,7 +1,5 @@
 import React from "react";
-import axios from "axios";
 import dayjs from "../../shared/dayjs";
-import Constants from "../../shared/Constants";
 import {
   createWithStore,
   makeApiStore,
@@ -10,8 +8,8 @@ import {
   typeAll,
 } from "../../test-utils/helpers";
 import {
-  installFetchRoutes,
   setFetchBehavior,
+  setFetchFallback,
   resetFetchRoutes,
 } from "../../test-utils/fetch-mock";
 
@@ -186,16 +184,6 @@ const EXTRA_PROPS: Record<string, any> = {
   },
 };
 
-// Screens already ported to RTK Query (Phase 5): their request states are
-// driven through the fetch stub (test-utils/fetch-mock.ts) — axios mocks no
-// longer reach them. Each variant below flips both transports.
-const PORTED = new Set([
-  "Main/Home",
-  "Main/Booking",
-  "Main/Inbox",
-  "Payment/PaymentList",
-]);
-
 // Generic empty envelope covering every ported callback's reads (items lists,
 // page/totalUnRead, the payment card map).
 const emptyFetchEnvelope = () => ({
@@ -206,25 +194,11 @@ const emptyFetchEnvelope = () => ({
   customer: { cards: { data: [] }, default_card: "" },
 });
 
-// Every Constants.API path the ported screens read, so the empty variant can
-// starve them all (extend per module as ports land).
-const PORTED_PATHS = [
-  Constants.API.get_profile,
-  Constants.API.update_language,
-  Constants.API.list_favourite_service,
-  Constants.API.get_banner,
-  Constants.API.services_management,
-  Constants.API.promotion_updates,
-  Constants.API.get_current_plan,
-  Constants.API.get_notification,
-];
-
 const applyFetchVariant = (variant: "empty" | "error" | "pending") => {
   resetFetchRoutes();
   if (variant === "empty") {
-    const empty: Record<string, any> = {};
-    for (const path of PORTED_PATHS) empty[path] = emptyFetchEnvelope();
-    installFetchRoutes(empty);
+    // fallback covers every endpoint, mirroring the old axios empty envelope
+    setFetchFallback(emptyFetchEnvelope());
   } else if (variant === "error") {
     setFetchBehavior({ rejectAll: true });
   } else {
@@ -242,20 +216,15 @@ describe("screens alternative-state variants (Phase 3 characterization)", () => 
   });
 
   it("empty-list responses render every screen's empty branches", async () => {
-    (axios as any).mockResolvedValue({
-      status: 200,
-      data: { data: { items: [], data: [], errors: [] } },
-    });
+    applyFetchVariant("empty");
     for (const [label, Screen] of CASES) {
-      const ported = PORTED.has(label);
-      if (ported) applyFetchVariant("empty");
       const renderer = createWithStore(
         <Screen
           navigation={mockNavInstance}
           route={routeMock(baseParams)}
           {...(EXTRA_PROPS[label] || {})}
         />,
-        ported ? makeApiStore(preloadedState) : makeApiStore(preloadedState)
+        makeApiStore(preloadedState)
       );
       await flush();
       expect(renderer.toJSON()).not.toBeNull();
@@ -266,25 +235,20 @@ describe("screens alternative-state variants (Phase 3 characterization)", () => 
         await flush();
       }
       renderer.unmount();
-      if (ported) resetFetchRoutes();
     }
   }, 30000);
 
   it("request errors route every screen through its error branch", async () => {
-    (axios as any).mockRejectedValue(
-      new Error("Request failed with status code 400")
-    );
+    applyFetchVariant("error");
     const fragile: string[] = [];
     for (const [label, Screen] of CASES) {
-      const ported = PORTED.has(label);
-      if (ported) applyFetchVariant("error");
       const renderer = createWithStore(
         <Screen
           navigation={mockNavInstance}
           route={routeMock(baseParams)}
           {...(EXTRA_PROPS[label] || {})}
         />,
-        ported ? makeApiStore(preloadedState) : makeApiStore(preloadedState)
+        makeApiStore(preloadedState)
       );
       try {
         await flush();
@@ -301,24 +265,21 @@ describe("screens alternative-state variants (Phase 3 characterization)", () => 
           // already torn down by the crash
         }
       }
-      if (ported) resetFetchRoutes();
     }
     // The sweep itself must run; individual fragility is tolerated but visible.
     expect(CASES.length).toBeGreaterThan(0);
   }, 30000);
 
   it("never-settling requests pin every screen's loading state", async () => {
-    (axios as any).mockImplementation(() => new Promise(() => {}));
+    applyFetchVariant("pending");
     for (const [label, Screen] of CASES) {
-      const ported = PORTED.has(label);
-      if (ported) applyFetchVariant("pending");
       const renderer = createWithStore(
         <Screen
           navigation={mockNavInstance}
           route={routeMock(baseParams)}
           {...(EXTRA_PROPS[label] || {})}
         />,
-        ported ? makeApiStore(preloadedState) : makeApiStore(preloadedState)
+        makeApiStore(preloadedState)
       );
       await flush();
       expect(renderer.toJSON()).not.toBeNull();
@@ -329,7 +290,6 @@ describe("screens alternative-state variants (Phase 3 characterization)", () => 
         await flush();
       }
       renderer.unmount();
-      if (ported) resetFetchRoutes();
     }
   }, 30000);
 });

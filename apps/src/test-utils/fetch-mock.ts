@@ -239,7 +239,10 @@ export const resolveFetchBody = (
       : route;
   }
   // API fallback (suite-level generic envelope) — never for geocode/google
-  if (fetchState.fallback !== null && !/google|maps|geocode/i.test(normalized)) {
+  if (
+    fetchState.fallback !== null &&
+    !/google|maps|geocode|auth\/signin/i.test(normalized)
+  ) {
     return typeof fetchState.fallback === "function"
       ? fetchState.fallback({ url: normalized, path, query, method: method.toUpperCase() })
       : fetchState.fallback;

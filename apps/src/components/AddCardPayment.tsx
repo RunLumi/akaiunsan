@@ -20,9 +20,9 @@ import i18n from "../shared/I18n";
 import Constants from "../shared/Constants";
 import _ from "lodash";
 import { WebView } from 'react-native-webview';
-import useApi from "../hooks/useApi";
 import Layout from "../shared/Layout";
 import Config from "react-native-config";
+import { apiSlice, portRequest, type ApiResult } from "../redux/apiSlice";
 
 interface Props {
   style?: StyleProp<ViewStyle>;
@@ -47,10 +47,11 @@ export const AddCardPayment = ({
     },
   }));
 
-  const [loadingAddCard, requestAddCard] = useApi({
-    method: "post",
-    url: Constants.API.payment_card_add,
-    callback: ({ error, response }) => {
+  const [requestAddCardTrigger, { isLoading: loadingAddCard }] =
+    apiSlice.endpoints.paymentCardAdd.useMutation();
+  const requestAddCard = portRequest(
+    requestAddCardTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
@@ -58,8 +59,8 @@ export const AddCardPayment = ({
       setModalAddCard(false);
       Alert.alert(i18n.t("home.success"), i18n.t("home.add_card_success"));
       addSuccess(true)
-    },
-  });
+    }
+  );
 
   const onPressClose = () => {
     setModalAddCard(false);

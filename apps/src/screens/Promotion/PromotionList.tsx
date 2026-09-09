@@ -7,21 +7,22 @@ import {
   FlatList,
 } from "react-native";
 import { Container, Loading, Text } from "../../components";
-import useApi from "../../hooks/useApi";
 import Colors from "../../shared/Colors";
 import Constants from "../../shared/Constants";
 import i18n from "../../shared/I18n";
 import Layout from "../../shared/Layout";
 import { Fontisto, AntDesign } from "@expo/vector-icons";
+import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
 
 export default function PromotionList(props: any) {
   const [refresh, setRefresh] = useState(false);
   const [page, setPage] = useState(2);
   const [arrPromotion, setArrPromotion] = useState<any[]>([]);
-  const [loadingListPromotionUsed, requestListPromotionUsed] = useApi({
-    method: "get",
-    url: Constants.API.promotion_used,
-    callback: ({ error, response }) => {
+  const [requestListPromotionUsedTrigger, { isLoading: loadingListPromotionUsed }] =
+    apiSlice.endpoints.promotionUsed.useLazyQuery();
+  const requestListPromotionUsed = portRequest(
+    requestListPromotionUsedTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
@@ -49,8 +50,8 @@ export default function PromotionList(props: any) {
         });
         setArrPromotion(getPromotionId);
       }
-    },
-  });
+    }
+  );
 
   const renderItem = (item: any, idx: any) => (
     <View key={idx}>

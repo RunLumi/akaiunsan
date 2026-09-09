@@ -26,9 +26,14 @@ import {
   DismissKeyboardView,
 } from "../../components";
 import messaging from "@react-native-firebase/messaging";
-import useApi from "../../hooks/useApi";
 import { success, TYPES } from "../../redux/actions";
-import { useLoginMutation } from "../../redux/apiSlice";
+import {
+  useLoginMutation,
+  apiSlice,
+  portRequest,
+  type ApiResult,
+  type RequestArg,
+} from "../../redux/apiSlice";
 import Colors from "../../shared/Colors";
 import Theme from "../../shared/theme";
 import Constants from "../../shared/Constants";
@@ -64,17 +69,18 @@ export default function Login(props: any) {
     isError: false,
     msgErr: "",
   });
-  const [addDeviceNotification, requestAddDeviceNotification] = useApi({
-    method: "post",
-    url: Constants.API.add_device_notification,
-    callback: ({ error, response }) => {
+  const [requestAddDeviceNotificationTrigger, { isLoading: addDeviceNotification }] =
+    apiSlice.endpoints.addDeviceNotification.useMutation();
+  const requestAddDeviceNotification = portRequest(
+    requestAddDeviceNotificationTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         console.log("error_noti", error);
       } else {
         console.log(`Add token success: ${JSON.stringify(response)}`);
       }
-    },
-  });
+    }
+  );
 
   const sendFCMToken = (token: any) => {
     const sendToken = setTimeout(async () => {
@@ -89,10 +95,11 @@ export default function Login(props: any) {
     }, 900);
   };
 
-  const [loadingLanguage, requestUpdateLanguage] = useApi({
-    method: "put",
-    url: Constants.API.update_language,
-    callback: async ({ error, response }) => {
+  const [requestUpdateLanguageTrigger, { isLoading: loadingLanguage }] =
+    apiSlice.endpoints.updateLanguage.useMutation();
+  const requestUpdateLanguage = portRequest(
+    requestUpdateLanguageTrigger,
+    async ({ error, response }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         dispatch({
@@ -103,8 +110,8 @@ export default function Login(props: any) {
         });
         // props.navigation.replace(Constants.SCREENS.MAIN.BOTTOM_BAR);
       }
-    },
-  });
+    }
+  );
   // Phase 5 RTK Query port: the email/password login call. The legacy
   // request callback runs unchanged through the adapter so the success/error
   // contract (FCM token, language update, LOGIN dispatch, 400 translation)
@@ -151,10 +158,11 @@ export default function Login(props: any) {
         })
       );
   };
-  const [loadingApple, requestApple] = useApi({
-    method: "post",
-    url: Constants.API.apple_login,
-    callback: async ({ error, response }) => {
+  const [requestAppleTrigger, { isLoading: loadingApple }] =
+    apiSlice.endpoints.appleLogin.useMutation();
+  const requestApple = portRequest(
+    requestAppleTrigger,
+    async ({ error, response }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         const token = tokenFromResponse(response);
@@ -177,12 +185,13 @@ export default function Login(props: any) {
           }
         }
       }
-    },
-  });
-  const [loadingLine, requestLine] = useApi({
-    method: "post",
-    url: Constants.API.line_login,
-    callback: async ({ error, response }) => {
+    }
+  );
+  const [requestLineTrigger, { isLoading: loadingLine }] =
+    apiSlice.endpoints.lineLogin.useMutation();
+  const requestLine = portRequest(
+    requestLineTrigger,
+    async ({ error, response }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         const token = tokenFromResponse(response);
@@ -201,12 +210,13 @@ export default function Login(props: any) {
           });
         }
       }
-    },
-  });
-  const [loadingGoogle, requestGoogle] = useApi({
-    method: "post",
-    url: Constants.API.google_login,
-    callback: async ({ error, response }) => {
+    }
+  );
+  const [requestGoogleTrigger, { isLoading: loadingGoogle }] =
+    apiSlice.endpoints.googleLogin.useMutation();
+  const requestGoogle = portRequest(
+    requestGoogleTrigger,
+    async ({ error, response }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         const token = tokenFromResponse(response);
@@ -229,8 +239,8 @@ export default function Login(props: any) {
           }
         }
       }
-    },
-  });
+    }
+  );
 
   useEffect(() => {
     async function permission() {

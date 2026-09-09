@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import RenderHtml from "react-native-render-html";
 import { AutoPager, Container, Loading, Text } from "../../components";
-import useApi from "../../hooks/useApi";
 import Colors from "../../shared/Colors";
 import Constants from "../../shared/Constants";
 import i18n from "../../shared/I18n";
@@ -19,6 +18,7 @@ import dayjs from "../../shared/dayjs";
 import WebView from "react-native-webview";
 import { isArray, isEmpty } from "lodash";
 import { Image as ExpoImage } from "expo-image";
+import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
 const { width } = Dimensions.get("screen");
 
 export default function PromotionDetail(props: any) {
@@ -29,10 +29,11 @@ export default function PromotionDetail(props: any) {
   const [isNotification, setIsNotification] = useState(false);
   const [imageBanner, setImageBanner] = useState<any[]>([]);
   const [typePromotion, setTypePromotion] = useState(0);
-  const [loadingPromotionDetail, requestPromotionDetail] = useApi({
-    method: "get",
-    url: Constants.API.promotion_detail,
-    callback: ({ error, response }) => {
+  const [requestPromotionDetailTrigger, { isLoading: loadingPromotionDetail }] =
+    apiSlice.endpoints.promotionDetail.useLazyQuery();
+  const requestPromotionDetail = portRequest(
+    requestPromotionDetailTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
@@ -59,12 +60,13 @@ export default function PromotionDetail(props: any) {
         setImageBanner(response.banners);
         setDataDetail(response);
       }
-    },
-  });
-  const [loadingNotificationDetail, requestNotificationDetail] = useApi({
-    method: "get",
-    url: Constants.API.get_notification_detail,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [requestNotificationDetailTrigger, { isLoading: loadingNotificationDetail }] =
+    apiSlice.endpoints.getNotificationDetail.useLazyQuery();
+  const requestNotificationDetail = portRequest(
+    requestNotificationDetailTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
@@ -72,22 +74,20 @@ export default function PromotionDetail(props: any) {
         setImageBanner(JSON.parse(response.banners));
         setDataDetail(response);
       }
-    },
-  });
-  const [
-    loadingNotificationDetailCheckRead,
-    requestNotificationDetailCheckRead,
-  ] = useApi({
-    method: "get",
-    url: Constants.API.get_notification_detail,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [requestNotificationDetailCheckReadTrigger, { isLoading: loadingNotificationDetailCheckRead }] =
+    apiSlice.endpoints.getNotificationDetail.useLazyQuery();
+  const requestNotificationDetailCheckRead = portRequest(
+    requestNotificationDetailCheckReadTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
       } else {
       }
-    },
-  });
+    }
+  );
 
   // const onPressBookingDetail = (item: any) => {
   //   props.navigation.navigate(Constants.SCREENS.MYBOOKING.DETAIL_MYBOOKING, {

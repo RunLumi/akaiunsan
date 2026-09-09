@@ -1,11 +1,11 @@
 import React from "react";
-import axios from "axios";
 import {
   createWithStore,
   makeApiStore,
   flush,
   pressAll,
 } from "../../test-utils/helpers";
+import { setFetchFallback } from "../../test-utils/fetch-mock";
 import { act } from "react-test-renderer";
 
 // HistoryList's date flow: the date button opens the picker modal, whose
@@ -22,10 +22,7 @@ jest.mock("@react-navigation/native", () => ({
 
 import HistoryList from "../History/HistoryList";
 
-(axios as any).mockResolvedValue({
-  status: 200,
-  data: {
-    data: {
+setFetchFallback({
       items: [
         {
           id: "h-1",
@@ -39,8 +36,6 @@ import HistoryList from "../History/HistoryList";
       ],
       data: [],
       errors: [],
-    },
-  },
 });
 
 const preloadedState = {

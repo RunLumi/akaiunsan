@@ -6,47 +6,50 @@ import { Button, Container, Text } from "../../components";
 import Colors from "../../shared/Colors";
 import Styles from "../../shared/Styles";
 import Constants from "../../shared/Constants";
-import useApi from "../../hooks/useApi";
 import i18n from "../../shared/I18n";
+import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
 
 const AddressScreen = (props: any) => {
   const { navigation } = props;
   const [listAddress, setListAddress] = useState<any[]>([]);
 
-  const [loadingListAddress, requestListAddress] = useApi({
-    method: "get",
-    url: Constants.API.list_address,
-    callback: ({ error, response }) => {
+  const [requestListAddressTrigger, { isLoading: loadingListAddress }] =
+    apiSlice.endpoints.listAddress.useLazyQuery();
+  const requestListAddress = portRequest(
+    requestListAddressTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
       }
 
       setListAddress(response && response.items);
-    },
-  });
+    }
+  );
 
-  const [loadingEditAddress, requestEditAddress] = useApi({
-    method: "put",
-    url: Constants.API.edit_address,
-    callback: ({ error, response }) => {
+  const [requestEditAddressTrigger, { isLoading: loadingEditAddress }] =
+    apiSlice.endpoints.editAddress.useMutation();
+  const requestEditAddress = portRequest(
+    requestEditAddressTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
       }
 
       requestListAddress();
-    },
-  });
+    }
+  );
 
-  const [loadingDeleteAddress, requestDeleteAddress] = useApi({
-    method: "delete",
-    url: Constants.API.delete_address,
-    callback: ({ error, response }) => {
+  const [requestDeleteAddressTrigger, { isLoading: loadingDeleteAddress }] =
+    apiSlice.endpoints.deleteAddress.useMutation();
+  const requestDeleteAddress = portRequest(
+    requestDeleteAddressTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
       }
       requestListAddress();
-    },
-  });
+    }
+  );
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {

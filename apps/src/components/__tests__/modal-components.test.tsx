@@ -1,8 +1,8 @@
 import React from "react";
-import axios from "axios";
 import dayjs from "../../shared/dayjs";
 import { act } from "react-test-renderer";
 import { createWithStore, makeApiStore, flush, pressAll, typeAll } from "../../test-utils/helpers";
+import { setFetchFallback } from "../../test-utils/fetch-mock";
 
 // The shared modal components expose their open API through an imperative
 // handle wired to the legacy `children` prop (used as the ref). This suite
@@ -23,11 +23,10 @@ import { ListCardPayment } from "../ListCardPayment";
 import { AddCardPayment } from "../AddCardPayment";
 import { DateTimeSelect } from "../DateTimeSelect";
 
-(axios as any).mockResolvedValue({
-  status: 200,
-  data: {
-    data: {
-      items: [
+// The ported components read the fetch stub now; one generic fallback body
+// serves every endpoint these modals hit.
+setFetchFallback({
+  items: [
         {
           id: "h-1",
           code: "COSTSP",
@@ -51,12 +50,8 @@ import { DateTimeSelect } from "../DateTimeSelect";
           status: 1,
           isSelect: false,
         },
-        { id: "h-2", code: "LANGUAGE", name: "English", price: 50, status: 1 },
-      ],
-      data: [],
-      errors: [],
-    },
-  },
+      { id: "h-2", code: "LANGUAGE", name: "English", price: 50, status: 1 },
+  ],
 });
 
 const preloadedState = {

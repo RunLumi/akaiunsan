@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { View, TouchableOpacity, Alert, StyleSheet, ImageBackground } from "react-native";
 import { Divider } from 'react-native-elements';
 import { Button, Container, Text} from "../../components";
-import useApi from "../../hooks/useApi";
 import Colors from "../../shared/Colors";
 import Constants from "../../shared/Constants";
 import i18n from "../../shared/I18n";

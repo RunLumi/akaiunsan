@@ -19,12 +19,12 @@ import i18n from "../shared/I18n";
 import { FlatList } from "react-native-gesture-handler";
 import Layout from "../shared/Layout";
 import Stars from "react-native-stars";
-import useApi from "../hooks/useApi";
 import Constants from "../shared/Constants";
 import dayjs from "../shared/dayjs";
 import { paramArray } from "../shared/Utils";
 import Enum from "../shared/Enum";
 import { isEmpty } from "lodash";
+import { apiSlice, portRequest, type ApiResult } from "../redux/apiSlice";
 
 interface Props {
   style?: StyleProp<ViewStyle>;
@@ -60,10 +60,11 @@ export const HelperSelect = ({
   const [searchHelper, setSearchHelper] = React.useState("");
   const [dataHelper, setDataHelper] = React.useState<any[]>([]);
   const [dataHelperSuggest, setDataHelperSuggest] = React.useState<any[]>([]);
-  const [loadingListHelper, requestListHelper] = useApi({
-    method: "get",
-    url: Constants.API.services_management_helper,
-    callback: ({ error, response }) => {
+  const [requestListHelperTrigger, { isLoading: loadingListHelper }] =
+    apiSlice.endpoints.servicesManagementHelper.useLazyQuery();
+  const requestListHelper = portRequest(
+    requestListHelperTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
       } else {
@@ -73,12 +74,13 @@ export const HelperSelect = ({
           );
         }
       }
-    },
-  });
-  const [loadingListHelperSuggest, requestListHelperSuggest] = useApi({
-    method: "get",
-    url: Constants.API.services_management_helper_suggest,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [requestListHelperSuggestTrigger, { isLoading: loadingListHelperSuggest }] =
+    apiSlice.endpoints.servicesManagementHelperSuggest.useLazyQuery();
+  const requestListHelperSuggest = portRequest(
+    requestListHelperSuggestTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
       } else {
@@ -106,8 +108,8 @@ export const HelperSelect = ({
           });
         }
       }
-    },
-  });
+    }
+  );
   const [showModal, setShowModal] = React.useState(false);
   const [showModalDetail, setShowModalDetail] = React.useState(false);
   React.useImperativeHandle(children, () => ({

@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import { useDispatch } from "react-redux";
 import { Container, CustomInput, Loading, Text } from "../../components";
-import useApi from "../../hooks/useApi";
 import Colors from "../../shared/Colors";
 import Constants from "../../shared/Constants";
 import i18n from "../../shared/I18n";
@@ -23,6 +22,7 @@ import { Rating } from "react-native-ratings";
 import { useNavigation } from "@react-navigation/native";
 
 import { TYPES } from "../../redux/actions";
+import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
 
 export default function PromotionList(props: any) {
   const dispatch = useDispatch();
@@ -37,10 +37,11 @@ export default function PromotionList(props: any) {
   const [callOnScrollEnd, setCallOnScrollEnd] = useState(false);
   const [page, setPage] = useState(2);
   const [arrHistory, setArrHistory] = useState<any[]>([]);
-  const [loadingListHistory, requestListHistory] = useApi({
-    method: "get",
-    url: Constants.API.booking_get,
-    callback: ({ error, response }) => {
+  const [requestListHistoryTrigger, { isLoading: loadingListHistory }] =
+    apiSlice.endpoints.bookingGet.useLazyQuery();
+  const requestListHistory = portRequest(
+    requestListHistoryTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
@@ -59,13 +60,14 @@ export default function PromotionList(props: any) {
         }
         setArrHistory(data);
       }
-    },
-  });
+    }
+  );
 
-  const [loadingListHistoryFillter, requestListHistoryFillter] = useApi({
-    method: "get",
-    url: Constants.API.booking_get,
-    callback: ({ error, response }) => {
+  const [requestListHistoryFillterTrigger, { isLoading: loadingListHistoryFillter }] =
+    apiSlice.endpoints.bookingGet.useLazyQuery();
+  const requestListHistoryFillter = portRequest(
+    requestListHistoryFillterTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
@@ -84,8 +86,8 @@ export default function PromotionList(props: any) {
         }
         setArrHistory(data);
       }
-    },
-  });
+    }
+  );
 
   const ENUM_REVIEW = [
     { label: "1", value: 1 },

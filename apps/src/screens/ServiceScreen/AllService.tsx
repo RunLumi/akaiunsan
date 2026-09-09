@@ -11,35 +11,37 @@ import { AutoPager, Container, Loading, Text } from "../../components";
 import colors from "../../shared/Colors";
 import Constants from "../../shared/Constants";
 import layout from "../../shared/Layout";
-import useApi from "../../hooks/useApi";
 import i18n from "../../shared/I18n";
 import { NavigationRoot } from "../../navigation/root";
+import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
 
 export default function AllService(props: any) {
   const { subscriptionPlanActive } = props.route.params || {};
   const [carouselItems, setCarouselItems] = useState<any[]>([]);
   const [arrService, setArrService] = useState<any[]>([]);
-  const [loadingBanner, requestGetBanner] = useApi({
-    method: "get",
-    url: Constants.API.get_banner,
-    callback: ({ error, response }) => {
+  const [requestGetBannerTrigger, { isLoading: loadingBanner }] =
+    apiSlice.endpoints.getBanner.useLazyQuery();
+  const requestGetBanner = portRequest(
+    requestGetBannerTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         setCarouselItems(response && response.items);
       }
-    },
-  });
+    }
+  );
 
-  const [loadingServiceManagement, requestServiceManagement] = useApi({
-    method: "get",
-    url: Constants.API.services_management,
-    callback: ({ error, response }) => {
+  const [requestServiceManagementTrigger, { isLoading: loadingServiceManagement }] =
+    apiSlice.endpoints.getServicesManagement.useLazyQuery();
+  const requestServiceManagement = portRequest(
+    requestServiceManagementTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         setArrService(response.items);
       }
-    },
-  });
+    }
+  );
 
   const _renderItem = ({ item, index }: any) => {
     return (

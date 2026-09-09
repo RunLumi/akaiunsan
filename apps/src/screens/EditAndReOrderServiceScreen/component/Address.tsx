@@ -12,9 +12,9 @@ import colors from "../../../shared/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import { Loading, PositionSelect, Text } from "../../../components";
 import i18n from "../../../shared/I18n";
-import useApi from "../../../hooks/useApi";
 
 import Constants from "../../../shared/Constants";
+import { apiSlice, portRequest, type ApiResult } from "../../../redux/apiSlice";
 export default function Address(props: any) {
   const user = useAppSelector((state) => state.auth.user);
 
@@ -23,18 +23,19 @@ export default function Address(props: any) {
 
   const [currentAddress, setCurrentAddress] = React.useState(null);
 
-  const [loadingListAddress, requestListAddress] = useApi({
-    method: "get",
-    url: Constants.API.list_address,
-    callback: ({ error, response }) => {
+  const [requestListAddressTrigger, { isLoading: loadingListAddress }] =
+    apiSlice.endpoints.listAddress.useLazyQuery();
+  const requestListAddress = portRequest(
+    requestListAddressTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
       }
 
       setListAddress(response && response.items);
       findSameAddress(response && response.items);
-    },
-  });
+    }
+  );
 
   const handleValuePosition = () => {
     setTimeout(() => {

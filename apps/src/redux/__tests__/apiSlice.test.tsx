@@ -13,22 +13,6 @@ jest.mock("react-native-config", () => ({
   default: { API_URL: "https://api.test" },
 }));
 
-jest.mock("axios", () => {
-  const request = jest.fn(() =>
-    Promise.resolve({
-      status: 200,
-      data: { data: { auth_token: "legacy-token", user: { id: 1 } } },
-    })
-  );
-  (request as any).get = jest.fn();
-  (request as any).post = jest.fn();
-  (request as any).put = jest.fn();
-  (request as any).default = request;
-  return request;
-});
-
-import axios from "axios";
-
 const preloadedState = {
   auth: { token: "test-token", user: { id: 1 }, loading: false },
   language: { language: "en" },
@@ -71,9 +55,5 @@ describe("apiSlice (Phase 5 RTK Query strangler)", () => {
     // fire post-teardown.
     await new Promise((r) => setImmediate(r));
     await new Promise((r) => setImmediate(r));
-  });
-
-  it("keeps the legacy axios transport out of the new slice", () => {
-    expect((axios as any).mock.calls.length).toBeGreaterThanOrEqual(0);
   });
 });

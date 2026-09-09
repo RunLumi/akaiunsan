@@ -1,6 +1,5 @@
 import React from "react";
 import { Alert } from "react-native";
-import axios from "axios";
 import { HelperSelect } from "../HelperSelect";
 import Enum from "../../shared/Enum";
 import Constants from "../../shared/Constants";
@@ -14,8 +13,16 @@ import {
   pressText,
   pressableFrom,
 } from "../../test-utils/helpers";
+import { installFetchRoutes } from "../../test-utils/fetch-mock";
 
-const mockAxios = axios as unknown as jest.Mock;
+// HelperSelect is ported to RTK Query: payloads install as fetch routes and
+// assertions inspect the fetch call log.
+const fetchUrls = () =>
+  (globalThis.fetch as jest.Mock).mock.calls.map((c: any[]) =>
+    typeof c[0] === "string" ? c[0] : c[0]?.url || ""
+  );
+
+const helpersBody = (helpers: any[]) => ({ items: helpers });
 
 const helper = (id: string, fullName: string) => ({
   id,
@@ -47,42 +54,47 @@ const renderHelper = (props: any = {}) =>
 
 describe("HelperSelect", () => {
   beforeEach(() => {
-    mockAxios.mockReset();
+    (globalThis.fetch as jest.Mock).mockClear();
+    installFetchRoutes({
+      [Constants.API.services_management_helper_suggest]: helpersBody([]),
+      [Constants.API.services_management_helper]: helpersBody([]),
+    });
   });
 
   it("loads suggested helpers, then requests the full list with suggested sps", async () => {
-    mockAxios.mockResolvedValue({
-      status: 200,
-      data: { data: { items: [helper("h1", "Helper One")] } },
+    installFetchRoutes({
+      [Constants.API.services_management_helper_suggest]: helpersBody([
+        helper("h1", "Helper One"),
+      ]),
+      [Constants.API.services_management_helper]: helpersBody([
+        helper("h1", "Helper One"),
+      ]),
     });
     const ref = React.createRef<any>();
     const { root } = renderHelper({ children: ref });
     await flush();
-    expect(mockAxios).toHaveBeenCalledTimes(2);
-    expect(mockAxios.mock.calls[0][0].url).toBe(
+    const urls = fetchUrls();
+    expect(urls.length).toBe(2);
+    expect(urls[0]).toContain(
       Constants.API.services_management_helper_suggest
     );
-    expect(mockAxios.mock.calls[1][0].url).toBe(
-      Constants.API.services_management_helper
-    );
-    expect(mockAxios.mock.calls[1][0].params.get("serviceProvider")).toBe("h1");
+    expect(urls[1]).toContain(Constants.API.services_management_helper);
+    expect(urls[1]).toContain("serviceProvider=h1");
     // Suggestions and the fetched list are both gated behind the open modal
     act(() => ref.current && ref.current.openModalHelper());
     expect(textNodes(root, "Helper One").length).toBe(2);
   });
 
   it("skips the full list request when there are no suggestions", async () => {
-    mockAxios.mockResolvedValue({ status: 200, data: { data: { items: [] } } });
     renderHelper();
     await flush();
-    expect(mockAxios).toHaveBeenCalledTimes(1);
-    expect(mockAxios.mock.calls[0][0].url).toBe(
+    expect(fetchUrls().length).toBe(1);
+    expect(fetchUrls()[0]).toContain(
       Constants.API.services_management_helper_suggest
     );
   });
 
   it("confirming without a selection alerts the user", async () => {
-    mockAxios.mockResolvedValue({ status: 200, data: { data: { items: [] } } });
     const alertSpy = jest.spyOn(Alert, "alert");
     const ref = React.createRef<any>();
     const { root } = renderHelper({ children: ref });
@@ -97,9 +109,13 @@ describe("HelperSelect", () => {
   });
 
   it("selecting a helper and confirming reports it through valueHelper", async () => {
-    mockAxios.mockResolvedValue({
-      status: 200,
-      data: { data: { items: [helper("h1", "Helper One")] } },
+    installFetchRoutes({
+      [Constants.API.services_management_helper_suggest]: helpersBody([
+        helper("h1", "Helper One"),
+      ]),
+      [Constants.API.services_management_helper]: helpersBody([
+        helper("h1", "Helper One"),
+      ]),
     });
     const valueHelper = jest.fn();
     const ref = React.createRef<any>();

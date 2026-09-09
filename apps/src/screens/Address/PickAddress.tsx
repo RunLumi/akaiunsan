@@ -21,7 +21,6 @@ import { Button, IconButton, Container, Text } from "../../components";
 import Colors from "../../shared/Colors";
 import Theme from "../../shared/theme";
 import i18n from "../../shared/I18n";
-import useApi from "../../hooks/useApi";
 import Constants from "../../shared/Constants";
 import { useNavigation } from "@react-navigation/native";
 import {
@@ -34,6 +33,7 @@ import {
   removeVietnameseTones,
 } from "../../shared/Utils";
 import * as L2 from "../../shared/Geocoding";
+import { apiSlice, portRequest, type ApiResult, type RequestArg } from "../../redux/apiSlice";
 
 const PickAddress = (props: any) => {
   const { params } = props.route;
@@ -65,10 +65,11 @@ const PickAddress = (props: any) => {
   const [listAddress, setListAddress] =
     useState<Location.LocationGeocodedAddress[]>();
 
-  const [loading, request] = useApi({
-    method: isEdit ? "put" : "post",
-    url: isEdit ? Constants.API.edit_address : Constants.API.add_address,
-    callback: ({ error, response }) => {
+  const [requestTrigger, { isLoading: loading }] =
+    apiSlice.endpoints.editAddress.useMutation();
+  const request = portRequest(
+    (arg?: RequestArg) => requestTrigger({ ...(arg || {}), url: isEdit ? Constants.API.edit_address : Constants.API.add_address }),
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
       }
@@ -78,8 +79,8 @@ const PickAddress = (props: any) => {
       } else {
         navigation.goBack();
       }
-    },
-  });
+    }
+  );
   const onPlace = async (event: any) => {
     L2.setGoogleApiKey(
       Platform.OS === "ios"

@@ -5,10 +5,10 @@ import Config from "react-native-config";
 import { Overlay } from "react-native-elements";
 import WebView from "react-native-webview";
 import { Button, Container, ListCardPayment, Loading, Text } from "../../components";
-import useApi from "../../hooks/useApi";
 import Constants from "../../shared/Constants";
 import i18n from "../../shared/I18n";
 import { Payment } from "../ServiceScreen/component";
+import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
 
 export default function PaymentPetcare(props: any) {
   const { order } = props.route.params;
@@ -20,10 +20,11 @@ export default function PaymentPetcare(props: any) {
   const [pointApply, setPointApply] = useState(0);
   const [price, setPrice] = useState(0);
 
-  const [loadingPaymentPetcare, requestPaymentPetcare] = useApi({
-    method: "post",
-    url: Constants.API.payment_petcare,
-    callback: ({ error, response }) => {
+  const [requestPaymentPetcareTrigger, { isLoading: loadingPaymentPetcare }] =
+    apiSlice.endpoints.paymentPetcare.useMutation();
+  const requestPaymentPetcare = portRequest(
+    requestPaymentPetcareTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
       } else {
@@ -47,21 +48,23 @@ export default function PaymentPetcare(props: any) {
 
 
       }
-    },
-  });
-  const [loadingCancelPayment, requestCancelPayment] = useApi({
-    method: "post",
-    url: Constants.API.orders_cancel,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [requestCancelPaymentTrigger, { isLoading: loadingCancelPayment }] =
+    apiSlice.endpoints.ordersCancel.useMutation();
+  const requestCancelPayment = portRequest(
+    requestCancelPaymentTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
       }
-    },
-  });
-  const [loadingChargesCard, requestChargesCard] = useApi({
-    method: "post",
-    url: Constants.API.chargescard,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [requestChargesCardTrigger, { isLoading: loadingChargesCard }] =
+    apiSlice.endpoints.chargescard.useMutation();
+  const requestChargesCard = portRequest(
+    requestChargesCardTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
       }
@@ -73,8 +76,8 @@ export default function PaymentPetcare(props: any) {
           },
         },
       ]);
-    },
-  });
+    }
+  );
 
   useEffect(() => {
     setValueShowDateTime(dayjs(order.bookingDetail.bookingDate).local().format("lll"));

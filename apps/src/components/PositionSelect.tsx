@@ -21,13 +21,13 @@ import Constants from "../shared/Constants";
 import * as Location from "expo-location";
 import _, { isEmpty, isNil } from "lodash";
 import MapView, { Marker } from "react-native-maps";
-import useApi from "../hooks/useApi";
 import Enum from "../shared/Enum";
 import Layout from "../shared/Layout";
 import { Container } from "./Container";
 import { getRegionForCoordinates } from "../shared/Utils";
 import { googleAddressGeocodeAsync } from "../shared/Geocoding";
 import { useFocusEffect } from "@react-navigation/core";
+import { apiSlice, portRequest, type ApiResult, type RequestArg } from "../redux/apiSlice";
 const full_width = Dimensions.get("window").width;
 
 interface Props {
@@ -257,18 +257,19 @@ export const PositionSelect = ({
   });
 
   const isEdit = !_.isNil(itemId);
-  const [loading, request] = useApi({
-    method: isEdit ? "put" : "post",
-    url: isEdit ? Constants.API.edit_address : Constants.API.add_address,
-    callback: ({ error, response }) => {
+  const [requestTrigger, { isLoading: loading }] =
+    apiSlice.endpoints.editAddress.useMutation();
+  const request = portRequest(
+    (arg?: RequestArg) => requestTrigger({ ...(arg || {}), url: isEdit ? Constants.API.edit_address : Constants.API.add_address }),
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
       }
       valuePosition();
       setShowModal(false);
-    },
-  });
+    }
+  );
 
   const getLongAddress = (address: any) =>
     _(address)

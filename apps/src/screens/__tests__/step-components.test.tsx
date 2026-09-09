@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import dayjs from "../../shared/dayjs";
 import {
   createWithStore,
@@ -8,6 +7,7 @@ import {
   pressAll,
   typeAll,
 } from "../../test-utils/helpers";
+import { setFetchFallback } from "../../test-utils/fetch-mock";
 
 // Step-gated wizard sub-components render only after the parent advances; this
 // suite mounts them directly with the props the parent passes so their branches
@@ -31,11 +31,8 @@ import EditResult from "../EditAndReOrderServiceScreen/component/Result";
 import { HelperSelect } from "../../components/HelperSelect";
 import { HelperSelectFixPlan } from "../../components/HelperSelectFixPlan";
 
-(axios as any).mockResolvedValue({
-  status: 200,
-  data: {
-    data: {
-      items: [
+setFetchFallback({
+  items: [
         {
           id: "li-1",
           code: "COSTSP",
@@ -69,11 +66,7 @@ import { HelperSelectFixPlan } from "../../components/HelperSelectFixPlan";
           price: 50,
           status: 1,
         },
-      ],
-      data: [],
-      errors: [],
-    },
-  },
+  ],
 });
 
 const preloadedState = {

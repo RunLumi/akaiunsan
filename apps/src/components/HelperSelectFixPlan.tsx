@@ -22,11 +22,11 @@ import i18n from "../shared/I18n";
 import { FlatList } from "react-native-gesture-handler";
 import Layout from "../shared/Layout";
 import Stars from "react-native-stars";
-import useApi from "../hooks/useApi";
 import Constants from "../shared/Constants";
 import { Loading } from "./Loading";
 import dayjs from "../shared/dayjs";
 import { isEmpty } from "lodash";
+import { apiSlice, portRequest, type ApiResult } from "../redux/apiSlice";
 
 interface Props {
   style?: StyleProp<ViewStyle>;
@@ -63,20 +63,22 @@ export const HelperSelectFixPlan = ({
   // const [id, setId] = React.useState('');
   const [experiences, setExperiences] = React.useState(0);
   const [dataHelperSuggest, setDataHelperSuggest] = React.useState<any[]>([]);
-  const [loadingListHelper, requestListHelper] = useApi({
-    method: "post",
-    url: Constants.API.services_helper_fixplan,
-    callback: ({ error, response }) => {
+  const [requestListHelperTrigger, { isLoading: loadingListHelper }] =
+    apiSlice.endpoints.servicesHelperFixplan.useMutation();
+  const requestListHelper = portRequest(
+    requestListHelperTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         setDataHelper(response.items);
       }
-    },
-  });
-  const [loadingListHelperSuggest, requestListHelperSuggest] = useApi({
-    method: "post",
-    url: Constants.API.services_suggest_fixplan,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [requestListHelperSuggestTrigger, { isLoading: loadingListHelperSuggest }] =
+    apiSlice.endpoints.servicesSuggestFixplan.useMutation();
+  const requestListHelperSuggest = portRequest(
+    requestListHelperSuggestTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         setDataHelperSuggest(response.items);
@@ -91,8 +93,8 @@ export const HelperSelectFixPlan = ({
           },
         });
       }
-    },
-  });
+    }
+  );
   const [showModal, setShowModal] = React.useState(false);
   const [showModalDetail, setShowModalDetail] = React.useState(false);
   const user = useAppSelector((state) => state.auth.user);

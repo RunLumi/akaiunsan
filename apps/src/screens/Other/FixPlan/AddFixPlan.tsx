@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import { Calendar } from "react-native-calendars";
 import { Button, Container, CustomInput, Text } from "../../../components";
-import useApi from "../../../hooks/useApi";
 import Colors from "../../../shared/Colors";
 import Constants from "../../../shared/Constants";
 import Enum from "../../../shared/Enum";

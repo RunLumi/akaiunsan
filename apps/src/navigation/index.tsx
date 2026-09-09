@@ -42,7 +42,6 @@ import {
 import { HistoryDetail, HistoryList } from "../screens/History";
 import { Ionicons } from "@expo/vector-icons";
 import { PaymentList } from "../screens/Payment";
-import useApi from "../hooks/useApi";
 import i18n from "../shared/I18n";
 import * as ReactRedux from "react-redux";
 import { useAppSelector } from "../redux/hooks";
@@ -51,6 +50,7 @@ import { isEmpty } from "lodash";
 import { linkingConfig, deepLinkRoute, gateForToken } from "./contracts";
 import type { RouteName } from "./routes";
 import { reactNavigationIntegration } from "../../instrument";
+import { apiSlice, portRequest, type ApiResult } from "../redux/apiSlice";
 
 const { width } = Dimensions.get("window");
 
@@ -103,10 +103,11 @@ function RootNavigator() {
   // const [initRoute, setInitRoute] = useState(Constants.SCREENS.AUTH.LOGIN)
   // const [isReady, setIsReady] = useState(false);
   const [initialParams, setinitialParams] = useState<any>(null);
-  const [loadingGetNotification, requestGetNotification] = useApi({
-    method: "get",
-    url: Constants.API.get_notification,
-    callback: ({ error, response }) => {
+  const [requestGetNotificationTrigger, { isLoading: loadingGetNotification }] =
+    apiSlice.endpoints.getNotifications.useLazyQuery();
+  const requestGetNotification = portRequest(
+    requestGetNotificationTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
       }
@@ -115,8 +116,8 @@ function RootNavigator() {
         type: TYPES.TOOLS.NOTIFICATION,
         payload: response && response.totalUnRead,
       });
-    },
-  });
+    }
+  );
 
   const defaultHeader = {
     headerShown: true,

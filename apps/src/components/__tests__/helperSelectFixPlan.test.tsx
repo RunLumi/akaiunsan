@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import { HelperSelectFixPlan } from "../HelperSelectFixPlan";
 import Enum from "../../shared/Enum";
 import Constants from "../../shared/Constants";
@@ -11,8 +10,26 @@ import {
   textNodes,
   flush,
 } from "../../test-utils/helpers";
+import { installFetchRoutes } from "../../test-utils/fetch-mock";
 
-const mockAxios = axios as unknown as jest.Mock;
+// HelperSelectFixPlan is ported to RTK Query: POST bodies now live inside the
+// Request objects handed to the fetch stub, read back via clone().text().
+const helpersBody = (helpers: any[]) => ({ items: helpers });
+
+const fetchCalls = async () =>
+  Promise.all(
+    (globalThis.fetch as jest.Mock).mock.calls.map(async (c: any[]) => {
+      const input = c[0];
+      const url = typeof input === "string" ? input : input.url || "";
+      let body: any = {};
+      try {
+        body = JSON.parse(await input.clone().text());
+      } catch {
+        // GET or unreadable body
+      }
+      return { url: String(url), body };
+    })
+  );
 
 const helper = (id: string, fullName: string) => ({
   id,
@@ -43,29 +60,34 @@ const renderFixPlan = (props: any = {}) =>
 
 describe("HelperSelectFixPlan", () => {
   beforeEach(() => {
-    mockAxios.mockReset();
+    (globalThis.fetch as jest.Mock).mockClear();
+    installFetchRoutes({
+      [Constants.API.services_suggest_fixplan]: helpersBody([]),
+      [Constants.API.services_helper_fixplan]: helpersBody([]),
+    });
   });
 
   it("posts suggestions then requests helpers with the suggested ids and times", async () => {
-    mockAxios.mockResolvedValue({
-      status: 200,
-      data: { data: { items: [helper("h1", "Helper One")] } },
+    installFetchRoutes({
+      [Constants.API.services_suggest_fixplan]: helpersBody([
+        helper("h1", "Helper One"),
+      ]),
+      [Constants.API.services_helper_fixplan]: helpersBody([
+        helper("h1", "Helper One"),
+      ]),
     });
     renderFixPlan();
     await flush();
-    expect(mockAxios).toHaveBeenCalledTimes(2);
-    expect(mockAxios.mock.calls[0][0].url).toBe(
-      Constants.API.services_suggest_fixplan
-    );
-    expect(mockAxios.mock.calls[0][0].data).toMatchObject({
+    const calls = await fetchCalls();
+    expect(calls.length).toBe(2);
+    expect(calls[0].url).toContain(Constants.API.services_suggest_fixplan);
+    expect(calls[0].body).toMatchObject({
       serviceType: Enum.SERVICE_TYPE.MaidService,
       addressId: "addr-1",
       listDate: ["2026-09-10", "2026-09-11"],
     });
-    expect(mockAxios.mock.calls[1][0].url).toBe(
-      Constants.API.services_helper_fixplan
-    );
-    expect(mockAxios.mock.calls[1][0].data).toMatchObject({
+    expect(calls[1].url).toContain(Constants.API.services_helper_fixplan);
+    expect(calls[1].body).toMatchObject({
       languages: "th",
       serviceProvider: ["h1"],
       listDate: ["2026-09-10", "2026-09-11"],
@@ -73,18 +95,15 @@ describe("HelperSelectFixPlan", () => {
   });
 
   it("requests helpers with an empty provider list when suggestions are empty", async () => {
-    mockAxios.mockResolvedValue({ status: 200, data: { data: { items: [] } } });
     renderFixPlan();
     await flush();
-    expect(mockAxios).toHaveBeenCalledTimes(2);
-    expect(mockAxios.mock.calls[1][0].url).toBe(
-      Constants.API.services_helper_fixplan
-    );
-    expect(mockAxios.mock.calls[1][0].data.serviceProvider).toEqual([]);
+    const calls = await fetchCalls();
+    expect(calls.length).toBe(2);
+    expect(calls[1].url).toContain(Constants.API.services_helper_fixplan);
+    expect(calls[1].body.serviceProvider).toEqual([]);
   });
 
   it("opens the picker with the search bar and suggestions header", async () => {
-    mockAxios.mockResolvedValue({ status: 200, data: { data: { items: [] } } });
     const ref = React.createRef<any>();
     const { root } = renderFixPlan({ children: ref });
     await flush();

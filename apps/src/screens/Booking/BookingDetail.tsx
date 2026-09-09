@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { View, Image, Alert, ActivityIndicator } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { Container, Button, Loading, Text, TextInput } from "../../components";
-import useApi from "../../hooks/useApi";
 import Colors from "../../shared/Colors";
 import Theme from "../../shared/theme";
 import Constants from "../../shared/Constants";
@@ -16,6 +15,7 @@ import { getStatus } from "../../shared/Utils";
 import { Picker } from "@react-native-picker/picker";
 import { useDispatch } from "react-redux";
 import { TYPES } from "../../redux/actions";
+import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
 
 export default function BookingDetail(props: any) {
   const params = props.route.params;
@@ -30,10 +30,11 @@ export default function BookingDetail(props: any) {
   const [currentDetail, setCurrentDetail] = useState<any>({});
 
   const dispatch = useDispatch();
-  const [loadingRequestCancel, requestCancel] = useApi({
-    method: "post",
-    url: Constants.API.cancel_order,
-    callback: ({ error, response }) => {
+  const [requestCancelTrigger, { isLoading: loadingRequestCancel }] =
+    apiSlice.endpoints.cancelOrder.useMutation();
+  const requestCancel = portRequest(
+    requestCancelTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
@@ -47,13 +48,14 @@ export default function BookingDetail(props: any) {
           // notificationId:  params?.item?.notificationId || null
         },
       });
-    },
-  });
+    }
+  );
 
-  const [loadingRequestSpecial, requestSpecial] = useApi({
-    method: "post",
-    url: Constants.API.special_request,
-    callback: ({ error, response }) => {
+  const [requestSpecialTrigger, { isLoading: loadingRequestSpecial }] =
+    apiSlice.endpoints.specialRequest.useMutation();
+  const requestSpecial = portRequest(
+    requestSpecialTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
@@ -67,19 +69,20 @@ export default function BookingDetail(props: any) {
           // notificationId:  params?.item?.notificationId || null
         },
       });
-    },
-  });
+    }
+  );
 
-  const [loadingBookingDetail, requestBookingDetail] = useApi({
-    method: "get",
-    url: Constants.API.booking_detail,
-    callback: ({ error, response }) => {
+  const [requestBookingDetailTrigger, { isLoading: loadingBookingDetail }] =
+    apiSlice.endpoints.bookingDetail.useLazyQuery();
+  const requestBookingDetail = portRequest(
+    requestBookingDetailTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         setCurrentDetail(response);
       }
-    },
-  });
+    }
+  );
 
   const getReason = (type: number) => {
     switch (type) {

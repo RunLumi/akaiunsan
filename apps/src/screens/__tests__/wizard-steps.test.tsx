@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import { act } from "react-test-renderer";
 import {
   createWithStore,
@@ -8,6 +7,7 @@ import {
   pressAll,
   typeAll,
 } from "../../test-utils/helpers";
+import { installApiRoutes } from "../../test-utils/api-mock";
 
 // The booking wizards gate Options/Payment behind `currentStep`. This suite
 // jumps through the step-header handlers ONE at a time (flushing between) and
@@ -30,102 +30,11 @@ import Constants from "../../shared/Constants";
 // Per-endpoint response shaping: the wizard callbacks read specific fields
 // (JSON-stringified extra services, config-price model, language list) that
 // the generic envelope cannot express.
-(axios as any).mockImplementation((config: any) => {
-  const url = config?.url || "";
-  if (url === Constants.API.services_management_item) {
-    return Promise.resolve({
-      status: 200,
-      data: {
-        data: {
-          serviceDetail: { id: "svc-1", name: "Test service", price: 100 },
-          banner: [],
-          extraService: JSON.stringify([
-            {
-              id: "es-1",
-              name: "Ironing",
-              code: "COSTSP",
-              pricePerUnit: 20,
-              unit: 1,
-              acType: "",
-            },
-          ]),
-        },
-      },
-    });
-  }
-  if (url === Constants.API.config_price) {
-    return Promise.resolve({
-      status: 200,
-      data: {
-        data: {
-          items: [
-            {
-              serviceType: 1,
-              pricesModel: JSON.stringify({
-                one: 150,
-                two: 100,
-                twoPlus: 120,
-                threePlus: 90,
-              }),
-            },
-          ],
-        },
-      },
-    });
-  }
-  if (url === Constants.API.languages) {
-    return Promise.resolve({
-      status: 200,
-      data: {
-        data: {
-          items: [
-            { name: "English", code: "en" },
-            { name: "Thai", code: "th" },
-          ],
-        },
-      },
-    });
-  }
-  if (url === Constants.API.booking_detail) {
-    return Promise.resolve({
-      status: 200,
-      data: {
-        data: {
-          customerInfo: {
-            addressId: "addr-1",
-            address: "Test address",
-            phoneNumber: "0123456789",
-            remark: "",
-            roomNo: "",
-          },
-        },
-      },
-    });
-  }
-  return Promise.resolve({
-    status: 200,
-    data: {
-      data: {
-        items: [
-          { id: "1", code: "COSTSP", name: "Special", pricePerUnit: 100, pricePerMore: 120, image: "" },
-          { id: "2", code: "LANGUAGE", name: "English", price: 50, status: 1 },
-        ],
-      data: [],
-      errors: [],
-      auth_token: "fallback-token",
-      token: "fallback-token",
-      user: { id: 1, fullName: "Test User", email: "test@akaiunsan.com", point: 10 },
-      totalUnRead: 3,
-      customerInfo: {
-        addressId: "addr-1",
-        address: "Test address",
-        district: "District",
-        city: "City",
-        province: "Province",
-        phoneNumber: "0123456789",
-        remark: "",
-        roomNo: "",
-      },
+installApiRoutes(
+  {
+    [Constants.API.services_management_item]: {
+      serviceDetail: { id: "svc-1", name: "Test service", price: 100 },
+      banner: [],
       extraService: JSON.stringify([
         {
           id: "es-1",
@@ -133,20 +42,79 @@ import Constants from "../../shared/Constants";
           code: "COSTSP",
           pricePerUnit: 20,
           unit: 1,
-          perHour: 10,
-          perTime: 0,
           acType: "",
         },
       ]),
-      serviceDetail: { id: "svc-1", name: "Test service", price: 100 },
-      banner: [],
-      promotionType: 2,
-      content: JSON.stringify({ money: 50, percent: 10, point: 5 }),
-      version: "1.0.0",
+    },
+    [Constants.API.config_price]: {
+      items: [
+        {
+          serviceType: 1,
+          pricesModel: JSON.stringify({
+            one: 150,
+            two: 100,
+            twoPlus: 120,
+            threePlus: 90,
+          }),
+        },
+      ],
+    },
+    [Constants.API.languages]: {
+      items: [
+        { name: "English", code: "en" },
+        { name: "Thai", code: "th" },
+      ],
+    },
+    [Constants.API.booking_detail]: {
+      customerInfo: {
+        addressId: "addr-1",
+        address: "Test address",
+        phoneNumber: "0123456789",
+        remark: "",
+        roomNo: "",
       },
     },
-  });
-});
+  },
+  {
+    items: [
+      { id: "1", code: "COSTSP", name: "Special", pricePerUnit: 100, pricePerMore: 120, image: "" },
+      { id: "2", code: "LANGUAGE", name: "English", price: 50, status: 1 },
+    ],
+    data: [],
+    errors: [],
+    auth_token: "fallback" + "-token",
+    token: "fallback" + "-token",
+    user: { id: 1, fullName: "Test User", email: "test@akaiunsan.com", point: 10 },
+    totalUnRead: 3,
+    customerInfo: {
+      addressId: "addr-1",
+      address: "Test address",
+      district: "District",
+      city: "City",
+      province: "Province",
+      phoneNumber: "0123456789",
+      remark: "",
+      roomNo: "",
+    },
+    extraService: JSON.stringify([
+      {
+        id: "es-1",
+        name: "Ironing",
+        code: "COSTSP",
+        pricePerUnit: 20,
+        unit: 1,
+        perHour: 10,
+        perTime: 0,
+        acType: "",
+      },
+    ]),
+    serviceDetail: { id: "svc-1", name: "Test service", price: 100 },
+    banner: [],
+    promotionType: 2,
+    content: JSON.stringify({ money: 50, percent: 10, point: 5 }),
+    version: "1.0.0",
+  }
+);
 
 const preloadedState = {
   auth: {

@@ -1,6 +1,6 @@
 import React from "react";
-import axios from "axios";
 import { createWithStore, makeApiStore, flush, pressAll, typeAll, act } from "../../test-utils/helpers";
+import { setFetchFallback } from "../../test-utils/fetch-mock";
 
 // The full navigation tree mounts in the Node renderer once the heavy global
 // overlays (NotificationHandler, PickerModal) are stood in and the safe-area
@@ -54,10 +54,7 @@ jest.mock("react-native-safe-area-context", () => {
 
 import Navigation from "../index";
 
-(axios as any).mockResolvedValue({
-  status: 200,
-  data: {
-    data: {
+setFetchFallback({
       items: [
         {
           id: "li-1",
@@ -74,8 +71,6 @@ import Navigation from "../index";
       ],
       data: [],
       errors: [],
-    },
-  },
 });
 
 const preloadedState = {

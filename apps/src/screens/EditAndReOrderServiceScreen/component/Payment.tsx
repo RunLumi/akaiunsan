@@ -8,12 +8,12 @@ import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 import { Button } from 'react-native-elements';
 import { CustomInput, Loading, Text } from '../../../components';
 import i18n from '../../../shared/I18n';
-import useApi from '../../../hooks/useApi';
 import Constants from '../../../shared/Constants';
 import Enum from '../../../shared/Enum';
 import { useSelector } from 'react-redux';
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
 import Layout from '../../../shared/Layout';
+import { apiSlice, portRequest, type ApiResult } from "../../../redux/apiSlice";
 export default function Payment(props: any) {
   const user = useAppSelector((state) => state.auth.user);
   const [tableHeadFlexible, setTableHeadFlexible] = React.useState([
@@ -55,10 +55,11 @@ export default function Payment(props: any) {
       props.handlePaymentMethod(idCreditCard, true)
     }
   };
-  const [loadingPromotionCode, requestPromotionCode] = useApi({
-    method: "get",
-    url: Constants.API.promotion_apply,
-    callback: ({ error, response }) => {
+  const [requestPromotionCodeTrigger, { isLoading: loadingPromotionCode }] =
+    apiSlice.endpoints.promotionApply.useLazyQuery();
+  const requestPromotionCode = portRequest(
+    requestPromotionCodeTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
       } else {
@@ -104,12 +105,13 @@ export default function Payment(props: any) {
         }
         props.handlePromotionId(response.id);
       }
-    },
-  });
-  const [loadingPayment, requestPayment] = useApi({
-    method: "get",
-    url: Constants.API.get_payment,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [requestPaymentTrigger, { isLoading: loadingPayment }] =
+    apiSlice.endpoints.getPayment.useLazyQuery();
+  const requestPayment = portRequest(
+    requestPaymentTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
       } else {
@@ -130,12 +132,13 @@ export default function Payment(props: any) {
           }
         }
       }
-    },
-  });
-  const [loadingPriceToPoint, requestPriceToPoint] = useApi({
-    method: "get",
-    url: Constants.API.config_point,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [requestPriceToPointTrigger, { isLoading: loadingPriceToPoint }] =
+    apiSlice.endpoints.configPoint.useLazyQuery();
+  const requestPriceToPoint = portRequest(
+    requestPriceToPointTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
       } else {
@@ -147,13 +150,14 @@ export default function Payment(props: any) {
           setReceivePointFromPrice(getPoint);
         }
       }
-    },
-  });
+    }
+  );
 
-  const [loadingPointToDiscount, requestPointToDiscount] = useApi({
-    method: "get",
-    url: Constants.API.config_point,
-    callback: ({ error, response }) => {
+  const [requestPointToDiscountTrigger, { isLoading: loadingPointToDiscount }] =
+    apiSlice.endpoints.configPoint.useLazyQuery();
+  const requestPointToDiscount = portRequest(
+    requestPointToDiscountTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
       } else {
@@ -163,12 +167,13 @@ export default function Payment(props: any) {
         setIsDiscount({ ...isDiscount, isTrue: true, value: valueDiscount });
         props.handleDiscountPrice(valueDiscount, true, point.value);
       }
-    },
-  });
-  const [loadingSubscriptionFlexible, requestSubscriptionFlexible] = useApi({
-    method: "get",
-    url: Constants.API.config_subscription_prices,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [requestSubscriptionFlexibleTrigger, { isLoading: loadingSubscriptionFlexible }] =
+    apiSlice.endpoints.configSubscriptionPrices.useLazyQuery();
+  const requestSubscriptionFlexible = portRequest(
+    requestSubscriptionFlexibleTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
       } else {
@@ -180,12 +185,13 @@ export default function Payment(props: any) {
         }
         setTableDataFlexible(dataTable);
       }
-    },
-  });
-  const [loadingSubscriptionFix, requestSubscriptionFix] = useApi({
-    method: "get",
-    url: Constants.API.config_subscription_prices,
-    callback: ({ error, response }) => {
+    }
+  );
+  const [requestSubscriptionFixTrigger, { isLoading: loadingSubscriptionFix }] =
+    apiSlice.endpoints.configSubscriptionPrices.useLazyQuery();
+  const requestSubscriptionFix = portRequest(
+    requestSubscriptionFixTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
       } else {
@@ -197,8 +203,8 @@ export default function Payment(props: any) {
         }
         setTableDataFix(dataTable)
       }
-    },
-  });
+    }
+  );
   const onPressUndoDiscount = () => {
     setIsDiscount({ ...isDiscount, isTrue: false });
     props.handleDiscountPrice(isDiscount.value, false);

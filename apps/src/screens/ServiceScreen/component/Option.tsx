@@ -23,10 +23,10 @@ import { useDispatch } from "react-redux";
 import { TYPES } from "../../../redux/actions";
 import { CheckBox, AirbnbRating, Overlay } from "react-native-elements";
 import Enum from "../../../shared/Enum";
-import useApi from "../../../hooks/useApi";
 import Constants from "../../../shared/Constants";
 import _, { isNil } from "lodash";
 import { ScrollView } from "react-native-gesture-handler";
+import { apiSlice, portRequest, type ApiResult } from "../../../redux/apiSlice";
 
 export default function Option(props: any) {
   const extraService = props.extraService || [];
@@ -64,10 +64,11 @@ export default function Option(props: any) {
     value?: string;
   }>({});
 
-  const [loadingPriceSpecialRequest, requestPriceSpecialRequest] = useApi({
-    method: "get",
-    url: Constants.API.price_special_request,
-    callback: ({ error, response }) => {
+  const [requestPriceSpecialRequestTrigger, { isLoading: loadingPriceSpecialRequest }] =
+    apiSlice.endpoints.priceSpecialRequest.useLazyQuery();
+  const requestPriceSpecialRequest = portRequest(
+    requestPriceSpecialRequestTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
       } else {
@@ -82,8 +83,8 @@ export default function Option(props: any) {
         setPricePreferLanguage(getPricePreferLanguage);
         setPriceSpecifyHelper(getPriceSpecifyHelper);
       }
-    },
-  });
+    }
+  );
   const childRef = React.useRef<any>(null);
   const onChooseHelper = () => {
     childRef.current.openModalHelper();

@@ -8,10 +8,10 @@ import {
   Loading,
   Text
 } from "../../../components";
-import useApi from "../../../hooks/useApi";
 import Constants from "../../../shared/Constants";
 import i18n from "../../../shared/I18n";
 import { Payment } from "../../ServiceScreen/component";
+import { apiSlice, portRequest, type ApiResult } from "../../../redux/apiSlice";
 
 export default function Detail(props: any) {
   const childRef = React.useRef<any>(null);
@@ -25,10 +25,11 @@ export default function Detail(props: any) {
   const [idCard, setIdCard] = useState("");
   const [pointApply, setPointApply] = useState(0);
 
-  const [loadingOrderFlexiblePlan, requestOrderFlexiblePlan] = useApi({
-    method: "post",
-    url: Constants.API.order_flexible_plan,
-    callback: ({ error, response }) => {
+  const [requestOrderFlexiblePlanTrigger, { isLoading: loadingOrderFlexiblePlan }] =
+    apiSlice.endpoints.orderFlexiblePlan.useMutation();
+  const requestOrderFlexiblePlan = portRequest(
+    requestOrderFlexiblePlanTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         setTimeout(() => {
           Alert.alert(i18n.t("auth.error"), error);
@@ -41,13 +42,14 @@ export default function Detail(props: any) {
           },
         });
       }
-    },
-  });
+    }
+  );
 
-  const [loadingChargePlan, requestChargePlan] = useApi({
-    method: "post",
-    url: Constants.API.chargesplan,
-    callback: ({ error, response }) => {
+  const [requestChargePlanTrigger, { isLoading: loadingChargePlan }] =
+    apiSlice.endpoints.chargesplan.useMutation();
+  const requestChargePlan = portRequest(
+    requestChargePlanTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         setTimeout(() => {
           Alert.alert(i18n.t("auth.error"), error);
@@ -57,8 +59,8 @@ export default function Detail(props: any) {
         setTimeout(goBack, 200);
         Alert.alert("Success", "Order subscription successfully!");
       }
-    },
-  });
+    }
+  );
 
   const handleDiscountPrice = (
     valueDiscount: any,

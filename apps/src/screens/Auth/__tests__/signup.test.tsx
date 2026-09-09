@@ -1,11 +1,11 @@
 import React from "react";
-import axios from "axios";
 import {
   createWithApiStore,
   createWithStore,
   makeApiStore,
   flush,
 } from "../../../test-utils/helpers";
+import { setFetchFallback } from "../../../test-utils/fetch-mock";
 import { act } from "react-test-renderer";
 
 // Phase 5 strangler contract for the Signup port (docs/mobile-app-upgrade-plan.md
@@ -24,10 +24,7 @@ import Signup from "../Signup";
 import Constants from "../../../shared/Constants";
 import { navigationRef } from "../../../navigation/root";
 
-(axios as any).mockResolvedValue({
-  status: 200,
-  data: { data: { items: [], data: [], errors: [] } },
-});
+setFetchFallback({ items: [], data: [], errors: [] });
 
 const nav = () => ({
   navigate: jest.fn(),

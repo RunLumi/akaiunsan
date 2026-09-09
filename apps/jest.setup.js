@@ -349,18 +349,6 @@ jest.mock("@react-navigation/core", () => ({
   useFocusEffect: () => {},
 }));
 
-// Substitute the real axios transport so any request fired by a mounted
-// component settles deterministically. Each test file configures the resolved
-// payload via `(axios as any).mockResolvedValue(...)`.
-jest.mock("axios", () => {
-  const request = jest.fn();
-  request.get = jest.fn();
-  request.post = jest.fn();
-  request.put = jest.fn();
-  request.default = request;
-  return request;
-});
-
 // The expo fetch shim resolves with an empty body in the Node test env, so any
 // un-caught response.json() parse (Geocoding flows inside screens) rejects
 // after the suite finishes and fails the CI process. Stub a well-formed
@@ -413,7 +401,7 @@ globalThis.fetch = jest.fn((url, opts) => {
 // file (defeating per-file jest.mock factories like useApi.test's config
 // mock), so makeApiStore (helpers.tsx) pushes its reset closures onto
 // globalThis instead and we only touch plain data here.
-afterEach(() => {
+afterEach(async () => {
   const resets = globalThis.__apiStoreResets;
   if (Array.isArray(resets)) {
     for (const reset of resets.splice(0)) {
@@ -424,6 +412,10 @@ afterEach(() => {
       }
     }
   }
+  // resetApiState aborts in-flight queries; give their rejections and any
+  // final component updates one scheduler tick while the environment is
+  // still alive, so nothing fires after teardown.
+  await new Promise((r) => setImmediate(r));
 });
 
 // RN 0.64 + jest-expo run components in the Node env, which has no global

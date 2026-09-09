@@ -7,10 +7,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { Container, Loading, Text } from "../../components";
 import Colors from "../../shared/Colors";
 import i18n from "../../shared/I18n";
-import useApi from "../../hooks/useApi";
 import Constants from "../../shared/Constants";
 import Enum from "../../shared/Enum";
 import { paramArray } from "../../shared/Utils";
+import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
 
 dayjs.locale("en");
 
@@ -401,10 +401,11 @@ export default (props: any) => {
   const [listMonthly, setListMonthly] = useState<any>([]);
   const [listWeekly, setListWeekly] = useState<any>([]);
 
-  const [loadingListMonthly, requestListMonthly] = useApi({
-    method: "get",
-    url: Constants.API.get_booking,
-    callback: ({ error, response }) => {
+  const [requestListMonthlyTrigger, { isLoading: loadingListMonthly }] =
+    apiSlice.endpoints.getBookings.useLazyQuery();
+  const requestListMonthly = portRequest(
+    requestListMonthlyTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
@@ -418,13 +419,14 @@ export default (props: any) => {
       });
 
       setListMonthly(_.concat(getMoreItems(), items));
-    },
-  });
+    }
+  );
 
-  const [loadingListWeekly, requestListWeekly] = useApi({
-    method: "get",
-    url: Constants.API.get_booking,
-    callback: ({ error, response }) => {
+  const [requestListWeeklyTrigger, { isLoading: loadingListWeekly }] =
+    apiSlice.endpoints.getBookings.useLazyQuery();
+  const requestListWeekly = portRequest(
+    requestListWeeklyTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
@@ -439,8 +441,8 @@ export default (props: any) => {
       });
 
       setListWeekly(_.concat(getMoreItems(), items));
-    },
-  });
+    }
+  );
 
   const getMoreItems = () => {
     const moreItems: any = [];

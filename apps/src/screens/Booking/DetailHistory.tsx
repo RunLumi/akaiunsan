@@ -4,13 +4,13 @@ import React, { useEffect, useState } from "react";
 import { View, Image, Alert } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import { Container, Text } from "../../components";
-import useApi from "../../hooks/useApi";
 import Colors from "../../shared/Colors";
 import Constants from "../../shared/Constants";
 import i18n from "../../shared/I18n";
 import dayjs from "../../shared/dayjs";
 import Enum from "../../shared/Enum";
 import { getStatus } from "../../shared/Utils";
+import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
 
 export default function DetailHistory(props: any) {
   const params = props.route.params;
@@ -18,10 +18,11 @@ export default function DetailHistory(props: any) {
   const [currentStar, setCurrentStar] = useState(0);
   const [currentDetail, setCurrentDetail] = useState<any>({});
 
-  const [loadingRequestReview, requestReview] = useApi({
-    method: "post",
-    url: Constants.API.review_order,
-    callback: ({ error, response }) => {
+  const [requestReviewTrigger, { isLoading: loadingRequestReview }] =
+    apiSlice.endpoints.reviewOrder.useMutation();
+  const requestReview = portRequest(
+    requestReviewTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
@@ -36,20 +37,21 @@ export default function DetailHistory(props: any) {
           orderId: params?.item.orderId,
         },
       });
-    },
-  });
+    }
+  );
 
-  const [loadingRequestCurrentDetail, requestCurrentDetail] = useApi({
-    method: "get",
-    url: Constants.API.detail_booking,
-    callback: ({ error, response }) => {
+  const [requestCurrentDetailTrigger, { isLoading: loadingRequestCurrentDetail }] =
+    apiSlice.endpoints.detailBooking.useLazyQuery();
+  const requestCurrentDetail = portRequest(
+    requestCurrentDetailTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
       }
       setCurrentDetail(response);
-    },
-  });
+    }
+  );
 
   const onPressReview = () => {
     requestReview({

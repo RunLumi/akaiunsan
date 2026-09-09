@@ -1,6 +1,5 @@
 import React from "react";
 import { Alert } from "react-native";
-import axios from "axios";
 import { ListCardPayment } from "../ListCardPayment";
 import Constants from "../../shared/Constants";
 import i18n from "../../shared/I18n";
@@ -12,14 +11,20 @@ import {
   flush,
   pressableFrom,
 } from "../../test-utils/helpers";
+import {
+  installFetchRoutes,
+  setFetchBehavior,
+} from "../../test-utils/fetch-mock";
 
-const mockAxios = axios as unknown as jest.Mock;
+// ListCardPayment is ported to RTK Query: requests flow through the global
+// fetch stub, so payload setup and call assertions both use fetch.
+const lastFetch = () => {
+  const [input] = (globalThis.fetch as jest.Mock).mock.calls.slice(-1)[0];
+  return typeof input === "string" ? input : input.url;
+};
 
 const listResponse = (cards: any[], defaultCard: any) => ({
-  status: 200,
-  data: {
-    data: { customer: { cards: { data: cards }, default_card: defaultCard } },
-  },
+  customer: { cards: { data: cards }, default_card: defaultCard },
 });
 
 const paymentTouchable = (root: any) =>
@@ -27,11 +32,16 @@ const paymentTouchable = (root: any) =>
 
 describe("ListCardPayment", () => {
   beforeEach(() => {
-    mockAxios.mockReset();
+    (globalThis.fetch as jest.Mock).mockClear();
+    installFetchRoutes({
+      [Constants.API.payment_card_list]: { customer: { cards: { data: [] }, default_card: "" } },
+    });
   });
 
   it("loads the card list on mount", async () => {
-    mockAxios.mockResolvedValue(listResponse([], null));
+    installFetchRoutes({
+      [Constants.API.payment_card_list]: listResponse([], null),
+    });
     createWithStore(
       <ListCardPayment
         children={React.createRef<any>()}
@@ -40,12 +50,19 @@ describe("ListCardPayment", () => {
       makeApiStore()
     );
     await flush();
-    expect(mockAxios).toHaveBeenCalledTimes(1);
-    expect(mockAxios.mock.calls[0][0].url).toBe(Constants.API.payment_card_list);
+    expect(
+      (globalThis.fetch as jest.Mock).mock.calls.some((c: any[]) =>
+        (typeof c[0] === "string" ? c[0] : c[0]?.url || "").includes(
+          Constants.API.payment_card_list
+        )
+      )
+    ).toBe(true);
   });
 
   it("shows the empty state and a disabled payment button with no cards", async () => {
-    mockAxios.mockResolvedValue(listResponse([], null));
+    installFetchRoutes({
+      [Constants.API.payment_card_list]: listResponse([], null),
+    });
     const ref = React.createRef<any>();
     const { root } = createWithStore(
       <ListCardPayment children={ref} handleIdCard={jest.fn()} />,
@@ -65,7 +82,9 @@ describe("ListCardPayment", () => {
       expiration_month: "12",
       expiration_year: "26",
     };
-    mockAxios.mockResolvedValue(listResponse([card], ""));
+    installFetchRoutes({
+      [Constants.API.payment_card_list]: listResponse([card], ""),
+    });
     const handleIdCard = jest.fn();
     const ref = React.createRef<any>();
     const { root } = createWithStore(
@@ -91,7 +110,7 @@ describe("ListCardPayment", () => {
   });
 
   it("alerts when the list request fails", async () => {
-    mockAxios.mockRejectedValue(new Error("network down"));
+    setFetchBehavior({ rejectAll: true });
     const alertSpy = jest.spyOn(Alert, "alert");
     createWithStore(
       <ListCardPayment
@@ -101,7 +120,11 @@ describe("ListCardPayment", () => {
       makeApiStore()
     );
     await flush();
-    expect(alertSpy).toHaveBeenCalledWith(i18n.t("auth.error"), "network down");
+    expect(alertSpy).toHaveBeenCalledWith(
+      i18n.t("auth.error"),
+      "Error: Network request failed"
+    );
+    setFetchBehavior({ rejectAll: false });
     alertSpy.mockRestore();
   });
 });

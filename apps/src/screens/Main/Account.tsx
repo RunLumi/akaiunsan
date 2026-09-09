@@ -22,20 +22,21 @@ import { NavigationRoot } from "../../navigation/root";
 import { success, TYPES } from "../../redux/actions";
 import i18n from "../../shared/I18n";
 import { Divider } from "react-native-elements";
-import useApi from "../../hooks/useApi";
 import notifee from "@notifee/react-native";
+import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
 
 export default function Account(props: any) {
-  const [loadingRemove, requestRemove] = useApi({
-    method: "delete",
-    url: Constants.API.remove_account,
-    callback: ({ error, response }) => {
+  const [requestRemoveTrigger, { isLoading: loadingRemove }] =
+    apiSlice.endpoints.removeAccount.useMutation();
+  const requestRemove = portRequest(
+    requestRemoveTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error_occurred"), error);
       else {
         dispatch({ type: success(TYPES.AUTH.LOG_OUT) });
       }
-    },
-  });
+    }
+  );
   const onRemoveAccount = () => {
     Alert.alert(i18n.t('auth.confirm'), i18n.t('auth.remove_account'),  [
       {
@@ -104,16 +105,17 @@ export default function Account(props: any) {
   const dispatch = useDispatch();
   const language = useAppSelector((state) => state.language.language);
 
-  const [loadingAddDeviceNotification, requestAddDeviceNotification] = useApi({
-    method: "post",
-    url: Constants.API.add_device_notification,
-    callback: ({ error, response }) => {
+  const [requestAddDeviceNotificationTrigger, { isLoading: loadingAddDeviceNotification }] =
+    apiSlice.endpoints.addDeviceNotification.useMutation();
+  const requestAddDeviceNotification = portRequest(
+    requestAddDeviceNotificationTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) console.log("error_noti", error);
       else {
         dispatch({ type: success(TYPES.AUTH.LOG_OUT) });
       }
-    },
-  });
+    }
+  );
  
   const logout = () => {
     // await GoogleSignin.clearCachedAccessToken(token);

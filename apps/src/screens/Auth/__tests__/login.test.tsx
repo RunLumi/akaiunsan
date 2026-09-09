@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import {
   createWithApiStore,
   createWithStore,
@@ -7,6 +6,7 @@ import {
   flush,
   pressText,
 } from "../../../test-utils/helpers";
+import { setFetchFallback } from "../../../test-utils/fetch-mock";
 
 // Phase 5 strangler contract for the Login port (docs/mobile-app-upgrade-plan.md
 // §5): the email/password form submits through the RTK login mutation and the
@@ -22,10 +22,7 @@ jest.mock("@react-navigation/native", () => ({
 
 import Login from "../Login";
 
-(axios as any).mockResolvedValue({
-  status: 200,
-  data: { data: { items: [], data: [], errors: [] } },
-});
+setFetchFallback({ items: [], data: [], errors: [] });
 
 const nav = () => ({
   navigate: jest.fn(),

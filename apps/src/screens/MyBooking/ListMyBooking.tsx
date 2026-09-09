@@ -10,20 +10,21 @@ import {
   FlatList,
 } from "react-native";
 import { Container, Loading, Text } from "../../components";
-import useApi from "../../hooks/useApi";
 import Colors from "../../shared/Colors";
 import Constants from "../../shared/Constants";
 import i18n from "../../shared/I18n";
 import { getStatus, paramArray } from "../../shared/Utils";
+import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
 
 export default function ListMyBooking(props: any) {
   const [listBooking, setListBooking] = useState<any[]>([]);
   const [pageListBooking, setPageListBooking] = useState(1);
 
-  const [loadingListBooking, requestListBooking] = useApi({
-    method: "get",
-    url: Constants.API.get_booking,
-    callback: ({ error, response }) => {
+  const [requestListBookingTrigger, { isLoading: loadingListBooking }] =
+    apiSlice.endpoints.getBookings.useLazyQuery();
+  const requestListBooking = portRequest(
+    requestListBookingTrigger,
+    ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
@@ -35,8 +36,8 @@ export default function ListMyBooking(props: any) {
 
         setPageListBooking(response.page);
       }
-    },
-  });
+    }
+  );
 
   const onPressBookingDetail = (item: any) => {
     props.navigation.navigate(Constants.SCREENS.MYBOOKING.DETAIL_MYBOOKING, {

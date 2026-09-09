@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Alert, Image, StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { Button, Container, CustomInput } from '../../components';
-import useApi from '../../hooks/useApi';
 import Colors from '../../shared/Colors';
 import Constants from '../../shared/Constants';
 import i18n from '../../shared/I18n';
 import Styles from '../../shared/Styles';
+import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
 
 export default function ForgotPassword(props: any) {
 	const [email, setEmail] = useState({value:"",isError:false,msgErr:""});
@@ -14,30 +14,33 @@ export default function ForgotPassword(props: any) {
 	const [pass, setPass] = useState({value:"",isError:false,msgErr:""});
 	const [repass, setRePass] = useState({value:"",isError:false,msgErr:""});
 	const [step, setStep] = useState(0);
-	const [loadingOTP, requestOTP] = useApi({
-		method: 'post',
-		url: Constants.API.forgot_password,
-		callback: ({ error, response }) => {
+	const [requestOTPTrigger, { isLoading: loadingOTP }] =
+	  apiSlice.endpoints.forgotPassword.useLazyQuery();
+	const requestOTP = portRequest(
+	  requestOTPTrigger,
+	  ({ error, response }: ApiResult) => {
 			if (error) Alert.alert(i18n.t('auth.error'), error);
 			else {
 				setStep(1);
 			}
-		},
-	});
-	const [loadingVerifyOTP, requestVerifyOTP] = useApi({
-		method: 'post',
-		url: Constants.API.check_otp,
-		callback: ({ error, response }) => {
+	  }
+	);
+	const [requestVerifyOTPTrigger, { isLoading: loadingVerifyOTP }] =
+	  apiSlice.endpoints.checkOtp.useLazyQuery();
+	const requestVerifyOTP = portRequest(
+	  requestVerifyOTPTrigger,
+	  ({ error, response }: ApiResult) => {
 			if (error) Alert.alert(i18n.t('auth.error'), error);
 			else {
 				setStep(2);
 			}
-		},
-	});
-	const [loadingUpdatePass, requestUpdatePass] = useApi({
-		method: 'put',
-		url: Constants.API.reset_password,
-		callback: ({ error, response }) => {
+	  }
+	);
+	const [requestUpdatePassTrigger, { isLoading: loadingUpdatePass }] =
+	  apiSlice.endpoints.resetPassword.useLazyQuery();
+	const requestUpdatePass = portRequest(
+	  requestUpdatePassTrigger,
+	  ({ error, response }: ApiResult) => {
 			if (error) Alert.alert(i18n.t('auth.error'), error);
 			else {
 				props.navigation.replace(Constants.SCREENS.AUTH.LOGIN, {
@@ -45,8 +48,8 @@ export default function ForgotPassword(props: any) {
 					password: pass.value,
 				});
 			}
-		},
-	});
+	  }
+	);
 
 	const validateEmail = (email:any) => {
 		const re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;

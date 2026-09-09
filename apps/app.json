@@ -81,9 +81,9 @@
       [
         "expo-splash-screen",
         {
-          "image": "./src/assets/images/Splash-screen.png",
-          "imageWidth": 200,
-          "resizeMode": "cover",
+          "image": "./src/assets/images/akaiunsan_logo.png",
+          "imageWidth": 220,
+          "resizeMode": "contain",
           "backgroundColor": "#FFFFFF"
         }
       ],

@@ -174,6 +174,25 @@ export const apiSlice = createApi({
         body: arg?.data,
       }),
     }),
+
+    // ---- Payment (Phase 5 module port) --------------------------------------
+    getPaymentCards: builder.query<PaymentCardsResponse, void>({
+      query: () => ({ url: Constants.API.payment_card_list }),
+    }),
+    deletePaymentCard: builder.mutation<any, RequestArg | void>({
+      query: (arg) => ({
+        url: Constants.API.payment_card_delete,
+        method: "delete",
+        body: arg?.data,
+      }),
+    }),
+    setDefaultPaymentCard: builder.mutation<any, RequestArg | void>({
+      query: (arg) => ({
+        url: Constants.API.payment_card_default,
+        method: "put",
+        body: arg?.data,
+      }),
+    }),
   }),
 });
 
@@ -235,4 +254,8 @@ export const {
   useLazyGetBookingsQuery,
   useDeleteNotificationMutation,
   useReadAllNotificationsMutation,
+  useGetPaymentCardsQuery,
+  useLazyGetPaymentCardsQuery,
+  useDeletePaymentCardMutation,
+  useSetDefaultPaymentCardMutation,
 } = apiSlice;

@@ -129,6 +129,15 @@ const bookingsRoute: FetchRouteValue = ({ method, query }) => {
   };
 };
 
+// GET /client/credit-cards also serves DELETE (payment_card_delete) and PUT
+// (payment_card_default) — one path, one route fn branching on method.
+const creditCardsRoute: FetchRouteValue = ({ method }) => {
+  if (method.toUpperCase() !== "GET") return {};
+  return {
+    customer: { cards: { data: [cardItem("card-1")] }, default_card: "card-1" },
+  };
+};
+
 // Defaults installed for every suite (jest.setup.js requires this module).
 // Suites override per-path via installFetchRoutes without touching others.
 export const DEFAULT_FETCH_ROUTES: Record<string, FetchRouteValue> = {
@@ -181,12 +190,8 @@ export const DEFAULT_FETCH_ROUTES: Record<string, FetchRouteValue> = {
   [Constants.API.get_notification]: notificationsRoute,
   // Booking
   [Constants.API.get_booking]: bookingsRoute,
-  // Payment
-  [Constants.API.payment_card_list]: {
-    customer: { cards: { data: [cardItem("card-1")] }, default_card: "card-1" },
-  },
-  [Constants.API.payment_card_delete]: {},
-  [Constants.API.payment_card_default]: {},
+  // Payment — one shared path, method-aware
+  [Constants.API.payment_card_list]: creditCardsRoute,
 };
 
 export const installFetchRoutes = (routes: Record<string, FetchRouteValue>) => {

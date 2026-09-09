@@ -210,3 +210,43 @@ describe("apiSlice Phase 5 endpoints — Inbox", () => {
     expect(JSON.parse(req.bodyText)).toEqual({ readAllType: [0, 3] });
   });
 });
+
+describe("apiSlice Phase 5 endpoints — Payment", () => {
+  it("GET payment_card_list serves the customer card map the screen reads", async () => {
+    const store = makeApiStore(preloadedState);
+    const result: any = await store.dispatch(
+      apiSlice.endpoints.getPaymentCards.initiate()
+    );
+    const req = await lastRequest();
+    expect(req.url).toContain(Constants.API.payment_card_list);
+    expect(req.method).toBe("GET");
+    expect(result.data.customer.cards.data).toHaveLength(1);
+    expect(result.data.customer.default_card).toBe("card-1");
+  });
+
+  it("DELETE payment_card_delete sends cardId then the screen refetches", async () => {
+    const store = makeApiStore(preloadedState);
+    await store.dispatch(
+      apiSlice.endpoints.deletePaymentCard.initiate({
+        data: { cardId: "card-1" },
+      })
+    );
+    const req = await lastRequest();
+    expect(req.url).toContain(Constants.API.payment_card_delete);
+    expect(req.method).toBe("DELETE");
+    expect(JSON.parse(req.bodyText)).toEqual({ cardId: "card-1" });
+  });
+
+  it("PUT payment_card_default sends cardId", async () => {
+    const store = makeApiStore(preloadedState);
+    await store.dispatch(
+      apiSlice.endpoints.setDefaultPaymentCard.initiate({
+        data: { cardId: "card-1" },
+      })
+    );
+    const req = await lastRequest();
+    expect(req.url).toContain(Constants.API.payment_card_default);
+    expect(req.method).toBe("PUT");
+    expect(JSON.parse(req.bodyText)).toEqual({ cardId: "card-1" });
+  });
+});

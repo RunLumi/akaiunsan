@@ -9,9 +9,8 @@ import {
   FlatList,
 } from "react-native";
 import { Container, Loading, AddCardPayment, Text } from "../../components";
-import useApi from "../../hooks/useApi";
+import { apiSlice, portRequest } from "../../redux/apiSlice";
 import Colors from "../../shared/Colors";
-import Constants from "../../shared/Constants";
 import i18n from "../../shared/I18n";
 import { FontAwesome } from "@expo/vector-icons";
 
@@ -20,10 +19,15 @@ export default function PaymentList(props: any) {
   const [listPayment, setListPayment] = useState<any[]>([]);
   const [idDefaultCard, setIdDefaultCard] = useState("");
 
-  const [loadingListCard, requestListCard] = useApi({
-    method: "get",
-    url: Constants.API.payment_card_list,
-    callback: ({ error, response }) => {
+  // Phase 5 RTK Query port: the three credit-card tunnels keep their legacy
+  // callbacks (delete/default each trigger a list refetch, as with useApi).
+  const [
+    listCardTrigger,
+    { isLoading: loadingListCard },
+  ] = apiSlice.endpoints.getPaymentCards.useLazyQuery();
+  const requestListCard = portRequest(
+    listCardTrigger,
+    ({ error, response }: { error: string; response: any }) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
@@ -36,32 +40,38 @@ export default function PaymentList(props: any) {
         setListPayment(response.customer.cards.data);
       }
       setIdDefaultCard(response.customer && response.customer.default_card);
-    },
-  });
+    }
+  );
 
-  const [loadingDeleteCard, requestDeleteCard] = useApi({
-    method: "delete",
-    url: Constants.API.payment_card_delete,
-    callback: ({ error, response }) => {
+  const [
+    deleteCardMutation,
+    { isLoading: loadingDeleteCard },
+  ] = apiSlice.endpoints.deletePaymentCard.useMutation();
+  const requestDeleteCard = portRequest(
+    deleteCardMutation,
+    ({ error }: { error: string; response: any }) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
       }
       requestListCard();
-    },
-  });
+    }
+  );
 
-  const [loadingCardDefault, requestCardDefault] = useApi({
-    method: "put",
-    url: Constants.API.payment_card_default,
-    callback: ({ error, response }) => {
+  const [
+    cardDefaultMutation,
+    { isLoading: loadingCardDefault },
+  ] = apiSlice.endpoints.setDefaultPaymentCard.useMutation();
+  const requestCardDefault = portRequest(
+    cardDefaultMutation,
+    ({ error }: { error: string; response: any }) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
       }
       requestListCard();
-    },
-  });
+    }
+  );
 
   const deleteCard = (item: any) => {
     Alert.alert(

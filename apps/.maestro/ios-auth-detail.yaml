@@ -25,6 +25,9 @@ appId: com.akaiunsan.customer
 - assertVisible: "Sign In"
 - tapOn: "Sign In"
 - assertVisible: "Please enter your email address."
+- swipe:
+    direction: UP
+    duration: 500
 - tapOn: "Sign Up"
 - extendedWaitUntil:
     visible: "Log in"

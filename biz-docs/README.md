@@ -51,6 +51,10 @@ nên không cần biến `HUGO_BASEURL`.
 | `content/docs/huong-dan-su-dung/` | Hướng dẫn cho người dùng cuối |
 | `content/docs/kiem-thu/` | Hướng dẫn + quy ước test case cho tester |
 | `content/docs/thuattu.md` | Bảng thuật ngữ |
+| `content/docs/man-hinh/` | Danh mục 36 màn hình (route + FR) |
+| `content/docs/api-tong-quan.md` | API tổng quan (5 nhóm route) |
+| `content/docs/admin-va-van-hanh.md` | Trang quản trị & vận hành |
+| `content/docs/huong-dan-su-dung/faq.md` | FAQ người dùng |
 
 ## Thêm / sửa nội dung
 

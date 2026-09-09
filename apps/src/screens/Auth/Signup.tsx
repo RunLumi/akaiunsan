@@ -335,9 +335,15 @@ export default function Signup(props: any) {
         <Loading loading={loading} />
         <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
           <DismissKeyboardView style={{ flex: 1 }}>
-            <Text onPress={onPressLogin} style={s.login}>
-              {i18n.t("auth.login")}
-            </Text>
+            <TouchableOpacity
+              onPress={onPressLogin}
+              accessibilityRole="button"
+              accessibilityLabel={i18n.t("auth.login")}
+              testID="signup-login-button"
+              style={s.login}
+            >
+              <Text style={s.loginText}>{i18n.t("auth.login")}</Text>
+            </TouchableOpacity>
             <Image
               source={require("../../assets/images/akaiunsan_logo.png")}
               style={s.logo}
@@ -525,8 +531,10 @@ const s = StyleSheet.create({
   },
   login: {
     alignSelf: "flex-end",
-    marginTop: Platform.OS === "ios" ? 30 : 15,
+    marginTop: Platform.OS === "ios" ? 30 : 45,
     marginRight: Styles.margin.horizontal,
+  },
+  loginText: {
     color: Colors.blue_link,
     fontStyle: "italic",
     textDecorationLine: "underline",

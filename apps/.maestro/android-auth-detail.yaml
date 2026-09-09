@@ -1,0 +1,51 @@
+appId: com.akaiunsan.customer
+
+---
+- clearState
+- launchApp
+- tapOn:
+    text: "Allow Once"
+    optional: true
+- tapOn:
+    text: "Allow While Using App"
+    optional: true
+- tapOn:
+    text: "While using the app"
+    optional: true
+- tapOn:
+    text: "Allow"
+    optional: true
+- tapOn:
+    text: "OK"
+    optional: true
+- extendedWaitUntil:
+    visible: "Email"
+    timeout: 30000
+- assertVisible: "Password"
+- assertVisible: "Sign In"
+- tapOn: "Sign In"
+- assertVisible: "Please enter your email address."
+- tapOn: "Sign Up"
+- waitForAnimationToEnd
+- assertVisible: "First name *"
+- assertVisible: "Last name *"
+- assertVisible: "Phone No. *"
+- assertVisible: "Address here *"
+- assertVisible: "E-mail *"
+- assertVisible: "Password *"
+- assertVisible: "Confirm Password *"
+- assertVisible: "Next"
+- tapOn:
+    id: "signup-login-button"
+- waitForAnimationToEnd
+- extendedWaitUntil:
+    visible: "Email"
+    timeout: 10000
+- tapOn: "Forgot Password?"
+- extendedWaitUntil:
+    visible: "Send OTP"
+    timeout: 10000
+- assertVisible: "Email"
+- assertVisible: "Send OTP"
+- tapOn: "Send OTP"
+- assertVisible: "You must input mail to receive OTP!"

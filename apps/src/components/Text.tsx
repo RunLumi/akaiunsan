@@ -32,6 +32,7 @@ export const Text = ({ style, children, numberOfLines, onPress, ...props }: Prop
     <DefaultText
       onPress={onPress}
       numberOfLines={numberOfLines}
+      maxFontSizeMultiplier={Styles.typography.maxFontSizeMultiplier}
       {...props}
       style={[{ fontFamily: fonts() }, s.default, style]}
     >

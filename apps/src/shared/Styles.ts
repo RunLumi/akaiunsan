@@ -13,6 +13,9 @@ export default {
 		elevation: 3,
 	},
 	typography: {
+		// Preserve accessibility scaling while preventing extreme system sizes
+		// from making controls unusable or pushing important content off-screen.
+		maxFontSizeMultiplier: 1.3,
 		h1: 32,
 		h2: 24,
 		h3: 18,

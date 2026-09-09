@@ -9,6 +9,7 @@ describe("CustomInput", () => {
     const { root } = create(<CustomInput value="hi" onChangeText={onChangeText} />);
     const input = root.findByType(RNTextInput);
     expect(input.props.value).toBe("hi");
+    expect(input.props.maxFontSizeMultiplier).toBe(1.3);
     act(() => input.props.onChangeText("yo"));
     expect(onChangeText).toHaveBeenCalledWith("yo");
   });

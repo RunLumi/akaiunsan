@@ -25,6 +25,7 @@ describe("Text", () => {
     const node = textNodes(renderer.root, "Hello")[0];
     expect(node.type).toBe(RNText);
     expect(font(node)).toBe("OpenSans-Regular");
+    expect(node.props.maxFontSizeMultiplier).toBe(1.3);
   });
 
   it("uses SukhumvitSet-Text when the locale is th", () => {
@@ -63,6 +64,7 @@ describe("TextInput", () => {
     act(() => input.props.onChangeText("xyz"));
     expect(onChangeText).toHaveBeenCalledWith("xyz");
     expect(StyleSheet.flatten(input.props.style).color).toBe("red");
+    expect(input.props.maxFontSizeMultiplier).toBe(1.3);
   });
 });
 

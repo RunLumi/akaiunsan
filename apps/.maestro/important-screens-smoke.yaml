@@ -1,0 +1,125 @@
+appId: com.akaiunsan.customer
+
+---
+# Requires a staging/UAT account supplied at runtime:
+# MAESTRO_EMAIL=... MAESTRO_PASSWORD=... maestro test ...
+- clearState
+- launchApp
+- tapOn:
+    text: "Allow Once"
+    optional: true
+- tapOn:
+    text: "Allow While Using App"
+    optional: true
+- tapOn:
+    text: "While using the app"
+    optional: true
+- tapOn:
+    text: "Allow"
+    optional: true
+- tapOn:
+    text: "OK"
+    optional: true
+- extendedWaitUntil:
+    visible: "Email"
+    timeout: 30000
+- tapOn: "Email"
+- inputText: ${MAESTRO_EMAIL}
+- tapOn: "Password"
+- inputText: ${MAESTRO_PASSWORD}
+- tapOn: "Sign In"
+- extendedWaitUntil:
+    visible: "Home"
+    timeout: 30000
+
+# FR-HOME-01 / FR-SVC-01: home and service discovery.
+- assertVisible: "Home"
+- assertVisible: "Booking"
+- assertVisible: "Inbox"
+- assertVisible: "Account"
+- assertVisible: "Maid Service"
+- tapOn: "Maid Service"
+- extendedWaitUntil:
+    visible: "How many Hour(s)"
+    timeout: 15000
+- assertVisible: "Select date and time"
+- back
+
+# FR-BOOK-05 and FR-BOOK-01: booking list and calendar entry point.
+- tapOn: "Booking"
+- extendedWaitUntil:
+    visible: "Booking"
+    timeout: 15000
+- assertVisible: "Upcoming"
+- assertVisible: "History"
+- tapOn: "History"
+- assertVisible: "History"
+- tapOn: "Upcoming"
+- tapOn:
+    text: "Booking"
+    index: 0
+- back
+
+# FR-NOTI-01..03: both inbox tabs and empty/data state.
+- tapOn: "Inbox"
+- extendedWaitUntil:
+    visible: "Inbox"
+    timeout: 15000
+- assertVisible: "Notification"
+- assertVisible: "Promotion"
+- tapOn: "Promotion"
+- assertVisible: "Promotion"
+- tapOn: "Notification"
+
+# FR-PRO-01 / FR-PAY-01 / FR-FAV-01 / FR-HIST-01 / FR-SUB-01.
+- tapOn: "Account"
+- extendedWaitUntil:
+    visible: "Account"
+    timeout: 15000
+- assertVisible: "MY BOOKING"
+- assertVisible: "FAVOURITE"
+- assertVisible: "PROMOTIONS"
+- assertVisible: "PAYMENT"
+- assertVisible: "HISTORY"
+- assertVisible: "ADDRESS"
+- assertVisible: "SUBSCRIPTION MENU"
+
+- tapOn: "FAVOURITE"
+- extendedWaitUntil:
+    visible: "Favourite"
+    timeout: 10000
+- back
+- tapOn: "PAYMENT"
+- extendedWaitUntil:
+    visible: "PAYMENT"
+    timeout: 10000
+- back
+- tapOn: "HISTORY"
+- extendedWaitUntil:
+    visible: "HISTORY"
+    timeout: 10000
+- back
+- tapOn: "ADDRESS"
+- extendedWaitUntil:
+    visible: "ADDRESS"
+    timeout: 10000
+- back
+- tapOn: "SUBSCRIPTION MENU"
+- extendedWaitUntil:
+    visible: "SUBSCRIPTION"
+    timeout: 10000
+- back
+- tapOn: "PROMOTIONS"
+- extendedWaitUntil:
+    visible: "PROMOTIONS"
+    timeout: 10000
+- back
+
+# FR-ACC-05: logout returns to the authentication boundary.
+- tapOn: "Log out"
+- tapOn:
+    text: "OK"
+    optional: true
+- extendedWaitUntil:
+    visible: "Sign In"
+    timeout: 15000

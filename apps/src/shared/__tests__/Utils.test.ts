@@ -7,6 +7,7 @@ import {
   getSpecialRequest,
   rankBackground,
 } from "../Utils";
+import i18n from "../I18n";
 
 jest.mock("expo-localization", () => ({
   getLocales: () => [{ languageCode: "en", countryCode: "US" }],
@@ -62,6 +63,12 @@ describe("paramArray characterization", () => {
 });
 
 describe("getStatus characterization", () => {
+  beforeAll(() => {
+    // This characterization suite asserts the legacy English labels. The app
+    // default is Vietnamese, so the test must select its language explicitly.
+    i18n.locale = "en";
+  });
+
   it("maps numeric statuses to english labels", () => {
     expect(getStatus(0)).toBe("Pending");
     expect(getStatus(1)).toBe("Match");

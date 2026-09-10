@@ -7,6 +7,7 @@ import {
   pressText,
 } from "../../../test-utils/helpers";
 import { setFetchFallback } from "../../../test-utils/fetch-mock";
+import i18n from "../../../shared/I18n";
 
 // Phase 5 strangler contract for the Login port (docs/mobile-app-upgrade-plan.md
 // §5): the email/password form submits through the RTK login mutation and the
@@ -73,6 +74,9 @@ const fillForm = (root: any) => {
 describe("Login (Phase 5 RTK port contract)", () => {
   beforeEach(() => {
     mockNavInstance = nav();
+    // Login assertions below use English labels; the app's first-run default
+    // is Vietnamese and must be selected explicitly in this legacy contract.
+    i18n.locale = "en";
   });
 
   it("stays on validation errors when the form is empty", async () => {

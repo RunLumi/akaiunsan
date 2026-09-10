@@ -41,7 +41,9 @@ export default function ListPlan(props: ScreenProps) {
     ({ error, response }: ApiResult) => {
       if (error) {
         setTimeout(() => {
-          Alert.alert(i18n.t("auth.error"), error);
+          // Guarded: under Jest --forceExit this timer can fire after the
+          // environment is torn down, where the RN Alert module is undefined.
+          Alert?.alert?.(i18n.t("auth.error"), error);
         }, 100);
         return;
       }

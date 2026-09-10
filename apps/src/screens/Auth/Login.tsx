@@ -390,6 +390,18 @@ export default function Login(props: ScreenProps) {
           >
             <Text
               onPress={() =>
+                i18n.currentLocale() != "vi" ? selectLanguage("vi") : null
+              }
+              style={[
+                { color: Colors.main_color },
+                i18n.currentLocale() === "vi" && s.languageSelected,
+              ]}
+            >
+              VI
+            </Text>
+            <Text style={{ color: Colors.main_color }}> | </Text>
+            <Text
+              onPress={() =>
                 i18n.currentLocale() != "en" ? selectLanguage("en") : null
               }
               style={[

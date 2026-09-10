@@ -60,6 +60,29 @@ export const Header = ({
           {pointNumberDashboard} {i18n.t("home.points")}
         </Text>
         <TouchableOpacity
+          disabled={language == "vi"}
+          onPress={() => selectLanguage?.("vi")}
+        >
+          <Text
+            style={{
+              color: Colors.white,
+              fontSize: 16,
+              textTransform: "uppercase",
+              ...(language === "vi" && styles.activeLang),
+            }}
+          >
+            Vi
+          </Text>
+        </TouchableOpacity>
+        <Text
+          style={{
+            marginHorizontal: 8,
+            color: Colors.white,
+          }}
+        >
+          |
+        </Text>
+        <TouchableOpacity
           disabled={language == "en"}
           onPress={() => selectLanguage?.("en")}
         >

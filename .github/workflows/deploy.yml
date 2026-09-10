@@ -97,8 +97,8 @@ jobs:
           file: ./backend/Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}-backend:latest
-            ghcr.io/${{ github.repository }}-backend:${{ github.sha }}
+            ghcr.io/runlumi/akaiunsan-backend:latest
+            ghcr.io/runlumi/akaiunsan-backend:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -110,8 +110,8 @@ jobs:
           file: ./frontend/Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}-frontend:latest
-            ghcr.io/${{ github.repository }}-frontend:${{ github.sha }}
+            ghcr.io/runlumi/akaiunsan-frontend:latest
+            ghcr.io/runlumi/akaiunsan-frontend:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -123,8 +123,8 @@ jobs:
           file: ./admin/Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}-admin:latest
-            ghcr.io/${{ github.repository }}-admin:${{ github.sha }}
+            ghcr.io/runlumi/akaiunsan-admin:latest
+            ghcr.io/runlumi/akaiunsan-admin:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 

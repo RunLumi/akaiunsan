@@ -105,21 +105,6 @@ export const Header = ({
         >
           |
         </Text>
-        <TouchableOpacity
-          disabled={language == "vi"}
-          onPress={() => selectLanguage?.("vi")}
-        >
-          <Text
-            style={{
-              color: Colors.white,
-              fontSize: 16,
-              textTransform: "uppercase",
-              ...(language === "vi" && styles.activeLang),
-            }}
-          >
-            Vi
-          </Text>
-        </TouchableOpacity>
       </View>
     </View>
   );

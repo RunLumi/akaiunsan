@@ -31,7 +31,7 @@ describe("Header", () => {
     const { root } = create(
       <Header selectLanguage={selectLanguage} language="en" />
     );
-    const [en, vi] = langTouchables(root);
+    const [vi, en] = langTouchables(root);
     expect(en.props.disabled).toBe(true);
     expect(vi.props.disabled).toBe(false);
     act(() => vi.props.onPress());
@@ -43,7 +43,7 @@ describe("Header", () => {
     const { root } = create(
       <Header selectLanguage={selectLanguage} language="vi" />
     );
-    const [en, vi] = langTouchables(root);
+    const [vi, en] = langTouchables(root);
     expect(vi.props.disabled).toBe(true);
     expect(en.props.disabled).toBe(false);
     act(() => en.props.onPress());

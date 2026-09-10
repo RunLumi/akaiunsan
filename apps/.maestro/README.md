@@ -6,22 +6,28 @@ device lane at a time, as required by the repository `AGENTS.md`.
 
 ## Local smoke-test setup
 
-Use a local API for repeatable development. Start the backend first, then Expo
-Metro, then build/install the app on exactly one device:
+Use the migrated API at `https://akai-api.cjs.vn` for the authenticated smoke
+run. A local backend is optional and only works when a reachable local database
+is configured; the checked-in local config currently points at an external
+development database, so do not assume `npm run local` is a usable API.
+
+Start Metro, then build/install the app on exactly one device:
 
 ```bash
-# terminal 1 — API (requires the repository's local DB/config)
+# terminal 1 — Metro using the migrated API host
+cd apps
+yarn install
+API_URL=https://akai-api.cjs.vn yarn start
+
+# Optional terminal 2 — local API, only after its DB health is verified
 cd backend
 npm install
 npm run local
-
-# terminal 2 — Metro
-cd apps
-yarn install
-API_URL=http://127.0.0.1:5000 yarn start
 ```
 
-The app reads `API_URL` at bundle time. Do not commit `.env` changes,
+The app reads `API_URL` at bundle time. The production, development, staging,
+and local app environment files now use `https://akai-api.cjs.vn`. Do not commit
+`.env` changes,
 credentials, signing files, or test-account passwords.
 
 Before every lane, verify that no other simulator, emulator, Xcode build,

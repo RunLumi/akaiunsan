@@ -489,7 +489,11 @@ export default function Login(props: ScreenProps) {
               </TouchableOpacity>
             </View>
 
-            <Text style={s.signupDes} onPress={onPressSignUp}>
+            <Text
+              style={s.signupDes}
+              onPress={onPressSignUp}
+              testID="login-signup-button"
+            >
               {i18n.t("auth.no_account")}{" "}
               <Text style={s.signup}>{i18n.t("auth.sign_up")}</Text>
             </Text>

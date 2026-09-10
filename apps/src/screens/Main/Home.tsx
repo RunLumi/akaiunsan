@@ -11,7 +11,6 @@ import {
   RefreshControl,
 } from "react-native";
 import { Image as ExpoImage } from "expo-image";
-import messaging from "@react-native-firebase/messaging";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../redux/hooks";
 import { AutoPager, Container, Header, Loading, Text } from "../../components";
@@ -29,6 +28,7 @@ import notifee from "@notifee/react-native";
 import { paramArray } from "../../shared/Utils";
 import type { ApiItem } from "../../redux/apiSlice";
 import type { ScreenProps } from "../../navigation/routes";
+import { getFirebaseMessaging } from "../../shared/firebase";
 
 const { width } = Dimensions.get("window");
 export default function Home(props: ScreenProps) {
@@ -105,8 +105,8 @@ export default function Home(props: ScreenProps) {
             },
           });
         }
-        if (response.language == 1 && currentLanguage != "th") {
-          setCurrentLanguage("th");
+        if (response.language == 1 && currentLanguage != "vi") {
+          setCurrentLanguage("vi");
         }
         if (response.language == 2 && currentLanguage != "en") {
           setCurrentLanguage("en");
@@ -214,19 +214,19 @@ export default function Home(props: ScreenProps) {
     {
       icon: require("../../assets/images/soon/Insurance.jpg"),
       serviceName: "Insurance",
-      serviceNameTl: "ประกันสุขภาพ",
+      serviceNameVi: "Bảo hiểm sức khỏe",
       type: 1,
     },
     {
       icon: require("../../assets/images/soon/Healthcare.jpg"),
       serviceName: "Healthcare",
-      serviceNameTl: "สุขภาพ",
+      serviceNameVi: "Chăm sóc sức khỏe",
       type: 1,
     },
     {
       icon: require("../../assets/images/soon/Security.jpg"),
       serviceName: "Security",
-      serviceNameTl: "ระบบความปลอดภัย",
+      serviceNameVi: "An ninh",
       type: 1,
     },
   ];
@@ -254,9 +254,11 @@ export default function Home(props: ScreenProps) {
     requestGetBanner();
     requestGetPromotion();
     requestServiceManagement();
-    const listen = messaging()
-      .getInitialNotification()
-      .then((remoteMessage: ApiItem) => {
+    const messaging = getFirebaseMessaging();
+    const listen = messaging?.module.getInitialNotification
+      ? messaging.module
+          .getInitialNotification(messaging.service)
+          .then((remoteMessage: any) => {
         if (remoteMessage?.data) {
           switch (remoteMessage.data.type) {
             case "0":
@@ -289,16 +291,17 @@ export default function Home(props: ScreenProps) {
               break;
           }
         }
-      });
+          })
+      : undefined;
     return () => {
-      listen;
+      void listen;
     };
   }, []);
 
   useEffect(() => {
     if (currentLanguage != language) {
       requestUpdateLanguage({
-        data: { language: currentLanguage == "th" ? 1 : 2 },
+        data: { language: currentLanguage == "vi" ? 1 : 2 },
       });
     }
   }, [currentLanguage]);
@@ -376,7 +379,7 @@ export default function Home(props: ScreenProps) {
           />
         )}
         <Text style={{ textAlign: "center" }}>
-          {currentLanguage == "th" ? item.serviceNameTl : item.serviceName}
+          {currentLanguage == "vi" ? item.serviceNameVi : item.serviceName}
         </Text>
       </TouchableOpacity>
     );

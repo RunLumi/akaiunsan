@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../redux/hooks";
-import analytics from "@react-native-firebase/analytics";
 import {
   GoogleSignin,
   GoogleSigninButton,
@@ -25,7 +24,6 @@ import {
   Loading,
   DismissKeyboardView,
 } from "../../components";
-import messaging from "@react-native-firebase/messaging";
 import { success, TYPES } from "../../redux/actions";
 import {
   useLoginMutation,
@@ -44,6 +42,7 @@ import * as AppleAuthentication from "expo-apple-authentication";
 import * as WebBrowser from "expo-web-browser";
 import * as Location from "expo-location";
 import Config from "react-native-config";
+import { getFirebaseMessagingToken, logAnalyticsEvent } from "../../shared/firebase";
 import type { ApiItem } from "../../redux/apiSlice";
 import type { ScreenProps } from "../../navigation/routes";
 
@@ -86,7 +85,8 @@ export default function Login(props: ScreenProps) {
 
   const sendFCMToken = (token: ApiItem) => {
     const sendToken = setTimeout(async () => {
-      const fcmToken = await messaging().getToken();
+      const fcmToken = await getFirebaseMessagingToken();
+      if (!fcmToken) return;
       requestAddDeviceNotification({
         data: { token: fcmToken },
         headers: { Authorization: `Bearer ${token}` },
@@ -125,16 +125,16 @@ export default function Login(props: ScreenProps) {
       if (token) {
         try {
           sendFCMToken(token);
-          i18n.locale = currentLanguage;
-          requestUpdateLanguage({
-            data: { language: currentLanguage == "th" ? 1 : 2 },
-            headers: { Authorization: `Bearer ${token}` },
-          });
           dispatch({
             type: success(TYPES.AUTH.LOGIN),
             payload: {
               token,
             },
+          });
+          i18n.locale = currentLanguage;
+          requestUpdateLanguage({
+            data: { language: currentLanguage == "vi" ? 1 : 2 },
+            headers: { Authorization: `Bearer ${token}` },
           });
         } catch (error) {
           Alert.alert("account", JSON.stringify(error));
@@ -179,7 +179,7 @@ export default function Login(props: ScreenProps) {
             });
             i18n.locale = currentLanguage;
             requestUpdateLanguage({
-              data: { language: currentLanguage == "th" ? 1 : 2 },
+              data: { language: currentLanguage == "vi" ? 1 : 2 },
               headers: { Authorization: `Bearer ${token}` },
             });
           } catch (error) {
@@ -207,7 +207,7 @@ export default function Login(props: ScreenProps) {
           sendFCMToken(token);
           i18n.locale = currentLanguage;
           requestUpdateLanguage({
-            data: { language: currentLanguage == "th" ? 1 : 2 },
+            data: { language: currentLanguage == "vi" ? 1 : 2 },
             headers: { Authorization: `Bearer ${token}` },
           });
         }
@@ -233,7 +233,7 @@ export default function Login(props: ScreenProps) {
             });
             i18n.locale = currentLanguage;
             requestUpdateLanguage({
-              data: { language: currentLanguage == "th" ? 1 : 2 },
+              data: { language: currentLanguage == "vi" ? 1 : 2 },
               headers: { Authorization: `Bearer ${token}` },
             });
           } catch (error) {
@@ -313,7 +313,7 @@ export default function Login(props: ScreenProps) {
           AppleAuthentication.AppleAuthenticationScope.EMAIL,
         ],
       });
-      await analytics().logEvent("login", credential);
+      await logAnalyticsEvent("login", { method: "apple" });
       setLoadingSignIn(false);
       requestApple({ data: { token: credential.identityToken } });
     } catch (e: any) {
@@ -344,7 +344,7 @@ export default function Login(props: ScreenProps) {
       await GoogleSignin.hasPlayServices();
       const userInfo: any = await GoogleSignin.signIn();
       // this.setState({ userInfo });
-      await analytics().logEvent("login", userInfo);
+      await logAnalyticsEvent("login", { method: "google" });
       setLoadingSignIn(false);
       requestGoogle({ data: { idToken: userInfo.idToken } });
     } catch (error: any) {
@@ -400,14 +400,14 @@ export default function Login(props: ScreenProps) {
             <Text style={{ color: Colors.main_color }}> | </Text>
             <Text
               onPress={() =>
-                i18n.currentLocale() != "th" ? selectLanguage("th") : null
+                i18n.currentLocale() != "vi" ? selectLanguage("vi") : null
               }
               style={[
                 { color: Colors.main_color },
-                i18n.currentLocale() === "th" && s.languageSelected,
+                i18n.currentLocale() === "vi" && s.languageSelected,
               ]}
             >
-              TH
+              VI
             </Text>
           </View>
           <View style={s.logoContainer}>

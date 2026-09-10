@@ -52,7 +52,7 @@ beforeEach(() => {
 describe("typed redux hooks", () => {
   it("useAppSelector reads typed slices from RootState (no `any` needed)", () => {
     renderProbe();
-    expect(hookResult).toMatchObject({ token: "", language: "en" });
+    expect(hookResult).toMatchObject({ token: "", language: "vi" });
   });
 
   it("useAppDispatch dispatches an action that updates the store", () => {

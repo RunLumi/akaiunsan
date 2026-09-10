@@ -5,7 +5,7 @@ weight: 20
 
 # Bảng thông điệp i18n dùng khi kiểm thử
 
-Tester đối chiếu thông báo trên UI với catalog dưới đây (nguồn: `apps/src/shared/I18n/en.ts|vi.ts|th.ts` — 3 ngôn ngữ phải đồng bộ về tập khóa).
+Tester đối chiếu thông báo trên UI với catalog dưới đây (nguồn: `apps/src/shared/I18n/en.ts|vi.ts` — 2 ngôn ngữ phải đồng bộ về tập khóa).
 
 ## Xác thực
 

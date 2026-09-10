@@ -86,11 +86,12 @@ export const apiSlice = createApi({
             )
           ).toString(),
     prepareHeaders: (headers, { getState }) => {
-      const token = (getState() as ApiItem)?.auth?.token;
+      const state = getState() as ApiItem;
+      const token = state?.auth?.token;
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
-      headers.set("Accept-Language", "en");
+      headers.set("Accept-Language", state?.language?.language ?? "vi");
       headers.set("platform", "app");
       return headers;
     },
@@ -132,6 +133,7 @@ export const apiSlice = createApi({
         url: Constants.API.update_language,
         method: "put",
         body: arg?.data,
+        headers: arg?.headers,
       }),
     }),
     listFavouriteService: builder.query<ItemsResponse, RequestArg | void>({
@@ -172,6 +174,10 @@ export const apiSlice = createApi({
         url: Constants.API.get_booking,
         params: arg?.params,
       }),
+      transformResponse: (response: ItemsResponse | any[]) =>
+        Array.isArray(response)
+          ? { items: response, page: 1, totalUnRead: 0 }
+          : response,
     }),
 
     // ---- Inbox (Phase 5 module port) ---------------------------------------

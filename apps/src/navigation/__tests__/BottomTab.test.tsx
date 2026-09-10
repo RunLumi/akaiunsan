@@ -58,13 +58,13 @@ describe("BottomTab route names (Phase 3 typed routes)", () => {
   });
 
   it("route names stay constants across locales; labels stay translated", () => {
-    i18n.locale = "th";
+    i18n.locale = "vi";
     act(() => {
       TestRenderer.create(React.createElement(BottomTabNavigator));
     });
-    // the pinned bug is fixed: the Thai locale changes the LABELS only
+    // the pinned bug is fixed: the Vietnamese locale changes the LABELS only
     expect(tabs()).toEqual(["Home", "Booking", "Inbox", "Account"]);
-    expect(labels()).toEqual(["หน้าหลัก", "การจอง", "กล่องข้อความ", "บัญชีผู้ใช้"]);
+    expect(labels()).toEqual(["Trang chủ", "Đặt lịch", "Hộp thư", "Tài khoản"]);
     i18n.locale = "en";
   });
 });

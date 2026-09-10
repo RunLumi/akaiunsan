@@ -30,9 +30,9 @@ async function signup (req, res) {
 
     // let email_lang, email_topic;
 
-    // if (req.headers['request-lang'] && req.headers['request-lang'] == 'th') {
-    //   email_lang = 'th';
-    //   email_topic = 'อะยะซันเซอร์วิสยินดีต้อนรับ';
+    // if (req.headers['request-lang'] && req.headers['request-lang'] == 'vi') {
+    //   email_lang = 'vi';
+    //   email_topic = 'Akaiunsan Service chào mừng bạn';
     // } else {
       // }
       
@@ -212,9 +212,9 @@ async function requestForgetPassword (req, res) {
     const token = await requestForgetPasswordToken(email, req.hostname);
     
     let email_lang, email_topic;
-    if (req.headers['request-lang'] && req.headers['request-lang'] == 'th') {
-      email_lang = 'th';
-      email_topic = 'กำหนดรหัสผ่านใหม่';
+    if (req.headers['request-lang'] && req.headers['request-lang'] == 'vi') {
+      email_lang = 'vi';
+      email_topic = 'Đặt lại mật khẩu';
     } else {
       email_lang = 'en';
       email_topic = 'Reset Password';

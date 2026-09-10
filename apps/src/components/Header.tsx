@@ -83,18 +83,18 @@ export const Header = ({
           |
         </Text>
         <TouchableOpacity
-          disabled={language == "th"}
-          onPress={() => selectLanguage?.("th")}
+          disabled={language == "vi"}
+          onPress={() => selectLanguage?.("vi")}
         >
           <Text
             style={{
               color: Colors.white,
               fontSize: 16,
               textTransform: "uppercase",
-              ...(language === "th" && styles.activeLang),
+              ...(language === "vi" && styles.activeLang),
             }}
           >
-            Th
+            Vi
           </Text>
         </TouchableOpacity>
       </View>

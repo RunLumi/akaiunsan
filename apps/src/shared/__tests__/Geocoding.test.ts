@@ -52,7 +52,7 @@ describe("googleGeocodeAsync characterization", () => {
       { latitude: 1, longitude: 2 },
     ]);
     expect(global.fetch).toHaveBeenCalledWith(
-      "https://maps.googleapis.com/maps/api/geocode/json?key=test-key&address=siam&language=th"
+      "https://maps.googleapis.com/maps/api/geocode/json?key=test-key&address=siam&language=vi"
     );
   });
 
@@ -85,7 +85,7 @@ describe("googleReverseGeocodeAsync characterization", () => {
     // matches first (with `continue`), so inline `administrative_area_level_2`
     // never sets it. Pins current behavior.
     expect(global.fetch).toHaveBeenCalledWith(
-      "https://maps.googleapis.com/maps/api/geocode/json?key=test-key&latlng=13.7469,100.5349&language=th"
+      "https://maps.googleapis.com/maps/api/geocode/json?key=test-key&latlng=13.7469,100.5349&language=vi"
     );
   });
 
@@ -143,13 +143,13 @@ describe("googleReverseGeocodeAsync characterization", () => {
 });
 
 describe("googleAddressGeocodeAsync characterization", () => {
-  it("queries with language=th and maps addresses", async () => {
+  it("queries with language=vi and maps addresses", async () => {
     mockFetch({ status: "OK", results: [sampleResult] });
     const addresses = await googleAddressGeocodeAsync("siam square");
     expect(addresses).toHaveLength(1);
     expect(addresses[0].country).toBe("TH");
     expect(global.fetch).toHaveBeenCalledWith(
-      "https://maps.googleapis.com/maps/api/geocode/json?address=siam square&key=test-key&language=th"
+      "https://maps.googleapis.com/maps/api/geocode/json?address=siam square&key=test-key&language=vi"
     );
   });
 });
@@ -160,7 +160,7 @@ describe("getAddress characterization", () => {
     const raw = await getAddress(13.7, 100.5);
     expect(raw.status).toBe("OK");
     expect(global.fetch).toHaveBeenCalledWith(
-      "https://maps.googleapis.com/maps/api/geocode/json?latlng=13.7,100.5&key=test-key&sensor=true&language=th"
+      "https://maps.googleapis.com/maps/api/geocode/json?latlng=13.7,100.5&key=test-key&sensor=true&language=vi"
     );
   });
 });

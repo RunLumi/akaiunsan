@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`i18n characterization: en/th key parity golden file: en key inventory 1`] = `
+exports[`i18n: en/vi key parity golden file: en key inventory 1`] = `
 [
   "ABOUT_US",
   "ADDRESS",

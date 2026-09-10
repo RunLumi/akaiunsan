@@ -56,7 +56,7 @@ android/             # gradle project with dev/staging/production variants
 - **Sentry**: `@sentry/react-native@^8` (v8.25.0, Expo 57 / RN 0.86). Initialized in `instrument.ts`, imported first in `index.js`, root component wrapped with `Sentry.wrap()`; route tracking via `Sentry.reactNavigationIntegration()` registered on the `NavigationContainer` in `src/navigation/index.tsx`. DSN has a built-in default compiled in; `EXPO_PUBLIC_SENTRY_DSN` in `apps/.env` (inlined by Expo CLI at bundle time) or the `react-native-config` keys override it. `EXPO_PUBLIC_SENTRY_ENV` (`development`/`staging`/`production`) tags the environment.
 - **Sentry release uploads**: `"@sentry/react-native/plugin"` is registered in `app.json` `plugins` — it wires Android source-map uploads and the iOS dSYM upload build phase during `expo prebuild`. Uploads authenticate with `SENTRY_AUTH_TOKEN` (env var) or `apps/sentry.properties` (copy from `sentry.properties.example`, add an API token; gitignored).
 - **OTA updates**: Not used. The app does not call Expo update APIs and does not ship JavaScript through OTA channels; changes require a native build and store release.
-- i18n via `i18n-js` with translations under `src/shared/I18n` (en/th); language is kept in redux (`reducers/language.ts`).
+- i18n via `i18n-js` with translations under `src/shared/I18n` (en/vi, Vietnamese is the default); language is kept in redux (`reducers/language.ts`).
 
 ## Patterns to follow
 
@@ -73,7 +73,7 @@ customer data uses `/client/*` with the Bearer token returned as `_token`.
 - Data fetching / side effects go through redux-saga (`redux/sagas/`); state via reducers + redux-persist for auth. Action types are declared in `redux/actions.ts` with `success`/`failure` suffix helpers.
 - Use `src/shared/{Colors,Styles,Layout,Constants}` for theming — don't hardcode colors/sizes inline.
 - Navigation from outside components: `src/navigation/root.ts` exposes `NavigationRoot.{navigate,push,replace,pop}` via a navigation ref.
-- i18n via `i18n-js`; translations in `src/shared/I18n/{en,th}.ts`; current language in redux (`reducers/language.ts`).
+- i18n via `i18n-js`; translations in `src/shared/I18n/{en,vi}.ts`; current language in redux (`reducers/language.ts`).
 - Push notifications: channel `com.akaiunsan.yoda.android` created in `App.tsx`; foreground handling in `src/components/Notifications.tsx`.
 
 ## Signing / release notes (from apps/README.md)

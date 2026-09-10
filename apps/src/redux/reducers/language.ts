@@ -1,7 +1,7 @@
 import { success, TYPES } from '../actions';
 
 const INITIAL_STATE = {
-	language: 'en'
+	language: 'vi'
 };
 
 export default function languageReducer(

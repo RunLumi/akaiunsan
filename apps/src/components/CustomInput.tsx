@@ -1,5 +1,4 @@
 import { FontAwesome, SimpleLineIcons, Ionicons } from "@expo/vector-icons";
-import { useAppSelector } from "../redux/hooks";
 import React, { useState } from "react";
 import {
   StyleProp,
@@ -57,15 +56,9 @@ export const CustomInput = ({
       enabled: !val.enabled,
       image: val.enabled ? "eye" : "eye-slash",
     }));
-  const language = useAppSelector((state) => state.language.language);
-  const fonts = () => {
-    switch (language) {
-      case "th":
-        return "SukhumvitSet-Text";
-      default:
-        return "OpenSans-Regular";
-    }
-  };
+  // Both locales (English/Vietnamese) use the Latin script, so a single
+  // font family covers them; the old Thai-only SukhumvitSet was dropped.
+  const fontFamily = "OpenSans-Regular";
   return (
     <View style={[styles.container, containerStyle]}>
       <View
@@ -79,7 +72,7 @@ export const CustomInput = ({
       >
         <TextInput
           style={[
-            { fontFamily: fonts() },
+            { fontFamily: fontFamily },
             {
               color: colors.black,
               fontSize: Styles.typography.normal,

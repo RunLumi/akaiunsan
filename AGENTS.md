@@ -22,20 +22,21 @@ akaiunsan/
 | [docs/backend.md](docs/backend.md) | API folder structure, conventions, request lifecycle |
 | [docs/api-reference.md](docs/api-reference.md) | Route tiers, auth headers, endpoint inventory |
 | [docs/data-model.md](docs/data-model.md) | Sequelize models and relations |
-| [docs/mobile-app.md](docs/mobile-app.md) | App structure, build flavors, state management, `useApi` hook |
+| [docs/mobile-app.md](docs/mobile-app.md) | App structure, build flavors, state management, RTK Query API slice |
 | [docs/conventions.md](docs/conventions.md) | Code patterns to follow when editing |
 | [docs/testing/README.md](docs/testing/README.md) | **Testing guide**: test structure, patterns, fixtures, coverage, CI |
 | [docs/security.md](docs/security.md) | **Read first**: committed secrets; what never to commit or print |
 | [docs/postmortems/2026-09-07-backend-healthcheck-prod-deployment.md](docs/postmortems/2026-09-07-backend-healthcheck-prod-deployment.md) | Production backend crash-loop, build repair, deployment recovery, and evidence |
 | [docs/backend-upgrade-plan.md](docs/backend-upgrade-plan.md) | Phased backend migration: TS + TDD + Express 5 (Phases 0–3 landed) |
-| [docs/mobile-app-upgrade-plan.md](docs/mobile-app-upgrade-plan.md) | Proposed phased mobile migration: TDD-first, Expo SDK 57 replatform |
+| [docs/mobile-app-upgrade-plan.md](docs/mobile-app-upgrade-plan.md) | Phased mobile migration: TDD-first, Expo SDK 57 replatform, RTK Query strangler (Phase 5 landed) |
+| [docs/adr/](docs/adr/) | Architecture decision records: binding technical decisions with context and consequences |
 
 ## Quick facts
 
 | | backend | admin | apps | deploy (VPS) |
 |---|---|---|---|---|
-| Runtime | Node.js 22 LTS, TypeScript | React 19, TypeScript, Vite 8 | React Native 0.64 + TS 4.3, Expo 43 | Ubuntu 26.04 LTS (`15.235.202.219`) |
-| Framework | Express 5, Sequelize 6 | Tailwind v4, TanStack Router | React 17, React Nav 6, Redux Saga | Docker Engine 29 + Docker Compose v2 |
+| Runtime | Node.js 22 LTS, TypeScript | React 19, TypeScript, Vite 8 | React Native 0.86 + TS, Expo 57 | Ubuntu 26.04 LTS (`15.235.202.219`) |
+| Framework | Express 5, Sequelize 6 | Tailwind v4, TanStack Router | React 19, React Nav 7, RTK Query | Docker Engine 29 + Docker Compose v2 |
 | Install | `cd backend && npm install` | `cd admin && pnpm install` | `cd apps && yarn install` | `git pull origin prod` |
 | Run (dev) | `npm run local` (tsx, local env) | `pnpm dev` (Vite port 5173) | `yarn start:expo` / `yarn android` / `yarn ios` | `sudo docker compose --env-file .env up -d --build` |
 | Entry | `backend/app.ts` &rarr; `dist/app.js` | `admin/src/main.tsx` | `apps/index.js` &rarr; `App.tsx` | `deploy/docker-compose.yml` + `Caddyfile` |
@@ -56,7 +57,7 @@ akaiunsan/
 3. **API auth model** — `/client/*` requires a customer Bearer JWT (`clientValidator`, exposes `req.customer`); `/back-office/*` requires an admin JWT plus `recordHistory` and per-section `checkPermission` role checks; public tiers (`/auth`, `/blog`, `/guest`, banners) are unauthenticated (the former shared `app_key` header gate was removed). Wire new endpoints into matching route files — see [docs/api-reference.md](docs/api-reference.md).
 4. **Adding a backend feature**: model in `backend/models/` (relations in `models/relations.ts`) &rarr; controller in `backend/controllers/` &rarr; route in `backend/routes/{public,client,backoffice,agency,bot}.route.ts`. Do not add routes in `app.ts`.
 5. **Admin app is React 19 + Vite 8** — located in `admin/`. Uses `pnpm` for dependency management with lockfile v9.0. Built via multi-stage Dockerfile and served by Caddy Alpine.
-6. **Mobile app is TypeScript** — screens in `apps/src/screens/<Feature>/` with an `index.ts`, shared components in `apps/src/components/` (barrel export). All API calls go through `useApi` hook (`apps/src/hooks/useApi.ts`).
+6. **Mobile app is TypeScript** — screens in `apps/src/screens/<Feature>/` with an `index.ts`, shared components in `apps/src/components/` (barrel export). All API calls go through the RTK Query slice (`apps/src/redux/apiSlice.ts`). **Performance goal**: new and refactored screens must use the RTK Query cache — declarative `useQuery`/`useMutation` hooks with `tagTypes` / `providesTags` / `invalidatesTags` — instead of the legacy no-cache `portRequest` callbacks (lazy triggers with `forceRefetch`); migrate existing `portRequest` call-sites opportunistically. See [docs/adr/0003-adopt-rtk-query-cache-best-practices.md](docs/adr/0003-adopt-rtk-query-cache-best-practices.md).
 7. **Do not rely on `db.sequelize.sync()`** for schema changes in production — it runs on boot but schema edits are manual until migrations (Phase 5) land.
 8. **Secrets**: credentials are now gitignored. Never print, copy, or commit values from `backend/config/*.json`, `.env*`, or signing keys (see [docs/security.md](docs/security.md)).
 9. **Backend test suite**: `npm test` runs the Vitest characterization suite against test MariaDB. The exact count changes as coverage work lands; report the observed count rather than relying on a stale number.

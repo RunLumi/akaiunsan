@@ -217,6 +217,7 @@ export default function Booking(props: ScreenProps) {
       <View style={s.containerHeader}>
         <Text style={s.textTitleHeader}>{i18n.t("Booking")}</Text>
         <Ionicons
+          accessibilityLabel="booking-calendar-button"
           name="calendar"
           size={24}
           color={Colors.white}

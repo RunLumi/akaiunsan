@@ -27,6 +27,22 @@ import { isEmpty } from "lodash";
 import { apiSlice, portRequest, type ApiResult } from "../redux/apiSlice";
 import type { ApiItem } from "../redux/apiSlice";
 
+const toIsoString = (value: unknown) => {
+  if (!value) return undefined;
+  const parsed = dayjs(value as string | Date);
+  return parsed.isValid() ? parsed.toISOString() : undefined;
+};
+
+const validTimeParams = (startTime?: unknown, endTime?: unknown) => {
+  const params: ApiItem[] = [];
+  const startTimeIso = toIsoString(startTime);
+  const endTimeIso = toIsoString(endTime);
+
+  if (startTimeIso) params.push({ startTime: startTimeIso });
+  if (endTimeIso) params.push({ endTime: endTimeIso });
+  return params;
+};
+
 interface Props {
   style?: StyleProp<ViewStyle>;
   children?: React.Ref<unknown>;
@@ -97,8 +113,7 @@ export const HelperSelect = ({
           requestListHelper({
             params: paramArray([
               { serviceType: serviceType },
-              { startTime: dayjs(startTime).toISOString() },
-              { endTime: dayjs(endTime).toISOString() },
+              ...validTimeParams(startTime, endTime),
               { addressId: addressId?.id ||  addressId?.addressId},
               { languages: (language && language.value) || "" },
               ...dataHelperSuggest.map((item: ApiItem) => ({
@@ -154,8 +169,7 @@ export const HelperSelect = ({
         { serviceType: serviceType },
         { name: value },
         { addressId: addressId?.id },
-        { startTime: dayjs(startTime).toISOString() },
-        { endTime: dayjs(endTime).toISOString() },
+        ...validTimeParams(startTime, endTime),
       ]),
     });
   };
@@ -265,8 +279,7 @@ export const HelperSelect = ({
       params: paramArray([
         { serviceType: serviceType },
         { addressId: addressId?.id ||  addressId?.addressId},
-        { startTime: dayjs(startTime).toISOString() },
-        { endTime: dayjs(endTime).toISOString() },
+        ...validTimeParams(startTime, endTime),
       ]),
     });
   }, []);

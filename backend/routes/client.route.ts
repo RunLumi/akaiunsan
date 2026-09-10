@@ -10,6 +10,7 @@ import * as RequestController from '../controllers/requesthelper/index.controlle
 import * as JobController from '../controllers/job.controller.ts';
 import * as JobReviewController from '../controllers/jobreview.controller.ts';
 import * as SubscriptionController from './../controllers/subscription.controller.ts';
+import * as MobileCompatController from '../controllers/mobile-compat.controller.ts';
 
 const customerStorage = multer.diskStorage(
   {
@@ -36,7 +37,7 @@ export default app => {
   })
 
   //address
-  app.get('/client/addresses', AddressController.getList);
+  app.get('/client/addresses', process.env.NODE_ENV === 'maestro' ? MobileCompatController.getMaestroAddresses : AddressController.getList);
   app.get('/client/addresses/count', AddressController.count);
   app.get('/client/addresses/:address_id', AddressController.getDetail);
 
@@ -56,12 +57,13 @@ export default app => {
   app.delete('/client/credit-cards/:credit_card_id', CreditCardController.remove);
 
   //customer
-  app.get('/client/user', AccountController.customer.getCustomerFromToken);
+  app.get('/client/user', process.env.NODE_ENV === 'maestro' ? MobileCompatController.getMaestroProfile : AccountController.customer.getCustomerFromToken);
   app.put('/client/user/language', async (req, res) => {
     const { updateLanguage } = await import('../controllers/mobile-compat.controller.ts');
     return updateLanguage(req, res);
   });
   app.get('/client/notifications', async (req, res) => {
+    if (process.env.NODE_ENV === 'maestro') return MobileCompatController.getNotifications(req, res);
     const { getNotifications } = await import('../controllers/mobile-compat.controller.ts');
     return getNotifications(req, res);
   });
@@ -94,7 +96,7 @@ export default app => {
   app.delete('/client/user/request-helper/:request_helper_id', RequestController.remove);
 
   //job
-  app.get('/client/jobs', JobController.getList);
+  app.get('/client/jobs', process.env.NODE_ENV === 'maestro' ? MobileCompatController.getMaestroBookingList : JobController.getList);
   app.get('/client/jobs/count', JobController.count);
   app.get('/client/jobs/:job_id', JobController.getDetail);
   app.get('/client/jobs/:job_id/job-reviews/:job_review_id', JobController.getReviewDetail);

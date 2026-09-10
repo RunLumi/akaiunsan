@@ -72,3 +72,14 @@ The flow covers the Home/service entry point, Booking tabs, Inbox tabs,
 Account utilities, Favourite, Payment, History, Address, Subscription,
 Promotions, and logout. It intentionally avoids destructive operations and
 real payment or booking submission.
+
+The extended iOS lane adds the documented detail and wizard routes (AllService,
+Booking calendar/detail/edit, history detail, Inbox detail, Petcare payment,
+Promotion detail, My Booking, Favourite provider, profile/address picker,
+referral, and About Us):
+
+```bash
+MAESTRO_EMAIL='tester@example.test' \
+MAESTRO_PASSWORD='...' \
+maestro test --device "$IOS_UDID" apps/.maestro/ios-important-screens-80.yaml
+```

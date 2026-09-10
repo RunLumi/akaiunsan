@@ -4,13 +4,13 @@ Base path: none (routes are mounted at root of the express app, default port 500
 
 ## Authentication model
 
-Every request must carry the `app_key` header matching `config/<env>.json` → `app_key` (enforced by `headerValidator` on each route group; some endpoints skip it — see below).
+The former shared `app_key` / `x-app-key` header gate (`headerValidator`) has been removed — the API relies on Bearer JWT auth below.
 
 | Tier | Prefix | Auth | Middleware sets |
 |---|---|---|---|
-| Public | `/auth`, `/banners`, `/blog`, `/guest` | `app_key` | `headerValidator` |
-| Client | `/client/*` | `app_key` + customer JWT | `headerValidator`, `clientValidator` → `req.customer` |
-| Back office | `/back-office/*` | `app_key` + admin JWT | `backofficeValidator` → `req.admin`, `recordHistory` (non-GET), `checkPermission` per section |
+| Public | `/auth`, `/banners`, `/blog`, `/guest` | none | — |
+| Client | `/client/*` | customer JWT | `clientValidator` → `req.customer` |
+| Back office | `/back-office/*` | admin JWT | `backofficeValidator` → `req.admin`, `recordHistory` (non-GET), `checkPermission` per section |
 | Agency | `/agency/*` | agency-specific | see `routes/agency.route.js` |
 | Bot | `/bot/*` | bot-specific | `routes/bot.route.js` |
 

@@ -2,15 +2,11 @@ import { toast } from 'sonner'
 import { useAuthStore, type AdminUser } from '@/stores/auth-store'
 
 // Backend API (Express). The API base is inlined at build time by Vite —
-// set VITE_API_BASE_URL / VITE_APP_KEY in the build environment (see
-// .env.example and the Dockerfile ARGs).
+// set VITE_API_BASE_URL in the build environment (see .env.example and the
+// Dockerfile ARGs).
 const API_BASE: string =
   import.meta.env.VITE_API_BASE_URL ??
   (import.meta.env.DEV ? 'http://localhost:5000' : 'https://akai-api.cjs.vn')
-
-// Every route group on the backend checks this header (middlewares/validator.ts
-// headerValidator). The value must match `app_key` in the backend config.
-const APP_KEY: string = import.meta.env.VITE_APP_KEY ?? ''
 
 export class ApiError extends Error {
   status: number
@@ -27,10 +23,6 @@ export async function apiFetch<T>(
 ): Promise<T> {
   const headers = new Headers(init.headers)
   headers.set('Content-Type', 'application/json')
-  // Some proxies (e.g. Caddy >= 2.8) strip underscore header names, so send
-  // both spellings; the backend accepts either (middlewares/validator.ts).
-  headers.set('app_key', APP_KEY)
-  headers.set('x-app-key', APP_KEY)
   if (authenticated) {
     const token = useAuthStore.getState().auth.accessToken
     if (token) headers.set('Authorization', `Bearer ${token}`)
@@ -86,7 +78,7 @@ interface SignInResponse {
   _token: string
 }
 
-/** POST /auth/admin/signin — public tier (app_key only, no Bearer). */
+/** POST /auth/admin/signin — public tier (no Bearer). */
 export async function signInAdmin(
   username: string,
   password: string,

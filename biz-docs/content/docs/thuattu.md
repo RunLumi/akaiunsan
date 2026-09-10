@@ -23,7 +23,6 @@ weight: 900
 | **Badge** | Số chưa đọc hiển thị trên tab thông báo |
 | **Deep link** | Chạm thông báo mở thẳng màn hình chi tiết tương ứng |
 | **JWT** | Phiên đăng nhập dạng token, kèm mọi gọi API |
-| **`app_key`** | Mã định danh ứng dụng gửi kèm mọi gọi API để backend nhận diện |
 | **Omise** | Cổng thanh toán thẻ tín dụng/ghi nợ mà nền tảng sử dụng |
 | **FCM** | Dịch vụ thông báo đẩy của Google (Firebase Cloud Messaging) |
 | **UAT** | Kiểm thử chấp nhận trên môi trường staging trước khi ra mắt |

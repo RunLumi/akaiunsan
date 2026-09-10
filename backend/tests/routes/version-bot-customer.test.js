@@ -2,7 +2,7 @@ import { describe, it, expect, beforeAll } from 'vitest';
 import request from 'supertest';
 import fs from 'fs';
 import app from '../../app';
-import { truncateAll, APP_KEY, db } from '../helpers/db';
+import { truncateAll, db } from '../helpers/db';
 import { createAdmin, createCustomer, adminToken, customerToken } from '../helpers/factories';
 
 let adminJwt, customer, customerJwt, supporter;
@@ -30,13 +30,13 @@ beforeAll(async () => {
   await db.SupporterSkill.create({ supporter_id: supporter.id, skill: 'Iron', level: 'fair' });
 });
 
-const admin = (t) => t.set('app_key', APP_KEY).set('Authorization', `Bearer ${adminJwt}`);
-const client = (t) => t.set('app_key', APP_KEY).set('Authorization', `Bearer ${customerJwt}`);
+const admin = (t) => t.set('Authorization', `Bearer ${adminJwt}`);
+const client = (t) => t.set('Authorization', `Bearer ${customerJwt}`);
 
 describe('bot list enrichment with age window + includes', () => {
   it('returns helpers within the age window with languages and skills', async () => {
     const res = await request(app).get('/bot/profile')
-      .set('app_key', APP_KEY)
+      
       .query({ min_age: 20, max_age: 60 });
     expect(res.status).toBe(200);
     expect(Array.isArray(res.body)).toBe(true);
@@ -51,7 +51,7 @@ describe('bot list enrichment with age window + includes', () => {
 
   it('excludes helpers outside the age window', async () => {
     const res = await request(app).get('/bot/profile')
-      .set('app_key', APP_KEY)
+      
       .query({ min_age: 5, max_age: 10 });
     expect(res.status).toBe(200);
     expect(res.body.every((h) => h.age >= 5 && h.age <= 10)).toBe(true);

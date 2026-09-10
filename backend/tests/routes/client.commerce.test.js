@@ -59,14 +59,14 @@ const omiseFactory = () => ({
   },
 });
 
-let app, db, APP_KEY, truncateAll, factories;
+let app, db, truncateAll, factories;
 
 beforeAll(async () => {
   // omise's export is a factory: require('omise')({secretKey, ...}) → client
   patchModule('omise', omiseFactory);
 
   app = (await import('../../app')).default;
-  ({ db, APP_KEY, truncateAll } = await import('../helpers/db'));
+  ({ db, truncateAll } = await import('../helpers/db'));
   factories = await import('../helpers/factories');
   await truncateAll();
 });
@@ -75,7 +75,7 @@ afterAll(() => {
   restoreFns.forEach((restore) => restore());
 });
 
-const authed = (test, token) => test.set('app_key', APP_KEY).set('Authorization', `Bearer ${token}`);
+const authed = (test, token) => test.set('Authorization', `Bearer ${token}`);
 
 describe('client jobs', () => {
   let customer, token, other;

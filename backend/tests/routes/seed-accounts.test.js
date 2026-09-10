@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll, beforeEach } from 'vitest';
 import request from 'supertest';
 import app from '../../app';
-import { truncateAll, APP_KEY, db } from '../helpers/db.ts';
+import { truncateAll, db } from '../helpers/db.ts';
 import {
   createAdmin,
   createCustomer,
@@ -47,7 +47,7 @@ describe('seed admin account (auth flows)', () => {
   it('admin signin returns token with permission array', async () => {
     const res = await request(app)
       .post('/auth/admin/signin')
-      .set('app_key', APP_KEY)
+      
       .send({ username: admin.username, password: ADMIN_PASSWORD });
 
     expect(res.status).toBe(200);
@@ -59,7 +59,7 @@ describe('seed admin account (auth flows)', () => {
   it('rejects admin signin with wrong password', async () => {
     const res = await request(app)
       .post('/auth/admin/signin')
-      .set('app_key', APP_KEY)
+      
       .send({ username: admin.username, password: WRONG_PASSWORD });
 
     expect(res.status).toBe(400); // thrown { status: 400 } is honored
@@ -69,7 +69,7 @@ describe('seed admin account (auth flows)', () => {
   it('rejects unknown admin signin', async () => {
     const res = await request(app)
       .post('/auth/admin/signin')
-      .set('app_key', APP_KEY)
+      
       .send({ username: 'ghost-admin@test.local', password: WRONG_PASSWORD });
 
     expect(res.status).toBe(401); // 'User not found.' carries 401 now
@@ -85,7 +85,7 @@ describe('seed admin account (auth flows)', () => {
 
     const res = await request(app)
       .post('/auth/admin/forget-password')
-      .set('app_key', APP_KEY)
+      
       .send({ username: admin.username });
 
     expect(res.status).toBe(200);
@@ -96,7 +96,7 @@ describe('seed admin account (auth flows)', () => {
   it('rejects forget-password for unknown admin', async () => {
     const res = await request(app)
       .post('/auth/admin/forget-password')
-      .set('app_key', APP_KEY)
+      
       .send({ username: 'ghost-admin@test.local' });
 
     expect(res.status).toBe(404); // not registered carries 404 now
@@ -113,7 +113,7 @@ describe('seed customer account (auth flows)', () => {
   it('customer signin returns user and token', async () => {
     const res = await request(app)
       .post('/auth/signin')
-      .set('app_key', APP_KEY)
+      
       .send({ email: customer.email, password: CUSTOMER_PASSWORD });
 
     expect(res.status).toBe(200);
@@ -124,7 +124,7 @@ describe('seed customer account (auth flows)', () => {
   it('rejects customer signin with wrong password', async () => {
     const res = await request(app)
       .post('/auth/signin')
-      .set('app_key', APP_KEY)
+      
       .send({ email: customer.email, password: WRONG_PASSWORD });
 
     expect(res.status).toBe(400); // thrown { status: 400 } is honored
@@ -134,7 +134,7 @@ describe('seed customer account (auth flows)', () => {
   it('rejects signin for non-existent customer', async () => {
     const res = await request(app)
       .post('/auth/signin')
-      .set('app_key', APP_KEY)
+      
       .send({ email: 'nobody@test.local', password: WRONG_PASSWORD });
 
     expect(res.status).toBe(400);

@@ -28,7 +28,7 @@ const originalCreateTransport = nodemailer.createTransport;
 let originalFetch;
 
 let app;
-let db, APP_KEY, truncateAll;
+let db, truncateAll;
 
 beforeAll(async () => {
   // blog.controller now fetches post bodies with the native fetch
@@ -69,7 +69,7 @@ beforeAll(async () => {
   });
 
   app = (await import('../../app')).default;
-  ({ db, APP_KEY, truncateAll } = await import('../helpers/db'));
+  ({ db, truncateAll } = await import('../helpers/db'));
   await truncateAll();
 });
 
@@ -79,7 +79,7 @@ afterAll(() => {
   restoreFns.forEach((restore) => restore());
 });
 
-const pub = (test) => test.set('app_key', APP_KEY);
+const pub = (test) => test;
 
 describe('GET /banners/:lang_code', () => {
   it('returns active banners with language overrides and cdn urls', async () => {

@@ -1,11 +1,7 @@
-import middlewareValidators from './../middlewares/validator.ts';
-const { headerValidator } = middlewareValidators;
 import AgencyController from '../controllers/agency/index.controller.ts';
 
 
 export default app => {
-  app.use('/agency-back-office/*s', headerValidator);
-
   //driver
   app.post('/agency-back-office/driver', AgencyController.driver.create);
 

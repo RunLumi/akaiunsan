@@ -25,7 +25,7 @@ npm run test:coverage        # vitest run --coverage (88.4% lines)
 tests/
 ├── setup-env.js             # Sets NODE_ENV=test (loads config/test.json)
 ├── helpers/
-│   ├── db.ts                # truncateAll(), APP_KEY, db instance
+│   ├── db.ts                # truncateAll(), db instance
 │   ├── factories.ts         # createAdmin(), createCustomer(), createRole() factories
 │   ├── credentials.js       # Shared test-only password constants
 │   └── migrator.ts          # (test copy) umzug migration runner
@@ -92,7 +92,7 @@ tests/
 
 ### Patterns
 
-1. **Route tests** — use `supertest(app)` with `APP_KEY` header and optional JWT.
+1. **Route tests** — use `supertest(app)` with an optional Bearer JWT.
 2. **Helper tests** — unit-drive functions directly, mocking external deps via `vi.mock` or `require.cache` patching.
 3. **Error-branch tests** — force DB failures via `vi.mock('../../models/index.ts')` and assert 500 envelopes.
 4. **Pinned bugs** — use `// pins current behavior` comment; fix deliberately with TDD when scheduled.
@@ -101,7 +101,7 @@ tests/
 
 - `tests/helpers/factories.ts` — `createAdmin()`, `createCustomer()`, `createRole()`, `createAddress()` with sensible defaults.
 - `tests/helpers/credentials.js` — shared password constants (avoid literal passwords in test files).
-- `tests/helpers/db.ts` — `truncateAll()` clears all tables between suites; `APP_KEY` for header auth.
+- `tests/helpers/db.ts` — `truncateAll()` clears all tables between suites.
 
 ### External mocks
 

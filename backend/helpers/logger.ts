@@ -1,14 +1,11 @@
 import pino from 'pino';
 
 // Structured logger. Auth material is redacted at the pino level so no call
-// site can leak it (the headerValidator leak fixed earlier stays fixed).
+// site can leak it.
 const REDACT_PATHS = [
   'req.headers.authorization',
-  'req.headers.app_key',
   'headers.authorization',
-  'headers.app_key',
   'authorization',
-  'app_key',
 ];
 
 export interface LoggerOptions {

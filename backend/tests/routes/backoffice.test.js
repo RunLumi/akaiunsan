@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll } from 'vitest';
 import request from 'supertest';
 import app from '../../app';
-import { truncateAll, APP_KEY, db } from '../helpers/db';
+import { truncateAll, db } from '../helpers/db';
 import {
   createRole,
   createAdmin,
@@ -19,11 +19,11 @@ beforeAll(async () => {
   token = await adminToken(admin);
 });
 
-const authed = (req) => req.set('app_key', APP_KEY).set('Authorization', `Bearer ${token}`);
+const authed = (req) => req.set('Authorization', `Bearer ${token}`);
 
 describe('back-office tier — auth gate (backofficeValidator + recordHistory)', () => {
   it('rejects /back-office requests without a token', async () => {
-    const res = await request(app).get('/back-office/verify-token').set('app_key', APP_KEY);
+    const res = await request(app).get('/back-office/verify-token');
     expect(res.status).toBe(401);
     expect(res.body.message).toBe('Authorization is required.');
   });
@@ -55,7 +55,7 @@ describe('back-office tier — auth gate (backofficeValidator + recordHistory)',
 
     const res = await request(app)
       .get('/back-office/verify-token')
-      .set('app_key', APP_KEY)
+      
       .set('Authorization', `Bearer ${customerJwt}`);
 
     expect(res.status).toBe(401);
@@ -81,7 +81,7 @@ describe('checkPermission role matrix', () => {
 
     const res = await request(app)
       .get('/back-office/supporters/1')
-      .set('app_key', APP_KEY)
+      
       .set('Authorization', `Bearer ${t}`);
     expect([200, 500]).toContain(res.status); // passes the gate; controller may 404/500 later
   });
@@ -94,7 +94,7 @@ describe('checkPermission role matrix', () => {
     for (const section of sections) {
       const res = await request(app)
         .get(section.path + '/1')
-        .set('app_key', APP_KEY)
+        
         .set('Authorization', `Bearer ${t}`);
       expect(res.status).toBe(401);
       expect(res.body.message).toBe('Access denied');
@@ -112,7 +112,7 @@ describe('checkPermission role matrix', () => {
     for (const section of sections) {
       const res = await request(app)
         .get(section.path)
-        .set('app_key', APP_KEY)
+        
         .set('Authorization', `Bearer ${t}`);
       expect(res.status).toBe(401);
       expect(res.body.message).toBe('Access denied');

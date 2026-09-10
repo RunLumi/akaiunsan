@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll } from 'vitest';
 import request from 'supertest';
 import app from '../../app';
-import { truncateAll, APP_KEY, db } from '../helpers/db';
+import { truncateAll, db } from '../helpers/db';
 import { createAdmin, createCustomer, adminToken, customerToken } from '../helpers/factories';
 
 let adminJwt, customerJwt, customer;
@@ -14,18 +14,18 @@ beforeAll(async () => {
   customerJwt = await customerToken(customer);
 });
 
-const admin = (t) => t.set('app_key', APP_KEY).set('Authorization', `Bearer ${adminJwt}`);
-const client = (t) => t.set('app_key', APP_KEY).set('Authorization', `Bearer ${customerJwt}`);
+const admin = (t) => t.set('Authorization', `Bearer ${adminJwt}`);
+const client = (t) => t.set('Authorization', `Bearer ${customerJwt}`);
 
 describe('address.json error branches', () => {
   it('sub-district list for a missing district returns empty', async () => {
-    const res = await request(app).get('/guest/districts/424242/sub-districts').set('app_key', APP_KEY);
+    const res = await request(app).get('/guest/districts/424242/sub-districts');
     expect(res.status).toBe(200);
     expect(res.body).toEqual([]);
   });
 
   it('district list for a missing province returns empty', async () => {
-    const res = await request(app).get('/guest/provinces/424242/districts').set('app_key', APP_KEY);
+    const res = await request(app).get('/guest/provinces/424242/districts');
     expect(res.status).toBe(200);
     expect(res.body).toEqual([]);
   });

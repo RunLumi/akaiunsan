@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll } from 'vitest';
 import request from 'supertest';
 import app from '../../app';
-import { truncateAll, APP_KEY, db } from '../helpers/db';
+import { truncateAll, db } from '../helpers/db';
 
 let supporter;
 
@@ -51,14 +51,14 @@ describe('public supporter filters (builder branches)', () => {
 
   for (const [param, value] of cases) {
     it(`list filter: ${param}`, async () => {
-      await request(app).get('/guest/supporters').set('app_key', APP_KEY)
+      await request(app).get('/guest/supporters')
         .query({ page: 1, limit: 10, [param]: value });
       // response is pinned-500 by the mapping bug; no assertion on body here
       expect(true).toBe(true);
     });
 
     it(`count filter: ${param}`, async () => {
-      await request(app).get('/guest/supporters/count').set('app_key', APP_KEY)
+      await request(app).get('/guest/supporters/count')
         .query({ [param]: value });
       expect(true).toBe(true);
     });

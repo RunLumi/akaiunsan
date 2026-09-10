@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll } from 'vitest';
 import request from 'supertest';
 import app from '../../app';
-import { truncateAll, APP_KEY, db } from '../helpers/db';
+import { truncateAll, db } from '../helpers/db';
 import { createAdmin, adminToken } from '../helpers/factories';
 
 let adminJwt;
@@ -12,7 +12,7 @@ beforeAll(async () => {
   adminJwt = await adminToken(admin);
 });
 
-const admin = (t) => t.set('app_key', APP_KEY).set('Authorization', `Bearer ${adminJwt}`);
+const admin = (t) => t.set('Authorization', `Bearer ${adminJwt}`);
 
 describe('biz-customer CRUD deep paths', () => {
   it('full lifecycle with keyword search and count', async () => {

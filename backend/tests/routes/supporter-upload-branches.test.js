@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import sharp from 'sharp';
 import app from '../../app';
-import { truncateAll, APP_KEY, db } from '../helpers/db';
+import { truncateAll, db } from '../helpers/db';
 import { createAdmin, adminToken } from '../helpers/factories';
 
 let adminJwt;
@@ -26,7 +26,7 @@ afterAll(() => {
   }
 });
 
-const admin = (t) => t.set('app_key', APP_KEY).set('Authorization', `Bearer ${adminJwt}`);
+const admin = (t) => t.set('Authorization', `Bearer ${adminJwt}`);
 
 describe('uploadProfile crop branches', () => {
   it('tall image (h > w) crops centered', async () => {

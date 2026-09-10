@@ -31,14 +31,14 @@ class FakeSftp {
 
 const originalFetch = global.fetch;
 
-let app, APP_KEY, db, truncateAll;
+let app, db, truncateAll;
 
 beforeAll(async () => {
   patchModule('ssh2-sftp-client', FakeSftp);
   global.fetch = async () => ({ ok: true, status: 200, arrayBuffer: async () => new ArrayBuffer(8) });
 
   app = (await import('../../app')).default;
-  ({ db, APP_KEY, truncateAll } = await import('../helpers/db'));
+  ({ db, truncateAll } = await import('../helpers/db'));
   await truncateAll();
 });
 
@@ -47,7 +47,7 @@ afterAll(() => {
   restoreFns.forEach((r) => r());
 });
 
-const pub = (t) => t.set('app_key', APP_KEY);
+const pub = (t) => t;
 
 const driverPayload = {
   driver_id: 601,

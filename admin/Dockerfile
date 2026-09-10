@@ -21,13 +21,10 @@ RUN pnpm install --frozen-lockfile
 # Copy source code and build config
 COPY . .
 
-# Vite inlines VITE_* vars at build time — the API the SPA calls and the
-# shared app_key header must be provided as build args (compose passes them
-# from the VPS .env).
+# Vite inlines VITE_* vars at build time — the API origin the SPA calls must
+# be provided as a build arg (compose passes it from the VPS .env).
 ARG VITE_API_BASE_URL=https://akai-api.cjs.vn
-ARG VITE_APP_KEY
-ENV VITE_API_BASE_URL=$VITE_API_BASE_URL \
-    VITE_APP_KEY=$VITE_APP_KEY
+ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
 
 # Build application with TypeScript compilation and Vite bundling
 RUN pnpm run build

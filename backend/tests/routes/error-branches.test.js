@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll } from 'vitest';
 import request from 'supertest';
 import app from '../../app';
-import { truncateAll, APP_KEY, db } from '../helpers/db';
+import { truncateAll, db } from '../helpers/db';
 import { createAdmin, createCustomer, adminToken, customerToken } from '../helpers/factories';
 
 let adminJwt, customerJwt;
@@ -14,8 +14,8 @@ beforeAll(async () => {
   customerJwt = await customerToken(customer);
 });
 
-const admin = (test) => test.set('app_key', APP_KEY).set('Authorization', `Bearer ${adminJwt}`);
-const client = (test) => test.set('app_key', APP_KEY).set('Authorization', `Bearer ${customerJwt}`);
+const admin = (test) => test.set('Authorization', `Bearer ${adminJwt}`);
+const client = (test) => test.set('Authorization', `Bearer ${customerJwt}`);
 
 describe('not-found / validation branches', () => {
   it('job review endpoints return 500 for missing rows', async () => {
@@ -52,9 +52,9 @@ describe('not-found / validation branches', () => {
   });
 
   it('supporter detail branches (public + back-office)', async () => {
-    expect((await request(app).get('/guest/supporters/999999').set('app_key', APP_KEY)).status).toBe(500);
+    expect((await request(app).get('/guest/supporters/999999')).status).toBe(500);
     expect((await admin(request(app).get('/back-office/supporters/999999'))).status).toBe(500);
-    expect((await request(app).get('/bot/profile/999999').set('app_key', APP_KEY)).status).toBe(500);
+    expect((await request(app).get('/bot/profile/999999')).status).toBe(500);
   });
 
   it('job endpoints for missing rows', async () => {
@@ -70,13 +70,13 @@ describe('not-found / validation branches', () => {
   it('address json endpoints for missing parents return empty lists', async () => {
     const districts = await request(app)
       .get('/guest/provinces/999999/districts')
-      .set('app_key', APP_KEY);
+      ;
     expect(districts.status).toBe(200);
     expect(districts.body).toEqual([]);
 
     const subs = await request(app)
       .get('/guest/districts/999999/sub-districts')
-      .set('app_key', APP_KEY);
+      ;
     expect(subs.status).toBe(200);
     expect(subs.body).toEqual([]);
   });

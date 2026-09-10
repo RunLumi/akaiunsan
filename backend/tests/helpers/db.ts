@@ -1,5 +1,4 @@
 import db from '../../models/index.ts';
-import { loadConfig } from '../../helpers/config.ts';
 import { runMigrations } from '../../helpers/migrator.ts';
 
 /**
@@ -39,11 +38,5 @@ export async function truncateAll() {
     await db.sequelize.connectionManager.releaseConnection(raw);
   }
 }
-
-/** The app_key every frontend must send (see middlewares/validator.js). */
-export const APP_KEY = loadConfig('test').app_key;
-
-/** Minimal headers a public route expects. */
-export const publicHeaders = { app_key: APP_KEY };
 
 export { db };

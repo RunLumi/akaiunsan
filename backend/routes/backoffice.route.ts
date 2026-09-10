@@ -1,6 +1,6 @@
 import fs from 'fs';
 import middlewareValidators from './../middlewares/validator.ts';
-const { headerValidator, backofficeValidator } = middlewareValidators;
+const { backofficeValidator } = middlewareValidators;
 import { recordHistory, checkPermission } from '../middlewares/admin.ts';
 import multer from 'multer';
 import { genTxt } from '../helpers/util.ts';
@@ -79,7 +79,6 @@ const bannerUpload = multer({ storage: bannerStorage });
 
 
 export default app => {
-  app.use('/back-office/*s', headerValidator);
   app.use('/back-office/*s', backofficeValidator)
   app.use('/back-office/*s', recordHistory);
 

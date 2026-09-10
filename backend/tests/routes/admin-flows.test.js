@@ -2,7 +2,7 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import request from 'supertest';
 import fs from 'fs';
 import app from '../../app';
-import { truncateAll, APP_KEY, db } from '../helpers/db';
+import { truncateAll, db } from '../helpers/db';
 import { createAdmin, createCustomer, adminToken, ADMIN_PASSWORD } from '../helpers/factories';
 
 // admin register/signup + profile flows send mail
@@ -25,7 +25,7 @@ describe('admin register happy path (empty admins table)', () => {
   });
 
   it('creates the first admin via /auth/admin/signup', async () => {
-    const res = await request(app).post('/auth/admin/signup').set('app_key', APP_KEY).send({
+    const res = await request(app).post('/auth/admin/signup').send({
       firstname: 'First', lastname: 'Admin', username: 'first@test.local',
       email: 'first@test.local', password: ADMIN_PASSWORD,
     });
@@ -33,7 +33,7 @@ describe('admin register happy path (empty admins table)', () => {
     expect(res.body.username).toBe('first@test.local');
     expect(typeof res.body._token).toBe('string');
 
-    const second = await request(app).post('/auth/admin/signup').set('app_key', APP_KEY).send({
+    const second = await request(app).post('/auth/admin/signup').send({
       firstname: 'Second', username: 'second@test.local', password: ADMIN_PASSWORD,
     });
     expect(second.status).toBe(400);
@@ -50,7 +50,7 @@ describe('account admin profile flows', () => {
     token = await adminToken(admin);
   });
 
-  const authed = (t) => t.set('app_key', APP_KEY).set('Authorization', `Bearer ${token}`);
+  const authed = (t) => t.set('Authorization', `Bearer ${token}`);
 
   it('updatePassword short/mismatch/ok branches', async () => {
     const short = await authed(request(app).put('/back-office/user/password')).send({
@@ -83,7 +83,7 @@ describe('account admin profile flows', () => {
     });
     const res = await request(app)
       .post('/auth/admin/forget-password')
-      .set('app_key', APP_KEY)
+      
       .send({ username: 'noemail@test.local' });
     expect(res.status).toBe(400);
     expect(res.body.message).toBe('Unable to reset password.');
@@ -102,7 +102,7 @@ describe('account admin profile flows', () => {
     const freshToken = await adminToken(await db.Admin.findOne({ where: { username: 'flow@test.local' } }));
 
     const upload = await request(app).post('/back-office/user/profile-image')
-      .set('app_key', APP_KEY)
+      
       .set('Authorization', `Bearer ${freshToken}`)
       .attach('profile', png, { filename: 'dot2.png', contentType: 'image/png' });
     expect(upload.status).toBe(200);
@@ -110,7 +110,7 @@ describe('account admin profile flows', () => {
     expect(fs.existsSync(`uploads/admins/${fileName}`)).toBe(true);
 
     const remove = await request(app).delete(`/back-office/user/profile-image/${fileName}`)
-      .set('app_key', APP_KEY)
+      
       .set('Authorization', `Bearer ${freshToken}`);
     expect(remove.status).toBe(200);
     expect(fs.existsSync(`uploads/admins/${fileName}`)).toBe(false);

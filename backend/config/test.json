@@ -17,7 +17,6 @@
     "password": "agency_test",
     "database": "agency_test"
   },
-  "app_key": "test-app-key",
   "image_base_url": "https://cdn.test.local/",
   "mail-config": {
     "host": "127.0.0.1",

@@ -172,4 +172,4 @@ Signing: Android release keystores and iOS certs/profiles live in `apps/` (gitig
 
 ## Backend config on servers
 
-`config/development.json` and `config/production.json` are gitignored, so deploys don't overwrite them — but confirm they exist with the right `db-connection`, `jwt-secret`, `omise`, `agency-connection`, `app_key`, and (for the import helpers) `sftp-connection` before restarting.
+`config/development.json` and `config/production.json` are gitignored, so deploys don't overwrite them — but confirm they exist with the right `db-connection`, `jwt-secret`, `omise`, `agency-connection`, and (for the import helpers) `sftp-connection` before restarting.

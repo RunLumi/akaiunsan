@@ -3,9 +3,6 @@ import { verifyToken } from './../helpers/security.ts';
 import { findAdminByUsername } from './../helpers/admin.ts';
 import { findCustomerByEmail } from './../helpers/customer.ts';
 import { ErrorLog } from '../models/index.ts';
-import { loadConfig } from '../helpers/config.ts';
-const NODE_ENV = process.env.NODE_ENV || 'local';
-const key = loadConfig(NODE_ENV);
 let error_message = 'Unexpected error';
 
 const validators = {
@@ -67,22 +64,6 @@ const validators = {
       return res.status(401).send({ message: error_message })
     }
   },
-  headerValidator: (req, res, next) => {
-    // Some proxies (e.g. Caddy >= 2.8) strip request headers whose names
-    // contain underscores, so also accept the dash-named spelling. Clients
-    // behind such proxies send `x-app-key` instead of `app_key`.
-    let app_key = req.headers.app_key ?? req.headers['x-app-key'];
-    if (app_key == key.app_key)
-      next();
-    else {
-      ErrorLog.create({ location: 'app use', message: `Unauthorized due to app key (${app_key})` })
-     .then(() => {
-        // Never echo the configured key back to the caller.
-        return res.status(401).send({ message: 'Unauthorized: invalid app key.' });
-      });
-    }
-  },
-
 };
 
 export default validators;

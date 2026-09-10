@@ -11,7 +11,6 @@ const CONFIG_DIR = path.join(process.cwd(), 'config');
 const validConfig = {
   'db-connection': { database: 'db', user: 'u', password: 'p', host: 'h', port: 3306 },
   'jwt-secret': 's3cret',
-  'app_key': 'key-1',
   'omise': { secretKey: 'sk', omiseVersion: '2020-01-01' },
   'mail-config': { host: 'm', port: 25, secure: false, user: 'mu', password: 'mp' },
   'image_base_url': 'https://cdn/',
@@ -27,7 +26,6 @@ describe('loadConfig', () => {
     try {
       const cfg = loadConfig('zzload-ok');
       expect(cfg['db-connection'].database).toBe('db');
-      expect(cfg['app_key']).toBe('key-1');
       expect(cfg['jwt-secret']).toBe('s3cret');
     } finally {
       fs.unlinkSync(path.join(CONFIG_DIR, 'zzload-ok.json'));
@@ -82,7 +80,6 @@ describe('loadConfig', () => {
 
   it('validates the real test config in the repo', () => {
     const cfg = loadConfig('test');
-    expect(cfg['app_key']).toBeTruthy();
     expect(cfg['jwt-secret']).toBeTruthy();
     expect(cfg['db-connection'].database).toBe('akaiunsan_db_test');
   });

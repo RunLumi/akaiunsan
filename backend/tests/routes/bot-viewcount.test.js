@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll } from 'vitest';
 import request from 'supertest';
 import app from '../../app';
-import { truncateAll, APP_KEY, db } from '../helpers/db';
+import { truncateAll, db } from '../helpers/db';
 import { createAdmin, adminToken } from '../helpers/factories';
 
 let adminJwt, supporter, supporterWithViews;
@@ -26,7 +26,7 @@ beforeAll(async () => {
   await db.SupporterViewCount.create({ supporter_id: supporterWithViews.id, count: 7 });
 });
 
-const pub = (t) => t.set('app_key', APP_KEY);
+const pub = (t) => t;
 
 describe('bot controller deeper paths', () => {
   it('getDetail enriches an existing profile image and parses birthday age', async () => {

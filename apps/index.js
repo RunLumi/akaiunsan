@@ -2,19 +2,14 @@
 import "./instrument";
 import * as Sentry from "@sentry/react-native";
 import "react-native-gesture-handler";
-import { registerRootComponent } from "expo";
-import messaging from "@react-native-firebase/messaging";
+import { AppRegistry } from "react-native";
 import App from "./App";
 import notifee, { EventType } from "@notifee/react-native";
+import { getFirebaseMessaging } from "./src/shared/firebase";
 
-// registerRootComponent calls AppRegistry.registerComponent('main', () => App);
-// It also ensures that whether you load the app in Expo Go or in a native build,
-// the environment is set up appropriately
-
-const messagingService =
-  typeof messaging === "function" ? messaging() : undefined;
-if (typeof messagingService?.setBackgroundMessageHandler === "function") {
-  messagingService.setBackgroundMessageHandler(async () => {
+const messaging = getFirebaseMessaging();
+if (messaging?.module.setBackgroundMessageHandler) {
+  messaging.module.setBackgroundMessageHandler(messaging.service, async () => {
     if (typeof notifee.incrementBadgeCount === "function") {
       await notifee.incrementBadgeCount();
     }
@@ -34,5 +29,7 @@ if (typeof messagingService?.setBackgroundMessageHandler === "function") {
 //   }
 // });
 
-// Sentry.wrap installs the global error handler around the root component
-registerRootComponent(Sentry.wrap(App));
+// Avoid Expo's registerRootComponent bootstrap on native builds. Expo SDK 57's
+// Expo.fx import eagerly initializes expo-asset/ExpoModulesJSI and can crash
+// Hermes before the root view mounts in the current native binary.
+AppRegistry.registerComponent("main", () => Sentry.wrap(App));

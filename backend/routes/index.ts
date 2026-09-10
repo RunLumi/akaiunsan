@@ -10,6 +10,7 @@ import * as SupporterController from '../controllers/supporter.controller.ts';
 import InstallController from '../controllers/install.controller.ts';
 import AgencyController from '../controllers/agency/index.controller.ts';
 import { getHealthInfo } from '../helpers/version.ts';
+import * as MobileCompatController from '../controllers/mobile-compat.controller.ts';
 
 export default (app) => {
 
@@ -59,6 +60,21 @@ export default (app) => {
   // authentication required
   r_backoffice(app);
   r_client(app);
+
+  // Local-only catalog fixtures keep the Maestro smoke lane navigable without
+  // seeding production catalog data into the disposable local database.
+  if (process.env.NODE_ENV === 'maestro') {
+    app.get('/banner/get-banner', MobileCompatController.getMaestroBanners);
+    app.get('/promotion/promotion-updates', MobileCompatController.getMaestroPromotionUpdates);
+    app.get('/promotion/get-promotion', MobileCompatController.getMaestroPromotions);
+    app.get('/promotion/get-promotion-used', MobileCompatController.getMaestroPromotions);
+    app.get('/services-management', MobileCompatController.getMaestroServices);
+    app.get('/services-management/service-item', MobileCompatController.getMaestroServiceItem);
+    app.get('/config-price/get', MobileCompatController.getMaestroConfigPrice);
+    app.get('/favourite/services', MobileCompatController.getMaestroFavouriteServices);
+    app.get('/subscription-plan/get-current-plan', MobileCompatController.getMaestroCurrentPlan);
+    app.get('/booking/get', MobileCompatController.getMaestroBookings);
+  }
 
   r_error(app);
 }

@@ -258,10 +258,12 @@ export default function Login(props: ScreenProps) {
       webClientId:
         "464116560251-d9928akj9e2bh5h5csdmdkc6c8qi2mma.apps.googleusercontent.com",
     });
+    const initialLanguage = i18n.currentLocale();
+    setCurrentLanguage(initialLanguage);
     dispatch({
       type: success(TYPES.LANGUAGE),
       payload: {
-        language: i18n.currentLocale(),
+        language: initialLanguage,
       },
     });
 

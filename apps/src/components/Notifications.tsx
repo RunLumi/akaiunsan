@@ -3,12 +3,12 @@ import * as Notifications from "expo-notifications";
 import React, { useState, useEffect, useRef } from "react";
 import { View, Platform, Alert } from "react-native";
 import AppConstant from "../shared/Constants";
-import messaging from "@react-native-firebase/messaging";
 import { NavigationRoot } from "../navigation/root";
 import _ from "lodash";
 import Colors from "../shared/Colors";
 import type { ApiItem } from "../redux/apiSlice";
 import type { ScreenProps } from "../navigation/routes";
+import { getFirebaseMessagingToken } from "../shared/firebase";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -100,7 +100,7 @@ async function registerForPushNotificationsAsync() {
       // alert("Failed to get push token for push notification!");
       return;
     }
-    token = await messaging().getToken();
+    token = await getFirebaseMessagingToken();
   } else {
     // Push-token registration is unavailable on simulators. Do not block the
     // app behind an alert; UI and Maestro flows must remain usable offline.

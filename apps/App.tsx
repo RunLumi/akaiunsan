@@ -7,6 +7,8 @@ import messaging from '@react-native-firebase/messaging';
 import useCachedResources from "./src/hooks/useCachedResources";
 import notifee, { AndroidImportance } from "@notifee/react-native";
 import analytics from "@react-native-firebase/analytics";
+import Config from "react-native-config";
+import { shouldCollectAnalytics } from "./src/shared/analytics";
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
@@ -14,7 +16,16 @@ export default function App() {
   useEffect(() => {
     const messagingService =
       typeof messaging === "function" ? messaging() : undefined;
-    requestUserPermission()
+    const analyticsService =
+      typeof analytics === "function" ? analytics() : undefined;
+    const analyticsEnvironment =
+      process.env.EXPO_PUBLIC_SENTRY_ENV ||
+      Config.EXPO_PUBLIC_SENTRY_ENV ||
+      (__DEV__ ? "development" : "production");
+    const analyticsEnabled = shouldCollectAnalytics(analyticsEnvironment, __DEV__);
+
+    analyticsService?.setAnalyticsCollectionEnabled?.(analyticsEnabled);
+    requestUserPermission();
 
     async function requestUserPermission() {
       if (typeof messagingService?.requestPermission !== "function") return;

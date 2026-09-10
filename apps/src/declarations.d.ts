@@ -28,6 +28,7 @@ declare module "@react-native-firebase/messaging" {
 declare module "@react-native-firebase/analytics" {
   const analytics: () => {
     logEvent: (name: string, payload?: unknown) => Promise<void>;
+    setAnalyticsCollectionEnabled: (enabled: boolean) => Promise<void>;
     setUserId: (id: string | null) => Promise<void>;
     setUserProperties: (props: ScreenProps) => Promise<void>;
   };

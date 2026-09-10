@@ -141,7 +141,7 @@ jest.mock("react-native-maps", () => {
 
 jest.mock("react-native-config", () => ({
   __esModule: true,
-  default: { API_URL: "https://api.test", OMISEKEY: "pk_test_000", OMISEADDCARD: "https://payment.test/card" },
+  default: { API_URL: "https://api.test", EXPO_PUBLIC_SENTRY_ENV: "development", OMISEKEY: "pk_test_000", OMISEADDCARD: "https://payment.test/card" },
 }));
 
 jest.mock("react-native-device-info", () => ({

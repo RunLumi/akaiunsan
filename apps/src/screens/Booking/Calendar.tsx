@@ -193,7 +193,7 @@ const WeeklyCalendar = (props: ScreenProps) => {
 
 const MonthlyCalendar = (props: ScreenProps) => {
   const [calendar, setCalendar] = useState<ApiItem>([]);
-  const [month, setMonth] = useState(props.month);
+  const [month, setMonth] = useState<dayjs.ConfigType>(props.month as dayjs.ConfigType);
 
   const weeksOfMonth = () => {
     const startMonth = dayjs(month).clone().startOf("month");
@@ -266,7 +266,7 @@ const MonthlyCalendar = (props: ScreenProps) => {
           size={22}
           color={Colors.grab_orange}
           onPress={() =>
-            setMonth((month: any) => dayjs(month).startOf('month').subtract(1, "month"))
+            setMonth((month) => dayjs(month).startOf('month').subtract(1, "month"))
           }
           style={{ padding: 12 }}
         />
@@ -285,7 +285,7 @@ const MonthlyCalendar = (props: ScreenProps) => {
           name="chevron-forward-outline"
           size={22}
           color={Colors.grab_orange}
-          onPress={() => setMonth((month: any) => dayjs(month).startOf('month').add(1, "month"))}
+          onPress={() => setMonth((month) => dayjs(month).startOf('month').add(1, "month"))}
         />
       </View>
       <View style={{ flex: 1 }}>

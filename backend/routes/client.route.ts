@@ -1,6 +1,6 @@
 import fs from 'fs';
 import middlewareValidators from './../middlewares/validator.ts';
-const { headerValidator, clientValidator } = middlewareValidators;
+const { clientValidator } = middlewareValidators;
 import multer from 'multer';
 import { genTxt } from '../helpers/util.ts';
 import AccountController from '../controllers/account/account.controller.ts';
@@ -28,7 +28,6 @@ const customerUpload = multer({ storage: customerStorage });
 
 
 export default app => {
-  app.use('/client/*s', headerValidator);
   app.use('/client/*s', clientValidator)
 
   //verify token

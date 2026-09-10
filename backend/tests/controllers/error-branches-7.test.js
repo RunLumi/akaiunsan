@@ -22,7 +22,7 @@ vi.mock('../../helpers/payment.ts', () => ({
 
 import request from 'supertest';
 import app from '../../app';
-import { truncateAll, APP_KEY, db } from '../helpers/db';
+import { truncateAll, db } from '../helpers/db';
 import { createCustomer, createAdmin, customerToken, adminToken } from '../helpers/factories';
 
 let customer, token, supporter, adminJwt;
@@ -47,7 +47,7 @@ describe('job matchSupporter credit_card charge path', () => {
 
     const res = await request(app)
       .put(`/back-office/jobs/${job.id}/match/${supporter.id}`)
-      .set('app_key', APP_KEY)
+      
       .set('Authorization', `Bearer ${adminJwt}`);
 
     // This path previously hung forever: the credit_card branch never called

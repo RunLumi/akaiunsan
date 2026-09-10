@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll } from 'vitest';
 import request from 'supertest';
 import app from '../../app';
-import { truncateAll, APP_KEY, db } from '../helpers/db';
+import { truncateAll, db } from '../helpers/db';
 import { createAdmin, adminToken } from '../helpers/factories';
 
 let admin, adminJwt, supporter;
@@ -31,8 +31,8 @@ beforeAll(async () => {
   await db.SupporterLanguage.create({ supporter_id: supporter.id, language: 'English' });
 });
 
-const pub = (test) => test.set('app_key', APP_KEY);
-const authed = (test) => test.set('app_key', APP_KEY).set('Authorization', `Bearer ${adminJwt}`);
+const pub = (test) => test;
+const authed = (test) => test.set('Authorization', `Bearer ${adminJwt}`);
 
 describe('public supporter endpoints', () => {
   it('lists active supporters publicly (rows destructure crash fixed)', async () => {

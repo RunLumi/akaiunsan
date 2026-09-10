@@ -16,7 +16,7 @@ afterAll(() => {
 });
 
 import app from '../../app';
-import { truncateAll, APP_KEY, db } from '../helpers/db';
+import { truncateAll, db } from '../helpers/db';
 import { createCustomer, createAdmin, customerToken, adminToken } from '../helpers/factories';
 
 let customer, token, province, district, subDistrict;
@@ -34,7 +34,7 @@ beforeAll(async () => {
   });
 });
 
-const client = (t) => t.set('app_key', APP_KEY).set('Authorization', `Bearer ${token}`);
+const client = (t) => t.set('Authorization', `Bearer ${token}`);
 
 const driverPayload = () => ({
   contact_name: 'Drv Flow',
@@ -102,7 +102,7 @@ describe('bot list age-window enrichment with includes', () => {
     await db.SupporterSkill.create({ supporter_id: s.id, skill: 'Iron', level: 'fair' });
 
     const res = await request(app).get('/bot/profile')
-      .set('app_key', APP_KEY)
+      
       .query({ min_age: 20, max_age: 60, language: 'English', skill: 'Iron', job_roles: 'maid' });
 
     expect(res.status).toBe(200);
@@ -110,7 +110,7 @@ describe('bot list age-window enrichment with includes', () => {
   });
 
   it('bot getDetail for a missing helper → 500', async () => {
-    const res = await request(app).get('/bot/profile/999999').set('app_key', APP_KEY);
+    const res = await request(app).get('/bot/profile/999999');
     expect(res.status).toBe(500);
   });
 });
@@ -134,7 +134,7 @@ describe('banner remove-language branch', () => {
     });
 
     const res = await request(app).put('/back-office/banners')
-      .set('app_key', APP_KEY)
+      
       .set('Authorization', `Bearer ${adminJwt}`)
       .send({
         banner_list: [],

@@ -5,7 +5,7 @@ import dbLoaded from '../../models/index.ts';
 const db = dbLoaded.default ?? dbLoaded;
 
 describe('GET /health', () => {
-  it('reports status ok without requiring app_key auth when DB is up', async () => {
+  it('reports status ok when DB is up', async () => {
     vi.spyOn(db.sequelize, 'query').mockResolvedValueOnce([[{ 1: 1 }]]);
     const res = await request(app).get('/health');
 

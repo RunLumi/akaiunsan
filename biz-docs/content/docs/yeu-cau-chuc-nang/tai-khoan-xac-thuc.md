@@ -21,7 +21,7 @@ weight: 10
 - **Luồng chính:** Nhập thông tin → xác thực → về Trang chủ; thông báo đẩy đăng ký thiết bị sau đăng nhập.
 - **Tiêu chí chấp nhận:**
   - Sai mật khẩu → báo lỗi chung “Email hoặc mật khẩu không đúng”, không tiết lộ trường nào sai.
-  - Đăng nhập thành công → token hợp lệ được dùng cho mọi request kèm header `app_key`.
+  - Đăng nhập thành công → token hợp lệ được dùng cho mọi request cần xác thực.
   - Đăng nhập Google bị hủy giữa chừng → quay về màn đăng nhập, không crash, không tạo phiên.
 
 ## FR-ACC-03 · Quên mật khẩu · H

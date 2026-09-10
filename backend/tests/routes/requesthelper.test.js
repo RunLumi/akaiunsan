@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import request from 'supertest';
 import app from '../../app';
-import { truncateAll, APP_KEY, db } from '../helpers/db';
+import { truncateAll, db } from '../helpers/db';
 import { createCustomer, createAdmin, customerToken, adminToken } from '../helpers/factories';
 
 // request-helper create sends a thank-you mail
@@ -42,8 +42,8 @@ afterAll(() => {
   nodemailer.createTransport = originalCreateTransport;
 });
 
-const clientAuthed = (test) => test.set('app_key', APP_KEY).set('Authorization', `Bearer ${token}`);
-const adminAuthed = (test) => test.set('app_key', APP_KEY).set('Authorization', `Bearer ${adminJwt}`);
+const clientAuthed = (test) => test.set('Authorization', `Bearer ${token}`);
+const adminAuthed = (test) => test.set('Authorization', `Bearer ${adminJwt}`);
 
 const requestPayload = (over = {}) => ({
   contact_name: 'Requester',
@@ -79,7 +79,7 @@ describe('POST /client/user/request-helper', () => {
   it('rejects unauthenticated callers', async () => {
     const res = await request(app)
       .post('/client/user/request-helper')
-      .set('app_key', APP_KEY)
+      
       .send(requestPayload());
     expect(res.status).toBe(401);
   });

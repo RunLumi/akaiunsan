@@ -33,7 +33,6 @@ export const ConfigSchema = z
   .object({
     'db-connection': DbConnectionSchema,
     'jwt-secret': z.string().min(1),
-    'app_key': z.string().min(1),
     'mail-config': MailConfigSchema.optional(),
     'omise': OmiseSchema.optional(),
     'dialect': z.enum(['mysql', 'postgres']).optional(),

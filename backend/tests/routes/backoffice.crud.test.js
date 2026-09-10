@@ -2,7 +2,7 @@ import { describe, it, expect, beforeAll } from 'vitest';
 import request from 'supertest';
 import * as PaymentHelper from '../../helpers/payment.ts';
 import app from '../../app';
-import { truncateAll, APP_KEY, db } from '../helpers/db';
+import { truncateAll, db } from '../helpers/db';
 import { createAdmin, createCustomer, adminToken } from '../helpers/factories';
 
 let admin, token;
@@ -13,7 +13,7 @@ beforeAll(async () => {
   token = await adminToken(admin);
 });
 
-const authed = (test) => test.set('app_key', APP_KEY).set('Authorization', `Bearer ${token}`);
+const authed = (test) => test.set('Authorization', `Bearer ${token}`);
 
 describe('/back-office/customers', () => {
   it('creates, lists, counts, details, updates and removes a customer', async () => {

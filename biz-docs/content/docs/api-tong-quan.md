@@ -19,9 +19,8 @@ Backend Express 5 tổ chức API thành **5 nhóm route** theo tầng truy cậ
 
 ## 2. Quy ước bảo mật chung
 
-1. **Mọi nhóm** đều kiểm tra header `app_key` (`headerValidator`) — thiếu/không đúng bị chặn trước khi vào logic.
-2. **`/client/*`** yêu cầu `Authorization: Bearer <JWT>` (`clientValidator`) — JWT hết hạn → 401 → ứng dụng tự đăng xuất (FR-ACC-05).
-3. **`/back-office/*`** yêu cầu JWT quản trị, middleware `recordHistory` và kiểm tra quyền `checkPermission` theo từng phân hệ.
+1. **`/client/*`** yêu cầu `Authorization: Bearer <JWT>` (`clientValidator`) — JWT hết hạn → 401 → ứng dụng tự đăng xuất (FR-ACC-05).
+2. **`/back-office/*`** yêu cầu JWT quản trị, middleware `recordHistory` và kiểm tra quyền `checkPermission` theo từng phân hệ.
 
 ## 3. Nhóm endpoint client hay dùng nhất
 

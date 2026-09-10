@@ -77,7 +77,7 @@ const jsonFiles = {
   'experience.json': [{ maid_ID: '101', worktime: '1 year', exp_location: 'farm' }],
 };
 
-let app, APP_KEY, db, truncateAll;
+let app, db, truncateAll;
 
 beforeAll(async () => {
   patchModule('mysql', fakeMysql);
@@ -88,7 +88,7 @@ beforeAll(async () => {
   }
 
   app = (await import('../../app')).default;
-  ({ db, APP_KEY, truncateAll } = await import('../helpers/db'));
+  ({ db, truncateAll } = await import('../helpers/db'));
   await truncateAll();
 });
 
@@ -98,7 +98,7 @@ afterAll(() => {
   restoreFns.forEach((restore) => restore());
 });
 
-const pub = (test) => test.set('app_key', APP_KEY);
+const pub = (test) => test;
 
 describe('GET /import/supporter-agency (full agency → local import)', () => {
   it('imports maids, skills and experiences into the local database', async () => {

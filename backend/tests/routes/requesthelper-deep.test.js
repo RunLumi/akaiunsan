@@ -17,7 +17,7 @@ afterAll(() => {
 });
 
 import app from '../../app';
-import { truncateAll, APP_KEY, db } from '../helpers/db';
+import { truncateAll, db } from '../helpers/db';
 import { createCustomer, customerToken } from '../helpers/factories';
 
 let customer, token, province, district, subDistrict;
@@ -35,7 +35,7 @@ beforeAll(async () => {
   });
 });
 
-const client = (t) => t.set('app_key', APP_KEY).set('Authorization', `Bearer ${token}`);
+const client = (t) => t.set('Authorization', `Bearer ${token}`);
 
 const payload = () => ({
   contact_name: 'Deep',

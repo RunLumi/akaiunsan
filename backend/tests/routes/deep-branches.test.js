@@ -2,7 +2,7 @@ import { UNKNOWN_PASSWORD } from '../helpers/credentials';
 import { describe, it, expect, beforeAll } from 'vitest';
 import request from 'supertest';
 import app from '../../app';
-import { truncateAll, APP_KEY, db } from '../helpers/db';
+import { truncateAll, db } from '../helpers/db';
 import { createAdmin, createCustomer, adminToken, customerToken } from '../helpers/factories';
 
 let adminJwt, customerJwt, customer;
@@ -15,8 +15,8 @@ beforeAll(async () => {
   customerJwt = await customerToken(customer);
 });
 
-const admin = (t) => t.set('app_key', APP_KEY).set('Authorization', `Bearer ${adminJwt}`);
-const client = (t) => t.set('app_key', APP_KEY).set('Authorization', `Bearer ${customerJwt}`);
+const admin = (t) => t.set('Authorization', `Bearer ${adminJwt}`);
+const client = (t) => t.set('Authorization', `Bearer ${customerJwt}`);
 
 describe('keyword search branches (substring OR across fields)', () => {
   it('addresses: keyword matches address_detail', async () => {
@@ -73,7 +73,7 @@ describe('jobreview list/update branches', () => {
 
 describe('error route 404 catch-all', () => {
   it('returns the Invalid request envelope for unknown routes', async () => {
-    const res = await request(app).get('/no/such/route').set('app_key', APP_KEY);
+    const res = await request(app).get('/no/such/route');
     expect(res.status).toBe(404);
     expect(res.body.message).toBe('Invalid request');
   });
@@ -93,7 +93,7 @@ describe('bot endpoints happy paths', () => {
       firstname: 'Botless', job_type: 'Full time', nationality: 'TH',
       // no profile_image_url → default_image_url branch
     });
-    const res = await request(app).get(`/bot/profile/${supporter.id}`).set('app_key', APP_KEY);
+    const res = await request(app).get(`/bot/profile/${supporter.id}`);
     expect(res.status).toBe(200);
   });
 });
@@ -120,7 +120,7 @@ describe('customer back-office create flow', () => {
     const stored = await db.Customer.findOne({ where: { email: 'genpass@test.local' } });
     expect(stored.password.length).toBeGreaterThan(20); // bcrypt hash
 
-    const signin = await request(app).post('/auth/signin').set('app_key', APP_KEY)
+    const signin = await request(app).post('/auth/signin')
       .send({ email: 'genpass@test.local', password: UNKNOWN_PASSWORD });
     expect(signin.status).toBe(400); // generated password is unknown — good
   });

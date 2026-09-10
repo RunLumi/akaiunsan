@@ -18,6 +18,5 @@ json format
     "password" : "",
     "database" : ""
   },
-  "app_key": "",
   "sentry-dsn": ""
 }

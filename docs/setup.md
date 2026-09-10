@@ -26,7 +26,6 @@ Create `config/test.json` (or `config/local.json`) — gitignored. Schema per `h
   },
   "dialect": "postgres",
   "jwt-secret": "test-jwt-secret",
-  "app_key": "test-app-key",
   "omise": { "secretKey": "skey_test", "omiseVersion": "2019-05-29" },
   "mail-config": { "host": "127.0.0.1", "port": 1025, "secure": false, "user": "", "password": "" }
 }

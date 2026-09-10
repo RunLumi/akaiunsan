@@ -16,8 +16,6 @@ pnpm dev            # http://localhost:5173
 Copy `.env.example` to `.env.local` for local overrides:
 
 - `VITE_API_BASE_URL` — backend API origin (default: `http://localhost:5000` in dev)
-- `VITE_APP_KEY` — shared `app_key` header value; must match `app_key` in the
-  backend config (`backend/config/<env>.json`). Never commit the real value.
 
 ## Auth
 

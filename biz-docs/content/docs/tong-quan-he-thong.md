@@ -13,7 +13,7 @@ weight: 200
 │  hàng (iOS/      │   │   (admin/)       │   │    (frontend/)   │
 │  Android apps/)  │   │                  │   │                  │
 └────────┬─────────┘   └────────┬─────────┘   └────────┬─────────┘
-         │        HTTPS + JWT + app_key│              │
+         │        HTTPS + JWT│              │
          └──────────────┬────────┴──────────────────────┘
                         ▼
               ┌───────────────────┐        ┌──────────────┐
@@ -30,7 +30,7 @@ weight: 200
 
 | Thành phần | Vai trò | Ghi chú |
 |---|---|---|
-| **API Backend** | Mọi nghiệp vụ: tài khoản, đơn hàng, giá, khuyến mãi, thông báo | Bảo vệ bằng JWT + header `app_key` |
+| **API Backend** | Mọi nghiệp vụ: tài khoản, đơn hàng, giá, khuyến mãi, thông báo | Bảo vệ bằng JWT |
 | **Ứng dụng khách hàng** | Điểm chạm chính của khách hàng | Hỗ trợ iOS & Android, đa ngôn ngữ |
 | **Trang quản trị** | Quản lý nội dung, helper, đơn, khuyến mãi | Dành cho nhân viên vận hành |
 | **Omise** | Cổng thanh toán thẻ tín dụng/ghi nợ | Lưu thẻ an toàn theo chuẩn PCI |

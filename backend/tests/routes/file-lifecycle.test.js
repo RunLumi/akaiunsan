@@ -3,7 +3,7 @@ import request from 'supertest';
 import fs from 'fs';
 import path from 'path';
 import app from '../../app';
-import { truncateAll, APP_KEY, db } from '../helpers/db';
+import { truncateAll, db } from '../helpers/db';
 import { createAdmin, createCustomer, adminToken, customerToken } from '../helpers/factories';
 
 const TINY_PNG = Buffer.from(
@@ -21,8 +21,8 @@ beforeAll(async () => {
   customerJwt = await customerToken(customer);
 });
 
-const admin = (t) => t.set('app_key', APP_KEY).set('Authorization', `Bearer ${adminJwt}`);
-const client = (t) => t.set('app_key', APP_KEY).set('Authorization', `Bearer ${customerJwt}`);
+const admin = (t) => t.set('Authorization', `Bearer ${adminJwt}`);
+const client = (t) => t.set('Authorization', `Bearer ${customerJwt}`);
 
 describe('upload + remove file lifecycle (all tiers)', () => {
   it('admin: upload → file exists → remove → file gone', async () => {

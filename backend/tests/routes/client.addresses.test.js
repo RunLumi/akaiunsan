@@ -2,7 +2,7 @@ import { NEW_PASSWORD } from '../helpers/credentials';
 import { describe, it, expect, beforeAll } from 'vitest';
 import request from 'supertest';
 import app from '../../app';
-import { truncateAll, APP_KEY, db } from '../helpers/db';
+import { truncateAll, db } from '../helpers/db';
 import {
   createCustomer,
   createAddress,
@@ -16,7 +16,7 @@ beforeAll(async () => {
 
 describe('client tier — auth gate (clientValidator)', () => {
   it('rejects /client requests without a token', async () => {
-    const res = await request(app).get('/client/addresses').set('app_key', APP_KEY);
+    const res = await request(app).get('/client/addresses');
     expect(res.status).toBe(401);
     expect(res.body.message).toBe('Authorization is required.');
   });
@@ -24,7 +24,7 @@ describe('client tier — auth gate (clientValidator)', () => {
   it('rejects /client requests without the Bearer scheme', async () => {
     const res = await request(app)
       .get('/client/addresses')
-      .set('app_key', APP_KEY)
+      
       .set('Authorization', 'some-token');
     expect(res.status).toBe(401);
     expect(res.body.message).toContain('Bearer');
@@ -33,7 +33,7 @@ describe('client tier — auth gate (clientValidator)', () => {
   it('rejects a malformed token', async () => {
     const res = await request(app)
       .get('/client/addresses')
-      .set('app_key', APP_KEY)
+      
       .set('Authorization', 'Bearer not.a.jwt');
     expect(res.status).toBe(401);
   });
@@ -43,7 +43,7 @@ describe('client tier — auth gate (clientValidator)', () => {
     const token = jwt.sign({ _user: { username: 'customer@test.local' } }, 'wrong-secret');
     const res = await request(app)
       .get('/client/addresses')
-      .set('app_key', APP_KEY)
+      
       .set('Authorization', `Bearer ${token}`);
     expect(res.status).toBe(401);
   });
@@ -54,7 +54,7 @@ describe('client tier — auth gate (clientValidator)', () => {
     const token = jwt.sign({ _user: { username: 'deleted@test.local' } }, config['jwt-secret']);
     const res = await request(app)
       .get('/client/addresses')
-      .set('app_key', APP_KEY)
+      
       .set('Authorization', `Bearer ${token}`);
     expect(res.status).toBe(401);
   });
@@ -67,7 +67,7 @@ describe('GET /client/verify-token', () => {
 
     const res = await request(app)
       .get('/client/verify-token')
-      .set('app_key', APP_KEY)
+      
       .set('Authorization', `Bearer ${token}`);
 
     expect(res.status).toBe(200);
@@ -84,7 +84,7 @@ describe('/client/addresses CRUD', () => {
     token = await customerToken(customer);
   });
 
-  const authed = (req) => req.set('app_key', APP_KEY).set('Authorization', `Bearer ${token}`);
+  const authed = (req) => req.set('Authorization', `Bearer ${token}`);
 
   it('creates an address owned by the token customer', async () => {
     const res = await authed(request(app).post('/client/addresses')).send({
@@ -154,7 +154,7 @@ describe('/client/addresses CRUD', () => {
   it('creates an address without a token fails at the auth gate', async () => {
     const res = await request(app)
       .post('/client/addresses')
-      .set('app_key', APP_KEY)
+      
       .send({ address_detail: 'x' });
     expect(res.status).toBe(401);
   });
@@ -167,7 +167,7 @@ describe('GET /client/user', () => {
 
     const res = await request(app)
       .get('/client/user')
-      .set('app_key', APP_KEY)
+      
       .set('Authorization', `Bearer ${token}`);
 
     expect(res.status).toBe(200);
@@ -181,7 +181,7 @@ describe('GET /client/user', () => {
 
     const res = await request(app)
       .put('/client/user')
-      .set('app_key', APP_KEY)
+      
       .set('Authorization', `Bearer ${token}`)
       .send({ firstname: 'Renamed', phone_number: '0898989898' });
 
@@ -198,7 +198,7 @@ describe('GET /client/user', () => {
 
     const wrong = await request(app)
       .put('/client/user/password')
-      .set('app_key', APP_KEY)
+      
       .set('Authorization', `Bearer ${token}`)
       .send({ current_password: 'nope', new_password: NEW_PASSWORD, confirm_password: NEW_PASSWORD });
     expect(wrong.status).toBe(400);
@@ -206,7 +206,7 @@ describe('GET /client/user', () => {
 
     const ok = await request(app)
       .put('/client/user/password')
-      .set('app_key', APP_KEY)
+      
       .set('Authorization', `Bearer ${token}`)
       .send({ current_password: CUSTOMER_PASSWORD, new_password: NEW_PASSWORD, confirm_password: NEW_PASSWORD });
     expect(ok.status).toBe(200);
@@ -214,7 +214,7 @@ describe('GET /client/user', () => {
 
     const signin = await request(app)
       .post('/auth/signin')
-      .set('app_key', APP_KEY)
+      
       .send({ email: 'pwchanger@test.local', password: NEW_PASSWORD });
     expect(signin.status).toBe(200);
   });
@@ -225,7 +225,7 @@ describe('GET /client/user', () => {
 
     const res = await request(app)
       .put('/client/user/password')
-      .set('app_key', APP_KEY)
+      
       .set('Authorization', `Bearer ${token}`)
       .send({ current_password: CUSTOMER_PASSWORD, new_password: 'short', confirm_password: 'short' });
 

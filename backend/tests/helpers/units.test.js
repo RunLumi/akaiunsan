@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import request from 'supertest';
 import app from '../../app';
-import { truncateAll, APP_KEY, db } from './db';
+import { truncateAll, db } from './db';
 import {
   createRole,
   createAdmin,
@@ -142,7 +142,7 @@ describe('admin account flows (routes)', () => {
   it('admin forget-password mails a reset token, then reset changes the password', async () => {
     const forget = await request(app)
       .post('/auth/admin/forget-password')
-      .set('app_key', APP_KEY)
+      
       .send({ username: 'unit@test.local' });
 
     expect(forget.status).toBe(200);
@@ -154,7 +154,7 @@ describe('admin account flows (routes)', () => {
 
     const reset = await request(app)
       .post('/auth/admin/reset-password')
-      .set('app_key', APP_KEY)
+      
       .send({
         _forget_token: tokenMatch[1],
         new_password: RESET_PASSWORD,
@@ -173,7 +173,7 @@ describe('admin account flows (routes)', () => {
   it('admin forget-password rejects unknown usernames', async () => {
     const res = await request(app)
       .post('/auth/admin/forget-password')
-      .set('app_key', APP_KEY)
+      
       .send({ username: 'ghost-admin@test.local' });
     expect(res.status).toBe(404); // not registered carries 404 now
   });
@@ -187,7 +187,7 @@ describe('back-office admin password + profile management', () => {
     boToken = await adminToken(boAdmin);
   });
 
-  const authed = (test) => test.set('app_key', APP_KEY).set('Authorization', `Bearer ${boToken}`);
+  const authed = (test) => test.set('Authorization', `Bearer ${boToken}`);
 
   it('changes another admin password by id', async () => {
     const target = await createAdmin({ username: 'pw-target@test.local' });
@@ -198,7 +198,7 @@ describe('back-office admin password + profile management', () => {
 
     const signin = await request(app)
       .post('/auth/admin/signin')
-      .set('app_key', APP_KEY)
+      
       .send({ username: 'pw-target@test.local', password: RESET_PASSWORD });
     expect(signin.status).toBe(200);
   });

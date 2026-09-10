@@ -26,7 +26,7 @@ import request from 'supertest';
 import * as factories from '../helpers/factories';
 import * as securityExports from '../../helpers/security.ts';
 import app from '../../app';
-import { truncateAll, APP_KEY, db } from '../helpers/db';
+import { truncateAll, db } from '../helpers/db';
 import { createCustomer, CUSTOMER_PASSWORD } from '../helpers/factories';
 
 let counter = 0;
@@ -40,27 +40,12 @@ afterEach(async () => {
   sentMails.length = 0;
 });
 
-describe('public tier — app_key gate (headerValidator)', () => {
-  it('rejects /guest routes without app_key with 401', async () => {
-    const res = await request(app).get('/guest/provinces');
-    expect(res.status).toBe(401);
-  });
-
-  it('rejects /guest routes with a wrong app_key with 401', async () => {
-    const res = await request(app).get('/guest/provinces').set('app_key', 'wrong-key');
-    expect(res.status).toBe(401);
-    expect(res.body.message).toBe('Unauthorized: invalid app key.');
-    // the response must not leak the configured or received key
-    expect(res.body.message).not.toContain('wrong-key');
-  });
-});
-
 describe('POST /auth/signup (customer)', () => {
   it('creates a customer, returns user + token, sends welcome mail', async () => {
     const email = uniqueEmail();
     const res = await request(app)
       .post('/auth/signup')
-      .set('app_key', APP_KEY)
+      
       .send({ firstname: 'New', lastname: 'User', email, password: 'longenough1' });
 
     expect(res.status).toBe(200);
@@ -85,7 +70,7 @@ describe('POST /auth/signup (customer)', () => {
 
     const res = await request(app)
       .post('/auth/signup')
-      .set('app_key', APP_KEY)
+      
       .send({ firstname: 'Dup', lastname: 'Dup', email, password: 'longenough1' });
 
     expect(res.status).toBe(400); // business errors carry an explicit status now
@@ -95,19 +80,13 @@ describe('POST /auth/signup (customer)', () => {
   it('rejects passwords shorter than 8 characters', async () => {
     const res = await request(app)
       .post('/auth/signup')
-      .set('app_key', APP_KEY)
+      
       .send({ firstname: 'S', lastname: 'P', email: uniqueEmail(), password: 'short' });
 
     expect(res.status).toBe(400);
     expect(res.body.message).toBe('Password must be at least 8 characters.');
   });
 
-  it('requires app_key', async () => {
-    const res = await request(app)
-      .post('/auth/signup')
-      .send({ firstname: 'A', lastname: 'B', email: uniqueEmail(), password: 'longenough1' });
-    expect(res.status).toBe(401);
-  });
 });
 
 describe('POST /auth/signin (customer)', () => {
@@ -117,7 +96,7 @@ describe('POST /auth/signin (customer)', () => {
 
     const res = await request(app)
       .post('/auth/signin')
-      .set('app_key', APP_KEY)
+      
       .send({ email, password: CUSTOMER_PASSWORD });
 
     expect(res.status).toBe(200);
@@ -131,7 +110,7 @@ describe('POST /auth/signin (customer)', () => {
 
     const res = await request(app)
       .post('/auth/signin')
-      .set('app_key', APP_KEY)
+      
       .send({ email, password: WRONG_PASSWORD });
 
     expect(res.status).toBe(400);
@@ -141,7 +120,7 @@ describe('POST /auth/signin (customer)', () => {
   it('rejects an unknown email', async () => {
     const res = await request(app)
       .post('/auth/signin')
-      .set('app_key', APP_KEY)
+      
       .send({ email: 'ghost@test.local', password: 'whatever123' });
 
     expect(res.status).toBe(400);
@@ -154,7 +133,7 @@ describe('POST /auth/signin (customer)', () => {
 
     const res = await request(app)
       .post('/auth/signin')
-      .set('app_key', APP_KEY)
+      
       .send({ email, password: CUSTOMER_PASSWORD });
 
     expect(res.status).toBe(400);
@@ -169,7 +148,7 @@ describe('POST /auth/forget-password → /auth/reset-password (customer)', () =>
 
     const forget = await request(app)
       .post('/auth/forget-password')
-      .set('app_key', APP_KEY)
+      
       .send({ email });
 
     expect(forget.status).toBe(200);
@@ -185,7 +164,7 @@ describe('POST /auth/forget-password → /auth/reset-password (customer)', () =>
 
     const reset = await request(app)
       .post('/auth/reset-password')
-      .set('app_key', APP_KEY)
+      
       .send({ _forget_token: token, new_password: RESET_PASSWORD, confirm_password: RESET_PASSWORD });
 
     expect(reset.status).toBe(200);
@@ -193,7 +172,7 @@ describe('POST /auth/forget-password → /auth/reset-password (customer)', () =>
 
     const signin = await request(app)
       .post('/auth/signin')
-      .set('app_key', APP_KEY)
+      
       .send({ email, password: RESET_PASSWORD });
     expect(signin.status).toBe(200);
   });
@@ -201,7 +180,7 @@ describe('POST /auth/forget-password → /auth/reset-password (customer)', () =>
   it('refuses forget-password for unknown email', async () => {
     const res = await request(app)
       .post('/auth/forget-password')
-      .set('app_key', APP_KEY)
+      
       .send({ email: 'ghost2@test.local' });
 
     expect(res.status).toBe(404);
@@ -216,7 +195,7 @@ describe('POST /auth/forget-password → /auth/reset-password (customer)', () =>
 
     const res = await request(app)
       .post('/auth/reset-password')
-      .set('app_key', APP_KEY)
+      
       .send({ _forget_token: token, new_password: RESET_PASSWORD, confirm_password: 'different' });
 
     expect(res.status).toBe(400);
@@ -233,7 +212,7 @@ describe('POST /auth/admin/signin', () => {
 
     const res = await request(app)
       .post('/auth/admin/signin')
-      .set('app_key', APP_KEY)
+      
       .send({ username: 'backoffice@test.local', password: factories.ADMIN_PASSWORD });
 
     expect(res.status).toBe(200);
@@ -247,7 +226,7 @@ describe('POST /auth/admin/signin', () => {
 
     const res = await request(app)
       .post('/auth/admin/signin')
-      .set('app_key', APP_KEY)
+      
       .send({ username: 'wrongpw@test.local', password: 'nope' });
 
     expect(res.status).toBe(400); // thrown { status: 400 } is now honored
@@ -257,7 +236,7 @@ describe('POST /auth/admin/signin', () => {
   it('rejects an unknown admin', async () => {
     const res = await request(app)
       .post('/auth/admin/signin')
-      .set('app_key', APP_KEY)
+      
       .send({ username: 'ghost-admin@test.local', password: 'nope' });
 
     expect(res.status).toBe(401); // 'User not found.' carries 401 now
@@ -286,7 +265,7 @@ describe('GET /back/office/install', () => {
 
     const res = await request(app)
       .post('/auth/admin/signin')
-      .set('app_key', APP_KEY)
+      
       .send({ username: 'sale@akaiunsan.vn', password: 'whatever' });
 
     // install.controller previously created the admin without `active` (NULL →

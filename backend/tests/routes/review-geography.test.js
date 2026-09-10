@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeAll } from 'vitest';
 import request from 'supertest';
 import app from '../../app';
-import { truncateAll, APP_KEY, db } from '../helpers/db';
+import { truncateAll, db } from '../helpers/db';
 import { createAdmin, createCustomer, adminToken, customerToken } from '../helpers/factories';
 
 let adminJwt, customer, customerJwt;
@@ -14,8 +14,8 @@ beforeAll(async () => {
   customerJwt = await customerToken(customer);
 });
 
-const admin = (t) => t.set('app_key', APP_KEY).set('Authorization', `Bearer ${adminJwt}`);
-const client = (t) => t.set('app_key', APP_KEY).set('Authorization', `Bearer ${customerJwt}`);
+const admin = (t) => t.set('Authorization', `Bearer ${adminJwt}`);
+const client = (t) => t.set('Authorization', `Bearer ${customerJwt}`);
 
 describe('jobreview remaining branches', () => {
   it('list with keyword filter (rating substring)', async () => {
@@ -51,16 +51,16 @@ describe('geography cascade', () => {
       district_id: district.id, sub_district_name_th: 'ต', sub_district_name_en: 'S-Test',
     });
 
-    const provinces = await request(app).get('/guest/provinces').set('app_key', APP_KEY);
+    const provinces = await request(app).get('/guest/provinces');
     expect(provinces.status).toBe(200);
 
     const districts = await request(app)
-      .get(`/guest/provinces/${province.id}/districts`).set('app_key', APP_KEY);
+      .get(`/guest/provinces/${province.id}/districts`);
     expect(districts.status).toBe(200);
     expect(districts.body.some((d) => d.district_name_en === 'D-Test')).toBe(true);
 
     const subs = await request(app)
-      .get(`/guest/districts/${district.id}/sub-districts`).set('app_key', APP_KEY);
+      .get(`/guest/districts/${district.id}/sub-districts`);
     expect(subs.status).toBe(200);
     expect(subs.body.some((s) => s.sub_district_name_en === 'S-Test')).toBe(true);
   });

@@ -65,12 +65,11 @@ android/             # gradle project with dev/staging/production variants
 ## Production API configuration
 
 The production mobile client must use `https://akai-api.cjs.vn` as `API_URL`.
-Set `APP_KEY` in the ignored mobile environment file to the same value as the
-backend deployment's `APP_KEY`; `useApi` sends it as `x-app-key` so it survives
-the Caddy proxy. Do not restore the retired mobile host or any legacy host.
+No shared app key header is needed anymore (the backend `app_key` gate was
+removed). Do not restore the retired mobile host or any legacy host.
 Customer auth uses `/auth/signin` and `/auth/signup`; authenticated
 customer data uses `/client/*` with the Bearer token returned as `_token`.
-- **All HTTP calls go through the `useApi` hook** (`src/hooks/useApi.ts`): it reads the base URL from `react-native-config` (`API_URL`), attaches `x-app-key`, `Authorization: Bearer <token>` from redux, `Accept-Language`, and `platform` headers, and accepts both direct JSON and legacy `{ data }` response envelopes (surfacing `errors[0].message` as the error string). Use it (or the sagas that wrap it) rather than raw axios.
+- **All HTTP calls go through the `useApi` hook** (`src/hooks/useApi.ts`): it reads the base URL from `react-native-config` (`API_URL`), attaches `Authorization: Bearer <token>` from redux, `Accept-Language`, and `platform` headers, and accepts both direct JSON and legacy `{ data }` response envelopes (surfacing `errors[0].message` as the error string). Use it (or the sagas that wrap it) rather than raw axios.
 - Data fetching / side effects go through redux-saga (`redux/sagas/`); state via reducers + redux-persist for auth. Action types are declared in `redux/actions.ts` with `success`/`failure` suffix helpers.
 - Use `src/shared/{Colors,Styles,Layout,Constants}` for theming — don't hardcode colors/sizes inline.
 - Navigation from outside components: `src/navigation/root.ts` exposes `NavigationRoot.{navigate,push,replace,pop}` via a navigation ref.

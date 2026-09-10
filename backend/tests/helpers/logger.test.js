@@ -22,10 +22,10 @@ describe('helpers/logger', () => {
     expect(logger.level).toBeTruthy();
   });
 
-  it('redacts authorization and app_key headers from logged objects', async () => {
+  it('redacts authorization headers from logged objects', async () => {
     const { lines, stream } = capture();
     const testLogger = makeLogger({ level: 'info', stream });
-    testLogger.info({ req: { headers: { authorization: 'Bearer topsecret', app_key: 'k' } } }, 'req');
+    testLogger.info({ req: { headers: { authorization: 'Bearer topsecret' } } }, 'req');
     await new Promise((r) => stream.end(r));
     const raw = lines.map((l) => JSON.stringify(l)).join('\n');
     expect(raw).not.toContain('topsecret');

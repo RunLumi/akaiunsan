@@ -52,14 +52,14 @@ function makeSftpClass() {
   };
 }
 
-let app, APP_KEY, db, truncateAll, factories;
+let app, db, truncateAll, factories;
 
 beforeAll(async () => {
   patchModule('mysql', fakeMysql);
   patchModule('ssh2-sftp-client', makeSftpClass());
 
   app = (await import('../../app')).default;
-  ({ db, APP_KEY, truncateAll } = await import('../helpers/db'));
+  ({ db, truncateAll } = await import('../helpers/db'));
   factories = await import('../helpers/factories');
   await truncateAll();
 });
@@ -68,7 +68,7 @@ afterAll(() => {
   restoreFns.forEach((restore) => restore());
 });
 
-const pub = (test) => test.set('app_key', APP_KEY);
+const pub = (test) => test;
 
 describe('legacy agency routes', () => {
   const maidPayload = {

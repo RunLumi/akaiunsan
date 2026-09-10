@@ -2,7 +2,7 @@ import { describe, it, expect, beforeAll } from 'vitest';
 import * as adminHelperModule from '../../helpers/admin.ts';
 import request from 'supertest';
 import app from '../../app';
-import { truncateAll, APP_KEY, db } from '../helpers/db';
+import { truncateAll, db } from '../helpers/db';
 import { createCustomer, customerToken } from '../helpers/factories';
 
 let supporter;
@@ -28,7 +28,7 @@ beforeAll(async () => {
   await db.SupporterSkill.create({ supporter_id: supporter.id, skill: 'Cook', level: 'good' });
 });
 
-const pub = (t) => t.set('app_key', APP_KEY);
+const pub = (t) => t;
 
 // /bot/profile builds its query with one switch-case per filter; every case is
 // a distinct branch. Drive each through the public route.
@@ -80,9 +80,9 @@ describe('helpers/admin.findAdminById (unit)', () => {
 
 describe('address.json error branches', () => {
   it('nonexistent parents return empty lists (not errors)', async () => {
-    const d = await request(app).get('/guest/provinces/999999/districts').set('app_key', APP_KEY);
+    const d = await request(app).get('/guest/provinces/999999/districts');
     expect(d.status).toBe(200);
-    const s = await request(app).get('/guest/districts/999999/sub-districts').set('app_key', APP_KEY);
+    const s = await request(app).get('/guest/districts/999999/sub-districts');
     expect(s.status).toBe(200);
   });
 });

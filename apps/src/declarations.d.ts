@@ -35,5 +35,12 @@ declare module "@react-native-firebase/analytics" {
   export default analytics;
 }
 
+declare module "@react-native-firebase/crashlytics" {
+  const crashlytics: () => {
+    setCrashlyticsCollectionEnabled: (enabled: boolean) => Promise<null>;
+  };
+  export default crashlytics;
+}
+
 // React Native's injected development-mode global (store.ts logger gate).
 declare const __DEV__: boolean;

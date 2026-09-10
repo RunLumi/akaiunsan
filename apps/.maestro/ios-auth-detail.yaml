@@ -18,6 +18,9 @@ appId: com.akaiunsan.customer
 - tapOn:
     text: "OK"
     optional: true
+- tapOn:
+    text: "EN"
+    optional: true
 - extendedWaitUntil:
     visible: "Email"
     timeout: 30000

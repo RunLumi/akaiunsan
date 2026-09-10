@@ -97,6 +97,14 @@ export const Header = ({
             En
           </Text>
         </TouchableOpacity>
+        <Text
+          style={{
+            marginHorizontal: 8,
+            color: Colors.white,
+          }}
+        >
+          |
+        </Text>
       </View>
     </View>
   );

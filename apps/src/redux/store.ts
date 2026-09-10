@@ -13,17 +13,11 @@ import { logoutMiddleware } from "./logoutMiddleware";
 // before (docs/mobile-app-upgrade-plan.md §5).
 
 // Version 1: Thai was replaced by Vietnamese as the app language, so a
-// persisted locale of "th" remaps to "vi" (English stays "en"). The rehydrated
-// payload's shape is only known to redux-persist, hence the narrow casts.
-export const migrateLanguageToVi = <S>(state: S, version: number): Promise<S> =>
+// persisted locale of "th" remaps to "vi" (English stays "en").
+export const migrateLanguageToVi = (state: any, version: number) =>
   Promise.resolve(
-    version < 1 &&
-      (state as { language?: { language?: string } } | undefined)?.language
-        ?.language === "th"
-      ? ({
-          ...(state as object),
-          language: { language: "vi" },
-        } as S)
+    version < 1 && state?.language?.language === "th"
+      ? { ...state, language: { ...state.language, language: "vi" } }
       : state
   );
 

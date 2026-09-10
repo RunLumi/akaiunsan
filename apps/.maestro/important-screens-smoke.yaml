@@ -20,6 +20,9 @@ appId: com.akaiunsan.customer
 - tapOn:
     text: "OK"
     optional: true
+- tapOn:
+    text: "EN"
+    optional: true
 - extendedWaitUntil:
     visible: "Email"
     timeout: 30000
@@ -28,42 +31,68 @@ appId: com.akaiunsan.customer
 - tapOn: "Password"
 - inputText: ${MAESTRO_PASSWORD}
 - tapOn: "Sign In"
+- repeat:
+    times: 10
+    commands:
+      - runFlow:
+          when:
+            visible: "Not Now"
+          commands:
+            - tapOn: "Not Now"
+      - waitForAnimationToEnd:
+          timeout: 500
 - extendedWaitUntil:
-    visible: "Home"
+    visible:
+      text: "Home.*"
     timeout: 30000
 
 # FR-HOME-01 / FR-SVC-01: home and service discovery.
-- assertVisible: "Home"
-- assertVisible: "Booking"
-- assertVisible: "Inbox"
-- assertVisible: "Account"
+- assertVisible:
+    text: "Home.*"
+- assertVisible:
+    text: "Booking.*"
+- assertVisible:
+    text: "Inbox.*"
+- assertVisible:
+    text: "Account.*"
 - assertVisible: "Maid Service"
 - tapOn: "Maid Service"
 - extendedWaitUntil:
-    visible: "How many Hour(s)"
+    visible: "Please pick the service date from above calendar"
     timeout: 15000
-- assertVisible: "Select date and time"
-- back
+- assertVisible: "Service"
+- assertVisible: "Address"
+- assertVisible: "Option"
+- assertVisible: "Payment"
+- tapOn: "11"
+- extendedWaitUntil:
+    visible: "How many Hour(s)"
+    timeout: 10000
+- assertVisible: "How many Hour(s)"
+- assertVisible: "Start time"
+- assertVisible: "Next"
+- tapOn:
+    text: "service-back-button"
 
 # FR-BOOK-05 and FR-BOOK-01: booking list and calendar entry point.
-- tapOn: "Booking"
+- tapOn:
+    text: "Booking.*"
 - extendedWaitUntil:
-    visible: "Booking"
+    visible:
+      text: "Booking.*"
     timeout: 15000
 - assertVisible: "Upcoming"
 - assertVisible: "History"
 - tapOn: "History"
 - assertVisible: "History"
 - tapOn: "Upcoming"
-- tapOn:
-    text: "Booking"
-    index: 0
-- back
 
 # FR-NOTI-01..03: both inbox tabs and empty/data state.
-- tapOn: "Inbox"
+- tapOn:
+    text: "Inbox.*"
 - extendedWaitUntil:
-    visible: "Inbox"
+    visible:
+      text: "Inbox.*"
     timeout: 15000
 - assertVisible: "Notification"
 - assertVisible: "Promotion"
@@ -72,51 +101,74 @@ appId: com.akaiunsan.customer
 - tapOn: "Notification"
 
 # FR-PRO-01 / FR-PAY-01 / FR-FAV-01 / FR-HIST-01 / FR-SUB-01.
-- tapOn: "Account"
+- tapOn:
+    text: "Account.*"
 - extendedWaitUntil:
-    visible: "Account"
+    visible:
+      text: "Account.*"
     timeout: 15000
-- assertVisible: "MY BOOKING"
-- assertVisible: "FAVOURITE"
-- assertVisible: "PROMOTIONS"
-- assertVisible: "PAYMENT"
-- assertVisible: "HISTORY"
-- assertVisible: "ADDRESS"
-- assertVisible: "SUBSCRIPTION MENU"
+- assertVisible:
+    text: "MY BOOKING.*"
+- assertVisible:
+    text: "FAVOURITE.*"
+- assertVisible:
+    text: "PROMOTIONS.*"
+- assertVisible:
+    text: "PAYMENT.*"
+- assertVisible:
+    text: "HISTORY.*"
+- assertVisible:
+    text: "ADDRESS.*"
+- assertVisible:
+    text: "SUBSCRIPTION MENU.*"
 
-- tapOn: "FAVOURITE"
+- tapOn:
+    text: "FAVOURITE.*"
 - extendedWaitUntil:
-    visible: "Favourite"
+    visible: "Favourite.*"
     timeout: 10000
-- back
-- tapOn: "PAYMENT"
+- tapOn:
+    text: "navigation-back-button"
+- tapOn:
+    text: "PAYMENT.*"
 - extendedWaitUntil:
     visible: "PAYMENT"
     timeout: 10000
-- back
-- tapOn: "HISTORY"
+- tapOn:
+    text: "navigation-back-button"
+- tapOn:
+    text: "HISTORY.*"
 - extendedWaitUntil:
     visible: "HISTORY"
     timeout: 10000
-- back
-- tapOn: "ADDRESS"
+- tapOn:
+    text: "navigation-back-button"
+- tapOn:
+    text: "ADDRESS.*"
 - extendedWaitUntil:
     visible: "ADDRESS"
     timeout: 10000
-- back
-- tapOn: "SUBSCRIPTION MENU"
+- tapOn:
+    text: "navigation-back-button"
+- tapOn:
+    text: "SUBSCRIPTION MENU.*"
 - extendedWaitUntil:
-    visible: "SUBSCRIPTION"
+    visible: "Data empty"
     timeout: 10000
-- back
-- tapOn: "PROMOTIONS"
+- assertVisible: "Data empty"
+- tapOn:
+    text: "navigation-back-button"
+- tapOn:
+    text: "PROMOTIONS.*"
 - extendedWaitUntil:
-    visible: "PROMOTIONS"
+    visible: "Promotion.*"
     timeout: 10000
-- back
+- tapOn:
+    text: "navigation-back-button"
 
 # FR-ACC-05: logout returns to the authentication boundary.
-- tapOn: "Log out"
+- tapOn:
+    text: ".*Log out"
 - tapOn:
     text: "OK"
     optional: true

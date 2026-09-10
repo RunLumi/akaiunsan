@@ -217,7 +217,12 @@ const PickAddress = (props: ScreenProps) => {
                 longitudeDelta: 1,
               });
 
-              setRegionMark(coords[0] as any);
+              setRegionMark({
+                latitude: coords[0].latitude,
+                longitude: coords[0].longitude,
+                latitudeDelta: 0.5,
+                longitudeDelta: 0.5,
+              });
             }
           
             const listAddresses = await L2.googleAddressGeocodeAsync(
@@ -306,7 +311,12 @@ const PickAddress = (props: ScreenProps) => {
         },
         zoom: 100,
       });
-      setRegionMark(coords[0] as any);
+      setRegionMark({
+        latitude: coords[0].latitude,
+        longitude: coords[0].longitude,
+        latitudeDelta: 0.5,
+        longitudeDelta: 0.5,
+      });
     }
     // setIsPlace(true);
     L2.setGoogleApiKey(

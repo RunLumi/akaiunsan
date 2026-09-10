@@ -133,6 +133,7 @@ export const apiSlice = createApi({
         url: Constants.API.update_language,
         method: "put",
         body: arg?.data,
+        headers: arg?.headers,
       }),
     }),
     listFavouriteService: builder.query<ItemsResponse, RequestArg | void>({
@@ -173,6 +174,10 @@ export const apiSlice = createApi({
         url: Constants.API.get_booking,
         params: arg?.params,
       }),
+      transformResponse: (response: ItemsResponse | any[]) =>
+        Array.isArray(response)
+          ? { items: response, page: 1, totalUnRead: 0 }
+          : response,
     }),
 
     // ---- Inbox (Phase 5 module port) ---------------------------------------

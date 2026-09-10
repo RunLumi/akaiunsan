@@ -1,55 +1,55 @@
-import React,{useEffect} from "react";
+import React, { useEffect } from "react";
 import Navigation from "./src/navigation";
-import { Provider, useSelector } from "react-redux";
+import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/lib/integration/react";
 import redux from "./src/redux/store";
-import messaging from '@react-native-firebase/messaging';
 import useCachedResources from "./src/hooks/useCachedResources";
 import notifee, { AndroidImportance } from "@notifee/react-native";
-import analytics from "@react-native-firebase/analytics";
-import Config from "react-native-config";
-import { shouldCollectAnalytics } from "./src/shared/analytics";
+import {
+  configureFirebaseTelemetry,
+  getFirebaseMessaging,
+  logAnalyticsEvent,
+} from "./src/shared/firebase";
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
 
   useEffect(() => {
-    const messagingService =
-      typeof messaging === "function" ? messaging() : undefined;
-    const analyticsService =
-      typeof analytics === "function" ? analytics() : undefined;
-    const analyticsEnvironment =
-      process.env.EXPO_PUBLIC_SENTRY_ENV ||
-      Config.EXPO_PUBLIC_SENTRY_ENV ||
-      (__DEV__ ? "development" : "production");
-    const analyticsEnabled = shouldCollectAnalytics(analyticsEnvironment, __DEV__);
-
-    analyticsService?.setAnalyticsCollectionEnabled?.(analyticsEnabled);
-    requestUserPermission();
+    configureFirebaseTelemetry();
+    const messaging = getFirebaseMessaging();
+    void requestUserPermission();
 
     async function requestUserPermission() {
-      if (typeof messagingService?.requestPermission !== "function") return;
-      // await messaging().registerDeviceForRemoteMessages()
-      const authStatus = await messagingService.requestPermission();
-      const enabled =
-        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-    
-      if (enabled) {
-        console.log('Authorization status:', authStatus);
+      if (!messaging?.module.requestPermission) return;
+
+      try {
+        // firebase.json disables native messaging auto-init by default so
+        // local/development builds do not contact Firebase Installations.
+        // Production/staging explicitly opt back in before requesting FCM
+        // permission or tokens.
+        if (messaging.module.setAutoInitEnabled) {
+          await messaging.module.setAutoInitEnabled(messaging.service, true);
+        }
+        const authStatus = await messaging.module.requestPermission(messaging.service);
+        const enabled =
+          authStatus === messaging.module.AuthorizationStatus?.AUTHORIZED ||
+          authStatus === messaging.module.AuthorizationStatus?.PROVISIONAL;
+
+        if (enabled) console.log("Authorization status:", authStatus);
+      } catch (error) {
+        console.warn("Unable to request Firebase Messaging permission", error);
       }
     }
 
-    const unsubscribe =
-      typeof messagingService?.onMessage === "function"
-        ? messagingService.onMessage(async (remoteMessage: any) => {
-            await createNotification(remoteMessage)
-            await analytics().logEvent("notification", remoteMessage);
-          })
-        : undefined;
+    const unsubscribe = messaging?.module.onMessage
+      ? messaging.module.onMessage(messaging.service, async (remoteMessage) => {
+          await createNotification(remoteMessage);
+          await logAnalyticsEvent("notification", remoteMessage as Record<string, unknown>);
+        })
+      : undefined;
 
     return unsubscribe;
-  }, [])
+  }, []);
 
   const createNotification = async (remoteMessage: any) => {
     await notifee.createChannel({
@@ -69,8 +69,7 @@ export default function App() {
         channelId: "com.akaiunsan.customer",
       },
     });
-  }
-  
+  };
 
 
   // OTA updates are intentionally not part of the Akaiunsan runtime.

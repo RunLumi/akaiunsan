@@ -23,7 +23,6 @@ import colors from "../shared/Colors";
 import PickerModal from "../components/Picker";
 import { NotificationHandler } from "../components";
 import { Address, PickAddress } from "../screens/Address";
-import messaging from "@react-native-firebase/messaging";
 import { BookingDetail, DetailHistory, Calendar } from "../screens/Booking";
 import EditProfile from "../screens/Other/EditProfile";
 import { ListMyBooking } from "../screens/MyBooking";
@@ -53,6 +52,7 @@ import { reactNavigationIntegration } from "../../instrument";
 import { apiSlice, portRequest, type ApiResult } from "../redux/apiSlice";
 import type { ApiItem } from "../redux/apiSlice";
 import type { ScreenProps } from "../navigation/routes";
+import { getFirebaseMessaging } from "../shared/firebase";
 
 const { width } = Dimensions.get("window");
 
@@ -138,6 +138,7 @@ function RootNavigator() {
       };
       return (
         <TouchableOpacity
+          accessibilityLabel="navigation-back-button"
           style={{
             backgroundColor: colors.main_color,
             flex: 1,
@@ -158,13 +159,12 @@ function RootNavigator() {
   };
 
   useEffect(() => {
-    const messagingService =
-      typeof messaging === "function" ? messaging() : undefined;
-    if (typeof messagingService?.onNotificationOpenedApp !== "function") {
+    const messaging = getFirebaseMessaging();
+    if (!messaging?.module.onNotificationOpenedApp) {
       return;
     }
 
-    messagingService.onNotificationOpenedApp(async (remoteMessage: ApiItem) => {
+    return messaging.module.onNotificationOpenedApp(messaging.service, async (remoteMessage: any) => {
       const { data } = remoteMessage;
       // Preserved side-effects: each type pre-loads its initialParams state
       // (note: navigation below reads the *stale* render-closure value).

@@ -12,7 +12,6 @@ import {
   View,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import analytics from "@react-native-firebase/analytics";
 import { useDispatch } from "react-redux";
 import {
   Button,
@@ -33,6 +32,7 @@ import { styles } from "../Main/Home";
 import { color } from "react-native-elements/dist/helpers";
 import type { ApiItem } from "../../redux/apiSlice";
 import type { ScreenProps } from "../../navigation/routes";
+import { logAnalyticsEvent } from "../../shared/firebase";
 
 const windowWidth = Dimensions.get('window').width;
 export default function Signup(props: ScreenProps) {
@@ -277,17 +277,7 @@ export default function Signup(props: ScreenProps) {
         gender: gender.value,
       },
     });
-    await analytics().logEvent("signup", {
-      email: email.value,
-      password: pass.value,
-      fullName: `${firstname.value} ${lastname.value}`,
-      phoneNumber: phone.value,
-      referralCode: sponsor.value,
-      address: address.value,
-      avatar: "",
-      identityNumber: id.value,
-      gender: gender.value,
-    });
+    await logAnalyticsEvent("signup", { method: "password" });
   };
 
   const onPressLogin = () => {

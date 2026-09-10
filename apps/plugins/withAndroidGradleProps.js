@@ -1,4 +1,8 @@
-const { withGradleProperties } = require("@expo/config-plugins");
+const {
+  withAndroidManifest,
+  withAppBuildGradle,
+  withGradleProperties,
+} = require("@expo/config-plugins");
 
 // React Native 0.86 requires JDK 17-20; JDK 24 triggers "restricted method in
 // java.lang.System" from the CMake toolchain and Gradle 9 warns at config
@@ -9,6 +13,15 @@ const { withGradleProperties } = require("@expo/config-plugins");
 const GRADLE_EXTRAS = [
   { type: "property", key: "org.gradle.configuration-cache", value: "false" },
 ];
+
+const DOTENV_MARKER = "// @akaiunsan-react-native-config";
+const DOTENV_APPLY = `
+${DOTENV_MARKER}
+apply from: new File(rootDir, "../node_modules/react-native-config/android/dotenv.gradle")
+def akaiunsanEnvironment = project.ext.has("env") ? project.ext.env["EXPO_PUBLIC_SENTRY_ENV"] : null
+def akaiunsanAllowCleartextTraffic = ["local", "development", "maestro"].contains(akaiunsanEnvironment)
+android.defaultConfig.manifestPlaceholders["akaiunsanAllowCleartextTraffic"] = akaiunsanAllowCleartextTraffic.toString()
+`;
 
 function findJdkHome() {
   const { execSync } = require("child_process");
@@ -31,7 +44,17 @@ function findJdkHome() {
 }
 
 module.exports = function withAndroidGradleProps(config) {
-  return withGradleProperties(config, (config) => {
+  config = withAndroidManifest(config, (config) => {
+    const application = config.modResults.manifest.application?.[0];
+    if (application) {
+      application["$"] = application["$"] || {};
+      application["$"]["android:usesCleartextTraffic"] =
+        "${akaiunsanAllowCleartextTraffic}";
+    }
+    return config;
+  });
+
+  config = withGradleProperties(config, (config) => {
     const jdkHome = findJdkHome();
     const existing = new Set(
       config.modResults.map((item) => item.key)
@@ -47,6 +70,14 @@ module.exports = function withAndroidGradleProps(config) {
         key: "org.gradle.java.home",
         value: jdkHome,
       });
+    }
+    return config;
+  });
+
+  return withAppBuildGradle(config, (config) => {
+    const contents = String(config.modResults.contents);
+    if (!contents.includes(DOTENV_MARKER)) {
+      config.modResults.contents = `${contents.trimEnd()}\n${DOTENV_APPLY}`;
     }
     return config;
   });

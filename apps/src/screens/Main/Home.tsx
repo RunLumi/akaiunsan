@@ -11,7 +11,6 @@ import {
   RefreshControl,
 } from "react-native";
 import { Image as ExpoImage } from "expo-image";
-import messaging from "@react-native-firebase/messaging";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../redux/hooks";
 import { AutoPager, Container, Header, Loading, Text } from "../../components";
@@ -29,6 +28,7 @@ import notifee from "@notifee/react-native";
 import { paramArray } from "../../shared/Utils";
 import type { ApiItem } from "../../redux/apiSlice";
 import type { ScreenProps } from "../../navigation/routes";
+import { getFirebaseMessaging } from "../../shared/firebase";
 
 const { width } = Dimensions.get("window");
 export default function Home(props: ScreenProps) {
@@ -254,9 +254,11 @@ export default function Home(props: ScreenProps) {
     requestGetBanner();
     requestGetPromotion();
     requestServiceManagement();
-    const listen = messaging()
-      .getInitialNotification()
-      .then((remoteMessage: ApiItem) => {
+    const messaging = getFirebaseMessaging();
+    const listen = messaging?.module.getInitialNotification
+      ? messaging.module
+          .getInitialNotification(messaging.service)
+          .then((remoteMessage: any) => {
         if (remoteMessage?.data) {
           switch (remoteMessage.data.type) {
             case "0":
@@ -289,9 +291,10 @@ export default function Home(props: ScreenProps) {
               break;
           }
         }
-      });
+          })
+      : undefined;
     return () => {
-      listen;
+      void listen;
     };
   }, []);
 

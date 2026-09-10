@@ -26,11 +26,11 @@ import { Overlay } from "react-native-elements";
 import dayjs from "../../shared/dayjs";
 import Layout from "../../shared/Layout";
 import _, { isEmpty, times } from "lodash";
-import analytics from "@react-native-firebase/analytics";
 import Config from "react-native-config";
 import { apiSlice, portRequest, type ApiResult, type RequestArg } from "../../redux/apiSlice";
 import type { ApiItem } from "../../redux/apiSlice";
 import type { ScreenProps } from "../../navigation/routes";
+import { logAnalyticsEvent } from "../../shared/firebase";
 
 export default function Service(props: ScreenProps) {
   const childRef = React.useRef<any>(null);
@@ -754,7 +754,7 @@ export default function Service(props: ScreenProps) {
       if (!params.data?.order && !loading) {
         setLoading(true);
         await requestOrder({ data: paramOrder });
-        await analytics().logEvent("order", paramOrder);
+        await logAnalyticsEvent("order");
       } else {
         if (!isCreditCard) {
           requestPaymentPetcare({
@@ -856,6 +856,7 @@ export default function Service(props: ScreenProps) {
           <View style={{ marginLeft: 10 }}>
             {currentStep != 4 ? (
               <Ionicons
+                accessibilityLabel="service-back-button"
                 onPress={() =>
                   currentStep === 0
                     ? props.navigation.navigate(

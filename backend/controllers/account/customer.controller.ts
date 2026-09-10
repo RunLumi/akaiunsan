@@ -36,21 +36,27 @@ async function signup (req, res) {
     // } else {
       // }
       
-    let email_lang = 'en';
-    let email_topic = 'Welcome to Akaiunsan Service';
-    const mail_template: any = await new Promise((resolve, reject) => {
-      fs.readFile(`mail-template/${email_lang}/account.html`, 'utf8', function (err, data) {
-        if (err) {
-          reject(err)
-        }
-        resolve(data)
+    // Maestro uses a disposable local database and intentionally does not
+    // require an SMTP server. Keep the real welcome email path unchanged for
+    // every other environment; local acceptance can still verify that the
+    // customer row and auth token are created successfully.
+    if (NODE_ENV !== 'maestro') {
+      let email_lang = 'en';
+      let email_topic = 'Welcome to Akaiunsan Service';
+      const mail_template: any = await new Promise((resolve, reject) => {
+        fs.readFile(`mail-template/${email_lang}/account.html`, 'utf8', function (err, data) {
+          if (err) {
+            reject(err)
+          }
+          resolve(data)
+        });
       });
-    });
 
-    let email_message = mail_template.replace('${firstname}', customer.firstname)
-    email_message = email_message.replace('${lastname}', customer.lastname)
-    const isBcc = true;
-    await sendMail(email_topic, email_message, customer.email, isBcc);
+      let email_message = mail_template.replace('${firstname}', customer.firstname)
+      email_message = email_message.replace('${lastname}', customer.lastname)
+      const isBcc = true;
+      await sendMail(email_topic, email_message, customer.email, isBcc);
+    }
 
     await t.commit();
     return res.status(200).json({

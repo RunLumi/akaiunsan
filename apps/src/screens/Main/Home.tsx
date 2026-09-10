@@ -452,16 +452,30 @@ export default function Home(props: ScreenProps) {
             );
           }}
         />
-        <Text
+        <View
           style={{
             marginHorizontal: 16,
             marginVertical: 8,
-            fontSize: 16,
-            fontWeight: "500",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
           }}
         >
-          {i18n.t("home.services")}
-        </Text>
+          <Text style={{ fontSize: 16, fontWeight: "500" }}>
+            {i18n.t("home.services")}
+          </Text>
+          <TouchableOpacity
+            accessibilityLabel="all-services-button"
+            testID="all-services-button"
+            onPress={() =>
+              props.navigation.navigate(Constants.SCREENS.SERVICE.AllService)
+            }
+          >
+            <Text style={{ color: Colors.main_color }}>
+              {i18n.t("home.view_all")}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   };

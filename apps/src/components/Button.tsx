@@ -27,6 +27,8 @@ interface Props {
   onPress?: (event: GestureResponderEvent) => void;
   loading?: boolean;
   disabled?: boolean;
+  accessibilityLabel?: string;
+  testID?: string;
 }
 
 export const Button = ({

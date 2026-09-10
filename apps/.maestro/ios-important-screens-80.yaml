@@ -1,0 +1,281 @@
+appId: com.akaiunsan.customer
+
+---
+# iOS-only extended smoke lane. It intentionally uses one explicit simulator
+# and a disposable local account. It visits the documented user-visible routes
+# without submitting a booking, charging a card, or deleting an account.
+- clearState
+- launchApp
+- tapOn:
+    text: "Allow Once"
+    optional: true
+- tapOn:
+    text: "Allow While Using App"
+    optional: true
+- tapOn:
+    text: "While using the app"
+    optional: true
+- tapOn:
+    text: "Allow"
+    optional: true
+- tapOn:
+    text: "OK"
+    optional: true
+- tapOn:
+    text: "EN"
+    optional: true
+- extendedWaitUntil:
+    visible: "Email"
+    timeout: 30000
+- tapOn: "Email"
+- inputText: ${MAESTRO_EMAIL}
+- tapOn: "Password"
+- inputText: ${MAESTRO_PASSWORD}
+- tapOn: "Sign In"
+- repeat:
+    times: 10
+    commands:
+      - runFlow:
+          when:
+            visible: "Not Now"
+          commands:
+            - tapOn: "Not Now"
+      - waitForAnimationToEnd:
+          timeout: 500
+- extendedWaitUntil:
+    visible:
+      text: "Home.*"
+    timeout: 30000
+
+# Main tab shell.
+- assertVisible:
+    text: "Home.*"
+- assertVisible:
+    text: "Booking.*"
+- assertVisible:
+    text: "Inbox.*"
+- assertVisible:
+    text: "Account.*"
+
+# AllService -> Service -> Address -> Option -> Payment wizard screens.
+- tapOn:
+    id: "all-services-button"
+- extendedWaitUntil:
+    visible: "Maid Service"
+    timeout: 15000
+- assertVisible: "Dịch vụ|Maid Service"
+- tapOn: "Maid Service"
+- extendedWaitUntil:
+    visible: "Please pick the service date from above calendar"
+    timeout: 15000
+- tapOn: "11"
+- waitForAnimationToEnd
+- tapOn: "Confirm"
+- waitForAnimationToEnd
+- tapOn:
+    id: "service-next-button"
+- waitForAnimationToEnd
+- extendedWaitUntil:
+    visible: "Maestro test address.*"
+    timeout: 10000
+- tapOn: "Maestro test address.*"
+- swipe:
+    direction: UP
+    duration: 500
+- tapOn:
+    id: "service-next-button"
+- extendedWaitUntil:
+    visible: "Option"
+    timeout: 10000
+- assertVisible: "Specific helper.*|Select your helper.*"
+- tapOn: "Next"
+- extendedWaitUntil:
+    visible: "Payment"
+    timeout: 10000
+- assertVisible: "Select card"
+- repeat:
+    times: 4
+    commands:
+      - tapOn: "service-back-button"
+
+# Booking list, calendar, upcoming detail, edit/reorder, and history detail.
+- tapOn:
+    text: "Booking.*"
+- extendedWaitUntil:
+    visible: "Booking.*"
+    timeout: 15000
+- tapOn:
+    id: "booking-calendar-button"
+- extendedWaitUntil:
+    visible: "Monthly"
+    timeout: 10000
+- assertVisible: "Maid Service"
+- tapOn: "navigation-back-button"
+- tapOn: "Maid Service"
+- extendedWaitUntil:
+    visible: "Booking detail"
+    timeout: 10000
+- assertVisible: "Maestro test address"
+- tapOn:
+    id: "booking-edit-button"
+- extendedWaitUntil:
+    visible: "Service"
+    timeout: 10000
+- assertVisible: "Address"
+- tapOn: "service-back-button"
+- tapOn: "navigation-back-button"
+- tapOn: "History"
+- tapOn: "Maid Service"
+- extendedWaitUntil:
+    visible: "Booking detail"
+    timeout: 10000
+- assertVisible: "Maestro test address"
+- tapOn: "navigation-back-button"
+
+# Inbox notification -> order detail -> Petcare payment screen.
+- tapOn:
+    text: "Inbox.*"
+- extendedWaitUntil:
+    visible: "Maestro booking update"
+    timeout: 10000
+- tapOn: "Maestro booking update"
+- extendedWaitUntil:
+    visible: "Pet profile:"
+    timeout: 10000
+- assertVisible: "Confirm"
+- tapOn: "Confirm"
+- extendedWaitUntil:
+    visible: "Payment"
+    timeout: 10000
+- assertVisible: "Select card|Next"
+- tapOn: "navigation-back-button"
+- tapOn: "navigation-back-button"
+
+# Inbox promotion -> Promotion detail.
+- tapOn:
+    text: "Promotion"
+- extendedWaitUntil:
+    visible: "Maestro promotion"
+    timeout: 10000
+- tapOn: "Maestro promotion"
+- extendedWaitUntil:
+    visible: "Promotion detail"
+    timeout: 10000
+- assertVisible: "Maestro promotion"
+- tapOn: "navigation-back-button"
+
+# Account menu and utility routes.
+- tapOn:
+    text: "Account.*"
+- extendedWaitUntil:
+    visible: "MY BOOKING.*"
+    timeout: 10000
+- tapOn:
+    text: "MY BOOKING.*"
+- extendedWaitUntil:
+    visible: "Maid Service"
+    timeout: 10000
+- tapOn: "Maid Service"
+- extendedWaitUntil:
+    visible: "Booking detail"
+    timeout: 10000
+- tapOn: "navigation-back-button"
+- tapOn: "navigation-back-button"
+
+- tapOn:
+    text: "FAVOURITE.*"
+- extendedWaitUntil:
+    visible: "Favourite.*"
+    timeout: 10000
+- tapOn: "Dịch vụ yêu thích|Favourite services"
+- extendedWaitUntil:
+    visible: "Dịch vụ yêu thích|Favourite services"
+    timeout: 10000
+- tapOn: "navigation-back-button"
+- tapOn: "Nhà cung cấp yêu thích|Favourite service providers"
+- extendedWaitUntil:
+    visible: "Nhà cung cấp yêu thích|Favourite service providers"
+    timeout: 10000
+- tapOn: "navigation-back-button"
+- tapOn: "navigation-back-button"
+
+- tapOn:
+    text: "PROMOTIONS.*"
+- extendedWaitUntil:
+    visible: "Promotion.*"
+    timeout: 10000
+- tapOn: "Maestro promotion"
+- extendedWaitUntil:
+    visible: "Promotion detail"
+    timeout: 10000
+- tapOn: "navigation-back-button"
+- tapOn: "navigation-back-button"
+
+- tapOn:
+    text: "PAYMENT.*"
+- extendedWaitUntil:
+    visible: "PAYMENT"
+    timeout: 10000
+- assertVisible: "Data empty"
+- tapOn: "navigation-back-button"
+
+- tapOn:
+    text: "HISTORY.*"
+- extendedWaitUntil:
+    visible: "HISTORY"
+    timeout: 10000
+- tapOn: "Maid Service"
+- extendedWaitUntil:
+    visible: "Booking detail"
+    timeout: 10000
+- tapOn: "navigation-back-button"
+- tapOn: "navigation-back-button"
+
+- tapOn:
+    text: "ADDRESS.*"
+- extendedWaitUntil:
+    visible: "Maestro test address.*"
+    timeout: 10000
+- tapOn: "navigation-back-button"
+
+- tapOn: "Edit profile"
+- extendedWaitUntil:
+    visible: "Edit profile"
+    timeout: 10000
+- tapOn:
+    id: "edit-profile-address-button"
+- extendedWaitUntil:
+    visible: "Search address|Pick Location"
+    timeout: 15000
+- tapOn: "navigation-back-button"
+- tapOn: "navigation-back-button"
+
+- tapOn:
+    text: "CHIA SẺ VỚI BẠN BÈ|FRIEND SHARE"
+- extendedWaitUntil:
+    visible: "MAESTRO|Referral code|Ref code"
+    timeout: 10000
+- tapOn: "navigation-back-button"
+
+- tapOn:
+    text: "VỀ CHÚNG TÔI|ABOUT US"
+- extendedWaitUntil:
+    visible: "Privacy Policy"
+    timeout: 10000
+- assertVisible: "Term of Use"
+- tapOn: "Privacy Policy"
+- extendedWaitUntil:
+    visible: "Privacy"
+    timeout: 15000
+- tapOn: "navigation-back-button"
+- tapOn: "navigation-back-button"
+
+# Logout is the final state; do not remove the disposable account.
+- tapOn:
+    text: ".*Log out"
+- tapOn:
+    text: "OK"
+    optional: true
+- extendedWaitUntil:
+    visible: "Sign In"
+    timeout: 15000

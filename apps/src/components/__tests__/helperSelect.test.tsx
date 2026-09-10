@@ -94,6 +94,14 @@ describe("HelperSelect", () => {
     );
   });
 
+  it("does not serialize invalid booking times", async () => {
+    renderHelper({ startTime: "", endTime: "" });
+    await flush();
+    expect(fetchUrls()[0]).not.toContain("Invalid Date");
+    expect(fetchUrls()[0]).not.toContain("startTime=");
+    expect(fetchUrls()[0]).not.toContain("endTime=");
+  });
+
   it("confirming without a selection alerts the user", async () => {
     const alertSpy = jest.spyOn(Alert, "alert");
     const ref = React.createRef<any>();

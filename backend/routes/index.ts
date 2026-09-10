@@ -68,6 +68,16 @@ export default (app) => {
     app.get('/promotion/promotion-updates', MobileCompatController.getMaestroPromotionUpdates);
     app.get('/promotion/get-promotion', MobileCompatController.getMaestroPromotions);
     app.get('/promotion/get-promotion-used', MobileCompatController.getMaestroPromotions);
+    app.get('/promotion/detail', MobileCompatController.getMaestroPromotionDetail);
+    app.get('/booking/detail', MobileCompatController.getMaestroBookingDetail);
+    app.get('/client/jobs', MobileCompatController.getMaestroBookingList);
+    app.get('/config-price/price-special-request', MobileCompatController.getMaestroPriceSpecialRequest);
+    app.get('/config-point/get', MobileCompatController.getMaestroPointConfig);
+    app.get('/config-price/subscription-prices', MobileCompatController.getMaestroSubscriptionPrices);
+    app.get('/payment-method/get', MobileCompatController.getMaestroPaymentMethods);
+    app.get('/services-management/helpers', MobileCompatController.getMaestroHelpers);
+    app.get('/services-management/suggest', MobileCompatController.getMaestroHelpers);
+    app.get('/languages', MobileCompatController.getMaestroLanguages);
     app.get('/services-management', MobileCompatController.getMaestroServices);
     app.get('/services-management/service-item', MobileCompatController.getMaestroServiceItem);
     app.get('/config-price/get', MobileCompatController.getMaestroConfigPrice);

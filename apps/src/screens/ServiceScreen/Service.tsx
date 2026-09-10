@@ -448,10 +448,10 @@ export default function Service(props: ScreenProps) {
     hour: number,
     showDateTime: string
   ) => {
-    if (valueDate) {
+    const parsedStartTime = dayjs(`${valueDate} ${valueTime}`);
+    if (valueDate && valueTime && hour && parsedStartTime.isValid()) {
       setDisableNext(false);
-      let getValue = `${valueDate} ${valueTime}`;
-      let valueStartTime = dayjs(getValue).format("MM/DD/YYYY HH:mm:ss");
+      let valueStartTime = parsedStartTime.format("MM/DD/YYYY HH:mm:ss");
       let valueEndtime = "";
       if (hour) {
         valueEndtime = dayjs(valueStartTime)
@@ -628,6 +628,13 @@ export default function Service(props: ScreenProps) {
   };
 
   const onNextStep = async () => {
+    const bookingDate = dayjs(startTime);
+    const bookingHour = dayjs(endTime);
+    if (!bookingDate.isValid() || !bookingHour.isValid()) {
+      Alert.alert(i18n.t("auth.error"), i18n.t("home.select_date_time"));
+      return;
+    }
+
     const notUndefined = (anyValue: unknown): boolean => typeof anyValue !== "undefined";
     let paramOrder: {
       serviceId: unknown;
@@ -639,8 +646,8 @@ export default function Service(props: ScreenProps) {
     } = {
       serviceId: fromThread === 'favorite-service-thread' ? params.data.serviceId : params.data.id,
       bookingDetail: {
-        bookingDate: dayjs(startTime).toISOString(),
-        bookingHour: dayjs(endTime).toISOString(),
+        bookingDate: bookingDate.toISOString(),
+        bookingHour: bookingHour.toISOString(),
         // language: idPreferLanguge.value,
         specialHelper: idSpecifyHelper.id,
         serviceType: params.data.serviceType,
@@ -769,8 +776,18 @@ export default function Service(props: ScreenProps) {
         }
       }
     } else {
-      setCurrentStep(currentStep + 1);
+      // Use the functional update so a tap that follows the date selection
+      // cannot apply a stale render's step value.
+      setCurrentStep((step) => step + 1);
     }
+  };
+
+  const onPressNext = () => {
+    if (currentStep < 3) {
+      setCurrentStep((step) => step + 1);
+      return;
+    }
+    void onNextStep();
   };
   const handleCloseModalCrediCard = (value: ApiItem) => {
     if (value.nativeEvent && value.nativeEvent.data === "cancel") {
@@ -1090,15 +1107,19 @@ export default function Service(props: ScreenProps) {
             {isCreditCard && currentStep === 3 && !idCard ? (
               <Button
                 disabled={disabledNext}
-                onPress={onNextStep}
+                onPress={onPressNext}
                 style={styles.buttonBottom}
+                accessibilityLabel="service-next-button"
+                testID="service-next-button"
                 title={i18n.t("home.select_card")}
               />
             ) : (
               <Button
                 disabled={disabledNext}
-                onPress={onNextStep}
+                onPress={onPressNext}
                 style={styles.buttonBottom}
+                accessibilityLabel="service-next-button"
+                testID="service-next-button"
                 title={i18n.t("auth.next")}
               />
             )}

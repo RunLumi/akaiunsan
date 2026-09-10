@@ -28,31 +28,42 @@ async function signup (req, res) {
     const new_customer = await Customer.create(customer, { transaction: t });
     const token = await generateToken(customer.email, req.hostname);
 
-    // let email_lang, email_topic;
-
-    // if (req.headers['request-lang'] && req.headers['request-lang'] == 'th') {
-    //   email_lang = 'th';
-    //   email_topic = 'อะยะซันเซอร์วิสยินดีต้อนรับ';
-    // } else {
-      // }
-      
-    let email_lang = 'en';
-    let email_topic = 'Welcome to Akaiunsan Service';
-    const mail_template: any = await new Promise((resolve, reject) => {
-      fs.readFile(`mail-template/${email_lang}/account.html`, 'utf8', function (err, data) {
-        if (err) {
-          reject(err)
-        }
-        resolve(data)
-      });
-    });
-
-    let email_message = mail_template.replace('${firstname}', customer.firstname)
-    email_message = email_message.replace('${lastname}', customer.lastname)
-    const isBcc = true;
-    await sendMail(email_topic, email_message, customer.email, isBcc);
-
     await t.commit();
+
+    // Local Maestro runs intentionally do not require an SMTP server. In all
+    // other environments keep attempting the welcome email, but do not let a
+    // template or SMTP failure roll back the already-created account.
+    if (NODE_ENV !== 'maestro') {
+      try {
+        const email_lang = 'en';
+        const email_topic = 'Welcome to Akaiunsan Service';
+        const mail_template: any = await new Promise((resolve, reject) => {
+          fs.readFile(`mail-template/${email_lang}/account.html`, 'utf8', function (err, data) {
+            if (err) {
+              reject(err)
+            }
+            resolve(data)
+          });
+        });
+
+        let email_message = mail_template.replace('${firstname}', customer.firstname)
+        email_message = email_message.replace('${lastname}', customer.lastname)
+        const isBcc = true;
+        await sendMail(email_topic, email_message, customer.email, isBcc);
+      } catch (emailError) {
+        const message = emailError instanceof Error ? emailError.message : String(emailError);
+        console.warn(`Welcome email failed for ${customer.email}: ${message}`);
+        try {
+          await ErrorLog.create({
+            location: 'customer.controller.signup.welcome-email',
+            message,
+          });
+        } catch (logError) {
+          console.warn('Unable to record welcome email failure', logError);
+        }
+      }
+    }
+
     return res.status(200).json({
       user: {
         id: new_customer.id,

@@ -31,7 +31,8 @@ appId: com.akaiunsan.customer
 - swipe:
     direction: UP
     duration: 500
-- tapOn: "Sign Up"
+- tapOn:
+    id: "login-signup-button"
 - extendedWaitUntil:
     visible: "Log in"
     timeout: 5000

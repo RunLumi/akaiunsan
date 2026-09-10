@@ -677,7 +677,7 @@ const styles = StyleSheet.create({
   textTitle: {
     fontSize: 20,
     marginBottom: 5,
-    fontFamily: 'SukhumvitSet-SemiBold',
+    fontFamily: 'OpenSans-SemiBold',
   },
   textDesc: {
     fontSize: 16,
@@ -699,7 +699,7 @@ const styles = StyleSheet.create({
   },
   textPayment: {
     // fontWeight: "bold",
-    fontFamily: 'SukhumvitSet-SemiBold',
+    fontFamily: 'OpenSans-SemiBold',
     textAlign: "center",
     fontSize: 15,
   },

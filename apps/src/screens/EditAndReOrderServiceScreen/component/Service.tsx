@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useAppSelector } from "../../../redux/hooks";
 import {
   Dimensions,
   View,
@@ -26,7 +25,6 @@ import type { ScreenProps } from "../../../navigation/routes";
 export default function Service(props: ScreenProps) {
   const [step, setStep] = useState(1);
   const { width } = Dimensions.get("screen");
-  const language = useAppSelector((state) => state.language.language);
   const [sliderValues, setSliderValues] = useState<number[]>([]);
   const [hour, setHour] = useState<number>(props.valueShowHour || 2);
   const [start, setStart] = useState(7);
@@ -342,25 +340,16 @@ export default function Service(props: ScreenProps) {
             onPress={props.onPressSubscriptionPlan}
             style={styles.wrapSubButton}
           >
-            {language == "th" ? (
-              <Image
-                style={{
-                  height: 100,
-                  width: width - 24,
-                }}
-                resizeMode="contain"
-                source={require("../../../assets/images/buttonSubTH3.png")}
-              />
-            ) : (
-              <Image
-                style={{
-                  height: 100,
-                  width: width - 24,
-                }}
-                resizeMode="contain"
-                source={require("../../../assets/images/buttonSubEng3.png")}
-              />
-            )}
+            {/* No Vietnamese banner asset exists yet — the English promo
+                banner serves both locales. */}
+            <Image
+              style={{
+                height: 100,
+                width: width - 24,
+              }}
+              resizeMode="contain"
+              source={require("../../../assets/images/buttonSubEng3.png")}
+            />
           </TouchableOpacity>
         )}
       </ScrollView>

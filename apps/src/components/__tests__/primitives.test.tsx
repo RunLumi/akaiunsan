@@ -29,12 +29,12 @@ describe("Text", () => {
     expect(node.props.maxFontSizeMultiplier).toBe(1.3);
   });
 
-  it("uses SukhumvitSet-Text when the locale is th", () => {
-    const renderer = create(<Text>สวัสดี</Text>, {
-      language: { language: "th" },
+  it("keeps OpenSans-Regular for the Vietnamese locale (Latin script)", () => {
+    const renderer = create(<Text>Xin chào</Text>, {
+      language: { language: "vi" },
     });
-    const node = textNodes(renderer.root, "สวัสดี")[0];
-    expect(font(node)).toBe("SukhumvitSet-Text");
+    const node = textNodes(renderer.root, "Xin chào")[0];
+    expect(font(node)).toBe("OpenSans-Regular");
   });
 
   it("forwards onPress and numberOfLines to the underlying Text", () => {

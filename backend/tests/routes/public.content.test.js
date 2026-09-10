@@ -93,21 +93,21 @@ describe('GET /banners/:lang_code', () => {
     });
     await db.BannerLanguage.create({
       banner_id: banner.id,
-      lang_code: 'TH', // compare is now case-insensitive, but keep canonical uppercase here
-      link: 'https://promo.test/th',
-      title: 'โปรโมชั่น',
-      image_url: 'desktop-th.jpg',
-      mobile_image_url: 'mobile-th.jpg',
+      lang_code: 'VI', // compare is now case-insensitive, but keep canonical uppercase here
+      link: 'https://promo.test/vi',
+      title: 'Khuyến mãi',
+      image_url: 'desktop-vi.jpg',
+      mobile_image_url: 'mobile-vi.jpg',
     });
 
-    const res = await pub(request(app).get('/banners/th'));
+    const res = await pub(request(app).get('/banners/vi'));
 
     expect(res.status).toBe(200);
     expect(res.body).toHaveLength(1);
     expect(res.body[0]).toMatchObject({
       title: 'Promo',
-      image_url: 'https://cdn.test.local/banners/desktop-th.jpg',
-      mobile_image_url: 'https://cdn.test.local/banners/mobile-th.jpg',
+      image_url: 'https://cdn.test.local/banners/desktop-vi.jpg',
+      mobile_image_url: 'https://cdn.test.local/banners/mobile-vi.jpg',
     });
   });
 
@@ -123,19 +123,19 @@ describe('GET /banners/:lang_code', () => {
     });
     await db.BannerLanguage.create({
       banner_id: banner.id,
-      lang_code: 'th',
-      link: 'https://promo.test/th',
-      title: 'โปรโมชั่น',
-      image_url: 'desktop-th.jpg',
-      mobile_image_url: 'mobile-th.jpg',
+      lang_code: 'vi',
+      link: 'https://promo.test/vi',
+      title: 'Khuyến mãi',
+      image_url: 'desktop-vi.jpg',
+      mobile_image_url: 'mobile-vi.jpg',
     });
 
-    const res = await pub(request(app).get('/banners/TH'));
+    const res = await pub(request(app).get('/banners/VI'));
 
     expect(res.status).toBe(200);
     const row = res.body.find((b) => b.title === 'Lowercase Lang');
     expect(row).toBeTruthy();
-    expect(row.image_url).toContain('desktop-th.jpg');
+    expect(row.image_url).toContain('desktop-vi.jpg');
   });
 
   it('skips banners missing image urls or outside their date window', async () => {

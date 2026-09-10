@@ -51,7 +51,7 @@ const renderFixPlan = (props: any = {}) =>
       valueHelper={jest.fn()}
       serviceType={Enum.SERVICE_TYPE.MaidService}
       addressId={{ id: "addr-1" }}
-      language={{ value: "th" }}
+      language={{ value: "vi" }}
       times={["2026-09-10", "2026-09-11"]}
       {...props}
     />,
@@ -88,7 +88,7 @@ describe("HelperSelectFixPlan", () => {
     });
     expect(calls[1].url).toContain(Constants.API.services_helper_fixplan);
     expect(calls[1].body).toMatchObject({
-      languages: "th",
+      languages: "vi",
       serviceProvider: ["h1"],
       listDate: ["2026-09-10", "2026-09-11"],
     });

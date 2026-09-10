@@ -49,7 +49,7 @@ async function requestAddressGoogleApiAsync(
  add: string
 ): Promise<GoogleApiGeocodingResponse> {
   const result = await fetch(
-    `${GOOGLE_API_URL}?address=${add}&key=${googleApiKey}&language=th`
+    `${GOOGLE_API_URL}?address=${add}&key=${googleApiKey}&language=vi`
   );
   return await result.json();
 }
@@ -87,7 +87,7 @@ async function requestGoogleApiAsync(
     .map((entry) => `${entry[0]}=${encodeURI(entry[1])}`)
     .join("&");
   const result = await fetch(
-    `${GOOGLE_API_URL}?key=${googleApiKey}&${query}&language=th`
+    `${GOOGLE_API_URL}?key=${googleApiKey}&${query}&language=vi`
   );
   return await result.json();
 }
@@ -152,7 +152,7 @@ function reverseGeocodingResultToAddress(
 
 export async function getAddress(lat: number, long: number) {
    const result = await fetch(
-    `${GOOGLE_API_URL}?latlng=${lat},${long}&key=${googleApiKey}&sensor=true&language=th`
+    `${GOOGLE_API_URL}?latlng=${lat},${long}&key=${googleApiKey}&sensor=true&language=vi`
   );
   return await result.json();
 }

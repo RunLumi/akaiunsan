@@ -86,11 +86,12 @@ export const apiSlice = createApi({
             )
           ).toString(),
     prepareHeaders: (headers, { getState }) => {
-      const token = (getState() as ApiItem)?.auth?.token;
+      const state = getState() as ApiItem;
+      const token = state?.auth?.token;
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
-      headers.set("Accept-Language", "en");
+      headers.set("Accept-Language", state?.language?.language ?? "vi");
       headers.set("platform", "app");
       return headers;
     },

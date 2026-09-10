@@ -1,5 +1,5 @@
 import en from "../en";
-import th from "../th";
+import vi from "../vi";
 
 const collectLeafKeys = (obj: Record<string, unknown>, prefix = ""): string[] =>
   Object.entries(obj).flatMap(([key, value]) => {
@@ -11,20 +11,15 @@ const collectLeafKeys = (obj: Record<string, unknown>, prefix = ""): string[] =>
   });
 
 const enKeys = collectLeafKeys(en).sort();
-const thKeys = collectLeafKeys(th).sort();
+const viKeys = collectLeafKeys(vi).sort();
 
-describe("i18n characterization: en/th key parity", () => {
-  // pins current behavior: the two locales spell one key differently, so
-  // whichever casing a screen uses, the other locale falls back to a
-  // "[missing ... translation]" placeholder. Fix deliberately, then tighten
-  // this test to strict equality.
-  it("casing drift: th has home.Permission_camera, en has home.permission_camera", () => {
-    expect(thKeys.filter((k) => !enKeys.includes(k))).toEqual([
-      "home.Permission_camera",
-    ]);
-    expect(enKeys.filter((k) => !thKeys.includes(k))).toEqual([
-      "home.permission_camera",
-    ]);
+describe("i18n: en/vi key parity", () => {
+  // The app ships exactly two locales. Thai was replaced by Vietnamese, and
+  // the old en/th catalogs disagreed on one key's casing
+  // (home.Permission_camera vs home.permission_camera); vi is pinned to the
+  // en spelling, so the two catalogs must now match key-for-key.
+  it("vi mirrors the en key inventory exactly", () => {
+    expect(viKeys).toEqual(enKeys);
   });
 
   it("has a substantial catalogue (guards against accidental mass deletion)", () => {

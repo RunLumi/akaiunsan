@@ -31,20 +31,20 @@ describe("Header", () => {
     const { root } = create(
       <Header selectLanguage={selectLanguage} language="en" />
     );
-    const [en, th] = langTouchables(root);
+    const [en, vi] = langTouchables(root);
     expect(en.props.disabled).toBe(true);
-    expect(th.props.disabled).toBe(false);
-    act(() => th.props.onPress());
-    expect(selectLanguage).toHaveBeenCalledWith("th");
+    expect(vi.props.disabled).toBe(false);
+    act(() => vi.props.onPress());
+    expect(selectLanguage).toHaveBeenCalledWith("vi");
   });
 
-  it("highlights Th when language is th and En becomes callable", () => {
+  it("highlights Vi when language is vi and En becomes callable", () => {
     const selectLanguage = jest.fn();
     const { root } = create(
-      <Header selectLanguage={selectLanguage} language="th" />
+      <Header selectLanguage={selectLanguage} language="vi" />
     );
-    const [en, th] = langTouchables(root);
-    expect(th.props.disabled).toBe(true);
+    const [en, vi] = langTouchables(root);
+    expect(vi.props.disabled).toBe(true);
     expect(en.props.disabled).toBe(false);
     act(() => en.props.onPress());
     expect(selectLanguage).toHaveBeenCalledWith("en");

@@ -27,4 +27,4 @@ weight: 100
 
 ## 4. Nguyên tắc ngôn ngữ
 
-Ứng dụng hỗ trợ đa ngôn ngữ (**Tiếng Việt**, **Tiếng Anh**, **Tiếng Thái**). Tài liệu này viết bằng tiếng Việt là ngôn ngữ chuẩn; thuật ngữ kỹ thuật giữ nguyên tiếng Anh kèm giải thích ở [Bảng thuật ngữ](/docs/thuattu/).
+Ứng dụng hỗ trợ đa ngôn ngữ (**Tiếng Việt** — ngôn ngữ mặc định, **Tiếng Anh**). Tài liệu này viết bằng tiếng Việt là ngôn ngữ chuẩn; thuật ngữ kỹ thuật giữ nguyên tiếng Anh kèm giải thích ở [Bảng thuật ngữ](/docs/thuattu/).

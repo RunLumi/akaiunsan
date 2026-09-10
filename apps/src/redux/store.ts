@@ -12,12 +12,29 @@ import { logoutMiddleware } from "./logoutMiddleware";
 // redux-saga watcher) and redux-logger — dev-only now, it ran unconditionally
 // before (docs/mobile-app-upgrade-plan.md §5).
 
+// Version 1: Thai was replaced by Vietnamese as the app language, so a
+// persisted locale of "th" remaps to "vi" (English stays "en"). The rehydrated
+// payload's shape is only known to redux-persist, hence the narrow casts.
+export const migrateLanguageToVi = <S>(state: S, version: number): Promise<S> =>
+  Promise.resolve(
+    version < 1 &&
+      (state as { language?: { language?: string } } | undefined)?.language
+        ?.language === "th"
+      ? ({
+          ...(state as object),
+          language: { language: "vi" },
+        } as S)
+      : state
+  );
+
 const persistConfig = {
   key: "root",
+  version: 1,
   keyPrefix: "",
   storage: AsyncStorage,
   blacklist: ["tools"],
   whitelist: ["auth", "language"],
+  migrate: migrateLanguageToVi,
 };
 
 // Exported so store.test.ts can pin both branches of the logger gate.

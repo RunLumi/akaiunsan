@@ -277,7 +277,7 @@ installApiRoutes(
   [Constants.API.languages]: {
     items: [
       { name: "English", code: "en" },
-      { name: "Thai", code: "th" },
+      { name: "Tiếng Việt", code: "vi" },
     ],
   },
   [Constants.API.get_current_plan]: {

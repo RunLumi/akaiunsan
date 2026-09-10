@@ -27,7 +27,7 @@ PostgreSQL (target) / MySQL/MariaDB (legacy)
 External services integrated by the backend:
 
 - **Omise** — payments/credit cards (`helpers/omise.js`, `payment.controller.js`, `Charge`/`CreditCard`/`PurchaseOrder` models)
-- **Nodemailer** — transactional email with templates in `mail-template/{en,th}`
+- **Nodemailer** — transactional email with templates in `mail-template/{en,vi}`
 - **SSH/SFTP** (`ssh2-sftp-client`) — file transfer/export helpers
 - **Facebook login** (passport-facebook, `account/` controllers)
 

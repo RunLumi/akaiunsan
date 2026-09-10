@@ -1,5 +1,4 @@
 import React from "react";
-import { useAppSelector } from "../redux/hooks";
 import {
   GestureResponderEvent,
   StyleProp,
@@ -19,22 +18,16 @@ interface Props {
 }
 
 export const Text = ({ style, children, numberOfLines, onPress, ...props }: Props) => {
-  const language = useAppSelector((state) => state.language.language);
-  const fonts = () => {
-    switch (language) {
-      case "th":
-        return "SukhumvitSet-Text";
-      default:
-        return "OpenSans-Regular";
-    }
-  };
+  // Both locales (English/Vietnamese) use the Latin script, so a single
+  // font family covers them; the old Thai-only SukhumvitSet was dropped.
+  const fontFamily = "OpenSans-Regular";
   return (
     <DefaultText
       onPress={onPress}
       numberOfLines={numberOfLines}
       maxFontSizeMultiplier={Styles.typography.maxFontSizeMultiplier}
       {...props}
-      style={[{ fontFamily: fonts() }, s.default, style]}
+      style={[{ fontFamily }, s.default, style]}
     >
       {children as React.ReactNode}
     </DefaultText>

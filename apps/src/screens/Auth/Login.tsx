@@ -127,7 +127,7 @@ export default function Login(props: ScreenProps) {
           sendFCMToken(token);
           i18n.locale = currentLanguage;
           requestUpdateLanguage({
-            data: { language: currentLanguage == "th" ? 1 : 2 },
+            data: { language: currentLanguage == "vi" ? 1 : 2 },
             headers: { Authorization: `Bearer ${token}` },
           });
           dispatch({
@@ -179,7 +179,7 @@ export default function Login(props: ScreenProps) {
             });
             i18n.locale = currentLanguage;
             requestUpdateLanguage({
-              data: { language: currentLanguage == "th" ? 1 : 2 },
+              data: { language: currentLanguage == "vi" ? 1 : 2 },
               headers: { Authorization: `Bearer ${token}` },
             });
           } catch (error) {
@@ -207,7 +207,7 @@ export default function Login(props: ScreenProps) {
           sendFCMToken(token);
           i18n.locale = currentLanguage;
           requestUpdateLanguage({
-            data: { language: currentLanguage == "th" ? 1 : 2 },
+            data: { language: currentLanguage == "vi" ? 1 : 2 },
             headers: { Authorization: `Bearer ${token}` },
           });
         }
@@ -233,7 +233,7 @@ export default function Login(props: ScreenProps) {
             });
             i18n.locale = currentLanguage;
             requestUpdateLanguage({
-              data: { language: currentLanguage == "th" ? 1 : 2 },
+              data: { language: currentLanguage == "vi" ? 1 : 2 },
               headers: { Authorization: `Bearer ${token}` },
             });
           } catch (error) {
@@ -400,14 +400,14 @@ export default function Login(props: ScreenProps) {
             <Text style={{ color: Colors.main_color }}> | </Text>
             <Text
               onPress={() =>
-                i18n.currentLocale() != "th" ? selectLanguage("th") : null
+                i18n.currentLocale() != "vi" ? selectLanguage("vi") : null
               }
               style={[
                 { color: Colors.main_color },
-                i18n.currentLocale() === "th" && s.languageSelected,
+                i18n.currentLocale() === "vi" && s.languageSelected,
               ]}
             >
-              TH
+              VI
             </Text>
           </View>
           <View style={s.logoContainer}>

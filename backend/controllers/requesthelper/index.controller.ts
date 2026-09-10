@@ -16,9 +16,9 @@ async function create (req, res) {
     await requestHelper.create(customer_id, req.body);
 
     let email_lang, email_topic;
-    if (req.headers['request-lang'] && req.headers['request-lang'] == 'th') {
-      email_lang = 'th';
-      email_topic = 'ขอบคุณที่ใช้บริการกับอะยะซันเซอร์วิส';
+    if (req.headers['request-lang'] && req.headers['request-lang'] == 'vi') {
+      email_lang = 'vi';
+      email_topic = 'Cảm ơn bạn đã lựa chọn dịch vụ Akaiunsan';
     } else {
       email_lang = 'en';
       email_topic = 'Thank you for choosing Akaiunsan Service';

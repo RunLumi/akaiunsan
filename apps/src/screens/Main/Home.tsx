@@ -105,8 +105,8 @@ export default function Home(props: ScreenProps) {
             },
           });
         }
-        if (response.language == 1 && currentLanguage != "th") {
-          setCurrentLanguage("th");
+        if (response.language == 1 && currentLanguage != "vi") {
+          setCurrentLanguage("vi");
         }
         if (response.language == 2 && currentLanguage != "en") {
           setCurrentLanguage("en");
@@ -214,19 +214,19 @@ export default function Home(props: ScreenProps) {
     {
       icon: require("../../assets/images/soon/Insurance.jpg"),
       serviceName: "Insurance",
-      serviceNameTl: "ประกันสุขภาพ",
+      serviceNameVi: "Bảo hiểm sức khỏe",
       type: 1,
     },
     {
       icon: require("../../assets/images/soon/Healthcare.jpg"),
       serviceName: "Healthcare",
-      serviceNameTl: "สุขภาพ",
+      serviceNameVi: "Chăm sóc sức khỏe",
       type: 1,
     },
     {
       icon: require("../../assets/images/soon/Security.jpg"),
       serviceName: "Security",
-      serviceNameTl: "ระบบความปลอดภัย",
+      serviceNameVi: "An ninh",
       type: 1,
     },
   ];
@@ -298,7 +298,7 @@ export default function Home(props: ScreenProps) {
   useEffect(() => {
     if (currentLanguage != language) {
       requestUpdateLanguage({
-        data: { language: currentLanguage == "th" ? 1 : 2 },
+        data: { language: currentLanguage == "vi" ? 1 : 2 },
       });
     }
   }, [currentLanguage]);
@@ -376,7 +376,7 @@ export default function Home(props: ScreenProps) {
           />
         )}
         <Text style={{ textAlign: "center" }}>
-          {currentLanguage == "th" ? item.serviceNameTl : item.serviceName}
+          {currentLanguage == "vi" ? item.serviceNameVi : item.serviceName}
         </Text>
       </TouchableOpacity>
     );

@@ -91,17 +91,17 @@ describe("tools reducer characterization", () => {
 });
 
 describe("language reducer characterization", () => {
-  it("defaults to english", () => {
-    expect(language(undefined, unknownAction)).toEqual({ language: "en" });
+  it("defaults to vietnamese", () => {
+    expect(language(undefined, unknownAction)).toEqual({ language: "vi" });
   });
 
   it("Update/Language success switches the language", () => {
     expect(
       language(undefined, {
         type: success(TYPES.LANGUAGE),
-        payload: { language: "th" },
+        payload: { language: "en" },
       })
-    ).toEqual({ language: "th" });
+    ).toEqual({ language: "en" });
   });
 });
 

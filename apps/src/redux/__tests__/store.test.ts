@@ -18,9 +18,28 @@ jest.mock("redux-persist", () => {
 });
 
 import Store from "../store";
-import { buildMiddleware } from "../store";
+import { buildMiddleware, migrateLanguageToVi } from "../store";
 import logger from "redux-logger";
 import { success, TYPES } from "../actions";
+
+describe("persist migration: language th → vi", () => {
+  it("remaps a persisted Thai locale to Vietnamese on version < 1 state", async () => {
+    const migrated: any = await migrateLanguageToVi(
+      { language: { language: "th" }, auth: { token: "t" } },
+      0
+    );
+    expect(migrated.language.language).toBe("vi");
+    expect(migrated.auth.token).toBe("t");
+  });
+
+  it("leaves English and already-migrated state untouched", async () => {
+    const en = { language: { language: "en" } };
+    await expect(migrateLanguageToVi(en, 0)).resolves.toBe(en);
+    const vi = { language: { language: "vi" } };
+    await expect(migrateLanguageToVi(vi, 1)).resolves.toBe(vi);
+    await expect(migrateLanguageToVi(undefined, 0)).resolves.toBeUndefined();
+  });
+});
 
 describe("store characterization", () => {
   it("exposes a working store and persistor", () => {

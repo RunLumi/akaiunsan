@@ -11,7 +11,7 @@ import { paramArray } from "../../shared/Utils";
 // response fields (`items`, `page`, `totalUnRead`, direct JSON bodies).
 const preloadedState = {
   auth: { token: "test-token", user: { id: 1 }, loading: false },
-  language: { language: "en" },
+  language: { language: "vi" },
 };
 
 // fetchBaseQuery dispatches a single Request object (no RequestInit).
@@ -36,7 +36,7 @@ describe("apiSlice Phase 5 endpoints — Home", () => {
     const req = await lastRequest();
     expect(req.url).toContain(Constants.API.list_favourite_service);
     expect(req.headers.get("Authorization")).toBe("Bearer test-token");
-    expect(req.headers.get("Accept-Language")).toBe("en");
+    expect(req.headers.get("Accept-Language")).toBe("vi");
     expect(req.headers.get("platform")).toBe("app");
     // the screen filters response.items on isSelected
     expect(result.data.items.filter((i: any) => i.isSelected)).toHaveLength(1);

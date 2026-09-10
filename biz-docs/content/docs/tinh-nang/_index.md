@@ -18,7 +18,7 @@ Tính năng được nhóm theo **hành trình của khách hàng**. Cột *Mã*
 | `F-ACC-03` | Quên mật khẩu | Yêu cầu mã OTP qua email/số điện thoại để đặt lại mật khẩu |
 | `F-ACC-04` | Đổi mật khẩu | Đổi mật khẩu khi đang đăng nhập |
 | `F-ACC-05` | Phiên đăng nhập | Token hết hạn tự động đăng xuất và đưa về màn đăng nhập |
-| `F-ACC-06` | Đa ngôn ngữ | Đổi ngôn ngữ VI/EN/TH, lưu lựa chọn giữa các phiên |
+| `F-ACC-06` | Đa ngôn ngữ | Đổi ngôn ngữ VI/EN (mặc định VI), lưu lựa chọn giữa các phiên |
 
 ## 2. Khám phá dịch vụ
 

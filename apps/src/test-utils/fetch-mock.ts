@@ -55,7 +55,7 @@ const serviceItem = (serviceType: number) => ({
   serviceType,
   icon: "",
   serviceName: "Test service",
-  serviceNameTl: "บริการทดสอบ",
+  serviceNameVi: "Dịch vụ thử nghiệm",
   serviceId: "svc-1",
   serviceItemId: `item-${serviceType}`,
 });

@@ -72,9 +72,8 @@ export default {
   } as const,
   API: {
     // dev
-    dev: "http://api-mobile-akaiunsan.dev.ncs.int",
-    // base: 'http://api-mobile-akaiunsan.dev.ncs.int:80',
-    stg: "https://api-mobile-akaiunsan.stg.nichietsuvn.com",
+    dev: "https://akai-api.cjs.vn",
+    stg: "https://akai-api.cjs.vn",
     //prod
     base: "https://akai-api.cjs.vn",
     upload_image: "/uploads/image",

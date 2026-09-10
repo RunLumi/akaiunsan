@@ -7,11 +7,13 @@ import { describe, it, expect, beforeAll, afterAll, afterEach } from 'vitest';
 // install.controller) calls createTransport at send time and gets the stub.
 const nodemailer = require('nodemailer');
 const sentMails = [];
+let mailError = null;
 const originalCreateTransport = nodemailer.createTransport;
 
 beforeAll(() => {
   nodemailer.createTransport = () => ({
     sendMail: async (options) => {
+      if (mailError) throw mailError;
       sentMails.push(options);
       return { response: 'queued' };
     },
@@ -38,6 +40,7 @@ beforeAll(async () => {
 
 afterEach(async () => {
   sentMails.length = 0;
+  mailError = null;
 });
 
 describe('POST /auth/signup (customer)', () => {
@@ -62,6 +65,24 @@ describe('POST /auth/signup (customer)', () => {
     expect(sentMails[0].to).toBe(email);
     expect(sentMails[0].bcc).toBe('sale@akaiunsan.vn');
     expect(sentMails[0].html).toContain('New');
+  });
+
+  it('keeps the account when the welcome email provider fails', async () => {
+    const email = uniqueEmail();
+    mailError = new Error('SMTP unavailable');
+
+    const res = await request(app)
+      .post('/auth/signup')
+      .send({ firstname: 'Mail', lastname: 'Unavailable', email, password: 'longenough1' });
+
+    expect(res.status).toBe(200);
+    expect(res.body.user.email).toBe(email);
+    expect(typeof res.body._token).toBe('string');
+
+    const stored = await db.Customer.findOne({ where: { email } });
+    expect(stored).not.toBeNull();
+    expect(stored.active).toBe(true);
+    expect(sentMails).toHaveLength(0);
   });
 
   it('rejects duplicate email registration', async () => {

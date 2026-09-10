@@ -25,7 +25,8 @@ appId: com.akaiunsan.customer
 - assertVisible: "Sign In"
 - tapOn: "Sign In"
 - assertVisible: "Please enter your email address."
-- tapOn: "Sign Up"
+- tapOn:
+    id: "login-signup-button"
 - waitForAnimationToEnd
 - assertVisible: "First name *"
 - assertVisible: "Last name *"

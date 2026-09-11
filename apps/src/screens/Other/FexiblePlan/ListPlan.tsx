@@ -68,7 +68,7 @@ export default function ListPlan(props: ScreenProps) {
     ({ error, response }: ApiResult) => {
       if (error) {
         // setTimeout(() => {
-          Alert.alert(i18n.t("auth.error"), error);
+          Alert?.alert?.(i18n.t("auth.error"), error);
         // }, 200);
         return;
       }

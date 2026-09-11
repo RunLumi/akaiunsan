@@ -68,6 +68,11 @@ VEOF
 cd "$REPO_DIR/deploy"
 docker compose --env-file .env up -d --build
 
+# Caddyfile is bind-mounted into the long-lived Caddy container. Compose may
+# leave that container running when only the mounted file changed, so force a
+# Caddy-only recreation to ensure edge protocol/header changes are live.
+docker compose --env-file .env up -d --force-recreate caddy
+
 # Prune dangling/untagged images to save disk space
 docker image prune -f
 

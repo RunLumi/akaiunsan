@@ -75,6 +75,8 @@ export default (app) => {
     app.get('/promotion/get-promotion', MobileCatalogController.getEmptyCollection);
     app.get('/promotion/detail', MobileCatalogController.getEmptyCollection);
     app.get('/subscription-plan/get-current-plan', MobileCatalogController.getEmptyCollection);
+    app.get('/booking/get', MobileCatalogController.getEmptyCollection);
+    app.get('/booking/detail', MobileCatalogController.getEmptyCollection);
   }
 
   // Local-only catalog fixtures keep the Maestro smoke lane navigable without

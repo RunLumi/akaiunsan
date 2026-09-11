@@ -22,6 +22,21 @@ describe('getCustomerData', () => {
     });
     expect(customer).toEqual({ firstname: 'A', lastname: 'B', email: 'a@b.co' });
   });
+
+  it('normalizes the mobile signup name and phone fields', async () => {
+    const { customer } = await getCustomerData({
+      fullName: 'Maestro Production Smoke',
+      phoneNumber: '0900000001',
+      email: 'smoke@example.test',
+    });
+
+    expect(customer).toEqual({
+      firstname: 'Maestro',
+      lastname: 'Production Smoke',
+      phone_number: '0900000001',
+      email: 'smoke@example.test',
+    });
+  });
 });
 
 describe('getAddressData', () => {

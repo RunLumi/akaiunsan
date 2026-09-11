@@ -44,3 +44,7 @@ export function getCatalogBanners(_req, res) {
 export function getCatalogHelpers(_req, res) {
   return res.status(200).json({ items: [] });
 }
+
+export function getEmptyCollection(_req, res) {
+  return res.status(200).json({ items: [], page: 1, total: 0, totalUnRead: 0 });
+}

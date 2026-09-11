@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-const { getCatalog, getCatalogItem, getCatalogPrice, getEmptyCollection } =
+const { getCatalog, getCatalogItem, getCatalogPrice, getEmptyCollection, getEmptyPromotionUpdates } =
   await import('../../controllers/mobile-catalog.controller.ts');
 
 function response() {
@@ -38,5 +38,11 @@ describe('mobile catalog contract', () => {
     const res = response();
     getEmptyCollection({}, res);
     expect(res.out.body).toMatchObject({ items: [], total: 0 });
+  });
+
+  it('returns a stable empty promotion update response', () => {
+    const res = response();
+    getEmptyPromotionUpdates({}, res);
+    expect(res.out.body).toEqual({ items: [], page: 1 });
   });
 });

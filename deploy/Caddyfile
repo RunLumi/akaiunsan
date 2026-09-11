@@ -1,12 +1,20 @@
 # ==============================================================================
 # Caddy Ingress Configuration
 # ==============================================================================
-# Automatic HTTPS via Let's Encrypt / ZeroSSL with HTTP/3 QUIC support.
+# Automatic HTTPS via Let's Encrypt / ZeroSSL. HTTP/3 is intentionally disabled
+# because iOS Network.framework clients can select the advertised QUIC path and
+# remain stuck when the host/network cannot complete UDP/443.
 # Domain variables can be customized in deploy/.env
 # ==============================================================================
 
 {
     email {$ACME_EMAIL:devops@akaiunsan.vn}
+
+    # Keep HTTPS on HTTP/1.1 and HTTP/2. Do not advertise h3/QUIC until the
+    # production UDP/443 path is verified for the mobile client fleet.
+    servers :443 {
+        protocols h1 h2
+    }
 }
 
 # Reusable security headers

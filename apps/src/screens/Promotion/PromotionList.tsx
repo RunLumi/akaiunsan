@@ -30,27 +30,22 @@ export default function PromotionList(props: ScreenProps) {
         return;
       }
       setRefresh(false);
-      if (response.page === 1) {
+      const items = Array.isArray(response?.items) ? response.items : [];
+      if (response?.page === 1 || arrPromotion.length === 0) {
         setPage(2);
-        let getPromotionId = response.items.map((x: ApiItem, index: number) => {
+        const getPromotionId = items.map((x: ApiItem) => {
           return { ...x, promotionId: x.id };
         });
         setArrPromotion(getPromotionId);
       } else {
-        let data = [...arrPromotion];
-        if (response.items && response.items.length) {
-          response.items.forEach((m: ApiItem) => {
-            let item = data.find((n) => n.id === m.id);
-            if (item) {
-              return Object.assign(item, m);
-            }
-            data.push(m);
-          });
-        }
-        let getPromotionId = data.map((x: ApiItem, idx) => {
-          return { ...x, promotionId: x.id };
+        setArrPromotion((current) => {
+          const byId = new Map(current.map((item) => [item.id, item]));
+          items.forEach((item) => byId.set(item.id, { ...byId.get(item.id), ...item }));
+          return Array.from(byId.values()).map((item) => ({
+            ...item,
+            promotionId: item.id,
+          }));
         });
-        setArrPromotion(getPromotionId);
       }
     }
   );
@@ -58,6 +53,8 @@ export default function PromotionList(props: ScreenProps) {
   const renderItem = (item: ApiItem, index: number) => (
     <View key={index}>
       <TouchableOpacity
+        accessibilityLabel={`promotion-item-${item.promotionId || item.id || index}`}
+        testID={`promotion-item-${item.promotionId || item.id || index}`}
         onPress={() =>
           props.navigation.navigate(Constants.SCREENS.PROMOTIOM.DETAIL, {
             data: item,
@@ -130,7 +127,9 @@ export default function PromotionList(props: ScreenProps) {
       <View style={{ flex: 1 }}>
         <Loading loading={loadingListPromotionUsed} />
         <View style={s.borderBottom}>
-          <Text style={s.textTitle}>{i18n.t("home.promotion")}</Text>
+          <Text testID="promotion-list-title" style={s.textTitle}>
+            {i18n.t("home.promotion")}
+          </Text>
         </View>
         <View style={{ maxHeight: Layout.window.height - 120 }}>
           <FlatList

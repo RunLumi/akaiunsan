@@ -106,6 +106,8 @@ export default function ListMyBooking(props: ScreenProps) {
             <TouchableOpacity
               key={index}
               style={s.jobItem}
+              accessibilityLabel={`my-booking-item-${item.orderId || index}`}
+              testID={`my-booking-item-${item.orderId || index}`}
               onPress={() => onPressBookingDetail(item)}
             >
               <View style={s.jobItemHeader}>

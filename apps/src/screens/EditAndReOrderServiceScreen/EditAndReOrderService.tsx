@@ -1015,16 +1015,17 @@ export default function EditAndReOrderService(props: ScreenProps) {
       <View style={[styles.containerHeader]}>
         <View style={{ marginLeft: 10 }}>
           {currentStep != 4 ? (
-            <Ionicons
+            <TouchableOpacity
+              accessibilityLabel="edit-reorder-back-button"
+              testID="edit-reorder-back-button"
               onPress={() =>
                 currentStep === 0
                   ? props.navigation.goBack()
                   : toStep(currentStep - 1)
               }
-              name="arrow-back"
-              size={26}
-              color={colors.white}
-            />
+            >
+              <Ionicons name="arrow-back" size={26} color={colors.white} />
+            </TouchableOpacity>
           ) : null}
         </View>
       </View>

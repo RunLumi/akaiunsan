@@ -51,51 +51,61 @@ export default function Account(props: ScreenProps) {
   };
   const [dataAccount, setDataAccount] = useState([
     {
+      id: "my-booking",
       title: i18n.t("MY_BOOKING"),
       disable: false,
       navigation: Constants.SCREENS.MYBOOKING.LIST,
     },
     {
+      id: "favourite",
       title: i18n.t("FAVOURITE"),
       disable: false,
       navigation: Constants.SCREENS.FAVOURITE.MENU,
     },
     {
+      id: "promotions",
       title: i18n.t("PROMOTIONS"),
       disable: false,
       navigation: Constants.SCREENS.PROMOTIOM.LIST_PROMOTION,
     },
     {
+      id: "payment",
       title: i18n.t("PAYMENT"),
       disable: false,
       navigation: Constants.SCREENS.PAYMENT.LIST,
     },
     {
+      id: "history",
       title: i18n.t("HISTORY"),
       disable: false,
       navigation: Constants.SCREENS.HISTORY.LIST_HISTORY,
     },
     {
+      id: "friend-share",
       title: i18n.t("REFER_TO_FRIEND"),
       disable: false,
       navigation: Constants.SCREENS.OTHER.PREFERTOFRIEND,
     },
     {
+      id: "address",
       title: i18n.t("ADDRESS"),
       disable: false,
       navigation: Constants.SCREENS.ADDRESS.ADDRESS,
     },
     {
+      id: "subscription",
       title: i18n.t("SUBSCRIPTION_MENU"),
       disable: false,
       navigation: Constants.SCREENS.SUBSCRIPTION.AllSubscriptionPlan,
     },
     {
+      id: "about-us",
       title: i18n.t("ABOUT_US"),
       disable: false,
       navigation: Constants.SCREENS.OTHER.ABOUT_US,
     },
     {
+      id: "remove-account",
       title: i18n.t("REMOVE_ACCOUNT"),
       disable: false,
       navigation: false,
@@ -130,6 +140,8 @@ export default function Account(props: ScreenProps) {
   const renderItem = ({ item, index }: { item: ApiItem; index: number }) => {
     return (
       <TouchableOpacity
+        accessibilityLabel={`account-item-${item.id || index}`}
+        testID={`account-item-${item.id || index}`}
         onPress={() =>
           item.navigation ? NavigationRoot.navigate(item.navigation) : item.action()
         }

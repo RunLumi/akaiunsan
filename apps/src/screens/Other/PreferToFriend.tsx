@@ -78,7 +78,7 @@ export default function PreferToFriend() {
           </View>
           <View style={styles.borderBottom1}>
             <View style={{ flexDirection: "row" }}>
-              <Text style={styles.textRef}>
+              <Text testID="referral-code" style={styles.textRef}>
                 {i18n.t("auth.ref_code")}: {referrenCode}
               </Text>
               <Text style={styles.textCopy} onPress={copyToClipboard}>

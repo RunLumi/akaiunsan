@@ -17,6 +17,17 @@ import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
 import type { ApiItem } from "../../redux/apiSlice";
 import type { ScreenProps } from "../../navigation/routes";
 
+const jsonArrayLength = (value: unknown): number => {
+  if (Array.isArray(value)) return value.length;
+  if (typeof value !== "string") return 0;
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? parsed.length : 0;
+  } catch {
+    return 0;
+  }
+};
+
 export default function PromotionDetail(props: ScreenProps) {
   const params = props.route.params;
   const navigation = useNavigation();
@@ -314,10 +325,7 @@ export default function PromotionDetail(props: ScreenProps) {
                     {i18n.t("home.year_old")}
                   </Text>
                   <Text style={{ fontWeight: "bold" }}>
-                    {
-                      JSON.parse(currentDetail.serviceProvider.serviceType)
-                        .length
-                    }{" "}
+                    {jsonArrayLength(currentDetail.serviceProvider.serviceType)}{" "}
                     {i18n.t("home.services")}
                   </Text>
                 </View>

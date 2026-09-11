@@ -48,19 +48,14 @@ export default function PromotionList(props: ScreenProps) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
       } else {
-        let data = [...arrHistory];
-        if (response.items && response.items.length) {
-          response.items.forEach((m: ApiItem) => {
-            let item = data.find((n) => n.orderId === m.orderId);
-            if (item) {
-              return Object.assign(item, m);
-            }
-            data.push(m);
-          });
-        } else {
-          // Alert.alert(i18n.t("auth.error"), i18n.t("home.data_empty"));
+        const merged = new Map(
+          arrHistory.map((item) => [String(item.orderId), item])
+        );
+        for (const item of response.items ?? []) {
+          const key = String(item.orderId);
+          merged.set(key, { ...(merged.get(key) ?? {}), ...item });
         }
-        setArrHistory(data);
+        setArrHistory(Array.from(merged.values()));
       }
     }
   );
@@ -74,19 +69,12 @@ export default function PromotionList(props: ScreenProps) {
         Alert.alert(i18n.t("auth.error"), error);
         return;
       } else {
-        let data: ApiItem[] = [];
-        if (response.items && response.items.length) {
-          response.items.forEach((m: ApiItem) => {
-            let item = data.find((n: ApiItem) => n.orderId === m.orderId);
-            if (item) {
-              return Object.assign(item, m);
-            }
-            data.push(m);
-          });
-        } else {
-          data = [];
+        const filtered = new Map<string, ApiItem>();
+        for (const item of response.items ?? []) {
+          const key = String(item.orderId);
+          filtered.set(key, { ...(filtered.get(key) ?? {}), ...item });
         }
-        setArrHistory(data);
+        setArrHistory(Array.from(filtered.values()));
       }
     }
   );
@@ -289,6 +277,8 @@ export default function PromotionList(props: ScreenProps) {
       <TouchableOpacity
         key={index}
         style={s.jobItem}
+        accessibilityLabel={`history-item-${item.orderId || index}`}
+        testID={`history-item-${item.orderId || index}`}
         onPress={() =>
           (navigation.navigate as any)(
             Constants.SCREENS.HISTORY.DETAIL,

@@ -408,6 +408,7 @@ export default function EditProfile(props: ScreenProps) {
 
             <TouchableOpacity
               accessibilityLabel="edit-profile-address-button"
+              testID="edit-profile-address-button"
               style={s.addButton}
               onPress={() =>
                 NavigationRoot.navigate(

@@ -22,6 +22,8 @@ export default function MenuFavourite(props: ScreenProps) {
   return (
     <Container>
       <TouchableOpacity
+        accessibilityLabel="favourite-service-menu"
+        testID="favourite-service-menu"
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
@@ -50,6 +52,8 @@ export default function MenuFavourite(props: ScreenProps) {
         }}
       />
       <TouchableOpacity
+        accessibilityLabel="favourite-provider-menu"
+        testID="favourite-provider-menu"
         style={{
           flexDirection: "row",
           justifyContent: "space-between",

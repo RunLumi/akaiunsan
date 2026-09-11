@@ -152,6 +152,8 @@ export default function Booking(props: ScreenProps) {
       <TouchableOpacity
         style={s.jobItem}
         onPress={() => onPressBookingDetail(item)}
+        accessibilityLabel={`booking-item-${item.orderId || index}`}
+        testID={`booking-item-${item.orderId || index}`}
       >
         <View
           style={{
@@ -216,13 +218,13 @@ export default function Booking(props: ScreenProps) {
       <Loading loading={loadingListBooking || loadingListHistory} />
       <View style={s.containerHeader}>
         <Text style={s.textTitleHeader}>{i18n.t("Booking")}</Text>
-        <Ionicons
+        <TouchableOpacity
           accessibilityLabel="booking-calendar-button"
-          name="calendar"
-          size={24}
-          color={Colors.white}
+          testID="booking-calendar-button"
           onPress={onPressCalendar}
-        />
+        >
+          <Ionicons name="calendar" size={24} color={Colors.white} />
+        </TouchableOpacity>
       </View>
       <View style={s.bottomAppBar}>
         {[i18n.t("home.upcoming"), i18n.t("home.history")].map((v, k) => (
@@ -301,9 +303,11 @@ export default function Booking(props: ScreenProps) {
               setListHistory([]);
               onLoadHistory(1);
             }}
-            renderItem={({ item }: { item: ApiItem }) => (
+            renderItem={({ item, index }: { item: ApiItem; index: number }) => (
               <TouchableOpacity
                 style={s.historyItem}
+                accessibilityLabel={`history-item-${item.orderId || index}`}
+                testID={`history-item-${item.orderId || index}`}
                 onPress={() => onPressHistoryDetail(item)}
               >
                 <View

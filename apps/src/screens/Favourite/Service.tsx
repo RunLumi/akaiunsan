@@ -2,25 +2,22 @@ import { Ionicons } from "@expo/vector-icons";
 import { useAppSelector } from "../../redux/hooks";
 import _ from "lodash";
 import dayjs from "../../shared/dayjs";
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Image, Alert } from "react-native";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 
 import { Container, Text } from "../../components";
 import Colors from "../../shared/Colors";
-import Constants from "../../shared/Constants";
 import i18n from "../../shared/I18n";
 import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
 import type { ApiItem } from "../../redux/apiSlice";
 import type { ScreenProps } from "../../navigation/routes";
 
 export default function Service(props: ScreenProps) {
-  const navigation = props.navigation;
-
   const token = useAppSelector((state) => state.auth.token);
 
-  const [currentSelected, setCurrentSelected] = useState<String[]>([]);
-  const [currentDelSelected, setCurrentDelSelected] = useState<String[]>([]);
+  const [currentSelected, setCurrentSelected] = useState<string[]>([]);
+  const [currentDelSelected, setCurrentDelSelected] = useState<string[]>([]);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const [listService, setListService] = useState<ApiItem[]>([]);
@@ -32,11 +29,15 @@ export default function Service(props: ScreenProps) {
     ({ error, response }: ApiResult) => {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
+        setListService([]);
+        setCurrentSelected([]);
+        return;
       }
 
-      setListService(response && response.items);
+      const items = response?.items ?? [];
+      setListService(items);
       setCurrentSelected(
-        _(response.items)
+        _(items)
           .filter((i: ApiItem) => i.isSelected)
           .map("id")
           .value()
@@ -77,35 +78,6 @@ export default function Service(props: ScreenProps) {
     requestListService();
   }, []);
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <View>
-          {!isDeleting ? (
-            <TouchableOpacity
-              onPress={() => setIsDeleting(true)}
-              style={{ marginEnd: 8 }}
-            >
-              <Ionicons name="trash" size={24} color={Colors.white} />
-            </TouchableOpacity>
-          ) : (
-            <View style={{ flexDirection: "row", paddingEnd: 16 }}>
-              <TouchableOpacity onPress={onPressDelete}>
-                <Text style={{ color: Colors.white }}>
-                  {i18n.t("home.delete")} ({currentDelSelected.length})
-                </Text>
-              </TouchableOpacity>
-              <View style={{ width: 10 }} />
-              <TouchableOpacity onPress={() => setIsDeleting(false)}>
-                <Text style={{ color: Colors.white }}>{i18n.t("home.cancel")}</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-        </View>
-      ),
-    });
-  }, [navigation, isDeleting, currentDelSelected]);
-
   const onPressDelete = async () => {
     Alert.alert("Confirm", "Are you sure?", [
       {
@@ -130,18 +102,13 @@ export default function Service(props: ScreenProps) {
   };
 
   const onPressCheck = (id: string) => {
-    setCurrentSelected(
-      currentSelected.indexOf(id) != -1
-        ? _.remove(currentSelected, id)
-        : [...currentSelected, id]
-    );
+    const toggle = (values: string[]) =>
+      values.includes(id) ? values.filter((value) => value !== id) : [...values, id];
+
+    setCurrentSelected(toggle);
 
     if (isDeleting) {
-      setCurrentDelSelected(
-        currentDelSelected.indexOf(id) != -1
-          ? _.remove(currentDelSelected, id)
-          : [...currentDelSelected, id]
-      );
+      setCurrentDelSelected(toggle);
     }
   };
 
@@ -177,26 +144,54 @@ export default function Service(props: ScreenProps) {
         <Text style={{ fontSize: 16, fontWeight: "600" }}>
           {i18n.t("home.favourite_service")}
         </Text>
-        <TouchableOpacity
-          style={{
-            paddingVertical: 6,
-            paddingHorizontal: 10,
-            borderColor: Colors.main_orange,
-            borderWidth: 1,
-            borderRadius: 3,
-          }}
-          onPress={onPressUpdate}
-          disabled={loadingUpdate}
-        >
-          <Text
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+          {!isDeleting ? (
+            <TouchableOpacity
+              accessibilityLabel="favourite-service-delete-mode"
+              testID="favourite-service-delete-mode"
+              onPress={() => setIsDeleting(true)}
+              style={{ padding: 8 }}
+            >
+              <Ionicons name="trash" size={22} color={Colors.main_orange} />
+            </TouchableOpacity>
+          ) : (
+            <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+              <TouchableOpacity
+                accessibilityLabel="favourite-service-delete-confirm"
+                testID="favourite-service-delete-confirm"
+                onPress={onPressDelete}
+                style={{ paddingVertical: 6, paddingHorizontal: 8 }}
+              >
+                <Text style={{ color: Colors.main_orange }}>
+                  {i18n.t("home.delete")} ({currentDelSelected.length})
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                accessibilityLabel="favourite-service-delete-cancel"
+                testID="favourite-service-delete-cancel"
+                onPress={() => setIsDeleting(false)}
+                style={{ paddingVertical: 6, paddingHorizontal: 8 }}
+              >
+                <Text>{i18n.t("home.cancel")}</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+          <TouchableOpacity
             style={{
-              color: Colors.main_orange,
-              fontWeight: "600",
+              paddingVertical: 6,
+              paddingHorizontal: 10,
+              borderColor: Colors.main_orange,
+              borderWidth: 1,
+              borderRadius: 3,
             }}
+            onPress={onPressUpdate}
+            disabled={loadingUpdate}
           >
-            {i18n.t("home.update")}
-          </Text>
-        </TouchableOpacity>
+            <Text style={{ color: Colors.main_orange, fontWeight: "600" }}>
+              {i18n.t("home.update")}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
       <ScrollView>
         <View style={{ padding: 16 }}>

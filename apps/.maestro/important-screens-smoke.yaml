@@ -64,7 +64,7 @@ appId: com.akaiunsan.customer
 - assertVisible: "Address"
 - assertVisible: "Option"
 - assertVisible: "Payment"
-- tapOn: "11"
+- tapOn: "12"
 - extendedWaitUntil:
     visible: "How many Hour(s)"
     timeout: 10000

@@ -68,9 +68,7 @@ appId: com.akaiunsan.customer
 - extendedWaitUntil:
     visible: "Please pick the service date from above calendar"
     timeout: 15000
-- tapOn: "11"
-- waitForAnimationToEnd
-- tapOn: "Confirm"
+- tapOn: "12"
 - waitForAnimationToEnd
 - tapOn:
     id: "service-next-button"
@@ -88,15 +86,17 @@ appId: com.akaiunsan.customer
     visible: "Option"
     timeout: 10000
 - assertVisible: "Specific helper.*|Select your helper.*"
-- tapOn: "Next"
+- tapOn:
+    id: "service-next-button"
 - extendedWaitUntil:
     visible: "Payment"
     timeout: 10000
-- assertVisible: "Select card"
+- assertVisible: "Payment method"
 - repeat:
     times: 4
     commands:
-      - tapOn: "service-back-button"
+      - tapOn:
+          id: "service-back-button"
 
 # Booking list, calendar, upcoming detail, edit/reorder, and history detail.
 - tapOn:
@@ -107,45 +107,53 @@ appId: com.akaiunsan.customer
 - tapOn:
     id: "booking-calendar-button"
 - extendedWaitUntil:
-    visible: "Monthly"
+    visible: "September 2026"
     timeout: 10000
-- assertVisible: "Maid Service"
+- assertVisible: "MAID SERVICE"
 - tapOn: "navigation-back-button"
-- tapOn: "Maid Service"
+- extendedWaitUntil:
+    visible:
+      id: "booking-item-maestro-booking-1"
+    timeout: 10000
+- tapOn:
+    id: "booking-item-maestro-booking-1"
 - extendedWaitUntil:
     visible: "Booking detail"
     timeout: 10000
-- assertVisible: "Maestro test address"
+- assertVisible: "Your helper"
 - tapOn:
     id: "booking-edit-button"
 - extendedWaitUntil:
     visible: "Service"
     timeout: 10000
 - assertVisible: "Address"
-- tapOn: "service-back-button"
-- tapOn: "navigation-back-button"
+- tapOn:
+    id: "edit-reorder-back-button"
 - tapOn: "History"
-- tapOn: "Maid Service"
+- tapOn:
+    id: "history-item-maestro-booking-1"
 - extendedWaitUntil:
-    visible: "Booking detail"
+    visible: "Detail history"
     timeout: 10000
-- assertVisible: "Maestro test address"
+- assertVisible: "Your helper"
 - tapOn: "navigation-back-button"
 
 # Inbox notification -> order detail -> Petcare payment screen.
 - tapOn:
     text: "Inbox.*"
 - extendedWaitUntil:
-    visible: "Maestro booking update"
+    visible:
+      id: "inbox-notification-maestro-order-notification"
     timeout: 10000
-- tapOn: "Maestro booking update"
+- tapOn:
+    id: "inbox-notification-maestro-order-notification"
 - extendedWaitUntil:
     visible: "Pet profile:"
     timeout: 10000
 - assertVisible: "Confirm"
 - tapOn: "Confirm"
 - extendedWaitUntil:
-    visible: "Payment"
+    visible: "Payment method"
     timeout: 10000
 - assertVisible: "Select card|Next"
 - tapOn: "navigation-back-button"
@@ -155,11 +163,13 @@ appId: com.akaiunsan.customer
 - tapOn:
     text: "Promotion"
 - extendedWaitUntil:
-    visible: "Maestro promotion"
+    visible:
+      id: "inbox-promotion-maestro-promotion-notification"
     timeout: 10000
-- tapOn: "Maestro promotion"
+- tapOn:
+    id: "inbox-promotion-maestro-promotion-notification"
 - extendedWaitUntil:
-    visible: "Promotion detail"
+    visible: "Detail Promotion"
     timeout: 10000
 - assertVisible: "Maestro promotion"
 - tapOn: "navigation-back-button"
@@ -168,14 +178,17 @@ appId: com.akaiunsan.customer
 - tapOn:
     text: "Account.*"
 - extendedWaitUntil:
-    visible: "MY BOOKING.*"
+    visible:
+      id: "account-item-my-booking"
     timeout: 10000
 - tapOn:
-    text: "MY BOOKING.*"
+    id: "account-item-my-booking"
 - extendedWaitUntil:
-    visible: "Maid Service"
+    visible:
+      id: "my-booking-item-maestro-booking-1"
     timeout: 10000
-- tapOn: "Maid Service"
+- tapOn:
+    id: "my-booking-item-maestro-booking-1"
 - extendedWaitUntil:
     visible: "Booking detail"
     timeout: 10000
@@ -183,16 +196,20 @@ appId: com.akaiunsan.customer
 - tapOn: "navigation-back-button"
 
 - tapOn:
-    text: "FAVOURITE.*"
+    id: "account-item-favourite"
 - extendedWaitUntil:
     visible: "Favourite.*"
     timeout: 10000
-- tapOn: "Dịch vụ yêu thích|Favourite services"
+- tapOn:
+    id: "favourite-service-menu"
 - extendedWaitUntil:
-    visible: "Dịch vụ yêu thích|Favourite services"
+    visible: "Dịch vụ yêu thích|Favourite service$"
     timeout: 10000
 - tapOn: "navigation-back-button"
-- tapOn: "Nhà cung cấp yêu thích|Favourite service providers"
+- waitForAnimationToEnd
+- tapOn:
+    id: "favourite-provider-menu"
+- waitForAnimationToEnd
 - extendedWaitUntil:
     visible: "Nhà cung cấp yêu thích|Favourite service providers"
     timeout: 10000
@@ -200,19 +217,25 @@ appId: com.akaiunsan.customer
 - tapOn: "navigation-back-button"
 
 - tapOn:
-    text: "PROMOTIONS.*"
+    id: "account-item-promotions"
 - extendedWaitUntil:
-    visible: "Promotion.*"
-    timeout: 10000
-- tapOn: "Maestro promotion"
+    visible:
+      id: "promotion-list-title"
+    timeout: 30000
 - extendedWaitUntil:
-    visible: "Promotion detail"
+    visible:
+      id: "promotion-item-maestro-promotion"
+    timeout: 30000
+- tapOn:
+    id: "promotion-item-maestro-promotion"
+- extendedWaitUntil:
+    visible: "Detail Promotion"
     timeout: 10000
 - tapOn: "navigation-back-button"
 - tapOn: "navigation-back-button"
 
 - tapOn:
-    text: "PAYMENT.*"
+    id: "account-item-payment"
 - extendedWaitUntil:
     visible: "PAYMENT"
     timeout: 10000
@@ -220,19 +243,20 @@ appId: com.akaiunsan.customer
 - tapOn: "navigation-back-button"
 
 - tapOn:
-    text: "HISTORY.*"
+    id: "account-item-history"
 - extendedWaitUntil:
     visible: "HISTORY"
     timeout: 10000
-- tapOn: "Maid Service"
+- tapOn:
+    id: "history-item-maestro-booking-1"
 - extendedWaitUntil:
-    visible: "Booking detail"
+    visible: "Detail history"
     timeout: 10000
 - tapOn: "navigation-back-button"
 - tapOn: "navigation-back-button"
 
 - tapOn:
-    text: "ADDRESS.*"
+    id: "account-item-address"
 - extendedWaitUntil:
     visible: "Maestro test address.*"
     timeout: 10000
@@ -251,23 +275,22 @@ appId: com.akaiunsan.customer
 - tapOn: "navigation-back-button"
 
 - tapOn:
-    text: "CHIA SẺ VỚI BẠN BÈ|FRIEND SHARE"
+    id: "account-item-friend-share"
 - extendedWaitUntil:
-    visible: "MAESTRO|Referral code|Ref code"
-    timeout: 10000
+    visible:
+      id: "referral-code"
+    timeout: 15000
+- assertVisible: "Ref code: MAESTRO"
 - tapOn: "navigation-back-button"
 
 - tapOn:
-    text: "VỀ CHÚNG TÔI|ABOUT US"
+    id: "account-item-about-us"
 - extendedWaitUntil:
     visible: "Privacy Policy"
     timeout: 10000
 - assertVisible: "Term of Use"
-- tapOn: "Privacy Policy"
-- extendedWaitUntil:
-    visible: "Privacy"
-    timeout: 15000
-- tapOn: "navigation-back-button"
+# The buttons are covered here; the linked legal pages are hosted by the
+# separately deployed customer web portal and are not part of this app lane.
 - tapOn: "navigation-back-button"
 
 # Logout is the final state; do not remove the disposable account.

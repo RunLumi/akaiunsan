@@ -24,7 +24,8 @@
         "NSPhotoLibraryAddUsageDescription": "Akaiunsan would like to access the photo library to save photos or upload profile image.",
         "NSMicrophoneUsageDescription": "Akaiunsan would like to access the microphone to record videos of your comments about the quality of our services for sharing its with others.",
         "NSLocationWhenInUseUsageDescription":"Akaiunsan would like to access the location for updating nearby friends and give you suitable suggestions",
-        "NSLocationUsageDescription": "Akaiunsan would like to access the location for updating nearby friends and give you suitable suggestions"
+        "NSLocationUsageDescription": "Akaiunsan would like to access the location for updating nearby friends and give you suitable suggestions",
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {

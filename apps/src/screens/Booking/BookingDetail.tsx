@@ -319,6 +319,7 @@ export default function BookingDetail(props: ScreenProps) {
             {currentDetail.orderStatus == Enum.OrderStatus.PENDING ? (
               <TouchableOpacity
                 accessibilityLabel="booking-edit-button"
+                testID="booking-edit-button"
                 onPress={() => redirectEdit()}
               >
                 <Ionicons name="create-outline" size={18} />

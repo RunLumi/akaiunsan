@@ -1,4 +1,5 @@
 import Config from "react-native-config";
+import Constants from "expo-constants";
 import { shouldCollectAnalytics } from "./analytics";
 
 type AnalyticsModule = {
@@ -59,6 +60,13 @@ const getRuntimeEnvironment = (): string =>
 export const isFirebaseCollectionEnabled = (): boolean =>
   shouldCollectAnalytics(getRuntimeEnvironment(), __DEV__);
 
+// Firebase native modules use TurboModules and are only meaningful on a real
+// device. In particular, an ARM64 iOS simulator can expose the modules while
+// lacking the APNs/Firebase runtime they expect, which turns an otherwise
+// recoverable startup failure into an RCT fatal exception.
+export const isFirebaseRuntimeAvailable = (): boolean =>
+  Constants.isDevice === true;
+
 const loadAnalyticsModule = (): AnalyticsModule | undefined => {
   try {
     return require("@react-native-firebase/analytics") as AnalyticsModule;
@@ -87,22 +95,30 @@ const loadMessagingModule = (): MessagingModule | undefined => {
 };
 
 export const configureFirebaseTelemetry = (): void => {
-  if (!isFirebaseCollectionEnabled()) return;
+  if (!isFirebaseCollectionEnabled() || !isFirebaseRuntimeAvailable()) return;
 
-  const analyticsModule = loadAnalyticsModule();
-  const analytics = analyticsModule?.getAnalytics?.();
-  if (analytics && analyticsModule?.setAnalyticsCollectionEnabled) {
-    void analyticsModule
-      .setAnalyticsCollectionEnabled(analytics, true)
-      .catch((error) => console.warn("Unable to enable Firebase Analytics", error));
+  try {
+    const analyticsModule = loadAnalyticsModule();
+    const analytics = analyticsModule?.getAnalytics?.();
+    if (analytics && analyticsModule?.setAnalyticsCollectionEnabled) {
+      void Promise.resolve(
+        analyticsModule.setAnalyticsCollectionEnabled(analytics, true)
+      ).catch((error) => console.warn("Unable to enable Firebase Analytics", error));
+    }
+  } catch (error) {
+    console.warn("Unable to enable Firebase Analytics", error);
   }
 
-  const crashlyticsModule = loadCrashlyticsModule();
-  const crashlytics = crashlyticsModule?.getCrashlytics?.();
-  if (crashlytics && crashlyticsModule?.setCrashlyticsCollectionEnabled) {
-    void crashlyticsModule
-      .setCrashlyticsCollectionEnabled(crashlytics, true)
-      .catch((error) => console.warn("Unable to enable Firebase Crashlytics", error));
+  try {
+    const crashlyticsModule = loadCrashlyticsModule();
+    const crashlytics = crashlyticsModule?.getCrashlytics?.();
+    if (crashlytics && crashlyticsModule?.setCrashlyticsCollectionEnabled) {
+      void Promise.resolve(
+        crashlyticsModule.setCrashlyticsCollectionEnabled(crashlytics, true)
+      ).catch((error) => console.warn("Unable to enable Firebase Crashlytics", error));
+    }
+  } catch (error) {
+    console.warn("Unable to enable Firebase Crashlytics", error);
   }
 };
 
@@ -110,7 +126,7 @@ export const logAnalyticsEvent = async (
   name: string,
   parameters?: Record<string, unknown>
 ): Promise<void> => {
-  if (!isFirebaseCollectionEnabled()) return;
+  if (!isFirebaseCollectionEnabled() || !isFirebaseRuntimeAvailable()) return;
 
   try {
     const analyticsModule = loadAnalyticsModule();
@@ -125,7 +141,7 @@ export const logAnalyticsEvent = async (
 };
 
 export const getFirebaseMessaging = (): FirebaseMessagingHandle | undefined => {
-  if (!isFirebaseCollectionEnabled()) return undefined;
+  if (!isFirebaseCollectionEnabled() || !isFirebaseRuntimeAvailable()) return undefined;
 
   try {
     const module = loadMessagingModule();

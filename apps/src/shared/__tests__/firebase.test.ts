@@ -16,7 +16,7 @@ type FirebaseMocks = {
   };
 };
 
-const loadFirebase = (environment: string | undefined) => {
+const loadFirebase = (environment: string | undefined, isDevice = true) => {
   jest.resetModules();
 
   const mocks: FirebaseMocks = {
@@ -40,6 +40,10 @@ const loadFirebase = (environment: string | undefined) => {
   jest.doMock("react-native-config", () => ({
     __esModule: true,
     default: { EXPO_PUBLIC_SENTRY_ENV: environment },
+  }));
+  jest.doMock("expo-constants", () => ({
+    __esModule: true,
+    default: { isDevice },
   }));
   jest.doMock("@react-native-firebase/analytics", () => ({
     __esModule: true,
@@ -107,6 +111,20 @@ describe("Firebase runtime adapter", () => {
     expect(messaging?.service).toBe("messaging-service");
     await expect(firebase.getFirebaseMessagingToken()).resolves.toBe("fcm-token");
     expect(mocks.messaging.getToken).toHaveBeenCalledWith("messaging-service");
+  });
+
+  it("does not initialize Firebase native modules on a simulator", async () => {
+    const { firebase, mocks } = loadFirebase("production", false);
+
+    expect(firebase.isFirebaseCollectionEnabled()).toBe(true);
+    firebase.configureFirebaseTelemetry();
+    await expect(firebase.logAnalyticsEvent("login")).resolves.toBeUndefined();
+    expect(firebase.getFirebaseMessaging()).toBeUndefined();
+
+    expect(mocks.analytics.getAnalytics).not.toHaveBeenCalled();
+    expect(mocks.analytics.logEvent).not.toHaveBeenCalled();
+    expect(mocks.crashlytics.getCrashlytics).not.toHaveBeenCalled();
+    expect(mocks.messaging.getMessaging).not.toHaveBeenCalled();
   });
 
   it("contains telemetry and messaging errors so app flows keep working", async () => {

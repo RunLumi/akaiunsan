@@ -73,6 +73,8 @@ export default function Home(props: ScreenProps) {
     ({ error, response }: ApiResult) => {
       if (error) {
         if (error === "Request failed with status code 401") {
+        } else if (isOptionalEndpointError(error)) {
+          setListService([]);
         } else {
           Alert.alert(i18n.t("auth.error"), error);
         }

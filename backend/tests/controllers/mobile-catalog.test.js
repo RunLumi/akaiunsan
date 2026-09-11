@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-const { getCatalog, getCatalogItem, getCatalogPrice } =
+const { getCatalog, getCatalogItem, getCatalogPrice, getEmptyCollection } =
   await import('../../controllers/mobile-catalog.controller.ts');
 
 function response() {
@@ -32,5 +32,11 @@ describe('mobile catalog contract', () => {
     getCatalogPrice({ query: { price: '3' } }, res);
     expect(res.out.body.items[0].serviceType).toBe(2);
     expect(JSON.parse(res.out.body.items[0].pricesModel)).toMatchObject({ two: 350 });
+  });
+
+  it('returns safe empty collections for optional customer tools', () => {
+    const res = response();
+    getEmptyCollection({}, res);
+    expect(res.out.body).toMatchObject({ items: [], total: 0 });
   });
 });

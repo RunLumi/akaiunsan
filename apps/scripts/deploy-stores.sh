@@ -4,8 +4,10 @@ set -Eeuo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 APP_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+REPO_ROOT="$(cd "$APP_ROOT/.." && pwd)"
 ANDROID_ROOT="$APP_ROOT/android"
 IOS_ROOT="$APP_ROOT/ios"
+RELEASE_DIR="${AKAIUNSAN_RELEASE_DIR:-$REPO_ROOT/.private-release}"
 
 # The ignored local release files are the default credential source.
 load_env_file() {
@@ -20,6 +22,7 @@ load_env_file() {
 
 load_env_file "$ANDROID_ROOT/keystore.env"
 load_env_file "$IOS_ROOT/scripts/release.env"
+load_env_file "$RELEASE_DIR/release.env"
 
 ANDROID_PACKAGE="${ANDROID_PACKAGE:-com.akaiunsan.customer}"
 ANDROID_VARIANT="${ANDROID_VARIANT:-Release}"
@@ -40,6 +43,9 @@ ANDROID_SIGNING_KEY_ALIAS="${ANDROID_SIGNING_KEY_ALIAS:-${KEY_ALIAS:-}}"
 ANDROID_SIGNING_KEY_PASSWORD="${ANDROID_SIGNING_KEY_PASSWORD:-${KEY_PASSWORD:-}}"
 PLAY_SERVICE_ACCOUNT_JSON="${PLAY_SERVICE_ACCOUNT_JSON:-${GOOGLE_PLAY_SERVICE_ACCOUNT_JSON:-}}"
 APPLE_TEAM_ID="${APPLE_TEAM_ID:-${TEAM_ID:-}}"
+if [[ -z "${ASC_KEY_PATH:-}" && -n "${ASC_KEY_ID:-}" ]]; then
+  ASC_KEY_PATH="$RELEASE_DIR/AuthKey_${ASC_KEY_ID}.p8"
+fi
 
 CONFIRM_UPLOAD=0
 BUILD_ONLY=0
@@ -63,6 +69,7 @@ Options:
   -h, --help      Show this help.
 
 Local credential files loaded automatically when present:
+  .private-release/release.env and .private-release/AuthKey_<ASC_KEY_ID>.p8
   apps/android/keystore.env
   apps/android/release.jks
   apps/ios/scripts/release.env

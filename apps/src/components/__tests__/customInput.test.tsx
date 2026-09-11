@@ -28,6 +28,11 @@ describe("CustomInput", () => {
     expect(root.findByType(RNTextInput).props.secureTextEntry).toBe(false);
   });
 
+  it("disables iOS AutoFill on simulator inputs", () => {
+    const { root } = create(<CustomInput secureText value="1234" />);
+    expect(root.findByType(RNTextInput).props.textContentType).toBe("none");
+  });
+
   it("fires the dropdown, datetime and cancel affordance handlers", () => {
     const onDropDown = jest.fn();
     const onDateTime = jest.fn();

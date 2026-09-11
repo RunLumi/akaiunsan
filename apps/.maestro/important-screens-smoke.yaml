@@ -70,7 +70,8 @@ appId: com.akaiunsan.customer
     timeout: 10000
 - assertVisible: "How many Hour(s)"
 - assertVisible: "Start time"
-- assertVisible: "Next"
+- assertVisible:
+    id: "service-next-button"
 - tapOn:
     text: "service-back-button"
 

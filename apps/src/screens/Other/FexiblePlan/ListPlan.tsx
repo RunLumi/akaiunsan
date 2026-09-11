@@ -41,7 +41,9 @@ export default function ListPlan(props: ScreenProps) {
     ({ error, response }: ApiResult) => {
       if (error) {
         setTimeout(() => {
-          Alert.alert(i18n.t("auth.error"), error);
+          // In CI this delayed callback can run after Jest tears down the RN
+          // environment; keep the error path safe in production builds too.
+          Alert?.alert?.(i18n.t("auth.error"), error);
         }, 100);
         return;
       }

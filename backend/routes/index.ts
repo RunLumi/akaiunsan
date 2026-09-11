@@ -11,6 +11,7 @@ import InstallController from '../controllers/install.controller.ts';
 import AgencyController from '../controllers/agency/index.controller.ts';
 import { getHealthInfo } from '../helpers/version.ts';
 import * as MobileCompatController from '../controllers/mobile-compat.controller.ts';
+import * as MobileCatalogController from '../controllers/mobile-catalog.controller.ts';
 
 export default (app) => {
 
@@ -56,6 +57,17 @@ export default (app) => {
   r_bot(app);
 
   r_agency(app);
+
+  // Mobile catalog compatibility. These routes are product configuration
+  // derived from FR-SVC-01/02, not disposable Maestro fixtures.
+  if (process.env.NODE_ENV !== 'maestro') {
+    app.get('/banner/get-banner', MobileCatalogController.getCatalogBanners);
+    app.get('/services-management', MobileCatalogController.getCatalog);
+    app.get('/services-management/service-item', MobileCatalogController.getCatalogItem);
+    app.get('/services-management/helpers', MobileCatalogController.getCatalogHelpers);
+    app.get('/services-management/suggest', MobileCatalogController.getCatalogHelpers);
+    app.get('/config-price/get', MobileCatalogController.getCatalogPrice);
+  }
 
   // Local-only catalog fixtures keep the Maestro smoke lane navigable without
   // seeding production catalog data into the disposable local database. These

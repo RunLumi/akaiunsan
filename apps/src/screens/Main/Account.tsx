@@ -243,6 +243,8 @@ export default function Account(props: ScreenProps) {
             }}
           >
             <TouchableOpacity
+              testID="account-logout-button"
+              accessibilityLabel="account-logout-button"
               onPress={logout}
               style={{
                 alignItems: "center",

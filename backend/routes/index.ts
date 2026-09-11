@@ -71,6 +71,8 @@ export default (app) => {
     app.get('/referral/referral-list', MobileCatalogController.getEmptyCollection);
     app.get('/promotion/promotion-updates', MobileCatalogController.getEmptyPromotionUpdates);
     app.get('/subscription-plan/get-current-plan', MobileCatalogController.getEmptyCollection);
+    app.get('/booking/get', MobileCatalogController.getEmptyCollection);
+    app.get('/booking/detail', MobileCatalogController.getEmptyCollection);
   }
 
   // authentication required

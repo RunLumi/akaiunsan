@@ -109,50 +109,56 @@ appId: com.akaiunsan.customer
       text: "Account.*"
     timeout: 15000
 - assertVisible:
-    text: "MY BOOKING.*"
+    id: "account-item-my-booking"
 - assertVisible:
-    text: "FAVOURITE.*"
+    id: "account-item-favourite"
 - assertVisible:
-    text: "PROMOTIONS.*"
+    id: "account-item-promotions"
 - assertVisible:
-    text: "PAYMENT.*"
+    id: "account-item-payment"
 - assertVisible:
-    text: "HISTORY.*"
+    id: "account-item-history"
 - assertVisible:
-    text: "ADDRESS.*"
+    id: "account-item-address"
 - assertVisible:
-    text: "SUBSCRIPTION MENU.*"
+    id: "account-item-subscription"
 
 - tapOn:
-    text: "FAVOURITE.*"
+    id: "account-item-favourite"
 - extendedWaitUntil:
     visible: "Favourite.*"
     timeout: 10000
 - tapOn:
     text: "navigation-back-button"
 - tapOn:
-    text: "PAYMENT.*"
+    id: "account-item-payment"
 - extendedWaitUntil:
     visible: "PAYMENT"
     timeout: 10000
 - tapOn:
     text: "navigation-back-button"
 - tapOn:
-    text: "HISTORY.*"
+    id: "account-item-history"
 - extendedWaitUntil:
     visible: "HISTORY"
     timeout: 10000
 - tapOn:
     text: "navigation-back-button"
+- repeat:
+    times: 3
+    commands:
+      - swipe:
+          direction: UP
+          duration: 500
 - tapOn:
-    text: "ADDRESS.*"
+    id: "account-item-address"
 - extendedWaitUntil:
     visible: "ADDRESS"
     timeout: 10000
 - tapOn:
     text: "navigation-back-button"
 - tapOn:
-    text: "SUBSCRIPTION MENU.*"
+    id: "account-item-subscription"
 - extendedWaitUntil:
     visible: "Data empty"
     timeout: 10000
@@ -160,7 +166,7 @@ appId: com.akaiunsan.customer
 - tapOn:
     text: "navigation-back-button"
 - tapOn:
-    text: "PROMOTIONS.*"
+    id: "account-item-promotions"
 - extendedWaitUntil:
     visible: "Promotion.*"
     timeout: 10000

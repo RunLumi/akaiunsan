@@ -43,6 +43,8 @@ export default function Home(props: ScreenProps) {
   const [carouselItems, setCarouselItems] = useState<ApiItem[]>([]);
   const [listService, setListService] = useState<ApiItem>([]);
   const [subscriptionPlanActive, setSubscriptionPlanActive] = useState<ApiItem>({});
+  const isOptionalEndpointError = (error: string) =>
+    error.includes("status code 404") || error.includes("Network Error");
   // Phase 5 RTK Query port: every useApi tunnel keeps its legacy callback
   // verbatim via portRequest (same {error, response} contract, same error
   // strings); only the transport underneath moved to the apiSlice.
@@ -124,7 +126,10 @@ export default function Home(props: ScreenProps) {
   const requestGetBanner = portRequest(
     bannerTrigger,
     ({ error, response }: ApiResult) => {
-      if (error) Alert.alert(i18n.t("auth.error"), error);
+      if (error) {
+        if (!isOptionalEndpointError(error)) Alert.alert(i18n.t("auth.error"), error);
+        setCarouselItems([]);
+      }
       else {
         setCarouselItems(response && response.items);
       }
@@ -135,7 +140,10 @@ export default function Home(props: ScreenProps) {
   const requestServiceManagement = portRequest(
     serviceManagementTrigger,
     ({ error, response }: ApiResult) => {
-      if (error) console.log(i18n.t("auth.error"), error);
+      if (error) {
+        if (!isOptionalEndpointError(error)) console.log(i18n.t("auth.error"), error);
+        setArrService([]);
+      }
       else {
         setArrService(response.items);
       }
@@ -148,6 +156,8 @@ export default function Home(props: ScreenProps) {
     ({ error, response }: ApiResult) => {
       if (error) {
         if (error === "Request failed with status code 401") {
+        } else if (isOptionalEndpointError(error)) {
+          setArrUpdate([]);
         } else {
           Alert.alert(i18n.t("auth.error"), error);
         }

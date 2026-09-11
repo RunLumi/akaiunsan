@@ -43,6 +43,8 @@ export default function Home(props: ScreenProps) {
   const [carouselItems, setCarouselItems] = useState<ApiItem[]>([]);
   const [listService, setListService] = useState<ApiItem>([]);
   const [subscriptionPlanActive, setSubscriptionPlanActive] = useState<ApiItem>({});
+  const isOptionalEndpointError = (error: string) =>
+    error.includes("status code 404") || error.includes("Network Error");
   // Phase 5 RTK Query port: every useApi tunnel keeps its legacy callback
   // verbatim via portRequest (same {error, response} contract, same error
   // strings); only the transport underneath moved to the apiSlice.

@@ -80,6 +80,7 @@ coverage/
 /apps/sentry.properties
 
 # Local mobile release credentials (never commit)
+/.private-release/
 /apps/android/keystore.env
 /apps/android/release.jks
 /apps/android/play-store-upload-api-8959600245071053925-267843-fc2be64002db.json

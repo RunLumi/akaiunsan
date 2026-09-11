@@ -150,7 +150,13 @@ ENVFILE=.env.dev         ./gradlew app:assembleRelease
 Use `apps/scripts/deploy-stores.sh` to build the production Android AAB and iOS IPA, then upload them through the Google Play and App Store Connect APIs. The script does not submit an iOS build for App Review, and defaults Google Play to the `internal` track.
 
 ```bash
-# The script automatically loads these ignored local release files when present:
+# The script automatically loads the canonical private release directory first:
+# `.private-release/release.env` and `.private-release/AuthKey_<ASC_KEY_ID>.p8`.
+# This directory is outside generated `apps/ios/`, so Expo prebuild will not delete it.
+# Restore it from the private backup repository on a new machine:
+./apps/scripts/restore-release-credentials.sh
+
+# Legacy generated paths are supported only as a fallback:
 # apps/android/keystore.env, apps/android/release.jks,
 # apps/ios/scripts/release.env, and apps/ios/scripts/AuthKey_<ASC_KEY_ID>.p8
 

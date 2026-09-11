@@ -312,7 +312,10 @@ if ((TARGET_IOS == 1)); then
   rm -f "$IOS_EXPORT_OPTIONS"
   plutil -create xml1 "$IOS_EXPORT_OPTIONS"
   plutil -insert method -string app-store "$IOS_EXPORT_OPTIONS"
-  plutil -insert destination -string "$([[ "$CONFIRM_UPLOAD" == "1" ]] && echo upload || echo export)" "$IOS_EXPORT_OPTIONS"
+  # Always export an IPA here. The explicit App Store Connect API upload below
+  # owns the upload step; using destination=upload would leave no IPA for the
+  # validation/upload phase and make a successful upload look like a failure.
+  plutil -insert destination -string export "$IOS_EXPORT_OPTIONS"
   plutil -insert signingStyle -string automatic "$IOS_EXPORT_OPTIONS"
   plutil -insert teamID -string "$APPLE_TEAM_ID" "$IOS_EXPORT_OPTIONS"
   plutil -insert uploadSymbols -bool false "$IOS_EXPORT_OPTIONS"
@@ -336,6 +339,7 @@ if ((TARGET_IOS == 1)); then
   (
     cd "$APP_ROOT"
     set +u
+    ENVFILE="$ENVFILE_PATH" \
     SENTRY_DISABLE_AUTO_UPLOAD="${SENTRY_DISABLE_AUTO_UPLOAD:-true}" xcodebuild \
       "${IOS_XCODE_INPUT[@]}" \
       -scheme "$IOS_SCHEME" \

@@ -175,7 +175,7 @@ appId: com.akaiunsan.customer
 
 # FR-ACC-05: logout returns to the authentication boundary.
 - tapOn:
-    text: ".*Log out"
+    id: "account-logout-button"
 - tapOn:
     text: "OK"
     optional: true

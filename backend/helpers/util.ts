@@ -21,10 +21,21 @@ const sftp = new Client();
 async function getCustomerData (data) {
   let attribute_array = ['firstname', 'lastname', 'display_name',
     'email', 'line_id', 'phone_number', 'facebook_name', 'active'];
-  let customer = {};
+  let customer: any = {};
   for (let attribute in data) {
     if (attribute_array.includes(attribute))
       customer[attribute] = data[attribute];
+  }
+
+  // The mobile signup contract uses camelCase names. Normalize it while
+  // preserving the legacy snake_case contract used by other callers.
+  if (!customer.firstname && data.fullName) {
+    const nameParts = String(data.fullName).trim().split(/\s+/).filter(Boolean);
+    customer.firstname = nameParts.shift() || '';
+    customer.lastname = nameParts.join(' ');
+  }
+  if (!customer.phone_number && data.phoneNumber) {
+    customer.phone_number = data.phoneNumber;
   }
   return { customer }
 }

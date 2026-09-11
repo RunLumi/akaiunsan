@@ -2,7 +2,7 @@
 # Master Docker Compose — Production Stack (2026)
 # ==============================================================================
 # Services:
-#   - caddy: Reverse proxy with automatic Let's Encrypt / ZeroSSL TLS & HTTP/3
+#   - caddy: Reverse proxy with automatic Let's Encrypt / ZeroSSL TLS over HTTP/1.1 + HTTP/2
 #   - backend: Express 5 + TypeScript API (Akaiunsan Admin / Customer API)
 #   - frontend: Customer Web Portal
 #   - admin: Back-Office Management Dashboard
@@ -38,7 +38,6 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      - "443:443/udp" # HTTP/3 (QUIC)
     env_file:
       - .env
     extra_hosts:

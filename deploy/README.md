@@ -59,7 +59,7 @@ The VPS uses an ed25519 deploy key (`~/.ssh/id_ed25519`) authorized on GitHub (`
 ├── frontend/                # Customer portal source code & Dockerfile
 ├── deploy/                  # Orchestration root
 │   ├── docker-compose.yml   # Master compose configuration
-│   ├── Caddyfile            # Ingress rules, auto-TLS, and HTTP/3
+│   ├── Caddyfile            # Ingress rules, auto-TLS, and HTTP/1.1 + HTTP/2
 │   ├── .env                 # Production environment variables (chmod 600)
 │   ├── .env.example         # Template for environment variables
 │   ├── README.md            # This operations runbook

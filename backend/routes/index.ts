@@ -67,6 +67,9 @@ export default (app) => {
     app.get('/services-management/helpers', MobileCatalogController.getCatalogHelpers);
     app.get('/services-management/suggest', MobileCatalogController.getCatalogHelpers);
     app.get('/config-price/get', MobileCatalogController.getCatalogPrice);
+    app.get('/favourite/services', MobileCatalogController.getEmptyCollection);
+    app.get('/favourite/service-providers', MobileCatalogController.getEmptyCollection);
+    app.get('/referral/referral-list', MobileCatalogController.getEmptyCollection);
   }
 
   // Local-only catalog fixtures keep the Maestro smoke lane navigable without

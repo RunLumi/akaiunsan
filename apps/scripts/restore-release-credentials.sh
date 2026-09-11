@@ -12,7 +12,7 @@ mkdir -p "$RELEASE_DIR"
 chmod 700 "$RELEASE_DIR"
 gh api "repos/$BACKUP_REPO/contents/$BACKUP_PATH/release.env" --jq .content |
   base64 --decode > "$RELEASE_DIR/release.env"
-key_id="$(sed -n 's/^ASC_KEY_ID=//p' "$RELEASE_DIR/release.env")"
+key_id="$(sed -n -E 's/^ASC_KEY_ID=//; s/[[:space:]]+#.*$//; s/^"//; s/"[[:space:]]*$//' "$RELEASE_DIR/release.env")"
 [[ -n "$key_id" ]] || { echo "error: ASC_KEY_ID missing" >&2; exit 1; }
 gh api "repos/$BACKUP_REPO/contents/$BACKUP_PATH/AuthKey_${key_id}.p8" --jq .content |
   base64 --decode > "$RELEASE_DIR/AuthKey_${key_id}.p8"

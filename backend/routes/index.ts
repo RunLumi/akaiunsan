@@ -69,6 +69,8 @@ export default (app) => {
     app.get('/favourite/services', MobileCatalogController.getEmptyCollection);
     app.get('/favourite/service-providers', MobileCatalogController.getEmptyCollection);
     app.get('/referral/referral-list', MobileCatalogController.getEmptyCollection);
+    app.get('/promotion/promotion-updates', MobileCatalogController.getEmptyPromotionUpdates);
+    app.get('/subscription-plan/get-current-plan', MobileCatalogController.getEmptyCollection);
   }
 
   // authentication required

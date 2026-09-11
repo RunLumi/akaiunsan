@@ -21,12 +21,17 @@ export default function AllService(props: ScreenProps) {
   const { subscriptionPlanActive } = props.route.params || {};
   const [carouselItems, setCarouselItems] = useState<ApiItem[]>([]);
   const [arrService, setArrService] = useState<ApiItem[]>([]);
+  const isOptionalEndpointError = (error: string) =>
+    error.includes("status code 404") || error.includes("Network Error");
   const [requestGetBannerTrigger, { isLoading: loadingBanner }] =
     apiSlice.endpoints.getBanner.useLazyQuery();
   const requestGetBanner = portRequest(
     requestGetBannerTrigger,
     ({ error, response }: ApiResult) => {
-      if (error) Alert.alert(i18n.t("auth.error"), error);
+      if (error) {
+        if (!isOptionalEndpointError(error)) Alert.alert(i18n.t("auth.error"), error);
+        setCarouselItems([]);
+      }
       else {
         setCarouselItems(response && response.items);
       }
@@ -38,7 +43,10 @@ export default function AllService(props: ScreenProps) {
   const requestServiceManagement = portRequest(
     requestServiceManagementTrigger,
     ({ error, response }: ApiResult) => {
-      if (error) Alert.alert(i18n.t("auth.error"), error);
+      if (error) {
+        if (!isOptionalEndpointError(error)) Alert.alert(i18n.t("auth.error"), error);
+        setArrService([]);
+      }
       else {
         setArrService(response.items);
       }
@@ -85,7 +93,9 @@ export default function AllService(props: ScreenProps) {
           </View>
           <View style={{ alignSelf: "center" }}>
             <View style={styles.itemService}>
-              {arrService.map((x, idx) => (
+              {arrService.length === 0 ? (
+                <Text style={styles.emptyState}>{i18n.t("home.data_empty")}</Text>
+              ) : arrService.map((x, idx) => (
                 <TouchableOpacity
                   onPress={() =>
                     NavigationRoot.push(Constants.SCREENS.SERVICE.SERVICE, {
@@ -158,5 +168,10 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     width: "100%",
     paddingHorizontal: 20,
+  },
+  emptyState: {
+    marginTop: 24,
+    textAlign: "center",
+    color: colors.gray_normal_text,
   },
 });

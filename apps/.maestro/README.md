@@ -83,3 +83,17 @@ MAESTRO_EMAIL='tester@example.test' \
 MAESTRO_PASSWORD='...' \
 maestro test --device "$IOS_UDID" apps/.maestro/ios-important-screens-80.yaml
 ```
+
+## Production iOS account smoke
+
+The production API currently supports authentication and profile/account
+navigation, but the deployed backend does not yet expose the legacy mobile
+service-catalog routes (`/services-management*` and `/banner/get-banner`).
+Use this lane to verify production auth and account screens without masking
+that catalog gap:
+
+```bash
+MAESTRO_EMAIL='disposable-production-account@example.test' \
+MAESTRO_PASSWORD='...' \
+maestro test --device "$IOS_UDID" apps/.maestro/ios-production-account-smoke.yaml
+```

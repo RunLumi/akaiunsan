@@ -1,0 +1,59 @@
+appId: com.akaiunsan.customer
+
+---
+# Production smoke lane: validates auth and screens that do not require the
+# unavailable legacy service-catalog endpoints. Credentials are supplied only
+# at runtime; never commit a production password.
+- clearState
+- launchApp
+- tapOn:
+    text: "Allow Once"
+    optional: true
+- tapOn:
+    text: "Allow While Using App"
+    optional: true
+- tapOn:
+    text: "While using the app"
+    optional: true
+- tapOn:
+    text: "Allow"
+    optional: true
+- tapOn:
+    text: "OK"
+    optional: true
+- tapOn:
+    text: "EN"
+    optional: true
+- extendedWaitUntil:
+    visible: "Email"
+    timeout: 30000
+- tapOn: "Email"
+- inputText: ${MAESTRO_EMAIL}
+- tapOn: "Password"
+- inputText: ${MAESTRO_PASSWORD}
+- tapOn: "Sign In"
+- extendedWaitUntil:
+    visible:
+      text: "Home.*"
+    timeout: 30000
+- assertVisible: "Booking.*"
+- assertVisible: "Inbox.*"
+- assertVisible: "Account.*"
+- tapOn:
+    text: "Account.*"
+- extendedWaitUntil:
+    visible:
+      id: "account-item-about-us"
+    timeout: 15000
+- assertVisible:
+    id: "account-item-my-booking"
+- assertVisible:
+    id: "account-item-favourite"
+- assertVisible:
+    id: "account-item-history"
+- tapOn:
+    id: "account-item-about-us"
+- extendedWaitUntil:
+    visible: "Privacy Policy"
+    timeout: 15000
+- assertVisible: "Term of Use"

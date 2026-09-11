@@ -8,7 +8,7 @@ The platform is deployed to a single VPS using Docker Compose and Caddy for auto
 
 | Service | Technology | Port (Internal) | Public Route (via Caddy) |
 |---|---|---|---|
-| **`caddy`** | Caddy 2 Alpine | 80, 443 | Entry point (Let's Encrypt / HTTP/3) |
+| **`caddy`** | Caddy 2 Alpine | 80, 443 | Entry point (Let's Encrypt / HTTP/1.1 + HTTP/2) |
 | **`backend`** | Node 22 slim / Express 5 | 5000 | `akai-api.cjs.vn` (20MB upload limit) |
 | **`admin`** | shadcn-admin / Vite SPA | 80 | `akai-admin.cjs.vn` |
 | **`frontend`** | Customer Web Portal | 80 | Internal stub |

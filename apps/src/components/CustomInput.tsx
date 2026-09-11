@@ -1,4 +1,5 @@
 import { FontAwesome, SimpleLineIcons, Ionicons } from "@expo/vector-icons";
+import ExpoConstants from "expo-constants";
 import React, { useState } from "react";
 import {
   StyleProp,
@@ -6,6 +7,7 @@ import {
   TextInput,
   TextInputProps,
   TextStyle,
+  Platform,
   TouchableOpacity,
   View,
   ViewStyle,
@@ -59,6 +61,13 @@ export const CustomInput = ({
   // Both locales (English/Vietnamese) use the Latin script, so a single
   // font family covers them; the old Thai-only SukhumvitSet was dropped.
   const fontFamily = "OpenSans-Regular";
+  // iOS 18 simulator AutoFill can crash while a secure field is removed
+  // during navigation. Keep real-device password AutoFill unchanged;
+  // simulator runs do not represent a credential store.
+  const textContentType =
+    Platform.OS === "ios" && !ExpoConstants.isDevice
+      ? "none"
+      : props.textContentType;
   return (
     <View style={[styles.container, containerStyle]}>
       <View
@@ -86,6 +95,7 @@ export const CustomInput = ({
           value={value}
           placeholderTextColor={colors.gray}
           {...props}
+          textContentType={textContentType}
           maxFontSizeMultiplier={Styles.typography.maxFontSizeMultiplier}
         />
 

@@ -57,12 +57,10 @@ export default (app) => {
 
   r_agency(app);
 
-  // authentication required
-  r_backoffice(app);
-  r_client(app);
-
   // Local-only catalog fixtures keep the Maestro smoke lane navigable without
-  // seeding production catalog data into the disposable local database.
+  // seeding production catalog data into the disposable local database. These
+  // routes must precede the normal client routes so they win over legacy
+  // handlers that otherwise return empty database-backed lists.
   if (process.env.NODE_ENV === 'maestro') {
     app.get('/banner/get-banner', MobileCompatController.getMaestroBanners);
     app.get('/promotion/promotion-updates', MobileCompatController.getMaestroPromotionUpdates);
@@ -82,9 +80,15 @@ export default (app) => {
     app.get('/services-management/service-item', MobileCompatController.getMaestroServiceItem);
     app.get('/config-price/get', MobileCompatController.getMaestroConfigPrice);
     app.get('/favourite/services', MobileCompatController.getMaestroFavouriteServices);
+    app.get('/favourite/service-providers', MobileCompatController.getMaestroFavouriteProviders);
+    app.get('/referral/referral-list', MobileCompatController.getMaestroReferralList);
     app.get('/subscription-plan/get-current-plan', MobileCompatController.getMaestroCurrentPlan);
     app.get('/booking/get', MobileCompatController.getMaestroBookings);
   }
+
+  // authentication required
+  r_backoffice(app);
+  r_client(app);
 
   r_error(app);
 }

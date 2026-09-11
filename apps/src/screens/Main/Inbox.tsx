@@ -313,8 +313,9 @@ export default function Inbox(props: ScreenProps) {
   };
   const selectDeleteNoti = (newValue: boolean, index: number) => {
     const value = [...valueNotiDelete];
-    const valueDelete = [...arrNoti] as ApiItem[];
-    valueDelete[index].isDeleted = newValue;
+    const valueDelete = arrNoti.map((item, itemIndex) =>
+      itemIndex === index ? { ...item, isDeleted: newValue } : item
+    );
     value[index] = newValue;
     setValueNotiDelete(value);
     setArrNoti(valueDelete);
@@ -323,8 +324,9 @@ export default function Inbox(props: ScreenProps) {
   };
   const selectDeletePromo = (newValue: boolean, index: number) => {
     const value = [...valuePromoDelete];
-    const valueDelete = [...arrPromo] as ApiItem[];
-    valueDelete[index].isDeleted = newValue;
+    const valueDelete = arrPromo.map((item, itemIndex) =>
+      itemIndex === index ? { ...item, isDeleted: newValue } : item
+    );
     value[index] = newValue;
     setValuePromoDelete(value);
     setArrPromo(valueDelete);
@@ -374,9 +376,11 @@ export default function Inbox(props: ScreenProps) {
 
   const redirectDetailNoti = (item: ApiItem, index: number) => {
     // NavigationRoot.push(Constants.SCREENS.OTHER.INBOXDETAIL, { data });
-    let data = [...arrNoti];
-    if (!data[index].isRead) {
-      data[index].isRead = true;
+    const wasUnread = !arrNoti[index]?.isRead;
+    let data = arrNoti.map((notification, notificationIndex) =>
+      notificationIndex === index ? { ...notification, isRead: true } : notification
+    );
+    if (wasUnread) {
       notifee.setBadgeCount(tools - 1);
       dispatch({
         type: TYPES.TOOLS.NOTIFICATION,
@@ -392,6 +396,8 @@ export default function Inbox(props: ScreenProps) {
   const renderItemNoti = ({ item, index }: { item: ApiItem; index: number }) => (
     <View>
       <TouchableOpacity
+        accessibilityLabel={`inbox-notification-${item.notificationId || item.id || index}`}
+        testID={`inbox-notification-${item.notificationId || item.id || index}`}
         onPress={() =>
           isDelete
             ? selectDeleteNoti(!valueNotiDelete[index], index)
@@ -469,9 +475,11 @@ export default function Inbox(props: ScreenProps) {
     </View>
   );
   const redirectDetailPromo = (item: ApiItem, index: number) => {
-    let data2 = [...arrPromo];
-    if (!data2[index].isRead) {
-      data2[index].isRead = true;
+    const wasUnread = !arrPromo[index]?.isRead;
+    let data2 = arrPromo.map((promotion, promotionIndex) =>
+      promotionIndex === index ? { ...promotion, isRead: true } : promotion
+    );
+    if (wasUnread) {
       notifee.setBadgeCount(tools - 1);
       setArrPromo(data2);
       dispatch({
@@ -487,6 +495,8 @@ export default function Inbox(props: ScreenProps) {
     return (
       <View>
         <TouchableOpacity
+          accessibilityLabel={`inbox-promotion-${item.id || index}`}
+          testID={`inbox-promotion-${item.id || index}`}
           onPress={() =>
             isDelete
               ? selectDeletePromo(!valuePromoDelete[index], index)

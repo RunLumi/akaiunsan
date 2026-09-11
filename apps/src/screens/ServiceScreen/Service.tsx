@@ -872,8 +872,9 @@ export default function Service(props: ScreenProps) {
         <View style={[styles.containerHeader]}>
           <View style={{ marginLeft: 10 }}>
             {currentStep != 4 ? (
-              <Ionicons
+              <TouchableOpacity
                 accessibilityLabel="service-back-button"
+                testID="service-back-button"
                 onPress={() =>
                   currentStep === 0
                     ? props.navigation.navigate(
@@ -881,10 +882,9 @@ export default function Service(props: ScreenProps) {
                       )
                     : toStep(currentStep - 1)
                 }
-                name="arrow-back"
-                size={26}
-                color={colors.white}
-              />
+              >
+                <Ionicons name="arrow-back" size={26} color={colors.white} />
+              </TouchableOpacity>
             ) : null}
           </View>
         </View>

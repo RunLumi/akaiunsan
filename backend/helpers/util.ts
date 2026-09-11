@@ -21,10 +21,22 @@ const sftp = new Client();
 async function getCustomerData (data) {
   let attribute_array = ['firstname', 'lastname', 'display_name',
     'email', 'line_id', 'phone_number', 'facebook_name', 'active'];
-  let customer = {};
+  let customer: any = {};
   for (let attribute in data) {
     if (attribute_array.includes(attribute))
       customer[attribute] = data[attribute];
+  }
+
+  // The mobile client sends the camel-case signup contract. Keep the legacy
+  // snake-case contract above for back-office callers, while normalizing the
+  // mobile payload before Customer.create receives it.
+  if (!customer.firstname && data.fullName) {
+    const nameParts = String(data.fullName).trim().split(/\s+/).filter(Boolean);
+    customer.firstname = nameParts.shift() || '';
+    customer.lastname = nameParts.join(' ');
+  }
+  if (!customer.phone_number && data.phoneNumber) {
+    customer.phone_number = data.phoneNumber;
   }
   return { customer }
 }

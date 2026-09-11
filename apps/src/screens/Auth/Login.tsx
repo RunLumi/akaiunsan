@@ -41,7 +41,6 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import * as AppleAuthentication from "expo-apple-authentication";
 import * as WebBrowser from "expo-web-browser";
 import * as Location from "expo-location";
-import Config from "react-native-config";
 import { getFirebaseMessagingToken, logAnalyticsEvent } from "../../shared/firebase";
 import type { ApiItem } from "../../redux/apiSlice";
 import type { ScreenProps } from "../../navigation/routes";

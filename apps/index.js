@@ -2,8 +2,10 @@
 import "./instrument";
 import * as Sentry from "@sentry/react-native";
 import "react-native-gesture-handler";
+const { enableScreens } = require("react-native-screens");
+enableScreens(false);
 import { AppRegistry } from "react-native";
-import App from "./App";
+const App = require("./App").default;
 import notifee, { EventType } from "@notifee/react-native";
 import { getFirebaseMessaging } from "./src/shared/firebase";
 

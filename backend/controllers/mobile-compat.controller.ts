@@ -66,6 +66,7 @@ const maestroBooking = (orderStatus = 0, orderId = 'maestro-booking-1') => {
       star: 5,
       avatar: '',
       skillLanguage: '["Vietnamese"]',
+      serviceType: '[]',
       experiences: 10,
     },
   };
@@ -82,6 +83,7 @@ export function getNotifications(req, res) {
         createdDate: new Date().toISOString(),
         isRead: false,
         type: 1,
+        promotionId: 'maestro-promotion',
         data: JSON.stringify({ PromotionId: 'maestro-promotion' }),
       }
     : {
@@ -157,6 +159,10 @@ export function getMaestroFavouriteProviders(_req, res) {
   return res.status(200).json({ items: [] });
 }
 
+export function getMaestroReferralList(_req, res) {
+  return res.status(200).json({ items: [], total: 0, page: 1 });
+}
+
 export function getMaestroAddresses(_req, res) {
   return res.status(200).json({
     items: [
@@ -190,7 +196,7 @@ export function getMaestroBookingList(req, res) {
 export function getMaestroBookingDetail(req, res) {
   const orderId = String(req.query?.orderId ?? 'maestro-booking-1');
   const isPetcare = orderId === 'maestro-petcare-order';
-  const booking = maestroBooking(isPetcare ? 5 : 0, orderId);
+  const booking: any = maestroBooking(isPetcare ? 5 : 0, orderId);
   if (isPetcare) {
     booking.serviceType = 5;
     booking.serviceName = 'Petcare Service';

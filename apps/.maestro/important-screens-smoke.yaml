@@ -73,7 +73,7 @@ appId: com.akaiunsan.customer
 - assertVisible:
     id: "service-next-button"
 - tapOn:
-    text: "service-back-button"
+    id: "service-back-button"
 
 # FR-BOOK-05 and FR-BOOK-01: booking list and calendar entry point.
 - tapOn:
@@ -129,21 +129,21 @@ appId: com.akaiunsan.customer
     visible: "Favourite.*"
     timeout: 10000
 - tapOn:
-    text: "navigation-back-button"
+    id: "navigation-back-button"
 - tapOn:
     id: "account-item-payment"
 - extendedWaitUntil:
     visible: "PAYMENT"
     timeout: 10000
 - tapOn:
-    text: "navigation-back-button"
+    id: "navigation-back-button"
 - tapOn:
     id: "account-item-history"
 - extendedWaitUntil:
     visible: "HISTORY"
     timeout: 10000
 - tapOn:
-    text: "navigation-back-button"
+    id: "navigation-back-button"
 - repeat:
     times: 3
     commands:
@@ -156,7 +156,7 @@ appId: com.akaiunsan.customer
     visible: "ADDRESS"
     timeout: 10000
 - tapOn:
-    text: "navigation-back-button"
+    id: "navigation-back-button"
 - tapOn:
     id: "account-item-subscription"
 - extendedWaitUntil:
@@ -164,14 +164,14 @@ appId: com.akaiunsan.customer
     timeout: 10000
 - assertVisible: "Data empty"
 - tapOn:
-    text: "navigation-back-button"
+    id: "navigation-back-button"
 - tapOn:
     id: "account-item-promotions"
 - extendedWaitUntil:
     visible: "Promotion.*"
     timeout: 10000
 - tapOn:
-    text: "navigation-back-button"
+    id: "navigation-back-button"
 
 # FR-ACC-05: logout returns to the authentication boundary.
 - tapOn:

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import ExpoConstants from "expo-constants";
 import {
   StyleSheet,
   View,
@@ -435,6 +436,7 @@ export default function Login(props: ScreenProps) {
             keyboardShouldPersistTaps="handled"
           >
             <CustomInput
+              testID="login-email-input"
               value={email.value}
               keyboardType="email-address"
               placeholder={i18n.t("auth.email")}
@@ -445,6 +447,7 @@ export default function Login(props: ScreenProps) {
               errorText={email.msgErr}
             />
             <CustomInput
+              testID="login-password-input"
               value={password.value}
               isError={password.isError}
               errorText={password.msgErr}
@@ -452,13 +455,14 @@ export default function Login(props: ScreenProps) {
               onChangeText={(value) =>
                 setPassword({ ...password, value: value, isError: false })
               }
-              secureText={true}
+              secureText={ExpoConstants.isDevice === true}
               containerStyle={{ marginTop: 20, marginBottom: 10 }}
             />
             <Text style={s.forgot} onPress={onPressForgot}>
               {i18n.t("auth.forgot_password")}
             </Text>
             <Button
+              testID="login-submit-button"
               onPress={async () => await onPressLogin()}
               style={{ width: "100%" }}
               title={i18n.t("auth.sign_in")}

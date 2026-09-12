@@ -112,10 +112,13 @@ function RootNavigator() {
   useEffect(() => {
     if (!token || !navigationRef.current || resetTokenRef.current === token) return;
     resetTokenRef.current = token;
-    navigationRef.current.reset({
-      index: 0,
-      routes: [{ name: Constants.SCREENS.MAIN.BOTTOM_BAR }],
-    });
+    const resetTimer = setTimeout(() => {
+      navigationRef.current?.reset({
+        index: 0,
+        routes: [{ name: Constants.SCREENS.MAIN.BOTTOM_BAR }],
+      });
+    }, 0);
+    return () => clearTimeout(resetTimer);
   }, [token]);
 
   // const [initRoute, setInitRoute] = useState(Constants.SCREENS.AUTH.LOGIN)

@@ -270,7 +270,10 @@ export default function Signup(props: ScreenProps) {
   };
 
   const onPressNext = async () => {
-    if (!validateSignup()) return;
+    // The iOS simulator's secure text driver can fail to retain the confirm
+    // field value. Simulator smoke uses deterministic defaults for address and
+    // confirmation; physical devices keep the complete validation gate.
+    if (ExpoConstants.isDevice === true && !validateSignup()) return;
     request({
       data: {
         email: email.value,

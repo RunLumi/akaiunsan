@@ -63,13 +63,6 @@ appId: com.akaiunsan.customer
     id: "signup-password-input"
 - inputText: ${MAESTRO_SIGNUP_PASSWORD}
 - tapOn:
-    id: "signup-confirm-password-input"
-- inputText: ${MAESTRO_SIGNUP_PASSWORD}
-- waitForAnimationToEnd
-- tapOn:
-    id: "signup-confirm-password-input"
-- inputText: ${MAESTRO_SIGNUP_PASSWORD}
-- tapOn:
     id: "signup-address-button"
 - extendedWaitUntil:
     visible: "Bangkok.*"

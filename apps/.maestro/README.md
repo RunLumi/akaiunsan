@@ -30,6 +30,22 @@ and local app environment files now use `https://akai-api.cjs.vn`. Do not commit
 `.env` changes,
 credentials, signing files, or test-account passwords.
 
+For a standalone iOS Release build (no Metro), select the production env
+explicitly; otherwise Expo may load the developer `.env` and embed
+`http://127.0.0.1:5000` in the bundle:
+
+```bash
+cd apps
+ENVFILE=.env.production EXPO_NO_DOTENV=1 \
+  SENTRY_DISABLE_AUTO_UPLOAD=true \
+  xcodebuild -workspace ios/Akaiunsan.xcworkspace -scheme Akaiunsan \
+  -configuration Release -sdk iphonesimulator \
+  -destination 'id="$IOS_UDID"' build
+```
+
+Verify the built bundle contains `https://akai-api.cjs.vn` before running a
+production Maestro flow.
+
 Before every lane, verify that no other simulator, emulator, Xcode build,
 Gradle, Metro, or Maestro process is running. Use one explicit device ID,
 finish the flow, force-stop the app, and shut down that device before changing

@@ -31,16 +31,13 @@ appId: com.akaiunsan.customer
 - tapOn: "Password"
 - inputText: ${MAESTRO_PASSWORD}
 - tapOn: "Sign In"
-- repeat:
-    times: 10
+- runFlow:
+    when:
+      visible: "Not Now"
     commands:
-      - runFlow:
-          when:
-            visible: "Not Now"
-          commands:
-            - tapOn: "Not Now"
-      - waitForAnimationToEnd:
-          timeout: 500
+      - tapOn: "Not Now"
+- waitForAnimationToEnd:
+    timeout: 1000
 - extendedWaitUntil:
     visible:
       text: "Home.*"

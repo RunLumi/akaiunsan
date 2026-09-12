@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import notifee from "@notifee/react-native";
 import Constants from "../shared/Constants";
 import { TouchableOpacity, Dimensions, Alert } from "react-native";
@@ -103,6 +103,20 @@ function RootNavigator() {
   const dispatch = ReactRedux.useDispatch();
   const user = useAppSelector((state) => state.auth.user);
   const token = useAppSelector((state) => state.auth.token);
+  const resetTokenRef = useRef<string | null>(null);
+
+  // Changing the conditional screen group alone does not guarantee that
+  // React Navigation leaves the currently mounted Auth/Login route. Reset the
+  // stack explicitly after a successful sign-in so a valid production 200
+  // cannot leave the user stranded on Login.
+  useEffect(() => {
+    if (!token || !navigationRef.current || resetTokenRef.current === token) return;
+    resetTokenRef.current = token;
+    navigationRef.current.reset({
+      index: 0,
+      routes: [{ name: Constants.SCREENS.MAIN.BOTTOM_BAR }],
+    });
+  }, [token]);
 
   // const [initRoute, setInitRoute] = useState(Constants.SCREENS.AUTH.LOGIN)
   // const [isReady, setIsReady] = useState(false);

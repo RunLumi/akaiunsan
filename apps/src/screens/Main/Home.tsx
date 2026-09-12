@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
 import {
   StyleSheet,
   View,
   Image,
   TouchableOpacity,
   Alert,
-  ImageBackground,
   FlatList,
   Dimensions,
   RefreshControl,
@@ -244,6 +244,24 @@ export default function Home(props: ScreenProps) {
   ];
   const totalService = [...sortArrayService, ...extraService];
 
+  const serviceIcon = (serviceType: number | undefined, isComingSoon: boolean) => {
+    if (isComingSoon) return "sparkles-outline" as const;
+    switch (serviceType) {
+      case Enum.SERVICE_TYPE.MaidService:
+        return "home-outline" as const;
+      case Enum.SERVICE_TYPE.NanyService:
+        return "heart-outline" as const;
+      case Enum.SERVICE_TYPE.ElderService:
+        return "people-outline" as const;
+      case Enum.SERVICE_TYPE.CleaningService:
+        return "water-outline" as const;
+      case Enum.SERVICE_TYPE.PetcareService:
+        return "paw-outline" as const;
+      default:
+        return "grid-outline" as const;
+    }
+  };
+
   useEffect(() => {
     requestGetNotification({
       params: paramArray([
@@ -368,29 +386,20 @@ export default function Home(props: ScreenProps) {
 
     return (
       <TouchableOpacity
-        style={{ flex: 1, marginBottom: 16 }}
+        accessibilityLabel={`service-${item.serviceType ?? item.serviceName}`}
+        testID={`service-${item.serviceType ?? item.serviceName}`}
+        style={styles.serviceTile}
         key={index.toString()}
         onPress={onPress}
       >
-        {!item.type ? (
-          <Image
-            progressiveRenderingEnabled={true}
-            source={{ uri: item.icon }}
-            style={{
-              aspectRatio: 1.4,
-            }}
-            resizeMode="contain"
+        <View style={styles.serviceIconShell}>
+          <Ionicons
+            name={serviceIcon(item.serviceType, Boolean(item.type))}
+            size={30}
+            color={item.type ? Colors.gray_normal_text : Colors.main_color}
           />
-        ) : (
-          <ImageBackground
-            source={item.icon}
-            style={{
-              aspectRatio: 1.4,
-            }}
-            resizeMode="contain"
-          />
-        )}
-        <Text style={{ textAlign: "center" }}>
+        </View>
+        <Text numberOfLines={2} style={styles.serviceLabel}>
           {currentLanguage == "vi" ? item.serviceNameVi : item.serviceName}
         </Text>
       </TouchableOpacity>
@@ -710,5 +719,29 @@ export const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center",
+  },
+  serviceTile: {
+    flex: 1,
+    minHeight: 116,
+    marginBottom: 12,
+    paddingHorizontal: 4,
+    alignItems: "center",
+  },
+  serviceIconShell: {
+    width: 64,
+    height: 64,
+    borderRadius: 22,
+    marginBottom: 8,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: Colors.gray_light,
+    borderWidth: 1,
+    borderColor: "rgba(79, 96, 26, 0.12)",
+  },
+  serviceLabel: {
+    textAlign: "center",
+    color: Colors.black_text,
+    fontSize: 14,
+    lineHeight: 19,
   },
 });

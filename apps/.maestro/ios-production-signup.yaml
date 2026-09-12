@@ -23,6 +23,12 @@ appId: com.akaiunsan.customer
 - extendedWaitUntil:
     visible: "Email"
     timeout: 30000
+- repeat:
+    times: 3
+    commands:
+      - swipe:
+          direction: UP
+          duration: 400
 - tapOn:
     id: "login-signup-button"
 - extendedWaitUntil:

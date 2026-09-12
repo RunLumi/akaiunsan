@@ -66,8 +66,14 @@ export const CustomInput = ({
   // simulator runs do not represent a credential store.
   const textContentType =
     Platform.OS === "ios" && !ExpoConstants.isDevice
-      ? "none"
+      ? secureText
+        ? "oneTimeCode"
+        : "none"
       : props.textContentType;
+  const autoComplete =
+    Platform.OS === "ios" && !ExpoConstants.isDevice
+      ? "off"
+      : props.autoComplete;
   return (
     <View style={[styles.container, containerStyle]}>
       <View
@@ -96,6 +102,7 @@ export const CustomInput = ({
           placeholderTextColor={colors.gray}
           {...props}
           textContentType={textContentType}
+          autoComplete={autoComplete}
           maxFontSizeMultiplier={Styles.typography.maxFontSizeMultiplier}
         />
 

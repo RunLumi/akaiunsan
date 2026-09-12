@@ -30,7 +30,11 @@ describe("CustomInput", () => {
 
   it("disables iOS AutoFill on simulator inputs", () => {
     const { root } = create(<CustomInput secureText value="1234" />);
-    expect(root.findByType(RNTextInput).props.textContentType).toBe("none");
+    // oneTimeCode prevents iOS simulator Strong Password suggestions from
+    // covering secure fields; real-device password behavior is unchanged.
+    expect(root.findByType(RNTextInput).props.textContentType).toBe(
+      "oneTimeCode"
+    );
   });
 
   it("fires the dropdown, datetime and cancel affordance handlers", () => {

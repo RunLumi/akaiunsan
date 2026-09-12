@@ -502,15 +502,20 @@ export default function Login(props: ScreenProps) {
               </TouchableOpacity>
             </View>
 
-            <Text
-              style={s.signupDes}
-              onPress={onPressSignUp}
-              testID="login-signup-button"
-            >
+          </ScrollView>
+          <TouchableOpacity
+            style={s.signupDes}
+            onPress={onPressSignUp}
+            testID="login-signup-button"
+            accessibilityRole="button"
+            accessibilityLabel={i18n.t("auth.sign_up")}
+            hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+          >
+            <Text>
               {i18n.t("auth.no_account")}{" "}
               <Text style={s.signup}>{i18n.t("auth.sign_up")}</Text>
             </Text>
-          </ScrollView>
+          </TouchableOpacity>
         </DismissKeyboardView>
       </KeyboardAvoidingView>
     </Container>
@@ -531,7 +536,10 @@ const s = StyleSheet.create({
     marginHorizontal: Styles.margin.horizontal,
   },
   contentContainer: {
-    paddingBottom: 32,
+    // Keep the registration link fully inside the safe interaction area on
+    // compact iOS screens; previously its hit target was clipped by the
+    // home indicator and Maestro/user taps could not activate it.
+    paddingBottom: 120,
   },
   logoContainer: {
     flex: 1,
@@ -563,6 +571,7 @@ const s = StyleSheet.create({
   signupDes: {
     alignSelf: "center",
     marginTop: 50,
+    marginBottom: 80,
     paddingBottom: 30,
   },
   signup: {

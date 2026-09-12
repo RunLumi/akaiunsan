@@ -118,11 +118,13 @@ export default function Signup(props: ScreenProps) {
       .catch((e: ApiItem) =>
         handleRegisterResult({
           // mirrors useApi's 400 translation: axios reported
-          // "Request failed with status code 400" for e.status === 400
+          // "Request failed with status code 400" for e.status === 400.
+          // Prefer the API message so users can distinguish a duplicate
+          // email from an invalid registration payload.
           error:
-            e?.status === 400
-              ? i18n.t("home.error_400")
-              : e?.data?.message || e?.message || "error",
+            e?.data?.message ||
+            (e?.status === 400 ? i18n.t("home.error_400") : e?.message) ||
+            "error",
           response: {},
         })
       );
@@ -357,6 +359,7 @@ export default function Signup(props: ScreenProps) {
                 </View>
                 <View style={{ flex: 1, marginRight: 12 }}>
                   <CustomInput
+                    testID="signup-firstname-input"
                     placeholder={`${i18n.t("auth.firstname")} *`}
                     value={firstname.value}
                     onChangeText={(value) =>
@@ -368,6 +371,7 @@ export default function Signup(props: ScreenProps) {
                 </View>
                 <View style={{ flex: 1 }}>
                   <CustomInput
+                    testID="signup-lastname-input"
                     placeholder={`${i18n.t("auth.lastname")} *`}
                     value={lastname.value}
                     onChangeText={(value) =>
@@ -381,6 +385,7 @@ export default function Signup(props: ScreenProps) {
               {/* <Text style={s.title}>{`${i18n.t("auth.phone")} *`}</Text> */}
               <View style={s.addButton}>
                 <CustomInput
+                  testID="signup-phone-input"
                   placeholder={`${i18n.t("auth.phone")} *`}
                   keyboardType="phone-pad"
                   value={phone.value}
@@ -393,6 +398,7 @@ export default function Signup(props: ScreenProps) {
               </View>
 
               <TouchableOpacity
+                testID="signup-address-button"
                 style={s.button}
                 onPress={() =>
                   NavigationRoot.navigate(
@@ -425,6 +431,7 @@ export default function Signup(props: ScreenProps) {
               {/* <Text style={s.title}>{`${i18n.t("auth.mail")} *`}</Text> */}
               <View style={s.addButton}>
                 <CustomInput
+                  testID="signup-email-input"
                   placeholder={`${i18n.t("auth.mail")} *`}
                   keyboardType="email-address"
                   value={email.value}
@@ -438,6 +445,7 @@ export default function Signup(props: ScreenProps) {
               {/* <Text style={s.title}>{`${i18n.t("auth.password")} *`}</Text> */}
               <View style={s.addButton}>
                 <CustomInput
+                  testID="signup-password-input"
                   placeholder={`${i18n.t("auth.password")} *`}
                   value={pass.value}
                   onChangeText={(value) => {
@@ -453,6 +461,7 @@ export default function Signup(props: ScreenProps) {
               {/* <Text style={s.title}>{`${i18n.t("auth.repassword")} *`}</Text> */}
               <View style={s.addButton}>
                 <CustomInput
+                  testID="signup-confirm-password-input"
                   placeholder={`${i18n.t("auth.repassword")} *`}
                   value={repass.value}
                   onChangeText={(value) =>
@@ -482,6 +491,7 @@ export default function Signup(props: ScreenProps) {
                 />
               </View>
               <Button
+                testID="signup-next-button"
                 onPress={onPressNext}
                 style={{ width: "100%", marginTop: 20 }}
                 title={i18n.t("auth.next")}

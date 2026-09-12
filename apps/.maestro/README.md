@@ -51,6 +51,21 @@ Do not use a production account or real payment data. The flow does not submit
 a booking, charge a card, delete data, cancel a subscription, or remove an
 account.
 
+## Production signup smoke
+
+The production registration flow uses a fresh disposable account and exercises
+the required address picker before submitting `/auth/signup`:
+
+```bash
+MAESTRO_SIGNUP_EMAIL="maestro-$(date +%s)@example.test" \
+MAESTRO_SIGNUP_PASSWORD='generated-local-only-password' \
+maestro test --device "$IOS_UDID" apps/.maestro/ios-production-signup.yaml
+```
+
+The API must return HTTP 200 and the app must return to Sign In. A duplicate
+email or invalid payload must show the backend's specific error message rather
+than a generic HTTP 400 alert.
+
 ## Authentication smoke
 
 ```bash

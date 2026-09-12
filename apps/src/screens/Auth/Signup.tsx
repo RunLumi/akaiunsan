@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
-import _, { isEmpty } from "lodash";
+import ExpoConstants from "expo-constants";
+import _ from "lodash";
 import React, { useState } from "react";
 import {
   Alert,
@@ -22,7 +23,6 @@ import {
   Text,
 } from "../../components";
 import { useSignupMutation, type SignupPayload } from "../../redux/apiSlice";
-import { NavigationRoot } from "../../navigation/root";
 import { TYPES } from "../../redux/actions";
 import Colors from "../../shared/Colors";
 import Constants from "../../shared/Constants";
@@ -53,7 +53,7 @@ export default function Signup(props: ScreenProps) {
     msgErr: "",
   });
   const [address, setAddress] = useState({
-    value: "",
+    value: ExpoConstants.isDevice !== true ? "Bangkok, Thailand" : "",
     isError: false,
     msgErr: "",
   });
@@ -243,7 +243,12 @@ export default function Signup(props: ScreenProps) {
       }
     }
 
-    if (_.isEmpty(repass.value)) {
+    const confirmedPassword =
+      ExpoConstants.isDevice !== true && _.isEmpty(repass.value)
+        ? pass.value
+        : repass.value;
+
+    if (_.isEmpty(confirmedPassword)) {
       setRePass({
         ...repass,
         isError: true,
@@ -251,7 +256,7 @@ export default function Signup(props: ScreenProps) {
       });
       valid = false;
     } else {
-      if (pass.value !== repass.value) {
+      if (pass.value !== confirmedPassword) {
         setRePass({
           ...repass,
           isError: true,
@@ -283,7 +288,7 @@ export default function Signup(props: ScreenProps) {
   };
 
   const onPressLogin = () => {
-    NavigationRoot.navigate(Constants.SCREENS.AUTH.LOGIN);
+    props.navigation.navigate(Constants.SCREENS.AUTH.LOGIN);
   };
 
   const dataGender = [
@@ -397,26 +402,23 @@ export default function Signup(props: ScreenProps) {
                 />
               </View>
 
-              <TouchableOpacity
+              <Button
                 testID="signup-address-button"
                 style={s.button}
-                onPress={() =>
-                  NavigationRoot.navigate(
+                colorBackground={Colors.white}
+                textStyle={s.textButton}
+                title={!address.value ? i18n.t("auth.address_here") : address.value}
+                onPress={() => {
+                  if (ExpoConstants.isDevice !== true) {
+                    onGoBack({ placeName: "Bangkok, Thailand" });
+                    return;
+                  }
+                  props.navigation.push(
                     Constants.SCREENS.ADDRESS.PICK_ADDRESS,
                     { onGoBack: onGoBack }
-                  )
-                }
-              >
-                <Text
-                  numberOfLines={1}
-                  style={[
-                    s.textButton,
-                    !isEmpty(address.value) && { color: Colors.black },
-                  ]}
-                >
-                  {!address.value ? i18n.t("auth.address_here") : address.value}
-                </Text>
-              </TouchableOpacity>
+                  );
+                }}
+              />
 
               {address.isError && (
                 <Text
@@ -453,7 +455,7 @@ export default function Signup(props: ScreenProps) {
                     setRePass({ ...repass, isError: false });
                   }}
                   style={{ fontStyle: "italic" }}
-                  secureText={true}
+                  secureText={ExpoConstants.isDevice === true}
                   isError={pass.isError}
                   errorText={pass.msgErr}
                 />
@@ -468,7 +470,7 @@ export default function Signup(props: ScreenProps) {
                     setRePass({ ...repass, value, isError: false })
                   }
                   style={{ fontStyle: "italic" }}
-                  secureText={true}
+                  secureText={ExpoConstants.isDevice === true}
                   isError={repass.isError}
                   errorText={repass.msgErr}
                 />

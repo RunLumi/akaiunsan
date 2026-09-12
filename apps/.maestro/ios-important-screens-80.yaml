@@ -68,7 +68,8 @@ appId: com.akaiunsan.customer
 - extendedWaitUntil:
     visible: "Please pick the service date from above calendar"
     timeout: 15000
-- tapOn: "12"
+- tapOn:
+    id: "service-date-${MAESTRO_SERVICE_DATE}"
 - waitForAnimationToEnd
 - tapOn:
     id: "service-next-button"

@@ -171,6 +171,8 @@ export default function Service(props: ScreenProps) {
             dayComponent={({ date }: { date?: { dateString: string } }) => (
               <TouchableOpacity
                 disabled={props.isEdit}
+                accessibilityLabel={`service-date-${date!.dateString}`}
+                testID={`service-date-${date!.dateString}`}
                 style={{
                   minWidth: 40,
                   minHeight: 24,

@@ -46,6 +46,22 @@ ENVFILE=.env.production EXPO_NO_DOTENV=1 \
 Verify the built bundle contains `https://akai-api.cjs.vn` before running a
 production Maestro flow.
 
+Do not run Maestro against whatever app happens to be installed on the
+simulator. That can silently reuse an older artifact. Build, install, and
+verify the exact current artifact with the repository runner:
+
+```bash
+cd apps
+IOS_UDID="$IOS_UDID" \
+  ./scripts/run-ios-maestro.sh \
+  .maestro/ios-production-account-smoke.yaml
+```
+
+The runner requires exactly one booted simulator, uses a clean per-device
+derived-data path, checks `CFBundleVersion` against `app.json`, compares the
+installed executable hash with the built executable, and only then launches
+Maestro.
+
 Before every lane, verify that no other simulator, emulator, Xcode build,
 Gradle, Metro, or Maestro process is running. Use one explicit device ID,
 finish the flow, force-stop the app, and shut down that device before changing
@@ -96,6 +112,7 @@ Use a staging/UAT customer account at runtime; never commit credentials:
 ```bash
 MAESTRO_EMAIL='tester@example.test' \
 MAESTRO_PASSWORD='...' \
+MAESTRO_SERVICE_DATE="$(date -v+1d +%Y-%m-%d)" \
 maestro test apps/.maestro/important-screens-smoke.yaml
 ```
 
@@ -103,6 +120,18 @@ The flow covers the Home/service entry point, Booking tabs, Inbox tabs,
 Account utilities, Favourite, Payment, History, Address, Subscription,
 Promotions, and logout. It intentionally avoids destructive operations and
 real payment or booking submission.
+
+For a deterministic booking/payment smoke without production side effects, run
+the temporary mock API and use the focused iOS flow:
+
+```bash
+node /tmp/akaiunsan-maestro-mock-api.mjs
+MAESTRO_SERVICE_DATE="$(date -v+1d +%Y-%m-%d)" \\
+  maestro test --device "$IOS_UDID" apps/.maestro/ios-maid-booking-mock-payment.yaml
+```
+
+The mock accepts a fake order and the flow stops after the result screen; it
+does not charge a card or create a production booking.
 
 The extended iOS lane adds the documented detail and wizard routes (AllService,
 Booking calendar/detail/edit, history detail, Inbox detail, Petcare payment,
@@ -112,6 +141,7 @@ referral, and About Us):
 ```bash
 MAESTRO_EMAIL='tester@example.test' \
 MAESTRO_PASSWORD='...' \
+MAESTRO_SERVICE_DATE="$(date -v+1d +%Y-%m-%d)" \
 maestro test --device "$IOS_UDID" apps/.maestro/ios-important-screens-80.yaml
 ```
 

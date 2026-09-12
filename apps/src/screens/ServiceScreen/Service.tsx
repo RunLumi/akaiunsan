@@ -211,7 +211,9 @@ export default function Service(props: ScreenProps) {
     ({ error, response }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
-        setCurrentStep(currentStep + 1);
+        // The order mutation resolves asynchronously; use the latest wizard
+        // step instead of the render captured when the request started.
+        setCurrentStep((step) => step + 1);
       }
       setLoading(false);
     }
@@ -256,7 +258,7 @@ export default function Service(props: ScreenProps) {
             },
           });
         } else {
-          setCurrentStep(currentStep + 1);
+          setCurrentStep((step) => step + 1);
         }
       }
     }
@@ -279,7 +281,7 @@ export default function Service(props: ScreenProps) {
         //     },
         //   });
         // } else {
-        setCurrentStep(currentStep + 1);
+        setCurrentStep((step) => step + 1);
         // }
       }
     }

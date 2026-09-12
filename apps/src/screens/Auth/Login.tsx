@@ -52,7 +52,26 @@ export default function Login(props: ScreenProps) {
   const dispatch = useDispatch();
 
   const params = props.route.params || {};
-  const tokenFromResponse = (response: ApiItem) => response?.auth_token ?? response?._token;
+  const tokenFromResponse = (response: ApiItem) =>
+    response?.auth_token ??
+    response?._token ??
+    response?.data?.auth_token ??
+    response?.data?._token;
+
+  const resetToHomeAfterLogin = () => {
+    // The auth/app navigator groups are conditional on the Redux token. Defer
+    // the reset until React has committed the app group so the route is
+    // registered when the action is dispatched on real iOS builds.
+    setTimeout(() => {
+      const reset = (props.navigation as any)?.reset;
+      if (typeof reset === "function") {
+        reset({
+          index: 0,
+          routes: [{ name: Constants.SCREENS.MAIN.BOTTOM_BAR }],
+        });
+      }
+    }, 0);
+  };
 
   const language = useAppSelector((state) => state.language.language);
   // const token = useAppSelector((state) => state.auth.token);
@@ -131,6 +150,7 @@ export default function Login(props: ScreenProps) {
               token,
             },
           });
+          resetToHomeAfterLogin();
           i18n.locale = currentLanguage;
           requestUpdateLanguage({
             data: { language: currentLanguage == "vi" ? 1 : 2 },
@@ -463,7 +483,7 @@ export default function Login(props: ScreenProps) {
             </Text>
             <Button
               testID="login-submit-button"
-              onPress={async () => await onPressLogin()}
+              onPress={onPressLogin}
               style={{ width: "100%" }}
               title={i18n.t("auth.sign_in")}
               loading={loading}

@@ -1,0 +1,71 @@
+appId: com.akaiunsan.customer
+
+---
+# Deterministic local booking flow. The API is a temporary local mock; this
+# flow must never be run against production credentials or real payment data.
+- clearState
+- launchApp
+- tapOn:
+    text: "Allow Once"
+    optional: true
+- tapOn:
+    text: "Allow While Using App"
+    optional: true
+- tapOn:
+    text: "While using the app"
+    optional: true
+- tapOn:
+    text: "Allow"
+    optional: true
+- tapOn:
+    text: "EN"
+    optional: true
+- extendedWaitUntil:
+    visible: "Email"
+    timeout: 30000
+- tapOn:
+    id: "login-email-input"
+- inputText: "maestro@example.test"
+- tapOn:
+    id: "login-password-input"
+- inputText: "mock-password"
+- tapOn:
+    id: "login-submit-button"
+- extendedWaitUntil:
+    visible:
+      text: "Home.*"
+    timeout: 15000
+- assertVisible: "Maid Service"
+- tapOn: "Maid Service"
+- extendedWaitUntil:
+    visible: "Please pick the service date from above calendar"
+    timeout: 15000
+- tapOn:
+    id: "service-date-${MAESTRO_SERVICE_DATE}"
+- extendedWaitUntil:
+    visible: "How many Hour(s)"
+    timeout: 10000
+- tapOn:
+    id: "service-next-button"
+- extendedWaitUntil:
+    visible: "Maestro test address.*"
+    timeout: 10000
+- tapOn: "Maestro test address.*"
+- tapOn:
+    id: "service-next-button"
+- extendedWaitUntil:
+    visible: "Option"
+    timeout: 10000
+- tapOn:
+    id: "service-next-button"
+- extendedWaitUntil:
+    visible: "Payment"
+    timeout: 10000
+- assertVisible: "Payment method"
+- assertVisible: "Cash"
+- tapOn: "Cash"
+- tapOn:
+    id: "service-next-button"
+- extendedWaitUntil:
+    visible: "Booking detail"
+    timeout: 10000

@@ -48,6 +48,8 @@ export const Button = ({
   return (
     <TouchableOpacity
       {...props}
+      accessible
+      accessibilityRole="button"
       style={[image ? s.image : s.default, style]}
       onPress={onPress}
       disabled={loading || disabled}

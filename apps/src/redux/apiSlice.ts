@@ -68,10 +68,17 @@ export type ApiItem = {
   [key: string]: any;
 };
 
+const configuredApiUrl = Config.API_URL?.trim();
+const apiBaseUrl =
+  !configuredApiUrl ||
+  configuredApiUrl.includes("api-mobile.ayasan.vn")
+    ? Constants.API.base
+    : configuredApiUrl;
+
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: Config.API_URL,
+    baseUrl: apiBaseUrl,
     // useApi (axios) serialized URLSearchParams verbatim, preserving repeated
     // keys (`orderStatus=0&orderStatus=1…`). RTK's default does
     // `new URLSearchParams(stripUndefined(params))`, which spreads the

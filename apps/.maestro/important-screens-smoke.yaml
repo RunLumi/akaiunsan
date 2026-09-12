@@ -64,7 +64,8 @@ appId: com.akaiunsan.customer
 - assertVisible: "Address"
 - assertVisible: "Option"
 - assertVisible: "Payment"
-- tapOn: "12"
+- tapOn:
+    id: "service-date-${MAESTRO_SERVICE_DATE}"
 - extendedWaitUntil:
     visible: "How many Hour(s)"
     timeout: 10000

@@ -26,11 +26,14 @@ appId: com.akaiunsan.customer
 - extendedWaitUntil:
     visible: "Email"
     timeout: 30000
-- tapOn: "Email"
+- tapOn:
+    id: "login-email-input"
 - inputText: ${MAESTRO_EMAIL}
-- tapOn: "Password"
+- tapOn:
+    id: "login-password-input"
 - inputText: ${MAESTRO_PASSWORD}
-- tapOn: "Sign In"
+- tapOn:
+    id: "login-submit-button"
 - runFlow:
     when:
       visible: "Not Now"

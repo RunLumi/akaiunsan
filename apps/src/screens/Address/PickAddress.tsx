@@ -365,6 +365,7 @@ const PickAddress = (props: ScreenProps) => {
         <View style={s.search}>
           <GooglePlacesAutocomplete
             ref={addRef}
+            textInputProps={{ testID: "address-search-input" }}
             query={{
               key:
                 Platform.OS == "ios"
@@ -409,6 +410,7 @@ const PickAddress = (props: ScreenProps) => {
               <Text style={s.subtitle}>{placeName}</Text>
             </View>
             <Button
+              testID="pick-location-button"
               title={i18n.t("address.pick_location")}
               onPress={onPickLocation}
               loading={loading}

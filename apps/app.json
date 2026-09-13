@@ -16,7 +16,7 @@
       "supportsTablet": false,
       "googleServicesFile": "./GoogleService-Info.plist",
       "bundleIdentifier": "com.akaiunsan.customer",
-      "buildNumber": "12",
+      "buildNumber": "13",
       "usesAppleSignIn": true,
       "infoPlist": {
         "NSCameraUsageDescription": "Akaiunsan would like to access the camera to take a picture for the profile image or scan a QR code when you need it.",

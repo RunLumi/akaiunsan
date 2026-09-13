@@ -16,7 +16,11 @@ type FirebaseMocks = {
   };
 };
 
-const loadFirebase = (environment: string | undefined, isDevice = true) => {
+const loadFirebase = (
+  environment: string | undefined,
+  isDevice = true,
+  platform: "ios" | "android" = "android"
+) => {
   jest.resetModules();
 
   const mocks: FirebaseMocks = {
@@ -45,6 +49,7 @@ const loadFirebase = (environment: string | undefined, isDevice = true) => {
     __esModule: true,
     default: { isDevice },
   }));
+  jest.doMock("react-native", () => ({ Platform: { OS: platform } }));
   jest.doMock("@react-native-firebase/analytics", () => ({
     __esModule: true,
     ...mocks.analytics,
@@ -124,6 +129,14 @@ describe("Firebase runtime adapter", () => {
     expect(mocks.analytics.getAnalytics).not.toHaveBeenCalled();
     expect(mocks.analytics.logEvent).not.toHaveBeenCalled();
     expect(mocks.crashlytics.getCrashlytics).not.toHaveBeenCalled();
+    expect(mocks.messaging.getMessaging).not.toHaveBeenCalled();
+  });
+
+  it("does not initialize Firebase Messaging on a physical iOS device", () => {
+    const { firebase, mocks } = loadFirebase("production", true, "ios");
+
+    expect(firebase.isFirebaseMessagingAvailable()).toBe(false);
+    expect(firebase.getFirebaseMessaging()).toBeUndefined();
     expect(mocks.messaging.getMessaging).not.toHaveBeenCalled();
   });
 

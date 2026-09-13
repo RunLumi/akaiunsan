@@ -21,7 +21,7 @@ import Layout from "../../shared/Layout";
 import Enum from "../../shared/Enum";
 import _ from "lodash";
 import { paramArray } from "../../shared/Utils";
-import notifee from "@notifee/react-native";
+import { setNotificationBadgeCount } from "../../shared/notifications";
 import Colors from "../../shared/Colors";
 import { TYPES } from "../../redux/actions";
 import type { ApiItem } from "../../redux/apiSlice";
@@ -53,7 +53,7 @@ export default function Inbox(props: ScreenProps) {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
         setRefreshNoti(false);
-        notifee.setBadgeCount(response.totalUnRead);
+        setNotificationBadgeCount(response.totalUnRead);
 
         dispatch({
           type: TYPES.TOOLS.NOTIFICATION,
@@ -99,7 +99,7 @@ export default function Inbox(props: ScreenProps) {
     ({ error, response }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
-        notifee.setBadgeCount(response.totalUnRead);
+        setNotificationBadgeCount(response.totalUnRead);
         setRefreshPromo(false);
         if (response.page === 1) {
           setPagePromo(2);
@@ -381,7 +381,7 @@ export default function Inbox(props: ScreenProps) {
       notificationIndex === index ? { ...notification, isRead: true } : notification
     );
     if (wasUnread) {
-      notifee.setBadgeCount(tools - 1);
+      setNotificationBadgeCount(tools - 1);
       dispatch({
         type: TYPES.TOOLS.NOTIFICATION,
         payload: tools - 1,
@@ -480,7 +480,7 @@ export default function Inbox(props: ScreenProps) {
       promotionIndex === index ? { ...promotion, isRead: true } : promotion
     );
     if (wasUnread) {
-      notifee.setBadgeCount(tools - 1);
+      setNotificationBadgeCount(tools - 1);
       setArrPromo(data2);
       dispatch({
         type: TYPES.TOOLS.NOTIFICATION,

@@ -22,7 +22,7 @@ import { NavigationRoot } from "../../navigation/root";
 import { success, TYPES } from "../../redux/actions";
 import i18n from "../../shared/I18n";
 import { Divider } from "react-native-elements";
-import notifee from "@notifee/react-native";
+import { setNotificationBadgeCount } from "../../shared/notifications";
 import { apiSlice, portRequest, type ApiResult } from "../../redux/apiSlice";
 import type { ScreenProps } from "../../navigation/routes";
 import type { ApiItem } from "../../redux/apiSlice";
@@ -134,7 +134,7 @@ export default function Account(props: ScreenProps) {
     requestAddDeviceNotification({
       data: { token: "had_remove" },
     });
-    notifee.setBadgeCount(0);
+    setNotificationBadgeCount(0);
   };
 
   const renderItem = ({ item, index }: { item: ApiItem; index: number }) => {

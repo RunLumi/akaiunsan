@@ -6,15 +6,13 @@ const { enableScreens } = require("react-native-screens");
 enableScreens(false);
 import { AppRegistry } from "react-native";
 const App = require("./App").default;
-import notifee, { EventType } from "@notifee/react-native";
+import { incrementNotificationBadgeCount } from "./src/shared/notifications";
 import { getFirebaseMessaging } from "./src/shared/firebase";
 
 const messaging = getFirebaseMessaging();
 if (messaging?.module.setBackgroundMessageHandler) {
   messaging.module.setBackgroundMessageHandler(messaging.service, async () => {
-    if (typeof notifee.incrementBadgeCount === "function") {
-      await notifee.incrementBadgeCount();
-    }
+    incrementNotificationBadgeCount();
   });
 }
 

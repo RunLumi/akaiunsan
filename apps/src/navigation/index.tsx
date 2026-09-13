@@ -1,7 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import React, { useState, useEffect, useRef } from "react";
-import notifee from "@notifee/react-native";
+import { setNotificationBadgeCount } from "../shared/notifications";
 import Constants from "../shared/Constants";
 import { TouchableOpacity, Dimensions, Alert } from "react-native";
 import { ForgotPassword, Login, Signup } from "../screens/Auth";
@@ -132,7 +132,7 @@ function RootNavigator() {
       if (error) {
         Alert.alert(i18n.t("auth.error"), error);
       }
-      notifee.setBadgeCount(response.totalUnRead);
+      setNotificationBadgeCount(response.totalUnRead);
       dispatch({
         type: TYPES.TOOLS.NOTIFICATION,
         payload: response && response.totalUnRead,

@@ -24,7 +24,7 @@ import Enum from "../../shared/Enum";
 import Theme from "../../shared/theme";
 import Colors from "../../shared/Colors";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import notifee from "@notifee/react-native";
+import { setNotificationBadgeCount } from "../../shared/notifications";
 import { paramArray } from "../../shared/Utils";
 import type { ApiItem } from "../../redux/apiSlice";
 import type { ScreenProps } from "../../navigation/routes";
@@ -209,7 +209,7 @@ export default function Home(props: ScreenProps) {
     ({ error, response }: ApiResult) => {
       if (error) Alert.alert(i18n.t("auth.error"), error);
       else {
-        notifee.setBadgeCount(response.totalUnRead)
+        setNotificationBadgeCount(response.totalUnRead);
 
         dispatch({
           type: TYPES.TOOLS.NOTIFICATION,

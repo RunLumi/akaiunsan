@@ -1,4 +1,5 @@
 import Config from "react-native-config";
+import { Platform } from "react-native";
 import Constants from "expo-constants";
 import { shouldCollectAnalytics } from "./analytics";
 
@@ -66,6 +67,14 @@ export const isFirebaseCollectionEnabled = (): boolean =>
 // recoverable startup failure into an RCT fatal exception.
 export const isFirebaseRuntimeAvailable = (): boolean =>
   Constants.isDevice === true;
+
+// Firebase Messaging's native iOS initialization writes its auth state to the
+// keychain during app bootstrap. TestFlight crash reports for build 12 show an
+// RCTFatal through FIRMessagingAuthKeychain on launch. Keep optional push
+// registration out of the iOS bootstrap path until that native integration is
+// repaired; analytics and Crashlytics remain independently available.
+export const isFirebaseMessagingAvailable = (): boolean =>
+  isFirebaseRuntimeAvailable() && Platform.OS !== "ios";
 
 const loadAnalyticsModule = (): AnalyticsModule | undefined => {
   try {
@@ -141,7 +150,7 @@ export const logAnalyticsEvent = async (
 };
 
 export const getFirebaseMessaging = (): FirebaseMessagingHandle | undefined => {
-  if (!isFirebaseCollectionEnabled() || !isFirebaseRuntimeAvailable()) return undefined;
+  if (!isFirebaseCollectionEnabled() || !isFirebaseMessagingAvailable()) return undefined;
 
   try {
     const module = loadMessagingModule();
